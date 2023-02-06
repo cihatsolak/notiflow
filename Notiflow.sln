@@ -3,9 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure", "azure", "{5E18AE45-573C-4DB7-B1BC-B55BFA2BE951}"
+	ProjectSection(SolutionItems) = preProject
+		azure\azure-pipeline.yml = azure\azure-pipeline.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F5D8B786-DC50-403E-A48F-8767F243F93F}"
+	ProjectSection(SolutionItems) = preProject
+		docs\project-host-information.txt = docs\project-host-information.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EEA12CDE-AA95-4F62-98B0-1235C054E19F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71F0CA3A-4D5E-40C2-9B44-7E2D0959AFEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{D57DC945-9274-43EC-8372-953B9EB27E99}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{187F85CC-76F1-49FF-B381-24F15EF3F44F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Documentation", "src\libraries\documentation\Notiflow.Lib.Documentation\Notiflow.Lib.Documentation.csproj", "{62215138-5FA0-4D38-92E3-9EECF7CCAC32}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D57DC945-9274-43EC-8372-953B9EB27E99} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
+		{187F85CC-76F1-49FF-B381-24F15EF3F44F} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{62215138-5FA0-4D38-92E3-9EECF7CCAC32} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
