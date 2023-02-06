@@ -5,16 +5,16 @@
         /// <summary>
         /// Adds swagger documentation
         /// </summary>
-        /// <param name="app">type of built-in application builder interface</param>
-        /// <returns>type of built-in application builder interface</returns>
+        /// <param name="app">type of web application</param>
+        /// <returns>type of web application</returns>
         /// <seealso cref="https://swagger.io/"/>
-        public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
+        public static WebApplication UseSwaggerDoc(this WebApplication app)
         {
-            IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
+            IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
             if (webHostEnvironment.IsProduction())
                 return app;
 
-            ISwaggerSetting swaggerSetting = app.ApplicationServices.GetRequiredService<ISwaggerSetting>();
+            ISwaggerSetting swaggerSetting = app.Services.GetRequiredService<ISwaggerSetting>();
 
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>

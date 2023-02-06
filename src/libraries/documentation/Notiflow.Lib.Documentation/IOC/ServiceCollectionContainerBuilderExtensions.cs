@@ -5,25 +5,20 @@
         /// <summary>
         /// Add swagger documentation
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
+        /// <param name="builder">type of web application builder</param>
         /// <seealso cref="https://swagger.io/"/>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <returns>type of web application builder</returns>
         /// <exception cref="ArgumentNullException">thrown if the service provider is null</exception>
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        public static WebApplicationBuilder AddSwagger(this WebApplicationBuilder builder)
         {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
-
-            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-
-            SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
-            services.TryAddSingleton<ISwaggerSetting>(provider =>
+            SwaggerSetting swaggerSetting = builder.Configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
+            builder.Services.TryAddSingleton<ISwaggerSetting>(provider =>
             {
                 return swaggerSetting;
             });
 
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
             {
                 options.DescribeAllParametersInCamelCase();
 
@@ -67,7 +62,7 @@
                 }
             });
 
-            return services;
+            return builder;
         }
 
         private static void AddIncludeXmlComments(SwaggerGenOptions options)
