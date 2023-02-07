@@ -14,11 +14,12 @@
         string LicenseUrl { get; init; }
         string LogoUrl { get; init; }
         bool IsClosedSchema { get; init; }
-        bool IsBasicSecurityScheme { get; init; }
-        bool IsJwtSecurityScheme { get; init; }
+        bool IsHaveBasicSecurityScheme { get; init; }
+        bool IsHaveJwtSecurityScheme { get; init; }
+        bool IsHaveDefaultHeaders { get; init; }
     }
 
-    public sealed record SwaggerSetting : ISwaggerSetting
+    internal sealed record SwaggerSetting : ISwaggerSetting
     {
         public string DefinitionName { get; init; }
         public string Title { get; init; }
@@ -32,7 +33,8 @@
         public string LicenseUrl { get; init; }
         public string LogoUrl { get; init; }
         public bool IsClosedSchema { get; init; }
-        public bool IsBasicSecurityScheme { get; init; }
-        public bool IsJwtSecurityScheme { get; init; }
+        public bool IsHaveBasicSecurityScheme { get; init; }
+        public bool IsHaveJwtSecurityScheme { get; init; }
+        public bool IsHaveDefaultHeaders { get; init; }
     }
 }

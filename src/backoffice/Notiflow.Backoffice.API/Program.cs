@@ -12,6 +12,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseSwaggerDoc();
+app.UseReDoc();
 app.UseAuthorization();
 
 app.MapControllers();
