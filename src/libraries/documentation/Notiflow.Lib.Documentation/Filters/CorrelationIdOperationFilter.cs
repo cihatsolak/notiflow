@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Lib.Documentation.Infrastructure.OperationFilters
+﻿namespace Notiflow.Lib.Documentation.Filters
 {
     internal sealed class CorrelationIdOperationFilter : SwaggerOperationFilter
     {
