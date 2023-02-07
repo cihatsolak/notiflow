@@ -1,10 +1,10 @@
-﻿namespace Notiflow.Lib.Documentation.Infrastructure.OperationFilters
+﻿namespace Notiflow.Lib.Documentation.Filters
 {
     internal sealed class TenantTokenOperationFilter : SwaggerOperationFilter
     {
         public override void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            base.Apply(operation, context);   
+            base.Apply(operation, context);
 
             operation.Parameters.Add(new OpenApiParameter
             {
