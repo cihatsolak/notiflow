@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="app">type of web application</param>
         /// <returns>type of web application</returns>
-        /// <seealso cref="https://swagger.io/"/>
+        /// <see cref="https://swagger.io/"/>
         public static WebApplication UseSwaggerDoc(this WebApplication app)
         {
             IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
@@ -26,6 +26,29 @@
                 {
                     swaggerUIOptions.DefaultModelsExpandDepth(-1);
                 }
+            });
+
+            return app;
+        }
+
+        /// <summary>
+        /// Add redocly documentation
+        /// </summary>
+        /// <param name="app">type of web application</param>
+        /// <returns>type of web application</returns>
+        /// <see cref="https://redocly.com/"/>
+        public static IApplicationBuilder UseRedoclyDoc(this WebApplication app)
+        {
+            IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
+            if (webHostEnvironment.IsProduction())
+                return app;
+
+            ISwaggerSetting swaggerSetting = app.Services.GetRequiredService<ISwaggerSetting>();
+
+            app.UseReDoc(options =>
+            {
+                options.DocumentTitle = swaggerSetting.Title;
+                options.SpecUrl = Configurations.EndpointUrl;
             });
 
             return app;
