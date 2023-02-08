@@ -8,7 +8,7 @@
 
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = "X-Tenant-Token",
+                Name = "x-tenant-token",
                 In = ParameterLocation.Header,
                 Required = false,
                 Schema = new OpenApiSchema
@@ -16,7 +16,7 @@
                     Type = "string",
                     Description = "credential for multi-tenant applications",
                     MaxLength = 36,
-                    Title = "X-Tenant-Token"
+                    Title = "x-tenant-token"
                 }
             });
         }
