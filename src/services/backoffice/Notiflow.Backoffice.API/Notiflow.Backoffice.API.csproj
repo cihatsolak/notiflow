@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\libraries\documentation\Notiflow.Lib.Documentation\Notiflow.Lib.Documentation.csproj" />
+    <ProjectReference Include="..\..\..\libraries\documentation\Notiflow.Lib.Documentation\Notiflow.Lib.Documentation.csproj" />
+    <ProjectReference Include="..\..\..\libraries\performance\Notiflow.Lib.Performance\Notiflow.Lib.Performance.csproj" />
   </ItemGroup>
 
 </Project>

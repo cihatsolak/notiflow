@@ -37,7 +37,7 @@
         /// <param name="app">type of web application</param>
         /// <returns>type of web application</returns>
         /// <see cref="https://redocly.com/"/>
-        public static IApplicationBuilder UseRedoclyDoc(this WebApplication app)
+        public static WebApplication UseRedoclyDoc(this WebApplication app)
         {
             IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
             if (webHostEnvironment.IsProduction())

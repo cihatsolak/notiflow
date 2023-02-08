@@ -1,6 +1,3 @@
-using Notiflow.Lib.Documentation.IOC;
-using Notiflow.Lib.Documentation.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
