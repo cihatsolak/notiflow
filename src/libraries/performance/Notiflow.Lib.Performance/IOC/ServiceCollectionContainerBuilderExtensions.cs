@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-namespace Notiflow.Lib.Performance.IOC
+﻿namespace Notiflow.Lib.Performance.IOC
 {
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add gzip response compression
+        /// Add gzip response fastest compression
         /// </summary>
+        /// <remarks>compression level: fastest</remarks>
         /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-6.0"/>
+        /// <seealso cref="https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-7.0"/>
         /// <returns>type of built-in service collection interface</returns>
         public static IServiceCollection AddGzipResponseFastestCompress(this IServiceCollection services)
         {
@@ -32,9 +31,9 @@ namespace Notiflow.Lib.Performance.IOC
         /// Add gzip response compression
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-6.0"/>
+        /// <seealso cref="https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-7.0"/>
         /// <returns>type of built-in service collection interface</returns>
-        public static IServiceCollection AddGzipResponseCompress(this IServiceCollection services, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+        public static IServiceCollection AddGzipResponseCompress(this IServiceCollection services, CompressionLevel compressionLevel)
         {
             services.AddResponseCompression();
 

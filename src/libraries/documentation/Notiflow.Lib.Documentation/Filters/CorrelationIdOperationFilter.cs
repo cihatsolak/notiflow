@@ -8,7 +8,7 @@
 
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = "X-Correlation-Id",
+                Name = "x-correlation-id",
                 In = ParameterLocation.Header,
                 Required = false,
                 Schema = new OpenApiSchema
@@ -16,7 +16,7 @@
                     Type = "string",
                     Description = "unique identity communicated between microservices",
                     MaxLength = 36,
-                    Title = "X-Correlation-Id"
+                    Title = "x-correlation-id"
                 }
             });
         }

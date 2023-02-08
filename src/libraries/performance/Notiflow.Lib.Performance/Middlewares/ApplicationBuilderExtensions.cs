@@ -1,9 +1,11 @@
-﻿namespace Notiflow.Lib.Performance.Middlewares
+﻿global using Microsoft.AspNetCore.Builder;
+
+namespace Notiflow.Lib.Performance.Middlewares
 {
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Add redocly documentation
+        /// Add response compression
         /// </summary>
         /// <param name="app">type of web application</param>
         /// <returns>type of web application</returns>
