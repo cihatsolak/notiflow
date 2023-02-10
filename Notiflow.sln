@@ -35,7 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Performance", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "version", "version", "{00155C6D-95FE-4CD3-9797-99A3906A9467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Version", "src\libraries\version\Notiflow.Lib.Version\Notiflow.Lib.Version.csproj", "{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Version", "src\libraries\version\Notiflow.Lib.Version\Notiflow.Lib.Version.csproj", "{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cookie", "cookie", "{3A572FCD-08D2-4122-A042-A507A33607FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Cookie", "src\libraries\cookie\Notiflow.Lib.Cookie\Notiflow.Lib.Cookie\Notiflow.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,10 @@ Global
 		{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B65148F-A788-4EB6-997D-77B5D4E41E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B65148F-A788-4EB6-997D-77B5D4E41E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B65148F-A788-4EB6-997D-77B5D4E41E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B65148F-A788-4EB6-997D-77B5D4E41E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +82,8 @@ Global
 		{C0DCB7CF-C365-43F8-888C-1288470A256F} = {8A1D72BA-0C6D-458B-81DE-65D1D8200D13}
 		{00155C6D-95FE-4CD3-9797-99A3906A9467} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{89BFEFE7-7382-452B-8104-AB0B62FBD7EF} = {00155C6D-95FE-4CD3-9797-99A3906A9467}
+		{3A572FCD-08D2-4122-A042-A507A33607FE} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{9B65148F-A788-4EB6-997D-77B5D4E41E2C} = {3A572FCD-08D2-4122-A042-A507A33607FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
