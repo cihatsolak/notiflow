@@ -41,8 +41,7 @@
         /// <param name="errorResponseProvider">default error response provider</param>
         /// <seealso cref="https://github.com/dotnet/aspnet-api-versioning"/>
         /// <returns>type of built-in service collection interface</returns>
-        /// <exception cref="ArgumentNullException">when the service provider cannot be built</exception>
-        /// <exception cref="InvalidOperationException">if your application settings file does not contain api version configurations</exception>
+        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
         public static IServiceCollection AddApiVersioningWithProvider(this IServiceCollection services, IErrorResponseProvider errorResponseProvider)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
