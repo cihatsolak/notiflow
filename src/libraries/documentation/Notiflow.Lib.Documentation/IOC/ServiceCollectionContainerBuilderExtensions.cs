@@ -7,20 +7,26 @@
         /// <summary>
         /// Add swagger documentation
         /// </summary>
-        /// <param name="builder">type of web application builder</param>
+        /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of web application builder</returns>
         /// <see cref="https://swagger.io/"/>
         /// <seealso cref="AddIncludeXmlComments(SwaggerGenOptions)"/>
-        public static WebApplicationBuilder AddSwagger(this WebApplicationBuilder builder)
+        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
-            SwaggerSetting = builder.Configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
-            builder.Services.TryAddSingleton<ISwaggerSetting>(provider =>
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+
+            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            services.Configure<SwaggerSetting>(configuration.GetRequiredSection(nameof(SwaggerSetting)));
+            services.TryAddSingleton<ISwaggerSetting>(provider =>
             {
+                SwaggerSetting = provider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
                 return SwaggerSetting;
             });
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(options =>
             {
                 options.DescribeAllParametersInCamelCase();
                 options.SwaggerDoc(SwaggerSetting.Version,
@@ -56,7 +62,7 @@
                 AddBasicSecurityScheme(options);
             });
 
-            return builder;
+            return services;
         }
 
         private static void AddOperationFilters(SwaggerGenOptions options)

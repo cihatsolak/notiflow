@@ -7,7 +7,7 @@
         int MinorVersion { get; init; }
     }
 
-    public sealed record ApiVersionSetting : IApiVersionSetting
+    internal sealed record ApiVersionSetting : IApiVersionSetting
     {
         public string HeaderName { get; init; }
         public int MajorVersion { get; init; }

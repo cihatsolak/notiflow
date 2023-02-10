@@ -5,16 +5,18 @@
         /// <summary>
         /// Adds swagger documentation
         /// </summary>
-        /// <param name="app">type of web application</param>
-        /// <returns>type of web application</returns>
+        /// <param name="app">type of built-in application builder interface</param>
+        /// <returns>type of built-in application builder interface</returns>
         /// <see cref="https://swagger.io/"/>
-        public static WebApplication UseSwaggerDoc(this WebApplication app)
+        public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
         {
-            IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
             if (webHostEnvironment.IsProduction())
                 return app;
 
-            ISwaggerSetting swaggerSetting = app.Services.GetRequiredService<ISwaggerSetting>();
+            ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
 
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
@@ -34,16 +36,18 @@
         /// <summary>
         /// Add redocly documentation
         /// </summary>
-        /// <param name="app">type of web application</param>
-        /// <returns>type of web application</returns>
+        /// <param name="app">type of built-in application builder interface</param>
+        /// <returns>type of built-in application builder interface</returns>
         /// <see cref="https://redocly.com/"/>
-        public static WebApplication UseRedoclyDoc(this WebApplication app)
+        public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
         {
-            IWebHostEnvironment webHostEnvironment = app.Services.GetRequiredService<IWebHostEnvironment>();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
             if (webHostEnvironment.IsProduction())
                 return app;
 
-            ISwaggerSetting swaggerSetting = app.Services.GetRequiredService<ISwaggerSetting>();
+            ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
 
             app.UseReDoc(options =>
             {

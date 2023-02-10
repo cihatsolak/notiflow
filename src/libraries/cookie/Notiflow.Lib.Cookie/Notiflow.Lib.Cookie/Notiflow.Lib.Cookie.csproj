@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Constants\" />
+  </ItemGroup>
+
+  <ItemGroup>
+  	<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+  	<PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.8" />
+  	<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  	<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>
