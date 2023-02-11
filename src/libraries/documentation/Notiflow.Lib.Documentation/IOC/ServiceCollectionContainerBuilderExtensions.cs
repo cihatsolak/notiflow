@@ -10,7 +10,10 @@
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of web application builder</returns>
         /// <see cref="https://swagger.io/"/>
+        /// <seealso cref="AddOperationFilters(SwaggerGenOptions)"/>
         /// <seealso cref="AddIncludeXmlComments(SwaggerGenOptions)"/>
+        /// <seealso cref="AddJwtSecurityScheme(SwaggerGenOptions)"/>
+        /// <seealso cref="AddBasicSecurityScheme(SwaggerGenOptions)"/>
         /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
