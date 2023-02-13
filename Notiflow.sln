@@ -47,7 +47,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Http", "src\li
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "auth", "auth", "{EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Auth", "src\libraries\auth\Notiflow.Lib.Auth\Notiflow.Lib.Auth.csproj", "{7B8FEA34-3A17-4002-8320-C96AA53B276E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Auth", "src\libraries\auth\Notiflow.Lib.Auth\Notiflow.Lib.Auth.csproj", "{7B8FEA34-3A17-4002-8320-C96AA53B276E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A29D1ADE-1CAE-418D-B8EF-770A1FCD8E7A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F5EFC8A7-5A8A-4A53-B1CD-822E44C9C5F2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +114,7 @@ Global
 		{645BD81F-ADC3-4E72-9DC3-F7E7D1C3A420} = {68C8B345-22B8-4C86-B6F9-39B2DC97E252}
 		{EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{7B8FEA34-3A17-4002-8320-C96AA53B276E} = {EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2}
+		{F5EFC8A7-5A8A-4A53-B1CD-822E44C9C5F2} = {A29D1ADE-1CAE-418D-B8EF-770A1FCD8E7A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
