@@ -1,5 +1,11 @@
-﻿global using Notiflow.Lib.Cache.Constants.Enums;
+﻿global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Microsoft.Extensions.Options;
+global using Notiflow.Lib.Cache.Constants.Enums;
 global using Notiflow.Lib.Cache.Constants.Exceptions;
+global using Notiflow.Lib.Cache.Constants.Settings;
+global using Notiflow.Lib.Cache.Services;
 global using Notiflow.Lib.Cache.TransientFaultHandling;
 global using Polly;
 global using Polly.Retry;
