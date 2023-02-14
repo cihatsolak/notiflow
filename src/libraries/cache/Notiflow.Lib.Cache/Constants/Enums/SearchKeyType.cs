@@ -3,7 +3,7 @@
     /// <summary>
     /// Key search type for cache
     /// </summary>
-    public enum KeySearchType
+    public enum SearchKeyType
     {
         [Description("İle Biter")]
         EndsWith = 1,
