@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Lib.Cache.Constants.Exceptions
+﻿namespace Notiflow.Lib.Cache.Constants.Contants
 {
     internal static class ExceptionMessage
     {

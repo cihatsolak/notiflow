@@ -2,6 +2,7 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Options;
+global using Notiflow.Lib.Cache.Constants.Contants;
 global using Notiflow.Lib.Cache.Constants.Enums;
 global using Notiflow.Lib.Cache.Constants.Exceptions;
 global using Notiflow.Lib.Cache.Constants.Settings;
