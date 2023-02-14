@@ -16,7 +16,7 @@
         /// <param name="increment">increment value</param>
         /// <returns>last value of data</returns>
         /// <exception cref="ArgumentNullException">thrown when cache key is empty or null</exception>
-        Task<int> IncrementAsync(string cacheKey, int increment);
+        Task<long> IncrementAsync(string cacheKey, int increment);
 
         /// <summary>
         /// Decreases key value by decrease amount
@@ -25,7 +25,7 @@
         /// <param name="decrement">decrement value</param>
         /// <returns>last value of data</returns>
         /// <exception cref="ArgumentNullException">thrown when cache key is empty or null</exception>
-        Task<int> DecrementAsync(string cacheKey, int decrement);
+        Task<long> DecrementAsync(string cacheKey, int decrement);
 
         /// <summary>
         /// Lists the table's data by key value
@@ -79,10 +79,10 @@
         /// <summary>
         /// Lists data by cache key
         /// </summary>
-        /// <typeparam name="TValue">safe data type</typeparam>
+        /// <typeparam name="TResponse">safe data type</typeparam>
         /// <param name="cacheKey">cache key</param>
         /// <returns>designated safe type</returns>
-        Task<TValue> GetAsync<TValue>(string cacheKey);
+        Task<TResponse> GetAsync<TResponse>(string cacheKey) where TResponse : class, new();
 
         /// <summary>
         /// Add data to cache
@@ -145,12 +145,12 @@
         /// <summary>
         /// Deletes data from the default database
         /// </summary>
-        ValueTask ClearDatabaseAsync();
+        Task ClearDatabaseAsync();
 
         /// <summary>
         /// Deletes the data of the specified database
         /// </summary>
         /// <param name="databaseNumber">database number whose data is to be deleted</param>
-        ValueTask ClearDatabaseAsync(int databaseNumber);
+        Task ClearDatabaseAsync(int databaseNumber);
     }
 }
