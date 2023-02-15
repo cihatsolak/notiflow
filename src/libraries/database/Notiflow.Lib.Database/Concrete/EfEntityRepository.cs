@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Notiflow.Lib.Database.Concrete
+﻿namespace Notiflow.Lib.Database.Concrete
 {
     public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
