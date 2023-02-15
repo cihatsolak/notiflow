@@ -69,6 +69,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity-server", "identity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.IdentityServer", "src\identity-server\Notiflow.IdentityServer\Notiflow.IdentityServer.csproj", "{9CA42551-0F14-44A4-986F-BF01C751C0E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateways", "gateways", "{8F8BDEB3-23B9-4EBB-A2A1-3B54EA17A736}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Gateway", "src\gateways\Notiflow.Gateway\Notiflow.Gateway.csproj", "{106D0181-B97F-4DA4-B274-D6EA7440EE16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,10 @@ Global
 		{9CA42551-0F14-44A4-986F-BF01C751C0E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CA42551-0F14-44A4-986F-BF01C751C0E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CA42551-0F14-44A4-986F-BF01C751C0E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{106D0181-B97F-4DA4-B274-D6EA7440EE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{106D0181-B97F-4DA4-B274-D6EA7440EE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{106D0181-B97F-4DA4-B274-D6EA7440EE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{106D0181-B97F-4DA4-B274-D6EA7440EE16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +145,8 @@ Global
 		{723A490B-8355-4B8D-B2BC-104EC67FE71C} = {EB7323A1-CC71-465D-8DEF-18B14DE16BD6}
 		{E8A4051C-D079-49F3-A956-45917EE3E02A} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
 		{9CA42551-0F14-44A4-986F-BF01C751C0E4} = {E8A4051C-D079-49F3-A956-45917EE3E02A}
+		{8F8BDEB3-23B9-4EBB-A2A1-3B54EA17A736} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
+		{106D0181-B97F-4DA4-B274-D6EA7440EE16} = {8F8BDEB3-23B9-4EBB-A2A1-3B54EA17A736}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
