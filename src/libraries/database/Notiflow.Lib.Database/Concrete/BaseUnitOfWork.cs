@@ -10,7 +10,21 @@
             _context = context;
         }
 
-        public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                _logger.Fatal(dbUpdateException, "An error occurred while saving database transactions.");
+                string exceptionMessage = await GetFullErrorTextAndRollbackEntityChangesAsync(dbUpdateException, cancellationToken);
+                throw new DatabaseOperationException(exceptionMessage, dbUpdateException);
+            }
+        }
+
+        public virtual async Task<int> SaveChangesShadowAsync(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -43,11 +57,6 @@
             }
         }
 
-        /// <summary>
-        /// Rollback of entity changes and return full error message
-        /// </summary>
-        /// <param name="dbUpdateException">db update exception</param>
-        /// <returns>Error message</returns>
         private async Task<string> GetFullErrorTextAndRollbackEntityChangesAsync(DbUpdateException dbUpdateException, CancellationToken cancellationToken)
         {
             var entries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
