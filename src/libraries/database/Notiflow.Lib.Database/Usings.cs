@@ -8,4 +8,5 @@ global using Notiflow.Lib.Database.Infrastructure.Models;
 global using Serilog;
 global using System.Linq.Expressions;
 global using System.Runtime.Serialization;
+global using System.Transactions;
 global using ILogger = Serilog.ILogger;
