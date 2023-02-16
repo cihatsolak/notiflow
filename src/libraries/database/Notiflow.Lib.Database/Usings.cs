@@ -1,7 +1,14 @@
-﻿global using Microsoft.EntityFrameworkCore;
+﻿global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
 global using Notiflow.Lib.Database.Abstract;
+global using Notiflow.Lib.Database.Concrete;
 global using Notiflow.Lib.Database.Infrastructure.Constants;
 global using Notiflow.Lib.Database.Infrastructure.Exceptions;
 global using Notiflow.Lib.Database.Infrastructure.Models;
