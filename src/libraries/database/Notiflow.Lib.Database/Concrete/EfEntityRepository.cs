@@ -11,6 +11,94 @@
             _entities = context.Set<TEntity>();
         }
 
+        public async Task<PagedResult<TEntity>> GetPageAsync(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        {
+            var entityTable = TableNoTracking;
+
+            if (filter is not null)
+                entityTable = entityTable.Where(filter);
+
+            int totalRecords = await entityTable.CountAsync();
+
+            if (orderBy is not null)
+                entityTable = orderBy(entityTable);
+
+            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            else if (pageIndex > totalPages)
+            {
+                pageIndex = totalPages;
+            }
+
+            var entities = await entityTable
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<TEntity>
+            {
+                Items = entities,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages
+            };
+        }
+
+        public async Task<PagedResult<TEntity>> GetPageAsync(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        params Expression<Func<TEntity, object>>[] includes)
+        {
+            var entityTable = TableNoTracking;
+
+            if (filter is not null)
+                entityTable = entityTable.Where(filter);
+
+            if (includes is not null)
+                entityTable = includes.Aggregate(entityTable, (current, include) => current.Include(include));
+
+            int totalRecords = await entityTable.CountAsync();
+
+            if (orderBy is not null)
+                entityTable = orderBy(entityTable);
+
+            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            else if (pageIndex > totalPages)
+            {
+                pageIndex = totalPages;
+            }
+
+            var entities = await entityTable
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<TEntity>
+            {
+                Items = entities,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages
+            };
+        }
+
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, bool disableTracking = true)
         {
             return await TableTracking(disableTracking).Where(filter).ToListAsync();

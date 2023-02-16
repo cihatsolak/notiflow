@@ -7,6 +7,38 @@
     public interface IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
         /// <summary>
+        /// Lists the data by paginating according to the relevant parameters
+        /// </summary>
+        /// <remarks>method that can be overridden</remarks>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <param name="filter">filtering options</param>
+        /// <param name="orderBy">option to sort data</param>
+        /// <returns>page structure and filtered data</returns>
+        Task<PagedResult<TEntity>> GetPageAsync(
+            int pageIndex, 
+            int pageSize, 
+            Expression<Func<TEntity, bool>> filter = null, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+
+        /// <summary>
+        /// Lists the data by paginating according to the relevant parameters
+        /// </summary>
+        /// <remarks>method that can be overridden</remarks>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <param name="filter">filtering options</param>
+        /// <param name="orderBy">option to sort data</param>
+        /// <param name="includes">table information to be related</param>
+        /// <returns>page structure and filtered data</returns>
+        Task<PagedResult<TEntity>> GetPageAsync(
+            int pageIndex, 
+            int pageSize, 
+            Expression<Func<TEntity, bool>> filter = null, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, 
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
         /// Get entities by expression fiter
         /// </summary>
         /// <remarks>method that can be overridden</remarks>
