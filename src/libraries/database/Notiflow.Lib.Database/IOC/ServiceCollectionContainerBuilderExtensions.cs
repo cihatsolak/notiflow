@@ -3,7 +3,6 @@
     public static class ServiceCollectionContainerBuilderExtensions
     {
         private static IWebHostEnvironment WebHostEnvironment { get; set; }
-        private static bool NotLiveEnvironemnt => !WebHostEnvironment.IsProduction() && !WebHostEnvironment.IsStaging();
 
         /// <summary>
         /// Add postgre sql server db context
@@ -61,10 +60,10 @@
         private static void ConfigureLog(DbContextOptionsBuilder contextOptions)
         {
             contextOptions.LogTo(Log.Logger.Warning, LogLevel.Warning);
-            contextOptions.EnableSensitiveDataLogging(NotLiveEnvironemnt);
+            contextOptions.EnableSensitiveDataLogging(WebHostEnvironment.IsDevEnvironment());
             contextOptions.UseLoggerFactory(LoggerFactory.Create(builder =>
             {
-                if (NotLiveEnvironemnt)
+                if (WebHostEnvironment.IsDevEnvironment())
                 {
                     builder.AddConsole();
                 }
@@ -73,7 +72,7 @@
 
         private static void ConfigureException(IServiceCollection services)
         {
-            if (NotLiveEnvironemnt)
+            if (WebHostEnvironment.IsDevEnvironment())
             {
                 services.AddDatabaseDeveloperPageExceptionFilter();
             }
