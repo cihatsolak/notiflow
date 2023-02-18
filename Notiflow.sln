@@ -67,15 +67,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{6063
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity-server", "identity-server", "{E8A4051C-D079-49F3-A956-45917EE3E02A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.IdentityServer", "src\identity-server\Notiflow.IdentityServer\Notiflow.IdentityServer.csproj", "{9CA42551-0F14-44A4-986F-BF01C751C0E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.IdentityServer", "src\identity-server\Notiflow.IdentityServer\Notiflow.IdentityServer.csproj", "{9CA42551-0F14-44A4-986F-BF01C751C0E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateways", "gateways", "{8F8BDEB3-23B9-4EBB-A2A1-3B54EA17A736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Gateway", "src\gateways\Notiflow.Gateway\Notiflow.Gateway.csproj", "{106D0181-B97F-4DA4-B274-D6EA7440EE16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Gateway", "src\gateways\Notiflow.Gateway\Notiflow.Gateway.csproj", "{106D0181-B97F-4DA4-B274-D6EA7440EE16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{681CB20C-8A02-4184-97CD-B103C48620B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Database", "src\libraries\database\Notiflow.Lib.Database\Notiflow.Lib.Database.csproj", "{592E19B0-DA6C-44EF-AB33-41F9160DA425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Database", "src\libraries\database\Notiflow.Lib.Database\Notiflow.Lib.Database.csproj", "{592E19B0-DA6C-44EF-AB33-41F9160DA425}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "validation", "validation", "{201829B2-D089-45B1-A923-F97A8D31E287}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Validation", "src\libraries\validation\Notiflow.Lib.Validation\Notiflow.Lib.Validation.csproj", "{57421245-72D7-4638-9BC6-8AE4628E0785}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +131,10 @@ Global
 		{592E19B0-DA6C-44EF-AB33-41F9160DA425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{592E19B0-DA6C-44EF-AB33-41F9160DA425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{592E19B0-DA6C-44EF-AB33-41F9160DA425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57421245-72D7-4638-9BC6-8AE4628E0785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57421245-72D7-4638-9BC6-8AE4628E0785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57421245-72D7-4638-9BC6-8AE4628E0785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57421245-72D7-4638-9BC6-8AE4628E0785}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +165,8 @@ Global
 		{106D0181-B97F-4DA4-B274-D6EA7440EE16} = {8F8BDEB3-23B9-4EBB-A2A1-3B54EA17A736}
 		{681CB20C-8A02-4184-97CD-B103C48620B2} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{592E19B0-DA6C-44EF-AB33-41F9160DA425} = {681CB20C-8A02-4184-97CD-B103C48620B2}
+		{201829B2-D089-45B1-A923-F97A8D31E287} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{57421245-72D7-4638-9BC6-8AE4628E0785} = {201829B2-D089-45B1-A923-F97A8D31E287}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
