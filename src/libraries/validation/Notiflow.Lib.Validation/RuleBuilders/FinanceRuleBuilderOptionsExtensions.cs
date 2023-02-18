@@ -31,7 +31,7 @@
                 .NotEmpty().WithMessage(errorMessage)
                 .NotNull().WithMessage(errorMessage)
                 .Length(10).WithMessage(errorMessage)
-                .Matches(RegularExpressions.TaxNumber).WithMessage(errorMessage);
+                .Matches(RegularExpressions.CreditCard).WithMessage(errorMessage);
         }
     }
 }
