@@ -9,12 +9,13 @@
         /// <param name="ruleBuilder">rule builder</param>
         /// <param name="errorMessage">error message</param>
         /// <returns>type of rule builder options</returns>
-        public static IRuleBuilderOptions<TClass, string> CreditCard<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TClass, string> CustomCreditCard<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
                 .NotNull().WithMessage(errorMessage)
                 .Length(13, 19).WithMessage(errorMessage)
+                .CreditCard()
                 .Matches(RegularExpressions.CreditCard).WithMessage(errorMessage);
         }
 
@@ -30,7 +31,7 @@
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
                 .NotNull().WithMessage(errorMessage)
-                .Length(10).WithMessage(errorMessage)
+                .Length(10, 19).WithMessage(errorMessage)
                 .Matches(RegularExpressions.CreditCard).WithMessage(errorMessage);
         }
     }
