@@ -89,6 +89,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "file", "file", "{C1498836-2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.File", "src\libraries\file\Notiflow.Lib.File\Notiflow.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "healthcheck", "healthcheck", "{1347987F-D7A9-414F-89B2-1CE09258C71C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.HealthCheck", "src\libraries\healthcheck\Notiflow.Lib.HealthCheck\Notiflow.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +155,10 @@ Global
 		{2A536DFA-CDAF-45A2-8101-B02527787096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A536DFA-CDAF-45A2-8101-B02527787096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A536DFA-CDAF-45A2-8101-B02527787096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +195,8 @@ Global
 		{6C604D14-7913-4C34-9370-83550F1DAF66} = {185C3CF1-D126-443E-B335-DFB7750DAFB8}
 		{C1498836-2F4E-4243-81FC-47C5C44A3338} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{2A536DFA-CDAF-45A2-8101-B02527787096} = {C1498836-2F4E-4243-81FC-47C5C44A3338}
+		{1347987F-D7A9-414F-89B2-1CE09258C71C} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
