@@ -7,10 +7,10 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.31" />
-		<PackageReference Include="Hangfire.Core" Version="1.7.31" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.33" />
+		<PackageReference Include="Hangfire.Core" Version="1.7.33" />
 		<PackageReference Include="Hangfire.Dashboard.Basic.Authentication" Version="5.0.0" />
-		<PackageReference Include="Hangfire.SqlServer" Version="1.7.31" />
+		<PackageReference Include="Hangfire.SqlServer" Version="1.7.33" />
 	</ItemGroup>
 
 </Project>
