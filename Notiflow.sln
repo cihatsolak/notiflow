@@ -97,6 +97,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{24BC6A93-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Host", "src\libraries\host\Notiflow.Lib.Host\Notiflow.Lib.Host.csproj", "{D0A192E9-F6BF-4C78-B372-4577C0435061}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "response", "response", "{366A89CB-4648-4DE3-8CD9-3D1951744C07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Response", "src\libraries\response\Notiflow.Lib.Response\Notiflow.Lib.Response.csproj", "{603EDDEC-DABD-4C3A-8DBB-02985513D142}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +171,10 @@ Global
 		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +215,8 @@ Global
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
 		{24BC6A93-AAED-48BE-A74F-DB57A003FBC1} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{D0A192E9-F6BF-4C78-B372-4577C0435061} = {24BC6A93-AAED-48BE-A74F-DB57A003FBC1}
+		{366A89CB-4648-4DE3-8CD9-3D1951744C07} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142} = {366A89CB-4648-4DE3-8CD9-3D1951744C07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
