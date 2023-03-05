@@ -87,11 +87,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Hangfire", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "file", "file", "{C1498836-2F4E-4243-81FC-47C5C44A3338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.File", "src\libraries\file\Notiflow.Lib.File\Notiflow.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.File", "src\libraries\file\Notiflow.Lib.File\Notiflow.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "healthcheck", "healthcheck", "{1347987F-D7A9-414F-89B2-1CE09258C71C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.HealthCheck", "src\libraries\healthcheck\Notiflow.Lib.HealthCheck\Notiflow.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.HealthCheck", "src\libraries\healthcheck\Notiflow.Lib.HealthCheck\Notiflow.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{24BC6A93-AAED-48BE-A74F-DB57A003FBC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Host", "src\libraries\host\Notiflow.Lib.Host\Notiflow.Lib.Host.csproj", "{D0A192E9-F6BF-4C78-B372-4577C0435061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +163,10 @@ Global
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +205,8 @@ Global
 		{2A536DFA-CDAF-45A2-8101-B02527787096} = {C1498836-2F4E-4243-81FC-47C5C44A3338}
 		{1347987F-D7A9-414F-89B2-1CE09258C71C} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
+		{24BC6A93-AAED-48BE-A74F-DB57A003FBC1} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{D0A192E9-F6BF-4C78-B372-4577C0435061} = {24BC6A93-AAED-48BE-A74F-DB57A003FBC1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
