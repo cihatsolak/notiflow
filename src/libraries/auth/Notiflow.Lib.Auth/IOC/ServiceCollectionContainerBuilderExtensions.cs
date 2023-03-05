@@ -1,15 +1,18 @@
 ﻿namespace Notiflow.Lib.Auth.IOC
 {
+    /// <summary>
+    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add jwt authentication
+        /// Add jwt token for authentication and authorization
         /// </summary>
+        /// <remarks>It should add the necessary information to the application settings file.</remarks>
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of built-in service collection interface</returns>
         /// <seealso cref="https://jwt.io/"/>
-        /// <exception cref="ArgumentNullException">when the service provider cannot be built</exception>
-        /// <exception cref="InvalidOperationException">if your application settings file does not contain jwt configurations</exception>
+        /// <exception cref="ArgumentNullException">throw when the service provider cannot be built</exception>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -51,7 +54,7 @@
         /// Add claim service
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims?view=aspnetcore-6.0"/>
+        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims"/>
         /// <returns>type of built-in service collection interface</returns>
         public static IServiceCollection AddClaimService(this IServiceCollection services)
         {

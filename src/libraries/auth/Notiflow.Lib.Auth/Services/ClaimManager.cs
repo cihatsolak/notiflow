@@ -13,6 +13,7 @@
         public string Name => GetName();
         public int UserId => GetUserId();
         public string Role => GetRole();
+        public List<string> Roles => GetRoles();
         public string Jti => GetJti();
         public List<string> Audiences => GetAudiences();
         public string Audience => GetAudience();
@@ -42,10 +43,8 @@
             if (string.IsNullOrWhiteSpace(nameIdentifier))
                 throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
 
-            if (!int.TryParse(nameIdentifier, out int userId))
-                throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
-
-            if (0 >= userId)
+            bool result = int.TryParse(nameIdentifier, out int userId);
+            if (!result || 0 >= userId)
                 throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
 
             return userId;
@@ -59,6 +58,19 @@
 
             return roleName;
         }
+
+        private List<string> GetRoles()
+        {
+            List<string> roles = _httpContextAccessor.HttpContext.User.Claims
+                    .Where(p => p.Type.Equals(ClaimTypes.Role))
+                    .Select(p => p.Value).ToList();
+
+            if (roles is null || !roles.Any())
+                throw new ClaimException(ExceptionMessage.ClaimTypeRoleRequired);
+
+            return roles;
+        }
+
 
         private string GetJti()
         {

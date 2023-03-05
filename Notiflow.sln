@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Version", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cookie", "cookie", "{3A572FCD-08D2-4122-A042-A507A33607FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Cookie", "src\libraries\cookie\Notiflow.Lib.Cookie\Notiflow.Lib.Cookie\Notiflow.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Cookie", "src\libraries\cookie\Notiflow.Lib.Cookie\Notiflow.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{68C8B345-22B8-4C86-B6F9-39B2DC97E252}"
 EndProject
@@ -87,11 +87,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.Hangfire", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "file", "file", "{C1498836-2F4E-4243-81FC-47C5C44A3338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.File", "src\libraries\file\Notiflow.Lib.File\Notiflow.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.File", "src\libraries\file\Notiflow.Lib.File\Notiflow.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "healthcheck", "healthcheck", "{1347987F-D7A9-414F-89B2-1CE09258C71C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.HealthCheck", "src\libraries\healthcheck\Notiflow.Lib.HealthCheck\Notiflow.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Lib.HealthCheck", "src\libraries\healthcheck\Notiflow.Lib.HealthCheck\Notiflow.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{24BC6A93-AAED-48BE-A74F-DB57A003FBC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Host", "src\libraries\host\Notiflow.Lib.Host\Notiflow.Lib.Host.csproj", "{D0A192E9-F6BF-4C78-B372-4577C0435061}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "response", "response", "{366A89CB-4648-4DE3-8CD9-3D1951744C07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Response", "src\libraries\response\Notiflow.Lib.Response\Notiflow.Lib.Response.csproj", "{603EDDEC-DABD-4C3A-8DBB-02985513D142}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "security", "security", "{537A222D-7E91-4C20-8C88-289AC5C4EB33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Security", "src\libraries\security\Notiflow.Lib.Security\Notiflow.Lib.Security.csproj", "{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "messagebroker", "messagebroker", "{EE9FE4FD-1A62-47D6-929A-44822BF75070}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.MessageBroker", "src\libraries\messagebroker\Notiflow.Lib.MessageBroker\Notiflow.Lib.MessageBroker.csproj", "{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Lib.Assistants", "src\libraries\shared\Notiflow.Lib.Assistants\Notiflow.Lib.Assistants.csproj", "{8D458AF5-C799-4B57-BF93-9615A709ED62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +179,26 @@ Global
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A192E9-F6BF-4C78-B372-4577C0435061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +237,16 @@ Global
 		{2A536DFA-CDAF-45A2-8101-B02527787096} = {C1498836-2F4E-4243-81FC-47C5C44A3338}
 		{1347987F-D7A9-414F-89B2-1CE09258C71C} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
+		{24BC6A93-AAED-48BE-A74F-DB57A003FBC1} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{D0A192E9-F6BF-4C78-B372-4577C0435061} = {24BC6A93-AAED-48BE-A74F-DB57A003FBC1}
+		{366A89CB-4648-4DE3-8CD9-3D1951744C07} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{603EDDEC-DABD-4C3A-8DBB-02985513D142} = {366A89CB-4648-4DE3-8CD9-3D1951744C07}
+		{537A222D-7E91-4C20-8C88-289AC5C4EB33} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6} = {537A222D-7E91-4C20-8C88-289AC5C4EB33}
+		{EE9FE4FD-1A62-47D6-929A-44822BF75070} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478} = {EE9FE4FD-1A62-47D6-929A-44822BF75070}
+		{2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{8D458AF5-C799-4B57-BF93-9615A709ED62} = {2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
