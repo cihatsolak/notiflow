@@ -23,6 +23,11 @@
         string Role { get; }
 
         /// <summary>
+        ///  Get roles from claim types
+        /// </summary>
+        List<string> Roles { get; }
+
+        /// <summary>
         ///  Get jti from claim types
         /// </summary>
         string Jti { get; }

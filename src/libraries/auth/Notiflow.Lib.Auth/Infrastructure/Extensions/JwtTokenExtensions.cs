@@ -1,11 +1,16 @@
 ﻿namespace Notiflow.Lib.Auth.Infrastructure.Extensions
 {
+    /// <summary>
+    /// Extension methods to configure the authorization token
+    /// <see cref="SymmetricSecurityKey"/>
+    /// <see cref="SigningCredentials"/>
+    /// </summary>
     public static class JwtTokenExtensions
     {
         /// <summary>
-        /// Create security key
+        /// Create symmetric security key
         /// </summary>
-        /// <param name="key">key</param>
+        /// <param name="key">private secure key</param>
         /// <returns>type of security key</returns>
         /// <exception cref="ArgumentNullException">thrown when key is empty or null</exception>
         public static SecurityKey CreateSecurityKey(string key)
@@ -18,7 +23,7 @@
         /// <summary>
         /// Create signing credentials
         /// </summary>
-        /// <param name="securityKey">security key</param>
+        /// <param name="securityKey">type of security key</param>
         /// <returns>type of signing credentials</returns>
         /// <exception cref="ArgumentNullException">thrown when security key is null</exception>
         public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey)
@@ -38,7 +43,7 @@
             using var random = RandomNumberGenerator.Create();
             random.GetBytes(numberByte);
 
-            return Convert.ToBase64String(numberByte).Replace("/", "+");
+            return Convert.ToBase64String(numberByte);
         }
     }
 }
