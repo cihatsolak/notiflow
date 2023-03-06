@@ -3,7 +3,7 @@
     public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
         protected readonly DbContext _context;
-        protected DbSet<TEntity> _entities;
+        protected readonly DbSet<TEntity> _entities;
 
         public EfEntityRepository(DbContext context)
         {
@@ -12,17 +12,18 @@
         }
 
         public async Task<PagedResult<TEntity>> GetPageAsync(
-        int pageIndex,
-        int pageSize,
-        Expression<Func<TEntity, bool>> filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+            int pageIndex,
+            int pageSize,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            Expression<Func<TEntity, bool>> filter = null,
+            CancellationToken cancellationToken = default)
         {
             var entityTable = TableNoTracking;
 
             if (filter is not null)
                 entityTable = entityTable.Where(filter);
 
-            int totalRecords = await entityTable.CountAsync();
+            int totalRecords = await entityTable.CountAsync(cancellationToken);
 
             if (orderBy is not null)
                 entityTable = orderBy(entityTable);
@@ -41,7 +42,7 @@
             var entities = await entityTable
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return new PagedResult<TEntity>
             {
@@ -56,8 +57,9 @@
         public async Task<PagedResult<TEntity>> GetPageAsync(
         int pageIndex,
         int pageSize,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
         Expression<Func<TEntity, bool>> filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        CancellationToken cancellationToken = default,        
         params Expression<Func<TEntity, object>>[] includes)
         {
             var entityTable = TableNoTracking;
@@ -68,7 +70,7 @@
             if (includes is not null)
                 entityTable = includes.Aggregate(entityTable, (current, include) => current.Include(include));
 
-            int totalRecords = await entityTable.CountAsync();
+            int totalRecords = await entityTable.CountAsync(cancellationToken);
 
             if (orderBy is not null)
                 entityTable = orderBy(entityTable);
@@ -87,7 +89,7 @@
             var entities = await entityTable
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return new PagedResult<TEntity>
             {
@@ -99,12 +101,19 @@
             };
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, bool disableTracking = true)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> filter,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
         {
-            return await TableTracking(disableTracking).Where(filter).ToListAsync();
+            return await TableTracking(disableTracking).Where(filter).ToListAsync(cancellationToken);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, params string[] includeProperties)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> filter, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            CancellationToken cancellationToken = default,
+            params string[] includeProperties)
         {
             IQueryable<TEntity> entityTable = Table;
 
@@ -117,37 +126,47 @@
             if (includeProperties is not null)
                 entityTable.Includes(includeProperties);
 
-            return await entityTable.ToListAsync();
+            return await entityTable.ToListAsync(cancellationToken);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool disableTracking = true)
+        public virtual async Task<TEntity> GetAsync(
+            Expression<Func<TEntity, bool>> filter, 
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
         {
-            return await TableTracking(disableTracking).FirstOrDefaultAsync(filter);
+            return await TableTracking(disableTracking).FirstOrDefaultAsync(filter, cancellationToken);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, params string[] includes)
+        public virtual async Task<TEntity> GetAsync(
+            Expression<Func<TEntity, bool>> filter,
+            CancellationToken cancellationToken = default,
+            params string[] includes)
         {
-            return await Table.Includes(includes).FirstOrDefaultAsync(filter);
+            return await Table.Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, bool disableTracking = true)
+        public virtual async Task<TEntity> GetAsync(
+            Expression<Func<TEntity, bool>> filter, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, 
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> entityTable = TableTracking(disableTracking);
 
             if (orderBy is not null)
                 entityTable = orderBy(entityTable);
 
-            return await entityTable.FirstOrDefaultAsync(filter);
+            return await entityTable.FirstOrDefaultAsync(filter, cancellationToken);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(object id)
+        public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default)
         {
-            return await _entities.FindAsync(id);
+            return await _entities.FindAsync(new object[] { id }, cancellationToken);
         }
 
         public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            ArgumentNullException.ThrowIfNull(entity);
+            ValidateEntity(entity);
             await _entities.AddAsync(entity, cancellationToken);
         }
 
@@ -170,6 +189,7 @@
         public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
             ValidateEntities(entities);
+
             _entities.UpdateRange(entities);
         }
 
@@ -179,9 +199,13 @@
             ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
             if (entity.GetType().GetProperty(propertyName) is null)
-                throw new ArgumentException(ExceptionMessage.PropertyValueRequired, nameof(propertyName));
+                throw new ArgumentNullException(nameof(propertyName));
 
             entity.GetType().GetProperty(propertyName).SetValue(entity, true);
+
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _entities.Attach(entity);
+
             _entities.Update(entity);
         }
 
@@ -224,10 +248,16 @@
         public IQueryable<TEntity> TableNoTracking => _entities.AsNoTracking();
         private IQueryable<TEntity> TableTracking(bool disableTracking) => disableTracking ? TableNoTracking : Table;
 
+        private static void ValidateEntity(TEntity entity)
+        {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
+        }
+
         private static void ValidateEntities(IEnumerable<TEntity> entities)
         {
             if (!(entities?.Any() ?? false))
-                throw new ArgumentNullException(nameof(entities), ExceptionMessage.EntityRequired);
+                throw new ArgumentNullException(nameof(entities));
         }
     }
 }

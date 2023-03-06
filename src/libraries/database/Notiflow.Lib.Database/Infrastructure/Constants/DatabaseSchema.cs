@@ -2,6 +2,7 @@
 {
     internal static class DatabaseSchema
     {
-        internal const string Default = "dbo";
+        internal const string Dbo = "dbo";
+        internal const string Public = "public";
     }
 }

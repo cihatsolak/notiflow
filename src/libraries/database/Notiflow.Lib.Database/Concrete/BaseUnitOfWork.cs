@@ -2,7 +2,7 @@
 {
     public class BaseUnitOfWork : IBaseUnitOfWork
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
         private static readonly ILogger _logger = Log.ForContext(typeof(BaseUnitOfWork));
 
         public BaseUnitOfWork(DbContext context)
@@ -19,8 +19,8 @@
             catch (DbUpdateException dbUpdateException)
             {
                 _logger.Fatal(dbUpdateException, "An error occurred while saving database transactions.");
-                string exceptionMessage = await GetFullErrorTextAndRollbackEntityChangesAsync(dbUpdateException, cancellationToken);
-                throw new DatabaseOperationException(exceptionMessage, dbUpdateException);
+                await GetFullErrorTextAndRollbackEntityChangesAsync(cancellationToken);
+                throw;
             }
         }
 
@@ -52,12 +52,12 @@
             catch (DbUpdateException dbUpdateException)
             {
                 _logger.Fatal(dbUpdateException, "An error occurred while saving database transactions.");
-                string exceptionMessage = await GetFullErrorTextAndRollbackEntityChangesAsync(dbUpdateException, cancellationToken);
-                throw new DatabaseOperationException(exceptionMessage, dbUpdateException);
+                await GetFullErrorTextAndRollbackEntityChangesAsync(cancellationToken);
+                throw;
             }
         }
 
-        private async Task<string> GetFullErrorTextAndRollbackEntityChangesAsync(DbUpdateException dbUpdateException, CancellationToken cancellationToken)
+        private async Task GetFullErrorTextAndRollbackEntityChangesAsync(CancellationToken cancellationToken)
         {
             var entries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
@@ -69,12 +69,10 @@
             try
             {
                 await _context.SaveChangesAsync(cancellationToken);
-                return dbUpdateException.ToString();
             }
             catch (Exception exception)
             {
                 _logger.Fatal(exception, "The entity state could not be changed.");
-                return exception.ToString();
             }
         }
     }

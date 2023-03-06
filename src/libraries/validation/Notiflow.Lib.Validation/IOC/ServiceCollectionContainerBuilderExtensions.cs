@@ -41,18 +41,20 @@
 
                     Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));
 
-                    IDatabase database = ServiceProviderServiceExtensions.GetRequiredService<IConnectionMultiplexer>(context.HttpContext.RequestServices).GetDatabase(15);
-                    int platformTypeId = int.Parse(context.HttpContext.User.Claims.Single(p => p.Type.Equals(ClaimTypes.GroupSid)).Value);
+                    //IDatabase database = ServiceProviderServiceExtensions.GetRequiredService<IConnectionMultiplexer>(context.HttpContext.RequestServices).GetDatabase(15);
+                    //int platformTypeId = int.Parse(context.HttpContext.User.Claims.Single(p => p.Type.Equals(ClaimTypes.GroupSid)).Value);
 
-                    string statusCode = errors.First();
-                    string statusMessage = database.HashGet($"{platformTypeId}.response.messages", statusCode);
+                    //string statusCode = errors.First();
+                    //string statusMessage = database.HashGet($"{platformTypeId}.response.messages", statusCode);
 
-                    return new OkObjectResult(new
-                    {
-                        statusCode = int.Parse(statusCode),
-                        statusMessage,
-                        data = (string)null
-                    });
+                    //return new OkObjectResult(new
+                    //{
+                    //    statusCode = int.Parse(statusCode),
+                    //    statusMessage,
+                    //    data = (string)null
+                    //});
+
+                    return null;
                 };
             });
 
