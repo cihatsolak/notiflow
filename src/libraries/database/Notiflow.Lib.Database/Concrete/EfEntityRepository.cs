@@ -3,7 +3,7 @@
     public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
         protected readonly DbContext _context;
-        protected DbSet<TEntity> _entities;
+        protected readonly DbSet<TEntity> _entities;
 
         public EfEntityRepository(DbContext context)
         {
@@ -166,7 +166,7 @@
 
         public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            ArgumentNullException.ThrowIfNull(entity);
+            ValidateEntity(entity);
             await _entities.AddAsync(entity, cancellationToken);
         }
 
@@ -199,9 +199,13 @@
             ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
             if (entity.GetType().GetProperty(propertyName) is null)
-                throw new ArgumentException(ExceptionMessage.PropertyValueRequired, nameof(propertyName));
+                throw new ArgumentNullException(nameof(propertyName));
 
             entity.GetType().GetProperty(propertyName).SetValue(entity, true);
+
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _entities.Attach(entity);
+
             _entities.Update(entity);
         }
 
@@ -243,6 +247,12 @@
         public IQueryable<TEntity> Table => _entities;
         public IQueryable<TEntity> TableNoTracking => _entities.AsNoTracking();
         private IQueryable<TEntity> TableTracking(bool disableTracking) => disableTracking ? TableNoTracking : Table;
+
+        private static void ValidateEntity(TEntity entity)
+        {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
+        }
 
         private static void ValidateEntities(IEnumerable<TEntity> entities)
         {

@@ -126,7 +126,7 @@
         /// <remarks>method that can be overridden</remarks>
         /// <param name="entity">entity to be added to the database</param>
         /// <param name="cancellationToken">token to cancel asynchronous operation</param>
-        /// <exception cref="ArgumentNullException">thrown when entity is null or empty<exception>
+        /// <exception cref="ArgumentNullException">thrown when entity is null<exception>
         Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         /// <summary>

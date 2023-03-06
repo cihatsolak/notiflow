@@ -2,7 +2,7 @@
 {
     public class BaseUnitOfWork : IBaseUnitOfWork
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
         private static readonly ILogger _logger = Log.ForContext(typeof(BaseUnitOfWork));
 
         public BaseUnitOfWork(DbContext context)

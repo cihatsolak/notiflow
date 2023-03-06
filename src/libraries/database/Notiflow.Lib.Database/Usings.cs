@@ -19,3 +19,4 @@ global using System.Linq.Expressions;
 global using System.Runtime.Serialization;
 global using System.Transactions;
 global using ILogger = Serilog.ILogger;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
