@@ -1,20 +1,14 @@
-using Notiflow.Backoffice.API.Models;
-using Notiflow.Lib.Database.IOC;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSwagger();
 
-builder.Services.AddPostgreSql<AppDbContext>("AppDbContext");
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.UseSwaggerDoc();
-app.UseReDoc();
+
 app.UseAuthorization();
 
 app.MapControllers();
