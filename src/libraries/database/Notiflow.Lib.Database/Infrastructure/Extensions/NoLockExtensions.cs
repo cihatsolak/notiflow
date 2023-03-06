@@ -1,18 +1,19 @@
 ﻿namespace Notiflow.Lib.Database.Infrastructure.Extensions
 {
     /// <summary>
-    /// MS SQL with(nolock) extensions
-    /// <seealso cref="https://docs.microsoft.com/tr-tr/dotnet/api/system.transactions.isolationlevel?view=net-6.0"/>
+    /// Extension method to manage queries according to isolation levels
+    /// <see cref="TransactionScope"/>
+    /// <see cref="IsolationLevel"/>
     /// </summary>
     public static class NoLockExtensions
     {
         /// <summary>
-        /// Any with no lock async
+        /// Any method with isolation level read uncommitted
         /// </summary>
         /// <typeparam name="TEntity">entity type</typeparam>
         /// <param name="query">entity queryable</param>
-        /// <param name="cancellationToken">default cancellation token</param>
-        /// <returns>type of boolean</returns>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async ValueTask<bool> ToAnyWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             bool result;
@@ -31,12 +32,12 @@
         }
 
         /// <summary>
-        /// To array with no lock asynchronous 
+        /// ToArray method with isolation level read uncommitted 
         /// </summary>
-        /// <typeparam name="TEntity">entity</typeparam>
-        /// <param name="query">entity query</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>type of entity array</returns>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="query">entity queryable</param>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async Task<TEntity[]> ToArrayWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             TEntity[] result = default;
@@ -54,12 +55,12 @@
         }
 
         /// <summary>
-        /// To list with no lock asynchronous
+        /// ToList method with isolation level read uncommitted 
         /// </summary>
-        /// <typeparam name="TEntity">entity</typeparam>
-        /// <param name="query">entity query</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>type of entity list</returns>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="query">entity queryable</param>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async Task<List<TEntity>> ToListWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             List<TEntity> result = default;
@@ -78,12 +79,12 @@
 
 
         /// <summary>
-        /// To first or default with no lock asynchronous
+        /// FirstOrDefault method with isolation level read uncommitted 
         /// </summary>
-        /// <typeparam name="TEntity">entity</typeparam>
-        /// <param name="query">entity query</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>type of entity</returns>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="query">entity queryable</param>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async Task<TEntity> ToFirstOrDefaultWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             TEntity result = default;
@@ -101,12 +102,12 @@
         }
 
         /// <summary>
-        /// To first with no lock asynchronous
+        /// First method with isolation level read uncommitted 
         /// </summary>
-        /// <typeparam name="TEntity">entity</typeparam>
-        /// <param name="query">entity query</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>type of entity</returns>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="query">entity queryable</param>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async Task<TEntity> ToFirstWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             TEntity result = default;
@@ -124,12 +125,12 @@
         }
 
         /// <summary>
-        /// To signle with no lock asynchronous
+        /// Single method with isolation level read uncommitted 
         /// </summary>
-        /// <typeparam name="TEntity">entity</typeparam>
-        /// <param name="query">entity query</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>type of entity</returns>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="query">entity queryable</param>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>query result</returns>
         public static async Task<TEntity> ToSingleWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
         {
             TEntity result = default;

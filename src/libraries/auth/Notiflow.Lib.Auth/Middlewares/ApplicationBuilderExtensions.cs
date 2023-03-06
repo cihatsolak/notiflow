@@ -1,7 +1,7 @@
 ﻿namespace Notiflow.Lib.Auth.Middlewares
 {
     /// <summary>
-    /// Extension methods to add authentication  and authorization capabilities to an HTTP application pipeline.
+    /// Extension methods to add authentication  and authorization capabilities to an application pipeline.
     /// </summary>
     public static class ApplicationBuilderExtensions
     {

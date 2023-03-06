@@ -1,7 +1,10 @@
 ﻿namespace Notiflow.Lib.Database.Infrastructure.Extensions
 {
     /// <summary>
-    /// Migration manager extensions with microsoft sql server
+    /// Migration manager extensions
+    /// <see cref="DbContext"/> 
+    /// <see cref="IServiceCollection"/>
+    /// <see cref="IWebHostEnvironment"/>
     /// </summary>
     public static class MigrationManagerExtensions
     {
@@ -9,20 +12,16 @@
         /// Migrate database
         /// </summary>
         /// <typeparam name="TDbContext">type of db context</typeparam>
-        /// <param name="services">type of web application class</param>
-        /// <returns>type of web application class</returns>
-        public static async Task<IServiceCollection> MigrateDatabaseAsync<TDbContext>(this IServiceCollection services) where TDbContext : DbContext
+        /// <param name="services">type of built-in service collection interface</param>
+        public static async Task MigrateDatabaseAsync<TDbContext>(this IServiceCollection services) where TDbContext : DbContext
         {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
+            await using AsyncServiceScope asyncServiceScope = services.BuildServiceProvider().CreateAsyncScope();
+            IServiceProvider serviceProvider = asyncServiceScope.ServiceProvider;
 
-            //if (!services.Environment.EnvironmentName.Equals("Todo"))
-            //    return services;
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            if (webHostEnvironment.IsLiveEnvironment())
+                return;
 
-            //await using AsyncServiceScope asyncServiceScope = services.Services.CreateAsyncScope();
-            //IServiceProvider serviceProvider = asyncServiceScope.ServiceProvider;
-
-            
             ILogger logger = Log.ForContext(typeof(MigrationManagerExtensions));
 
             try
@@ -33,13 +32,10 @@
                     await context.Database.MigrateAsync();
                     logger.Information("Migration completed successfully.");
                 }
-
-                return services;
             }
             catch (Exception exception)
             {
                 logger.Error(exception, "The migration process ended with an error.");
-                return services;
             }
         }
     }

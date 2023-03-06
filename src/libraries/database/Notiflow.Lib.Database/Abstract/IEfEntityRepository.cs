@@ -168,7 +168,6 @@
         /// </summary>
         /// <remarks>method that can be overridden</remarks>
         /// <param name="id">primary key</param>
-        /// <exception cref="ArgumentNullException">when entity with id value is not found</exception>
         void Delete(int id);
 
         /// <summary>
@@ -183,7 +182,6 @@
         /// Delete entities
         /// <remarks>warning: deletes all rows in the table. method that can be overridden</remarks>
         /// </summary>
-        /// <exception cref="ArgumentNullException">when method parameter is null or not any</exception>
         void DeleteRange();
 
         /// <summary>
@@ -199,7 +197,6 @@
         /// </summary>
         /// <remarks>method that can be overridden</remarks>
         /// <param name="predicate">expresssion filter</param>
-        /// <exception cref="ArgumentNullException">when method parameter is null or not any</exception>
         void DeleteRange(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>

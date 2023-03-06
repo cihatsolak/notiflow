@@ -9,8 +9,8 @@
         {
             return database.ProviderName switch
             {
-                MSSQL => "dbo",
-                PostgreSQL => "public",
+                MSSQL => DatabaseSchema.Dbo,
+                PostgreSQL => DatabaseSchema.Public,
                 _ => throw new NotImplementedException("Unidentified database provider"),
             };
         }
@@ -19,7 +19,7 @@
         {
             return database.ProviderName switch
             {
-                MSSQL => "gatdate()",
+                MSSQL => "getdate()",
                 PostgreSQL => "now()",
                 _ => throw new NotImplementedException("Unidentified database provider"),
             };

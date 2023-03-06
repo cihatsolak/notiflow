@@ -1,21 +1,22 @@
 ﻿namespace Notiflow.Lib.Database.IOC
 {
+    /// <summary>
+    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         private static IWebHostEnvironment WebHostEnvironment { get; set; }
 
         /// <summary>
-        /// Add postgre sql server db context
+        /// Add postgresql provider as database context
         /// </summary>
         /// <typeparam name="TDbContext">type of db dbcontext</typeparam>
         /// <param name="services">type of built-in service collection interface</param>
         /// <param name="contextName">database context class name</param>
         /// <param name="isSplitQuery">split query behavior</param>
-        /// <param name="enabledLazyLoading">enabled lazy loading</param>
         /// <seealso cref="https://docs.microsoft.com/en-us/ef/core/dbcontext-configuration/"/>
         /// <returns>type of built-in service collection</returns>
         /// <exception cref="ArgumentNullException">when the service provider cannot be built</exception>
-        /// <exception cref="InvalidOperationException">If the container cannot invoke the configuration interface</exception>
         public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, string contextName, bool isSplitQuery = true) where TDbContext : DbContext
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -43,7 +44,19 @@
             });
 
             ConfigureException(services);
-            AddEfEntityRepository(services);
+
+            return services;
+        }
+
+        /// <summary>
+        /// Entity repository
+        /// </summary>
+        /// <param name="services">type of built-in service collection interface</param>
+        /// <returns>type of built-in service collection</returns>
+        public static IServiceCollection AddEfEntityRepository(IServiceCollection services)
+        {
+            services.TryAddScoped(typeof(IEfEntityRepository<>), typeof(EfEntityRepository<>));
+            services.TryAddScoped<IBaseUnitOfWork, BaseUnitOfWork>();
 
             return services;
         }
@@ -76,12 +89,6 @@
             {
                 services.AddDatabaseDeveloperPageExceptionFilter();
             }
-        }
-
-        private static void AddEfEntityRepository(IServiceCollection services)
-        {
-            services.TryAddScoped(typeof(IEfEntityRepository<>), typeof(EfEntityRepository<>));
-            services.TryAddScoped<IBaseUnitOfWork, BaseUnitOfWork>();
         }
     }
 }

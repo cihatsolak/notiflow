@@ -4,7 +4,7 @@
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.ToTable(typeof(TEntity).Name.ToLowerInvariant(), DatabaseSchema.Default);
+            builder.ToTable(typeof(TEntity).Name.ToLowerInvariant(), DatabaseSchema.Dbo);
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
         }
