@@ -1,7 +1,7 @@
 ﻿namespace Notiflow.Lib.Database.Abstract
 {
     /// <summary>
-    /// Represents an base unit of work
+    /// Represents a base unit of work <see cref="DbContext"/>
     /// </summary>
     public interface IBaseUnitOfWork
     {
@@ -9,18 +9,18 @@
         /// Tracked changes are added to the database, updated or deleted
         /// </summary>
         /// <remarks>method that can be overridden</remarks>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>number of affected records</returns>
-        /// <exception cref="Exception">when transferring data to database</exception>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>number of affected entities</returns>
+        /// <exception cref="DatabaseOperationException">thrown if database operation is not successful</exception>
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Tracked changes are added to the database, updated or deleted
+        /// Tracked changes are added to the database, updated or deleted. If the entity has inherited from the base historical entity, the corresponding values are added/updated by ef core.
         /// </summary>
         /// <remarks>method that can be overridden</remarks>
-        /// <param name="cancellationToken">cancellation token</param>
-        /// <returns>number of affected records</returns>
-        /// <exception cref="Exception">when transferring data to database</exception>
+        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
+        /// <returns>number of affected entities</returns>
+        /// <exception cref="DatabaseOperationException">thrown if database operation is not successful</exception>
         Task<int> SaveChangesShadowAsync(CancellationToken cancellationToken = default);
     }
 }
