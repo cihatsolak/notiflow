@@ -1,7 +1,7 @@
 ﻿namespace Notiflow.Lib.Database.Middlewares
 {
     /// <summary>
-    /// Extension methods to add database/entity framework capabilities to an application pipeline.
+    /// Extension methods to add database/entity framework capabilities to an application pipeline. <see cref="IApplicationBuilder"/>
     /// </summary>
     public static class ApplicationBuilderExtensions
     {

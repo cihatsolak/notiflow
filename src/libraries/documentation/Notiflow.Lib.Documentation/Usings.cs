@@ -11,7 +11,6 @@ global using Microsoft.OpenApi.Any;
 global using Microsoft.OpenApi.Interfaces;
 global using Microsoft.OpenApi.Models;
 global using Notiflow.Lib.Documentation.Filters;
-global using Notiflow.Lib.Documentation.Infrastructure.Constants;
 global using Notiflow.Lib.Documentation.Infrastructure.Settings;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using System.Reflection;

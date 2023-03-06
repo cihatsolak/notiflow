@@ -1,14 +1,20 @@
 ﻿namespace Notiflow.Lib.Documentation.IOC
 {
+    /// <summary>
+    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
+        /// <summary>
+        /// Is the class that has all the settings of swagger
+        /// </summary>
         private static SwaggerSetting SwaggerSetting { get; set; }
 
         /// <summary>
         /// Add swagger documentation
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of web application builder</returns>
+        /// <returns>type of built-in service collection interface</returns>
         /// <see cref="https://swagger.io/"/>
         /// <seealso cref="AddOperationFilters(SwaggerGenOptions)"/>
         /// <seealso cref="AddIncludeXmlComments(SwaggerGenOptions)"/>

@@ -1,9 +1,12 @@
 ﻿namespace Notiflow.Lib.Documentation.Middlewares
 {
+    /// <summary>
+    /// Extension methods to add documentation capabilities to an application pipeline. <see cref="IApplicationBuilder"/>
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Adds swagger documentation
+        /// Use middleware for swagger documentation
         /// </summary>
         /// <param name="app">type of built-in application builder interface</param>
         /// <returns>type of built-in application builder interface</returns>
@@ -12,8 +15,7 @@
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
 
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-            if (webHostEnvironment.IsProduction())
+            if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
                 return app;
 
             ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
@@ -21,7 +23,7 @@
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
             {
-                swaggerUIOptions.SwaggerEndpoint(Configurations.EndpointUrl, swaggerSetting.DefinitionName);
+                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", swaggerSetting.DefinitionName);
                 swaggerUIOptions.RoutePrefix = string.Empty;
 
                 if (swaggerSetting.IsClosedSchema)
@@ -34,7 +36,7 @@
         }
 
         /// <summary>
-        /// Add redocly documentation
+        /// Use middleware for Redocly documentation
         /// </summary>
         /// <param name="app">type of built-in application builder interface</param>
         /// <returns>type of built-in application builder interface</returns>
@@ -43,8 +45,7 @@
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
 
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-            if (webHostEnvironment.IsProduction())
+            if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
                 return app;
 
             ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
@@ -52,7 +53,7 @@
             app.UseReDoc(options =>
             {
                 options.DocumentTitle = swaggerSetting.Title;
-                options.SpecUrl = Configurations.EndpointUrl;
+                options.SpecUrl = "/swagger/v1/swagger.json";
             });
 
             return app;
