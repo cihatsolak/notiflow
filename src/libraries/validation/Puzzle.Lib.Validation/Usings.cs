@@ -1,0 +1,11 @@
+﻿global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using FluentValidation.Validators;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.DependencyInjection;
+global using Puzzle.Lib.Validation.AbstractValidators;
+global using Puzzle.Lib.Validation.Infrastructure.Constants;
+global using Puzzle.Lib.Validation.Infrastructure.Extensions;
+global using Serilog;
+global using System.Globalization;
+global using System.Text.RegularExpressions;
