@@ -3,103 +3,156 @@
     public interface IHttpService
     {
         /// <summary>
-        /// Http get request
+        /// Sends an asynchronous HTTP request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <returns>specified, instantiable concrete class</returns>
-        /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl) where TResponse : class, new();
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
+        /// <exception cref="ArgumentNullException">throws when parameters are empty or null</exception>
+        Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http get request
+        /// Sends an asynchronous HTTP request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
+        /// Additional query parameters can be provided using a NameValueCollection.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="nameValueCollection">header information to be sent with the request</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="nameValueCollection">A collection of query parameters to include in the request URL</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, NameValueCollection nameValueCollection) where TResponse : class, new();
+        Task<TResponse> GetResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request
+        /// Sends an asynchronous HTTP POST request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl) where TResponse : class, new();
+        Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request
+        /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters,
+        /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="parameters">optional body information. (class to be posted)</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="parameters">The object representing the parameters to include in the request</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, object parameters) where TResponse : class, new();
+        Task<TResponse> PostResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            object parameters, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request
+        /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters and query parameters,
+        /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="parameters">optional body information. (class to be posted)</param>
-        /// <param name="nameValueCollection">header information to be sent with the request</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="parameters">The object representing the parameters to include in the request body</param>
+        /// <param name="nameValueCollection">A collection of query parameters to include in the request URL</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, object parameters, NameValueCollection nameValueCollection) where TResponse : class, new();
+        Task<TResponse> PostResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl,
+            object parameters,
+            NameValueCollection nameValueCollection,
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request - multipart form data content
+        /// Sends an asynchronous HTTP POST request with multipart/form-data content using the specified client name and route URL,
+        /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="multipartFormDataContent">multipart form data content to be submitted</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="multipartFormDataContent">The multipart/form-data content to include in the request</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostMultipartDataResponseAsync<TResponse>(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent) where TResponse : class, new();
+        Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl,
+            MultipartFormDataContent multipartFormDataContent,
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request - multipart form data content
+        /// Sends an asynchronous HTTP POST request with multipart/form-data content using the specified client name and route URL,
+        /// with the specified query parameters, and returns the expected response type as Task<TResponse>.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="multipartFormDataContent">multipart form data content to be submitted</param>
-        /// <param name="nameValueCollection">header information to be sent with the request</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="multipartFormDataContent">The multipart/form-data content to include in the request</param>
+        /// <param name="nameValueCollection">A collection of query parameters to include in the request URL</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostMultipartDataResponseAsync<TResponse>(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent, NameValueCollection nameValueCollection) where TResponse : class, new();
+        Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl,
+            MultipartFormDataContent multipartFormDataContent,
+            NameValueCollection nameValueCollection,
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request - form url encoded content
+        /// Sends an asynchronous HTTP POST request with URL encoded content using the specified client name and route URL,
+        /// with the specified key-value pairs, and returns the expected response type as Task<TResponse>.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="keyValuePairs">encoded list to be sent with the request</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="keyValuePairs">The key-value pairs to include in the request body as URL-encoded content</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostEncodedResponseAsync<TResponse>(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs) where TResponse : class, new();
+        Task<TResponse> PostEncodedResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            IList<KeyValuePair<string, string>> keyValuePairs, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
 
         /// <summary>
-        /// Http post request - form url encoded content
+        /// Sends an asynchronous HTTP POST request with URL encoded content using the specified client name and route URL,
+        /// with the specified key-value pairs and query parameters, and returns the expected response type as Task<TResponse>.
+        /// A cancellation token can be provided to cancel the request.
         /// </summary>
-        /// <typeparam name="TResponse">object instantiable concrete class</typeparam>
-        /// <param name="clientName">http client name registered in container</param>
-        /// <param name="routeUrl">the route address to which the request will be made</param>
-        /// <param name="keyValuePairs">encoded list to be sent with the request</param>
-        /// <param name="nameValueCollection">header information to be sent with the request</param>
-        /// <returns>specified, instantiable concrete class</returns>
+        /// <typeparam name="TResponse">The expected response type</typeparam>
+        /// <param name="clientName">The name of the client to use for the request</param>
+        /// <param name="routeUrl">The URL of the route to request</param>
+        /// <param name="keyValuePairs">The key-value pairs to include in the request body as URL-encoded content</param>
+        /// <param name="nameValueCollection">A collection of query parameters to include in the request URL</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+        /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
         /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-        Task<TResponse> PostEncodedResponseAsync<TResponse>(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs, NameValueCollection nameValueCollection) where TResponse : class, new();
+        Task<TResponse> PostEncodedResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl,
+            IList<KeyValuePair<string, string>> keyValuePairs,
+            NameValueCollection nameValueCollection,
+            CancellationToken cancellationToken = default) where TResponse : class, new();
     }
 }

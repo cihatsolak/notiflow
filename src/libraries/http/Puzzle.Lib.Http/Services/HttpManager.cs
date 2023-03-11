@@ -9,7 +9,7 @@
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl) where TResponse : class, new()
+        public async Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -17,16 +17,20 @@
             HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
             ArgumentNullException.ThrowIfNull(httpClient);
 
-            HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl);
+            HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+                Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, NameValueCollection nameValueCollection) where TResponse : class, new()
+        public async Task<TResponse> GetResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -40,16 +44,16 @@
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
             }
 
-            HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl);
+            HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl) where TResponse : class, new()
+        public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -57,16 +61,20 @@
             HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
             ArgumentNullException.ThrowIfNull(httpClient);
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, new { });
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, default(TResponse), cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, object parameters) where TResponse : class, new()
+        public async Task<TResponse> PostResponseAsync<TResponse>(
+            string clientName,
+            string routeUrl, 
+            object parameters, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -75,16 +83,21 @@
             HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
             ArgumentNullException.ThrowIfNull(httpClient);
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters);
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, object parameters, NameValueCollection nameValueCollection) where TResponse : class, new()
+        public async Task<TResponse> PostResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            object parameters, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -99,16 +112,20 @@
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
             }
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters);
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent) where TResponse : class, new()
+        public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            MultipartFormDataContent multipartFormDataContent,
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -117,16 +134,21 @@
             HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
             ArgumentNullException.ThrowIfNull(httpClient);
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent);
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent, NameValueCollection nameValueCollection) where TResponse : class, new()
+        public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            MultipartFormDataContent multipartFormDataContent, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -141,16 +163,20 @@
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
             }
 
-            HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent);
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostEncodedResponseAsync<TResponse>(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs) where TResponse : class, new()
+        public async Task<TResponse> PostEncodedResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            IList<KeyValuePair<string, string>> keyValuePairs, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -162,16 +188,21 @@
             using FormUrlEncodedContent content = new(keyValuePairs);
             HttpRequestMessage request = new(HttpMethod.Post, routeUrl) { Content = content };
 
-            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request);
+            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TResponse> PostEncodedResponseAsync<TResponse>(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs, NameValueCollection nameValueCollection) where TResponse : class, new()
+        public async Task<TResponse> PostEncodedResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            IList<KeyValuePair<string, string>> keyValuePairs, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(clientName);
             ArgumentException.ThrowIfNullOrEmpty(routeUrl);
@@ -189,13 +220,13 @@
             using FormUrlEncodedContent content = new(keyValuePairs);
             HttpRequestMessage request = new(HttpMethod.Post, routeUrl) { Content = content };
 
-            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request);
+            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                Log.Warning("{@routeUrl} adresine istek atıldı fakat olumlu cevap alınamadı. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+               Log.Warning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
             }
 
-            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>();
+            return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
         }
     }
 }

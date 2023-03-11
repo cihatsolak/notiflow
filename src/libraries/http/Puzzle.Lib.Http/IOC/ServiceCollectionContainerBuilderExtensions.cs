@@ -12,7 +12,7 @@
         /// <see cref="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests"/>
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of built-in service collection interface</returns>
-        public static IServiceCollection AddRestApiService(this IServiceCollection services)
+        public static IServiceCollection AddHttpService(this IServiceCollection services)
         {
             services.AddHttpClient();
             services.TryAddSingleton<IHttpService, HttpManager>();

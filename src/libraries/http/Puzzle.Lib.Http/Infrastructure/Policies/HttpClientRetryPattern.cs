@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Http.Infrastructure.TransientFaultHandling
+﻿namespace Puzzle.Lib.Http.Infrastructure.Policies
 {
     /// <summary>
     /// Extension methods to manage error status of http calls <see cref="HttpPolicyExtensions" />.

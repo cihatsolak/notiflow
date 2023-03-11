@@ -11,7 +11,7 @@
         /// <remarks>Circuit Breaker Pattern | Basic</remarks>
         /// <param name="handledEventsAllowedBeforeBreaking">The number of exceptions or handled results that are allowed before opening the circuit.</param>
         /// <returns>type of async policy interface</returns>
-        public static IAsyncPolicy<HttpResponseMessage> BasicCircuitBreakerPolicy(int handledEventsAllowedBeforeBreaking = 3)
+        public static IAsyncPolicy<HttpResponseMessage> BasicPolicy(int handledEventsAllowedBeforeBreaking = 3)
         {
             return HttpPolicyExtensions
                   .HandleTransientHttpError()
@@ -24,7 +24,7 @@
         /// <remarks>Circuit Breaker Pattern | Advanced</remarks>
         /// <param name="handledEventsAllowedBeforeBreaking">The number of exceptions or handled results that are allowed before opening the circuit.</param>
         /// <returns>type of async policy interface</returns>
-        public static IAsyncPolicy<HttpResponseMessage> AdvancedCircuitBreakerPolicy()
+        public static IAsyncPolicy<HttpResponseMessage> AdvancedPolicy()
         {
             return HttpPolicyExtensions
                   .HandleTransientHttpError()
@@ -40,7 +40,7 @@
 
         public static void OnBreak(DelegateResult<HttpResponseMessage> outcome, TimeSpan timeSpan)
         {
-            Log.Error(outcome.Exception, "Http call terminated, requests will not flow.");
+            Log.Error(outcome?.Exception, "Http call terminated, requests will not flow.");
         }
 
         public static void OnReset()

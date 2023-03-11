@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Http.Infrastructure.Utilities
+﻿namespace Puzzle.Lib.Http.Infrastructure.Extensions
 {
     public static class HttpClientExtensions
     {
@@ -24,8 +24,7 @@
         /// <param name="nameValueCollection">current name value collection</param>
         /// <param name="token">authentication and authorization token</param>
         /// <returns>type of name value collection</returns>
-        /// <exception cref="ArgumentNullException">thrown when name value collection is null</exception>
-        /// <exception cref="ArgumentNullException">thrown when token value is empty or null</exception>
+        /// <exception cref="ArgumentNullException">thrown when name value collection is null or token empty|null</exception>
         public static NameValueCollection AddBearerTokenToHeader(this NameValueCollection nameValueCollection, string token)
         {
             ArgumentNullException.ThrowIfNull(nameValueCollection);
