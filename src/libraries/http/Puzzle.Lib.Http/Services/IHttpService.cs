@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Http.Services
 {
-    public interface IRestService
+    public interface IHttpService
     {
         /// <summary>
         /// Http get request

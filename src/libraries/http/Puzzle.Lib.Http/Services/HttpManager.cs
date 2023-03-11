@@ -1,10 +1,10 @@
 ﻿namespace Puzzle.Lib.Http.Services
 {
-    internal sealed class RestManager : IRestService
+    internal sealed class HttpManager : IHttpService
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public RestManager(IHttpClientFactory httpClientFactory)
+        public HttpManager(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }

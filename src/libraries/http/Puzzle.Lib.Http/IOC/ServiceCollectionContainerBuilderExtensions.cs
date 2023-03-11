@@ -12,7 +12,7 @@
         public static IServiceCollection AddRestApiService(this IServiceCollection services)
         {
             services.AddHttpClient();
-            services.TryAddScoped<IRestService, RestManager>();
+            services.TryAddScoped<IHttpService, HttpManager>();
 
             return services;
         }
