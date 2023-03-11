@@ -10,7 +10,7 @@
         /// <exception cref="ArgumentNullException">thrown when token value is empty or null</exception>
         public static NameValueCollection CreateCollectionForBearerToken(string token)
         {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(token));
+            ArgumentException.ThrowIfNullOrEmpty(token);
 
             return new NameValueCollection()
             {
@@ -24,11 +24,12 @@
         /// <param name="nameValueCollection">current name value collection</param>
         /// <param name="token">authentication and authorization token</param>
         /// <returns>type of name value collection</returns>
+        /// <exception cref="ArgumentNullException">thrown when name value collection is null</exception>
         /// <exception cref="ArgumentNullException">thrown when token value is empty or null</exception>
         public static NameValueCollection AddBearerTokenToHeader(this NameValueCollection nameValueCollection, string token)
         {
             ArgumentNullException.ThrowIfNull(nameValueCollection);
-            ArgumentException.ThrowIfNullOrEmpty(nameof(token));
+            ArgumentException.ThrowIfNullOrEmpty(token);
 
             nameValueCollection.Add(HeaderNames.Authorization, $"Bearer {token}");
             return nameValueCollection;
@@ -43,8 +44,8 @@
         /// <exception cref="ArgumentNullException">thrown when name is empty|null or value empty|null</exception>
         public static NameValueCollection GenerateHeader(string name, string value)
         {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(name));
-            ArgumentException.ThrowIfNullOrEmpty(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(value);
 
             return new NameValueCollection()
             {
@@ -63,8 +64,8 @@
         public static void AddHeaderItem(this NameValueCollection nameValueCollection, string name, string value)
         {
             ArgumentNullException.ThrowIfNull(nameValueCollection);
-            ArgumentException.ThrowIfNullOrEmpty(nameof(name));
-            ArgumentException.ThrowIfNullOrEmpty(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(value);
 
             nameValueCollection.Add(name, value);
         }

@@ -35,6 +35,11 @@
             HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
             ArgumentNullException.ThrowIfNull(httpClient);
 
+            foreach (var key in nameValueCollection.AllKeys)
+            {
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
+            }
+
             HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
