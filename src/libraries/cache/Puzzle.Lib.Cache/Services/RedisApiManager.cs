@@ -104,7 +104,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value, flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
@@ -190,7 +190,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), when: When.Always, flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -232,7 +232,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (!await _database.KeyExistsAsync(cacheKey))
+                if (!await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica))
                 {
                     Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
                     return default;
@@ -245,7 +245,7 @@
                     return default;
                 }
 
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), when: When.Always, flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
