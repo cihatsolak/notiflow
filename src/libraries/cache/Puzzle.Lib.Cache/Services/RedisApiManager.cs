@@ -22,7 +22,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                return await _database.KeyExistsAsync(cacheKey);
+                return await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica);
             });
         }
 
@@ -33,7 +33,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                long result = await _database.StringIncrementAsync(cacheKey, increment);
+                long result = await _database.StringIncrementAsync(cacheKey, increment, CommandFlags.DemandMaster);
                 if (0 >= result)
                 {
                     Log.Warning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
@@ -51,7 +51,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                long result = await _database.StringDecrementAsync(cacheKey, decrement);
+                long result = await _database.StringDecrementAsync(cacheKey, decrement, CommandFlags.DemandMaster);
                 if (0 >= result)
                 {
                     Log.Warning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
@@ -68,7 +68,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var hashEntries = await _database.HashGetAllAsync(cacheKey);
+                var hashEntries = await _database.HashGetAllAsync(cacheKey, CommandFlags.PreferReplica);
                 if (!hashEntries.Any())
                 {
                     Log.Warning("Data for key {@cacheKey} not found.", cacheKey);
@@ -85,7 +85,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var hashEntry = await _database.HashGetAsync(cacheKey, hashField);
+                var hashEntry = await _database.HashGetAsync(cacheKey, hashField, CommandFlags.PreferReplica);
                 if (!hashEntry.HasValue)
                 {
                     Log.Warning("Data for key {@cacheKey} not found.", cacheKey);
@@ -104,7 +104,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value);
+                bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value, flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
@@ -122,7 +122,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.HashDeleteAsync(cacheKey, hashField);
+                bool succeeded = await _database.HashDeleteAsync(cacheKey, hashField, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Unable to delete data for key value {@cacheKey}.", cacheKey);
@@ -141,7 +141,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                double result = await _database.SortedSetIncrementAsync(cacheKey, memberKey, increment);
+                double result = await _database.SortedSetIncrementAsync(cacheKey, memberKey, increment, CommandFlags.DemandMaster);
                 if (result == 0)
                 {
                     Log.Warning("Could not update member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
@@ -158,7 +158,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, order);
+                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, order, CommandFlags.PreferReplica);
                 if (!redisValues.Any())
                 {
                     Log.Warning("{@cacheKey} anahtar değerine ait sıralı listede veri bulunamadı. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
@@ -190,7 +190,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value));
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -208,7 +208,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value));
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -238,21 +238,21 @@
                     return default;
                 }
 
-                var expireTime = await _database.KeyExpireTimeAsync(cacheKey);
+                var expireTime = await _database.KeyExpireTimeAsync(cacheKey, CommandFlags.PreferReplica);
                 if (!expireTime.HasValue)
                 {
                     Log.Warning("The expiration time for the key {@cacheKey} could not be found.", cacheKey);
                     return default;
                 }
 
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value));
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
                     return default;
                 }
 
-                bool succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)));
+                bool succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)), CommandFlags.DemandMaster);
                 if (!succedeed)
                 {
                     Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, Convert.ToInt32(extendTime));
@@ -275,14 +275,14 @@
                     return default;
                 }
 
-                var expireTime = await _database.KeyExpireTimeAsync(cacheKey);
+                var expireTime = await _database.KeyExpireTimeAsync(cacheKey, CommandFlags.PreferReplica);
                 if (!expireTime.HasValue)
                 {
                     Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
                     return default;
                 }
 
-                var succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)));
+                var succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)), CommandFlags.DemandMaster);
                 if (!succedeed)
                 {
                     Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, Convert.ToInt32(extendTime));
@@ -299,7 +299,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (await _database.KeyExistsAsync(cacheKey) && !await _database.KeyDeleteAsync(cacheKey))
+                if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.PreferReplica))
                 {
                     Log.Warning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
                     return default;
@@ -323,14 +323,14 @@
                     _ => $"*{searchKey}*",
                 };
 
-                var redisKeys = _server.Keys(_defaultDatabase, searchKey).ToArray();
+                var redisKeys = _server.Keys(_defaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
                 if (redisKeys is null || !redisKeys.Any())
                 {
                     Log.Information("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
                     return default;
                 }
 
-                var totalNumberOfDeletedKeys = await _database.KeyDeleteAsync(redisKeys);
+                var totalNumberOfDeletedKeys = await _database.KeyDeleteAsync(redisKeys, CommandFlags.DemandMaster);
                 if (0 >= totalNumberOfDeletedKeys)
                 {
                     Log.Error("A total of {@redisKeysCount} keys for {@searchKey} searched in Redis were found, but none of the keys could be deleted.", searchKey, redisKeys.Length);
@@ -354,7 +354,7 @@
         {
             await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                await _server.FlushDatabaseAsync(_defaultDatabase);
+                await _server.FlushDatabaseAsync(_defaultDatabase, CommandFlags.DemandMaster);
             });
         }
 
@@ -362,7 +362,7 @@
         {
             await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                await _server.FlushDatabaseAsync(databaseNumber);
+                await _server.FlushDatabaseAsync(databaseNumber, CommandFlags.DemandMaster);
             });
         }
     }
