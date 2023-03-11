@@ -17,7 +17,7 @@
             RedisServerSetting redisServerSetting = default;
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
             services.Configure<RedisServerSetting>(configuration.GetRequiredSection(nameof(RedisServerSetting)));
-            services.TryAddSingleton<IRedisServerSetting>(provider =>
+            services.TryAddSingleton<RedisServerSetting>(provider =>
             {
                 redisServerSetting = provider.GetRequiredService<IOptions<RedisServerSetting>>().Value;
                 return redisServerSetting;
