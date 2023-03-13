@@ -25,7 +25,7 @@
         /// <returns>An asynchronous retry policy.</returns>
         private static AsyncRetryPolicy RedisRetryAsyncPolicy()
         {
-            return Policy.Handle<Exception>().WaitAndRetryAsync(2, ComputeDuration, onRetry: OnRedisRetry);
+            return Policy.Handle<Exception>().WaitAndRetryAsync(2, ComputeDuration, OnRedisRetry);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@
         /// <returns>A retry policy.</returns>
         private static RetryPolicy RedisRetryPolicy()
         {
-            return Policy.Handle<Exception>().WaitAndRetry(2, ComputeDuration, onRetry: OnRedisRetry);
+            return Policy.Handle<Exception>().WaitAndRetry(2, ComputeDuration, OnRedisRetry);
         }
 
         /// <summary>
