@@ -14,7 +14,7 @@
                 Schema = new OpenApiSchema
                 {
                     Type = "string",
-                    Description = "unique identity communicated between microservices",
+                    Description = "unique identity communicated between services",
                     MaxLength = 36,
                     Title = "x-correlation-id"
                 }
