@@ -1,12 +1,12 @@
 ﻿namespace Puzzle.Lib.Cache.Services
 {
-    internal sealed class RedisApiManager : IRedisService
+    internal sealed class StackExchangeRedisManager : IRedisService
     {
         private readonly IDatabase _database;
         private readonly IServer _server;
         private readonly int _defaultDatabase;
 
-        public RedisApiManager(
+        public StackExchangeRedisManager(
              IDatabase database,
              IServer server,
              int defaultDatabase)
@@ -37,7 +37,7 @@
                 if (0 >= result)
                 {
                     Log.Warning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
-                    return default;
+                    return result;
                 }
 
                 return result;
@@ -55,7 +55,7 @@
                 if (0 >= result)
                 {
                     Log.Warning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
-                    return default;
+                    return result;
                 }
 
                 return result;
@@ -82,6 +82,7 @@
         public async Task<TResponse> HashGetAsync<TResponse>(string cacheKey, string hashField)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            ArgumentException.ThrowIfNullOrEmpty(hashField);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -108,10 +109,10 @@
                 if (!succeeded)
                 {
                     Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
@@ -126,10 +127,10 @@
                 if (!succeeded)
                 {
                     Log.Warning("Unable to delete data for key value {@cacheKey}.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
@@ -148,20 +149,37 @@
                     return default;
                 }
 
-                return Convert.ToInt32(result);
+                return (int)result;
             });
         }
 
-        public async Task<List<T>> GetSortedListByScoreAsync<T>(string cacheKey, int start = 0, int stop = -1, Order order = Order.Descending) where T : struct
+        public async Task<List<T>> GetSortedListInDescendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, order, CommandFlags.PreferReplica);
+                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
                 if (!redisValues.Any())
                 {
-                    Log.Warning("{@cacheKey} anahtar değerine ait sıralı listede veri bulunamadı. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                    Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                    return default;
+                }
+
+                return redisValues.Select(redisValue => (T)Convert.ChangeType(redisValue, typeof(T))).ToList();
+            });
+        }
+
+        public async Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
+        {
+            ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+
+            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+            {
+                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
+                if (!redisValues.Any())
+                {
+                    Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                     return default;
                 }
 
@@ -175,7 +193,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var redisValue = await _database.StringGetAsync(cacheKey);
+                var redisValue = await _database.StringGetAsync(cacheKey, CommandFlags.PreferReplica);
                 if (!redisValue.HasValue)
                     return default;
 
@@ -190,106 +208,76 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), when: When.Always, flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
-        public async Task<bool> SetWithExpiryDateAsync<TValue>(string cacheKey, TValue value, AbsoluteExpiration absoluteExpiration)
+        public async Task<bool> SetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
             ArgumentNullException.ThrowIfNull(value);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                if (!await _database.KeyExpireAsync(cacheKey, DateTime.Now.AddMinutes(Convert.ToInt32(absoluteExpiration))))
-                {
-                    Log.Warning("Unable to add the expiration time of the cache {@cacheKey}.", cacheKey);
-                    return default;
-                }
-
-                return true;
+                return succeeded;
             });
         }
 
-        public async Task<bool> SetWithExtendTimeAsync<TValue>(string cacheKey, TValue value, ExtendTime extendTime)
+        public async Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
             ArgumentNullException.ThrowIfNull(value);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (!await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica))
-                {
-                    Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
-                    return default;
-                }
-
-                var expireTime = await _database.KeyExpireTimeAsync(cacheKey, CommandFlags.PreferReplica);
-                if (!expireTime.HasValue)
-                {
-                    Log.Warning("The expiration time for the key {@cacheKey} could not be found.", cacheKey);
-                    return default;
-                }
-
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), when: When.Always, flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                bool succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)), CommandFlags.DemandMaster);
-                if (!succedeed)
-                {
-                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, Convert.ToInt32(extendTime));
-                    return default;
-                }
-
-                return true;
+                return succeeded;
             });
         }
 
-        public async Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, ExtendTime extendTime)
+        public async Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, CacheDuration cacheDuration)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (!await _database.KeyExistsAsync(cacheKey))
+                TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(cacheKey, CommandFlags.PreferReplica);
+                if (currentExpiration is null)
                 {
                     Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
                     return default;
                 }
 
-                var expireTime = await _database.KeyExpireTimeAsync(cacheKey, CommandFlags.PreferReplica);
-                if (!expireTime.HasValue)
-                {
-                    Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
-                    return default;
-                }
+                TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes((int)cacheDuration));
 
-                var succedeed = await _database.KeyExpireAsync(cacheKey, expireTime.Value.AddMinutes(Convert.ToInt32(extendTime)), CommandFlags.DemandMaster);
+                bool succedeed = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
                 if (!succedeed)
                 {
-                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, Convert.ToInt32(extendTime));
+                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
                     return default;
                 }
 
-                return true;
+                return succedeed;
             });
         }
 

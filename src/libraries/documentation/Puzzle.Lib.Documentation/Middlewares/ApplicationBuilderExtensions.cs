@@ -1,16 +1,15 @@
 ﻿namespace Puzzle.Lib.Documentation.Middlewares
 {
     /// <summary>
-    /// Extension methods to add documentation capabilities to an application pipeline. <see cref="IApplicationBuilder"/>
+    /// Provides extension methods for configuring Swagger and ReDoc documentation in the application pipeline.
     /// </summary>
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Use middleware for swagger documentation
+        /// Adds Swagger middleware and Swagger UI to the application pipeline.
         /// </summary>
-        /// <param name="app">type of built-in application builder interface</param>
-        /// <returns>type of built-in application builder interface</returns>
-        /// <see cref="https://swagger.io/"/>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
         public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
@@ -18,7 +17,7 @@
             if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
                 return app;
 
-            ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
+            SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
 
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
@@ -36,11 +35,10 @@
         }
 
         /// <summary>
-        /// Use middleware for Redocly documentation
+        /// Adds ReDoc middleware to the application pipeline for displaying the OpenAPI specification.
         /// </summary>
-        /// <param name="app">type of built-in application builder interface</param>
-        /// <returns>type of built-in application builder interface</returns>
-        /// <see cref="https://redocly.com/"/>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
         public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
@@ -48,13 +46,26 @@
             if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
                 return app;
 
-            ISwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<ISwaggerSetting>();
+            SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
 
             app.UseReDoc(options =>
             {
                 options.DocumentTitle = swaggerSetting.Title;
                 options.SpecUrl = "/swagger/v1/swagger.json";
             });
+
+            return app;
+        }
+
+        /// <summary>
+        /// Adds both Swagger middleware and ReDoc middleware to the application pipeline.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
+        public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app)
+        {
+            app.UseSwaggerDoc();
+            app.UseRedoclyDoc();
 
             return app;
         }

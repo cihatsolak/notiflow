@@ -1,14 +1,15 @@
 ﻿namespace Puzzle.Lib.Cache.IOC
 {
+    /// <summary>
+    /// Contains extension methods to register Redis related services to the <see cref="IServiceCollection"/>.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add redis service
+        /// Adds Redis related services to the <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://redis.io/"/>
-        /// <returns>type of built-in service collection interface</returns>
-        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+        /// <returns>The same instance of the <see cref="IServiceCollection"/> for chaining.</returns>
         public static IServiceCollection AddRedisService(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -47,7 +48,7 @@
                 IDatabase database = connectionMultiplexer.GetDatabase(redisServerSetting.DefaultDatabase);
                 IServer server = connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
 
-                return new RedisApiManager(database, server, redisServerSetting.DefaultDatabase);
+                return new StackExchangeRedisManager(database, server, redisServerSetting.DefaultDatabase);
             });
 
             return services;

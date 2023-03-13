@@ -1,26 +1,20 @@
 ﻿namespace Puzzle.Lib.Documentation.IOC
 {
     /// <summary>
-    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// Extension methods for configuring Swagger in an IServiceCollection.
     /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Is the class that has all the settings of swagger
+        /// Gets or sets the Swagger settings.
         /// </summary>
         private static SwaggerSetting SwaggerSetting { get; set; }
 
         /// <summary>
-        /// Add swagger documentation
+        /// Adds Swagger to the service collection.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of built-in service collection interface</returns>
-        /// <see cref="https://swagger.io/"/>
-        /// <seealso cref="AddOperationFilters(SwaggerGenOptions)"/>
-        /// <seealso cref="AddIncludeXmlComments(SwaggerGenOptions)"/>
-        /// <seealso cref="AddJwtSecurityScheme(SwaggerGenOptions)"/>
-        /// <seealso cref="AddBasicSecurityScheme(SwaggerGenOptions)"/>
-        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
+        /// <param name="services">The service collection to add Swagger to.</param>
+        /// <returns>The updated service collection.</returns>
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -28,11 +22,8 @@
 
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
             services.Configure<SwaggerSetting>(configuration.GetRequiredSection(nameof(SwaggerSetting)));
-            services.TryAddSingleton<ISwaggerSetting>(provider =>
-            {
-                SwaggerSetting = provider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
-                return SwaggerSetting;
-            });
+
+            //Todo: settings class will be checked (SwaggerSetting)
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
@@ -74,6 +65,10 @@
             return services;
         }
 
+        /// <summary>
+        /// Adds operation filters to Swagger, if the 'IsHaveDefaultHeaders' property of the SwaggerSetting is true.
+        /// </summary>
+        /// <param name="options">The SwaggerGenOptions instance to configure.</param>
         private static void AddOperationFilters(SwaggerGenOptions options)
         {
             if (!SwaggerSetting.IsHaveDefaultHeaders)
@@ -83,6 +78,10 @@
             options.OperationFilter<CorrelationIdOperationFilter>();
         }
 
+        /// <summary>
+        /// Adds XML comments to Swagger, to provide descriptions for controllers, actions, and parameters.
+        /// </summary>
+        /// <param name="options">The SwaggerGenOptions instance to configure.</param>
         private static void AddIncludeXmlComments(SwaggerGenOptions options)
         {
             string xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
@@ -90,6 +89,10 @@
             options.IncludeXmlComments(xmlPath);
         }
 
+        /// <summary>
+        /// Adds a JWT security scheme to Swagger, if the 'IsHaveJwtSecurityScheme' property of the SwaggerSetting is true.
+        /// </summary>
+        /// <param name="options">The SwaggerGenOptions instance to configure.</param>
         private static void AddJwtSecurityScheme(SwaggerGenOptions options)
         {
             if (!SwaggerSetting.IsHaveJwtSecurityScheme)
@@ -117,6 +120,10 @@
             });
         }
 
+        /// <summary>
+        /// Adds a basic security scheme to Swagger, if the 'IsHaveBasicSecurityScheme' property of the SwaggerSetting is true.
+        /// </summary>
+        /// <param name="options">The SwaggerGenOptions instance to configure.</param>
         private static void AddBasicSecurityScheme(SwaggerGenOptions options)
         {
             if (!SwaggerSetting.IsHaveBasicSecurityScheme)
