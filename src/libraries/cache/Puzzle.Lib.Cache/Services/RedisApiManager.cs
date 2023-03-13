@@ -37,7 +37,7 @@
                 if (0 >= result)
                 {
                     Log.Warning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
-                    return default;
+                    return result;
                 }
 
                 return result;
@@ -55,7 +55,7 @@
                 if (0 >= result)
                 {
                     Log.Warning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
-                    return default;
+                    return result;
                 }
 
                 return result;
@@ -82,6 +82,7 @@
         public async Task<TResponse> HashGetAsync<TResponse>(string cacheKey, string hashField)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            ArgumentException.ThrowIfNullOrEmpty(hashField);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -108,10 +109,10 @@
                 if (!succeeded)
                 {
                     Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
@@ -126,10 +127,10 @@
                 if (!succeeded)
                 {
                     Log.Warning("Unable to delete data for key value {@cacheKey}.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
@@ -152,13 +153,30 @@
             });
         }
 
-        public async Task<List<T>> GetSortedListByScoreAsync<T>(string cacheKey, int start = 0, int stop = -1, Order order = Order.Descending) where T : struct
+        public async Task<List<T>> GetSortedListInDescendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, order, CommandFlags.PreferReplica);
+                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
+                if (!redisValues.Any())
+                {
+                    Log.Warning("{@cacheKey} anahtar değerine ait sıralı listede veri bulunamadı. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                    return default;
+                }
+
+                return redisValues.Select(redisValue => (T)Convert.ChangeType(redisValue, typeof(T))).ToList();
+            });
+        }
+
+        public async Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
+        {
+            ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+
+            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+            {
+                var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
                 if (!redisValues.Any())
                 {
                     Log.Warning("{@cacheKey} anahtar değerine ait sıralı listede veri bulunamadı. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
@@ -194,34 +212,46 @@
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 
-        public async Task<bool> SetWithExpiryDateAsync<TValue>(string cacheKey, TValue value, AbsoluteExpiration absoluteExpiration)
+        public async Task<bool> SetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
             ArgumentNullException.ThrowIfNull(value);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), flags: CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), false, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return default;
+                    return succeeded;
                 }
 
-                if (!await _database.KeyExpireAsync(cacheKey, DateTime.Now.AddMinutes(Convert.ToInt32(absoluteExpiration))))
+                return succeeded;
+            });
+        }
+
+        public async Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            ArgumentNullException.ThrowIfNull(value);
+
+            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+            {
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
+                if (!succeeded)
                 {
-                    Log.Warning("Unable to add the expiration time of the cache {@cacheKey}.", cacheKey);
-                    return default;
+                    Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                    return succeeded;
                 }
 
-                return true;
+                return succeeded;
             });
         }
 

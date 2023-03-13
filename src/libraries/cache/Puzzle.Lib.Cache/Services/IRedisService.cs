@@ -71,15 +71,36 @@
         Task<int> SortedSetIncrementAsync(string cacheKey, string memberKey, int increment);
 
         /// <summary>
-        /// Gets a sorted list of elements of type T from the sorted set stored at the specified cache key, ordered by their scores.
+        /// Retrieves a sorted list of elements in the cache with the specified key in descending order of their scores.
         /// </summary>
-        /// <typeparam name="T">The type of elements to retrieve.</typeparam>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
         /// <param name="cacheKey">The cache key.</param>
-        /// <param name="start">The zero-based index of the first element to retrieve.</param>
-        /// <param name="stop">The zero-based index of the last element to retrieve. Use -1 to retrieve all elements.</param>
-        /// <param name="order">The order in which to retrieve the elements.</param>
-        /// <returns>A task containing the sorted list of elements of type T.</returns>
-        Task<List<T>> GetSortedListByScoreAsync<T>(string cacheKey, int start = 0, int stop = -1, Order order = Order.Descending) where T : struct;
+        /// <param name="start">The zero-based index of the start of the range to retrieve.</param>
+        /// <param name="stop">The zero-based index of the end of the range to retrieve.</param>
+        /// <returns>A list of elements in the cache with the specified key in descending order of their scores.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the cache key is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when start or stop parameter is negative.</exception>
+        /// <exception cref="RedisException">Thrown when an error occurred while executing the command in Redis.</exception>
+        /// <remarks>
+        /// The default values for start and stop parameters retrieve the entire list. 
+        /// </remarks>
+        Task<List<T>> GetSortedListInDescendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct;
+
+        /// <summary>
+        /// Retrieves a sorted list of elements in the cache with the specified key in ascending order of their scores.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="start">The zero-based index of the start of the range to retrieve.</param>
+        /// <param name="stop">The zero-based index of the end of the range to retrieve.</param>
+        /// <returns>A list of elements in the cache with the specified key in ascending order of their scores.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the cache key is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when start or stop parameter is negative.</exception>
+        /// <exception cref="RedisException">Thrown when an error occurred while executing the command in Redis.</exception>
+        /// <remarks>
+        /// The default values for start and stop parameters retrieve the entire list. 
+        /// </remarks>
+        Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct;
 
         /// <summary>
         /// Gets the value of the specified key from cache as deserialized object of type TResponse.
@@ -101,17 +122,33 @@
         Task<bool> SetAsync<TValue>(string cacheKey, TValue value);
 
         /// <summary>
-        /// Sets the specified key-value pair in the cache with the specified absolute expiration date.
+        /// Sets a cache entry for the specified key and value, with the specified cache duration.
         /// </summary>
-        /// <typeparam name="TValue">The type of the value to set in the cache.</typeparam>
-        /// <param name="cacheKey">The key of the item to set in the cache.</param>
-        /// <param name="value">The value of the item to set in the cache.</param>
-        /// <param name="absoluteExpiration">The absolute expiration date of the item to set in the cache.</param>
-        /// <returns>A <see cref="Task{bool}"/> representing the asynchronous operation, indicating whether the item was set in the cache.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the specified <paramref name="cacheKey"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when the specified <paramref name="cacheKey"/> exceeds the maximum key length allowed by the cache implementation.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified <paramref name="absoluteExpiration"/> is not a valid expiration value.</exception>
-        Task<bool> SetWithExpiryDateAsync<TValue>(string cacheKey, TValue value, AbsoluteExpiration absoluteExpiration);
+        /// <typeparam name="TValue">The type of the value to be cached.</typeparam>
+        /// <param name="cacheKey">The key of the cache entry.</param>
+        /// <param name="value">The value to be cached.</param>
+        /// <param name="cacheDuration">The duration of the cache entry.</param>
+        /// <returns>A task that represents the asynchronous operation.
+        /// The task result contains a boolean value indicating whether the operation succeeded.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="cacheKey"/> or <paramref name="value"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="cacheKey"/> is an empty string.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the cache service is not available.</exception>
+
+        Task<bool> SetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration);
+
+        /// <summary>
+        /// Updates an existing value in the cache with the provided key. If the key does not exist, this method returns false.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value to store in the cache.</typeparam>
+        /// <param name="cacheKey">The key to use when storing the value in the cache.</param>
+        /// <param name="value">The value to store in the cache.</param>
+        /// <returns>True if the value was successfully updated; otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="cacheKey"/> is null.</exception>
+        /// <exception cref="RedisConnectionException">Thrown when a connection to the Redis server cannot be established.</exception>
+        /// <exception cref="RedisException">Thrown when there is an error communicating with the Redis server.</exception>
+        /// <remarks>The existing TTL (time to live) of the cache key is preserved.</remarks>
+        ///</summary>
+        Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value);
 
         /// <summary>
         /// Sets the value of the key in the cache and extends its expiration time.
