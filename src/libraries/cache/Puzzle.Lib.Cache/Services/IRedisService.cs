@@ -154,11 +154,11 @@
         /// Extends the expiration time of a cache key by the specified extend time.
         /// </summary>
         /// <param name="cacheKey">The cache key to extend the expiration time for.</param>
-        /// <param name="extendTime">The amount of time to extend the expiration time by.</param>
+        /// <param name="cacheDuration">The amount of time to extend the expiration time by.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation, returning a <see cref="bool"/> indicating whether the operation was successful.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="cacheKey"/> parameter is null or empty.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="extendTime"/> parameter is negative.</exception>
-        Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, ExtendTime extendTime);
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="cacheDuration"/> parameter is negative.</exception>
+        Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, CacheDuration cacheDuration);
 
         /// <summary>
         /// Removes the cache entry with the specified key.

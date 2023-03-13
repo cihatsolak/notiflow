@@ -1,17 +1,27 @@
 ﻿namespace Puzzle.Lib.Cache.Constants.Enums
 {
     /// <summary>
-    /// Key search type for cache
+    /// Represents the types of search keys.
     /// </summary>
     public enum SearchKeyType
     {
-        [Description("İle Biter")]
+        /// <summary>
+        /// Specifies that the search key should end with the given search term.
+        /// </summary>
+        [Description("Ends With")]
         EndsWith = 1,
 
-        [Description("İle Başlar")]
+        /// <summary>
+        /// Specifies that the search key should start with the given search term.
+        /// </summary>
+        [Description("Starts With")]
         StartsWith = 2,
 
-        [Description("İçerir")]
+        /// <summary>
+        /// Specifies that the search key should contain the given search term.
+        /// </summary>
+        [Description("Contains")]
         Include = 3
     }
+
 }

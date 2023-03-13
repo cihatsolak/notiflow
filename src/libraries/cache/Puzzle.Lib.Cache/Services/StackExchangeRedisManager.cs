@@ -1,12 +1,12 @@
 ﻿namespace Puzzle.Lib.Cache.Services
 {
-    internal sealed class RedisApiManager : IRedisService
+    internal sealed class StackExchangeRedisManager : IRedisService
     {
         private readonly IDatabase _database;
         private readonly IServer _server;
         private readonly int _defaultDatabase;
 
-        public RedisApiManager(
+        public StackExchangeRedisManager(
              IDatabase database,
              IServer server,
              int defaultDatabase)
@@ -149,7 +149,7 @@
                     return default;
                 }
 
-                return Convert.ToInt32(result);
+                return (int)result;
             });
         }
 
@@ -255,7 +255,7 @@
             });
         }
 
-        public async Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, ExtendTime extendTime)
+        public async Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, CacheDuration cacheDuration)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
@@ -268,12 +268,12 @@
                     return default;
                 }
 
-                TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes((int)extendTime));
+                TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes((int)cacheDuration));
 
                 bool succedeed = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
                 if (!succedeed)
                 {
-                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, Convert.ToInt32(extendTime));
+                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
                     return default;
                 }
 
