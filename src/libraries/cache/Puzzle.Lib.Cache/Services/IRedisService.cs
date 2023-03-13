@@ -151,18 +151,6 @@
         Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value);
 
         /// <summary>
-        /// Sets the value of the key in the cache and extends its expiration time.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <param name="value">The value to be set in cache.</param>
-        /// <param name="extendTime">The amount of time to extend the expiration time by.</param>
-        /// <returns>A boolean value indicating if the operation was successful.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the cache key is null or empty.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when the value failed to serialize.</exception>
-        Task<bool> SetWithExtendTimeAsync<TValue>(string cacheKey, TValue value, ExtendTime extendTime);
-
-        /// <summary>
         /// Extends the expiration time of a cache key by the specified extend time.
         /// </summary>
         /// <param name="cacheKey">The cache key to extend the expiration time for.</param>
