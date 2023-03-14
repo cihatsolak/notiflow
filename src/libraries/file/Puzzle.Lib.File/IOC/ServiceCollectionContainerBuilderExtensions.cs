@@ -15,7 +15,6 @@
 
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
             services.Configure<FtpSetting>(configuration.GetRequiredSection(nameof(FtpSetting)));
-            services.TryAddSingleton<IFtpSetting>(provider => provider.GetRequiredService<IOptions<FtpSetting>>().Value);
         }
     }
 }

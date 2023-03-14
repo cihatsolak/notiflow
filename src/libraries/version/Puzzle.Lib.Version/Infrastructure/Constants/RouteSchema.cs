@@ -1,24 +1,27 @@
 ﻿namespace Puzzle.Lib.Version.Infrastructure.Constants
 {
+    /// <summary>
+    /// Contains constants for various route schemas.
+    /// </summary>
     public static class RouteSchema
     {
         /// <summary>
-        /// Unversioned schema
+        /// The route schema for actions with controllers.
         /// </summary>
         public const string WithAction = "api/[controller]/[action]";
 
         /// <summary>
-        /// Schema without action
+        /// The route schema for controllers without actions.
         /// </summary>
         public const string WithoutAction = "api/v1/[controller]";
 
         /// <summary>
-        /// Schema with conventional version
+        /// The standard route schema for controllers and actions.
         /// </summary>
         public const string Standart = "api/v1/[controller]/[action]";
 
         /// <summary>
-        /// Versionated schema
+        /// The route schema for versioned controllers and actions.
         /// </summary>
         public const string Versioned = "api/v{version:apiVersion}/[controller]/[action]";
     }

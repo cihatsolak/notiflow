@@ -1,9 +1,11 @@
+using Puzzle.Lib.Version.IOC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+builder.Services.AddApiVersion();
 
 var app = builder.Build();
 
