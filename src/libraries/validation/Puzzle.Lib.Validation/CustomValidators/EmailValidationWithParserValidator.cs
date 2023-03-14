@@ -1,18 +1,21 @@
 ﻿namespace Puzzle.Lib.Validation.AbstractValidators
 {
+    /// <summary>
+    /// Validates an email address or a list of comma-separated email addresses with a specified parser character.
+    /// </summary>
+    /// <remarks>
+    /// This class uses regular expressions to validate the format of the email address and also checks the top-level domain (TLD) using an extension method.
+    /// </remarks>
     internal class EmailValidationWithParserValidator : AbstractValidator<string>
     {
         readonly char[] parsers = new char[] { ',', '.', ';', ':', '-', '/' };
 
         internal EmailValidationWithParserValidator(char parser, string errorMessage)
         {
-            if (char.IsLetter(parser))
-                throw new ArgumentException("Define a valid parser.");
-
             if (string.IsNullOrWhiteSpace(errorMessage))
                 throw new ArgumentException("Invalid error message.");
 
-            if (!parsers.Any(p => p == parser))
+            if (char.IsLetter(parser) || !parsers.Any(p => p == parser))
                 throw new ArgumentException("Define a valid parser.");
 
             RuleFor(x => x)
@@ -25,6 +28,15 @@
                 .Must(email => ValidateEmails(email, parser)).WithMessage(errorMessage);
         }
 
+        /// <summary>
+        /// Validates a list of email addresses separated by a specified parser character.
+        /// </summary>
+        /// <remarks>
+        /// This method uses regular expressions to validate the format of the email address and also checks the top-level domain (TLD) using an extension method.
+        /// </remarks>
+        /// <param name="emails">The list of email addresses separated by the specified parser character.</param>
+        /// <param name="parser">The parser character used to separate the list of email addresses.</param>
+        /// <returns>A boolean value indicating whether the list of email addresses is valid.</returns>
         private static bool ValidateEmails(string emails, char parser)
         {
             return emails.Split(parser, StringSplitOptions.RemoveEmptyEntries).All(email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
