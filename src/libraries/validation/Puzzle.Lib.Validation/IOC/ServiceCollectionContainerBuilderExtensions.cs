@@ -1,15 +1,17 @@
 ﻿namespace Puzzle.Lib.Validation.IOC
 {
+    /// <summary>
+    /// Provides extension methods for IServiceCollection that simplify adding FluentValidation and configuring API behavior options.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add fluent validation
+        /// Registers validators from the assembly containing TAssembyScanner with the provided service collection and adds FluentValidation auto-validation and client-side adapters.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.fluentvalidation.net/en/latest/"/>
-        /// <exception cref="ArgumentNullException">when the service provider cannot be built</exception>
-        /// <returns>type of built-in service collection interface</returns>
-        public static IServiceCollection AddValidation<TAssembyScanner>(this IServiceCollection services)
+        /// <typeparam name="TAssembyScanner">The type to be scanned for validators.</typeparam>
+        /// <param name="services">The service collection to add the validators and related services to.</param>
+        /// <returns>The updated service collection.</returns>
+        public static IServiceCollection AddFluentValidation<TAssembyScanner>(this IServiceCollection services)
         {
             services.AddValidatorsFromAssemblyContaining<TAssembyScanner>();
             services.AddFluentValidationAutoValidation();
@@ -21,12 +23,10 @@
         }
 
         /// <summary>
-        /// Add api behaviour options
+        /// Configures API behavior options to suppress the inferrence of binding sources for parameters and log validation errors.
         /// </summary>
-        /// <remarks>web api projesine ve/veya controller'ına sahipseniz, ekleyiniz.</remarks>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.apibehavioroptions?view=aspnetcore-6.0"/>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <param name="services">The service collection to configure the API behavior options on.</param>
+        /// <returns>The updated service collection.</returns>
         public static IServiceCollection AddApiBehaviorOptions(this IServiceCollection services)
         {
             services.Configure<ApiBehaviorOptions>(options =>
@@ -35,26 +35,11 @@
 
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    IEnumerable<string> errors = context.ModelState.Values.Where(p => p.Errors.Any())
-                                                                          .SelectMany(p => p.Errors)
-                                                                          .Select(p => p.ErrorMessage);
+                    IEnumerable<string> errors = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
 
                     Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));
 
-                    //IDatabase database = ServiceProviderServiceExtensions.GetRequiredService<IConnectionMultiplexer>(context.HttpContext.RequestServices).GetDatabase(15);
-                    //int platformTypeId = int.Parse(context.HttpContext.User.Claims.Single(p => p.Type.Equals(ClaimTypes.GroupSid)).Value);
-
-                    //string statusCode = errors.First();
-                    //string statusMessage = database.HashGet($"{platformTypeId}.response.messages", statusCode);
-
-                    //return new OkObjectResult(new
-                    //{
-                    //    statusCode = int.Parse(statusCode),
-                    //    statusMessage,
-                    //    data = (string)null
-                    //});
-
-                    return null;
+                    return new BadRequestObjectResult(errors);
                 };
             });
 

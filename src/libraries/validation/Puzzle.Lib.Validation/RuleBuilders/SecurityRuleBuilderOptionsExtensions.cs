@@ -1,14 +1,17 @@
 ﻿namespace Puzzle.Lib.Validation.RuleBuilders
 {
+    /// <summary>
+    /// Contains extension methods for building validation rules for security related information such as passwords.
+    /// </summary>
     public static class SecurityRuleBuilderOptionsExtensions
     {
         /// <summary>
-        /// Checks if the user's password is secure
+        /// Adds validation rules for a strong password.
         /// </summary>
-        /// <typeparam name="TClass">class to validate</typeparam>
-        /// <param name="ruleBuilder">rule builder</param>
-        /// <param name="errorMessage">error message</param>
-        /// <returns>type of rule builder options</returns>
+        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <param name="ruleBuilder">The rule builder.</param>
+        /// <param name="errorMessage">The error message to display if the validation fails.</param>
+        /// <returns>The rule builder options.</returns>
         public static IRuleBuilderOptions<TClass, string> StrongPassword<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
         {
             return ruleBuilder
