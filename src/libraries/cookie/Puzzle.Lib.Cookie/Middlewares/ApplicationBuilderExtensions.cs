@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="app">type of built-in application builder interface</param>
         /// <returns>type of built-in application builder interface</returns>
-        public static IApplicationBuilder UseCookiePolicyOptions(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSecureCookiePolicy(this IApplicationBuilder app)
         {
             app.UseCookiePolicy(new CookiePolicyOptions
             {
