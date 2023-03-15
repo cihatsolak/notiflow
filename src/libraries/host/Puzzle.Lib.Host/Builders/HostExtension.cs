@@ -1,13 +1,15 @@
 ﻿namespace Puzzle.Lib.Host.Builders
 {
+    /// <summary>
+    /// This class provides a set of extension methods for adding additional functionality to .NET Core applications.
+    /// </summary>
     public static class HostExtension
     {
         /// <summary>
-        /// Add application configuration
+        /// Adds application configuration to the provided IHostBuilder instance by including JSON configuration files.
         /// </summary>
-        /// <param name="hostBuilder">type of built-in host builder interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder?view=dotnet-plat-ext-6.0"/>
-        /// <returns>type of built-in host builder interface</returns>
+        /// <param name="hostBuilder">The IHostBuilder instance to which the configuration is added.</param>
+        /// <returns>The modified IHostBuilder instance.</returns>
         public static IHostBuilder AddAppConfiguration(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureAppConfiguration((hostBuilderContext, configurationBuilder) =>
@@ -20,11 +22,10 @@
         }
 
         /// <summary>
-        /// Add service validate scope
+        /// Adds service scope validation to the provided IHostBuilder instance based on the hosting environment.
         /// </summary>
-        /// <param name="hostBuilder">type of built-in host builder interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validatescopes?view=dotnet-plat-ext-6.0"/>
-        /// <returns>type of built-in host builder interface</returns>
+        /// <param name="hostBuilder">The IHostBuilder instance to which the validation is added.</param>
+        /// <returns>The modified IHostBuilder instance.</returns>
         public static IHostBuilder AddServiceValidateScope(this IHostBuilder hostBuilder)
         {
             hostBuilder.UseDefaultServiceProvider((hostBuilderContext, serviceProviderOptions) =>
@@ -43,11 +44,10 @@
         }
 
         /// <summary>
-        /// Add shut down time out
+        /// Adds a timeout duration for graceful shutdown to the provided IHostBuilder instance.
         /// </summary>
-        /// <param name="hostBuilder">type of built-in host builder interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.hostoptions.shutdowntimeout?view=dotnet-plat-ext-6.0"/>
-        /// <returns>type of built-in host builder interface</returns>
+        /// <param name="hostBuilder">The IHostBuilder instance to which the timeout duration is added.</param>
+        /// <returns>The modified IHostBuilder instance.</returns>
         public static IHostBuilder AddShutdownTimeOut(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureHostOptions(configureOptions =>
