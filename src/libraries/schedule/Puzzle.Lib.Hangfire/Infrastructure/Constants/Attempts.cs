@@ -1,32 +1,32 @@
 ﻿namespace Puzzle.Lib.Hangfire.Infrastructure.Constants
 {
     /// <summary>
-    /// How many times will the job be tried when it fails?
+    /// Provides constants for the number of attempts to perform an operation.
     /// </summary>
     public static class Attempts
     {
         /// <summary>
-        /// Try it one time
+        /// Represents one attempt to perform an operation.
         /// </summary>
         public const int TryOne = 1;
 
         /// <summary>
-        /// Try it twice
+        /// Represents two attempts to perform an operation.
         /// </summary>
         public const int TryTwice = 2;
 
         /// <summary>
-        /// Try it three times
+        /// Represents three attempts to perform an operation.
         /// </summary>
         public const int TryThreeTimes = 3;
 
         /// <summary>
-        /// Try it four times
+        /// Represents four attempts to perform an operation.
         /// </summary>
         public const int TryFourTimes = 4;
 
         /// <summary>
-        /// Try it five times
+        /// Represents five attempts to perform an operation.
         /// </summary>
         public const int TryFiveTimes = 5;
     }
