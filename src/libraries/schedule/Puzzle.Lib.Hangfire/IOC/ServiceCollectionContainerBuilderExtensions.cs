@@ -1,32 +1,31 @@
 ﻿namespace Puzzle.Lib.Hangfire.IOC
 {
+    /// <summary>
+    /// Extension methods for <see cref="IServiceCollection"/> to configure and add Hangfire with SqlServer storage.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add hangfire with sql server storage
+        /// Adds Hangfire services with SqlServer storage.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://www.hangfire.io/"/>
-        /// <returns>type of built-in service collection interface</returns>
-        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IServiceCollection AddHangfireWithSqlServerStorage(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            HangfireSetting hangfireSetting = default;
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<HangfireSetting>(configuration.GetRequiredSection(nameof(HangfireSetting)));
-            services.TryAddSingleton<IHangfireSetting>(provider =>
-            {
-                hangfireSetting = provider.GetRequiredService<IOptions<HangfireSetting>>().Value;
-                return hangfireSetting;
-            });
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HangfireSetting));
+            services.Configure<HangfireSetting>(configurationSection);
+            HangfireSetting hangfireSetting = configurationSection.Get<HangfireSetting>();
 
             services.AddHangfire(config =>
             {
-                config.UseSqlServerStorage(hangfireSetting.ConnectionString, GenerateSqlServerStorageOptions(hangfireSetting))
-                                  .WithJobExpirationTimeout(TimeSpan.FromDays(hangfireSetting.JobExpirationTimeoutDay));
+                config.UseSqlServerStorage(
+                    nameOrConnectionString: hangfireSetting.ConnectionString,
+                    options: GenerateSqlServerStorageOptions(hangfireSetting)
+                    ).WithJobExpirationTimeout(TimeSpan.FromDays(hangfireSetting.JobExpirationTimeoutDay));
             });
 
             services.AddHangfireServer();
@@ -34,6 +33,11 @@
             return services;
         }
 
+        /// <summary>
+        /// Generates SqlServerStorage options based on the provided HangfireSetting object.
+        /// </summary>
+        /// <param name="hangfireSetting">The HangfireSetting object to use for generating options.</param>
+        /// <returns>A <see cref="SqlServerStorageOptions"/> object generated using the provided HangfireSetting object.</returns>
         private static SqlServerStorageOptions GenerateSqlServerStorageOptions(HangfireSetting hangfireSetting)
         {
             SqlServerStorageOptions sqlServerStorageOptions = new()

@@ -1,15 +1,18 @@
 ﻿namespace Puzzle.Lib.Hangfire.Middlewares
 {
+    /// <summary>
+    /// Extension method for the IApplicationBuilder interface that adds the ability to use Hangfire to manage background jobs in a web application.
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Use hangfire for scheduled jobs
+        /// Configures Hangfire with the specified settings and options.
         /// </summary>
-        /// <param name="app">type of built-in application builder interface</param>
-        /// <returns>type of built-in application builder interface</returns>
+        /// <param name="app">The IApplicationBuilder instance to configure.</param>
+        /// <returns>The configured IApplicationBuilder instance.</returns>
         public static IApplicationBuilder UseHangfire(this IApplicationBuilder app)
         {
-            IHangfireSetting hangfireSetting = app.ApplicationServices.GetRequiredService<IHangfireSetting>();
+            HangfireSetting hangfireSetting = app.ApplicationServices.GetRequiredService<IOptions<HangfireSetting>>().Value;
 
             app.UseHangfireDashboard(hangfireSetting.DashboardPath, new DashboardOptions
             {

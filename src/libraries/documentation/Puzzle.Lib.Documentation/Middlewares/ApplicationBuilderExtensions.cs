@@ -13,8 +13,9 @@
         public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
+            if (webHostEnvironment.IsProduction())
                 return app;
 
             SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;

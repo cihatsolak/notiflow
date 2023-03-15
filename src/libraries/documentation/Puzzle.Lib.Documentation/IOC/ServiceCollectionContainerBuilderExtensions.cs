@@ -6,11 +6,6 @@
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Gets or sets the Swagger settings.
-        /// </summary>
-        private static SwaggerSetting SwaggerSetting { get; set; }
-
-        /// <summary>
         /// Adds Swagger to the service collection.
         /// </summary>
         /// <param name="services">The service collection to add Swagger to.</param>
@@ -21,45 +16,45 @@
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<SwaggerSetting>(configuration.GetRequiredSection(nameof(SwaggerSetting)));
-
-            //Todo: settings class will be checked (SwaggerSetting)
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(SwaggerSetting));
+            services.Configure<SwaggerSetting>(configurationSection);
+            SwaggerSetting swaggerSetting = configurationSection.Get<SwaggerSetting>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllParametersInCamelCase();
-                options.SwaggerDoc(SwaggerSetting.Version,
+                options.SwaggerDoc(swaggerSetting.Version,
                     new()
                     {
-                        Title = SwaggerSetting.Title,
-                        Description = SwaggerSetting.Description,
-                        Version = SwaggerSetting.Version,
+                        Title = swaggerSetting.Title,
+                        Description = swaggerSetting.Description,
+                        Version = swaggerSetting.Version,
                         Contact = new()
                         {
-                            Email = SwaggerSetting.ContactEmail,
-                            Name = SwaggerSetting.ContactName,
-                            Url = new(SwaggerSetting.ContactUrl)
+                            Email = swaggerSetting.ContactEmail,
+                            Name = swaggerSetting.ContactName,
+                            Url = new(swaggerSetting.ContactUrl)
                         },
                         License = new()
                         {
-                            Name = SwaggerSetting.LicenseName,
-                            Url = new(SwaggerSetting.LicenseUrl)
+                            Name = swaggerSetting.LicenseName,
+                            Url = new(swaggerSetting.LicenseUrl)
                         },
                         Extensions = new Dictionary<string, IOpenApiExtension>
                         {
                           { "x-logo", new OpenApiObject
                             {
-                               {"url", new OpenApiString(SwaggerSetting.LogoUrl)}
+                               {"url", new OpenApiString(swaggerSetting.LogoUrl)}
                             }
                           }
                         }
                     });
 
-                AddOperationFilters(options);
                 AddIncludeXmlComments(options);
-                AddJwtSecurityScheme(options);
-                AddBasicSecurityScheme(options);
+                AddOperationFilters(options, swaggerSetting);
+                AddJwtSecurityScheme(options, swaggerSetting);
+                AddBasicSecurityScheme(options, swaggerSetting);
             });
 
             return services;
@@ -69,9 +64,10 @@
         /// Adds operation filters to Swagger, if the 'IsHaveDefaultHeaders' property of the SwaggerSetting is true.
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        private static void AddOperationFilters(SwaggerGenOptions options)
+        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
+        private static void AddOperationFilters(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
         {
-            if (!SwaggerSetting.IsHaveDefaultHeaders)
+            if (!swaggerSetting.IsHaveDefaultHeaders)
                 return;
 
             options.OperationFilter<TenantTokenOperationFilter>();
@@ -93,9 +89,10 @@
         /// Adds a JWT security scheme to Swagger, if the 'IsHaveJwtSecurityScheme' property of the SwaggerSetting is true.
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        private static void AddJwtSecurityScheme(SwaggerGenOptions options)
+        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
+        private static void AddJwtSecurityScheme(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
         {
-            if (!SwaggerSetting.IsHaveJwtSecurityScheme)
+            if (!swaggerSetting.IsHaveJwtSecurityScheme)
                 return;
 
             OpenApiSecurityScheme jwtSecurityScheme = new()
@@ -124,9 +121,10 @@
         /// Adds a basic security scheme to Swagger, if the 'IsHaveBasicSecurityScheme' property of the SwaggerSetting is true.
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        private static void AddBasicSecurityScheme(SwaggerGenOptions options)
+        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
+        private static void AddBasicSecurityScheme(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
         {
-            if (!SwaggerSetting.IsHaveBasicSecurityScheme)
+            if (!swaggerSetting.IsHaveBasicSecurityScheme)
                 return;
 
             OpenApiSecurityScheme basicSecurityScheme = new()

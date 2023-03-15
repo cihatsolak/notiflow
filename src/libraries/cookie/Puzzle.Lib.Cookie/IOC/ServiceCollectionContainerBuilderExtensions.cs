@@ -14,14 +14,10 @@
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            CookieAuthenticationSetting cookieAuthenticationSetting = default;
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<CookieAuthenticationSetting>(configuration.GetRequiredSection(nameof(CookieAuthenticationSetting)));
-            services.TryAddSingleton<ICookieAuthenticationSetting>(provider =>
-            {
-                cookieAuthenticationSetting = provider.GetRequiredService<IOptions<CookieAuthenticationSetting>>().Value;
-                return cookieAuthenticationSetting;
-            });
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
+            services.Configure<CookieAuthenticationSetting>(configurationSection);
+            CookieAuthenticationSetting cookieAuthenticationSetting = configurationSection.Get<CookieAuthenticationSetting>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configure =>
@@ -49,7 +45,7 @@
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of built-in service collection interface</returns>
-        public static IServiceCollection ConfigureCookiePolicy(this IServiceCollection services)
+        public static IServiceCollection ConfigureSecureCookiePolicy(this IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
