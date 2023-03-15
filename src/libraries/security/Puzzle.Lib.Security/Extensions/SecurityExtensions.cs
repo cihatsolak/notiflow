@@ -2,13 +2,6 @@
 {
     public static class SecurityExtensions
     {
-        /// <summary>
-        /// Create password hash
-        /// </summary>
-        /// <param name="password">password</param>
-        /// <remarks>warning: reverseless</remarks>
-        /// <returns>hashed password</returns>
-        /// <exception cref="ArgumentNullException">if method parameters are whitespace or null</exception>
         public static string CreatePasswordHash(this string password)
         {
             ArgumentException.ThrowIfNullOrEmpty(password);
@@ -16,14 +9,6 @@
             return Crypto.HashPassword(password);
         }
 
-        /// <summary>
-        /// Verify password hash
-        /// </summary>
-        /// <param name="hashedPassword">hashed password</param>
-        /// <param name="password">password</param>
-        /// <remarks>warning: irreversible, just checking for correctness.</remarks>
-        /// <returns>type of boolean</returns>
-        /// <exception cref="ArgumentNullException">if method parameters are whitespace or null</exception>
         public static bool VerifyPasswordHash(this string hashedPassword, string password)
         {
             ArgumentException.ThrowIfNullOrEmpty(hashedPassword);
@@ -32,13 +17,6 @@
             return Crypto.VerifyHashedPassword(hashedPassword, password);
         }
 
-        /// <summary>
-        /// Reversible encryption
-        /// </summary>
-        /// <param name="text">text to be encrypted</param>
-        /// <remarks>information: reversive</remarks>
-        /// <returns>encrypted text</returns>
-        /// <exception cref="ArgumentNullException">if method parameters are whitespace or null</exception>
         public static string Encrypt(this string text)
         {
             ArgumentException.ThrowIfNullOrEmpty(text);
@@ -63,14 +41,7 @@
 
             return Convert.ToBase64String(result);
         }
-
-        /// <summary>
-        /// Decrypts the encrypted value
-        /// </summary>
-        /// <remarks>decrypts the value based on the key value</remarks>
-        /// <param name="cipherText">cipher text</param>
-        /// <returns>decrypted value by key value</returns>
-        /// <exception cref="ArgumentNullException">if method parameters are whitespace or null</exception> 
+ 
         public static string Decrypt(this string cipherText)
         {
             ArgumentException.ThrowIfNullOrEmpty(cipherText);
