@@ -1,14 +1,15 @@
 ﻿namespace Puzzle.Lib.Cookie.IOC
 {
+    /// <summary>
+    /// Provides extension methods for configuring cookie authentication and cookie policy for an IServiceCollection.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add cookie authentication
+        /// Adds cookie authentication to the IServiceCollection using the specified configuration settings.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of built-in service collection interface</returns>
-        /// <seealso cref="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-7.0"/>
-        /// <exception cref="ArgumentNullException">thrown when the service provider cannot be built</exception>
+        /// <param name="services">The IServiceCollection instance to add the authentication services to.</param>
+        /// <returns>The IServiceCollection instance with the authentication services added.</returns>
         public static IServiceCollection AddCookieAuthentication(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -41,10 +42,10 @@
         }
 
         /// <summary>
-        /// Add cookie policy
+        /// Configures the cookie policy options to enforce a strict secure policy.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <param name="services">The IServiceCollection instance to configure the cookie policy options for.</param>
+        /// <returns>The IServiceCollection instance with the cookie policy options configured.</returns>
         public static IServiceCollection ConfigureSecureCookiePolicy(this IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -58,9 +59,10 @@
         }
 
         /// <summary>
-        /// Add cookie service
+        /// Adds a cookie service to the IServiceCollection for managing cookies.
         /// </summary>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <param name="services">The IServiceCollection instance to add the cookie service to.</param>
+        /// <returns>The IServiceCollection instance with the cookie service added.</returns>
         public static IServiceCollection AddCookieService(this IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
