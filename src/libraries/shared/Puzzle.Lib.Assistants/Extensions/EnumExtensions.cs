@@ -1,16 +1,16 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
     /// <summary>
-    /// Enum extensions
+    /// Contains extension methods for working with enums.
     /// </summary>
     public static class EnumExtensions
     {
         /// <summary>
-        /// Provides the annotation property of the enum
+        /// Gets the <see cref="DescriptionAttribute"/> value of an <see cref="Enum"/> value.
         /// </summary>
-        /// <param name="value">enumeration type</param>
-        /// <returns>type of string</returns>
-        /// <exception cref="ArgumentNullException">if method parameter null</exception>
+        /// <param name="value">The <see cref="Enum"/> value to get the description of.</param>
+        /// <returns>The description of the <see cref="Enum"/> value.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
         public static string GetEnumDescription(this Enum value)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -26,11 +26,11 @@
         }
 
         /// <summary>
-        /// Converts enumeration to integer value
+        /// Converts an <see cref="Enum"/> value to its equivalent integer value.
         /// </summary>
-        /// <param name="value">enumeration type</param>
-        /// <returns>type of integer</returns>
-        /// <exception cref="ArgumentNullException">if method parameter null</exception> 
+        /// <param name="value">The <see cref="Enum"/> value to convert to an integer.</param>
+        /// <returns>The integer equivalent of the <see cref="Enum"/> value.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
         public static int ToInt(this Enum value)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -39,12 +39,12 @@
         }
 
         /// <summary>
-        /// Converts integer value to integer value
+        /// Converts an integer value to its equivalent <see cref="Enum"/> value.
         /// </summary>
-        /// <typeparam name="TEnum">type of enum</typeparam>
-        /// <param name="value">integer value</param>
-        /// <returns>type of enum</returns>
-        /// <exception cref="ArgumentOutOfRangeException">method parameter is not in the specified range</exception>
+        /// <typeparam name="TEnum">The type of the <see cref="Enum"/> to convert to.</typeparam>
+        /// <param name="value">The integer value to convert to an <see cref="Enum"/>.</param>
+        /// <returns>The equivalent <see cref="Enum"/> value of the integer.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/> is less than -1.</exception>
         public static TEnum ToEnum<TEnum>(this int value) where TEnum : Enum
         {
             if (-1 >= value)
@@ -54,12 +54,13 @@
         }
 
         /// <summary>
-        /// Matches enum by description value
+        /// Converts a string description to its equivalent <see cref="Enum"/> value.
         /// </summary>
-        /// <typeparam name="TEnum">type of enum</typeparam>
-        /// <param name="description">Description for enum</param>
-        /// <returns>type of enum</returns>
-        /// <exception cref="ArgumentException">if the description is empty or null</exception>
+        /// <typeparam name="TEnum">The type of the <see cref="Enum"/> to convert to.</typeparam>
+        /// <param name="description">The string description to convert to an <see cref="Enum"/>.</param>
+        /// <returns>The equivalent <see cref="Enum"/> value of the string description.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="description"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="description"/> is empty or consists of only whitespace characters.</exception>
         public static TEnum ToEnumByDescription<TEnum>(this string description) where TEnum : Enum
         {
             ArgumentException.ThrowIfNullOrEmpty(description);

@@ -1,17 +1,16 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
     /// <summary>
-    /// String comparison extensions
+    /// Provides extension methods for string comparison with ordinal ignore case, ordinal and current culture ignore case options.
     /// </summary>
     public static class ComparisonExtensions
     {
         /// <summary>
-        /// Büyük/küçük harfe duyarlı olmayan sıralı bir karşılaştırma gerçekleştirir.
+        /// Determines whether two specified strings have the same value, ignoring their case and using ordinal culture.
         /// </summary>
-        /// <param name="value">value</param>
-        /// <param name="valueToCompare">value to compare</param>
-        /// <seealso cref="https://docs.microsoft.com/tr-tr/dotnet/standard/base-types/best-practices-strings"/>
-        /// <returns>type of boolean</returns>
+        /// <param name="value">The current string to compare.</param>
+        /// <param name="valueToCompare">The string to compare to the current string.</param>
+        /// <returns>True if the strings are equal, ignoring case; otherwise, false.</returns>
         public static bool OrdinalIgnoreCase(this string value, string valueToCompare)
         {
             if (string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(valueToCompare))
@@ -24,12 +23,11 @@
         }
 
         /// <summary>
-        /// Sıralı bir karşılaştırma gerçekleştirir.
+        /// Determines whether two specified strings have the same value, using ordinal culture.
         /// </summary>
-        /// <param name="value">value</param>
-        /// <param name="valueToCompare">value to compare</param>
-        /// <seealso cref="https://docs.microsoft.com/tr-tr/dotnet/standard/base-types/best-practices-strings"/>
-        /// <returns>type of boolean</returns>
+        /// <param name="value">The current string to compare.</param>
+        /// <param name="valueToCompare">The string to compare to the current string.</param>
+        /// <returns>True if the strings are equal; otherwise, false.</returns>
         public static bool Ordinal(this string value, string valueToCompare)
         {
             if (string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(valueToCompare))
@@ -42,12 +40,11 @@
         }
 
         /// <summary>
-        /// Kültüre duyarlı sıralama kurallarını, geçerli kültürü kullanarak ve karşılaştırılan dizelerin büyük/küçük harf durumunu yok sayarak dizeleri karşılaştırın.
+        /// Determines whether two specified strings have the same value, ignoring their case and using the current culture.
         /// </summary>
-        /// <param name="value">value</param>
-        /// <param name="valueToCompare">value to compare</param>
-        /// <seealso cref="https://docs.microsoft.com/tr-tr/dotnet/standard/base-types/best-practices-strings"/>
-        /// <returns>type of boolean</returns>
+        /// <param name="value">The current string to compare.</param>
+        /// <param name="valueToCompare">The string to compare to the current string.</param>
+        /// <returns>True if the strings are equal, ignoring case; otherwise, false.</returns>
         public static bool CurrentCultureIgnoreCase(this string value, string valueToCompare)
         {
             if (string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(valueToCompare))

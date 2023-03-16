@@ -1,15 +1,16 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
     /// <summary>
-    /// JSON Extensions
+    /// Contains extension methods for JSON serialization and deserialization.
     /// </summary>
     public static class JsonExtensions
     {
         /// <summary>
-        /// Converts object type to string type
+        /// Converts the specified object to a JSON string.
         /// </summary>
-        /// <param name="value">type of object</param>
-        /// <returns>type of string</returns>
+        /// <param name="value">The object to be serialized.</param>
+        /// <returns>A JSON string representation of the object.</returns>
+        /// <exception cref="JsonException">Thrown when an error occurs during JSON serialization.</exception>
         public static string ToJsonString(this object value)
         {
             if (value is null)
@@ -19,11 +20,12 @@
         }
 
         /// <summary>
-        /// Converts string type to specified type
+        /// Deserializes the specified JSON string to an instance of the specified type.
         /// </summary>
-        /// <typeparam name="TModel">deserialize type</typeparam>
-        /// <param name="value">value to deserialize</param>
-        /// <returns>type of TModel</returns>
+        /// <typeparam name="TModel">The type to which the JSON string should be deserialized.</typeparam>
+        /// <param name="value">The JSON string to be deserialized.</param>
+        /// <returns>An instance of the specified type deserialized from the JSON string.</returns>
+        /// <exception cref="JsonException">Thrown when an error occurs during JSON deserialization.</exception>
         public static TModel AsModel<TModel>(this string value)
         {
             if (string.IsNullOrWhiteSpace(value))

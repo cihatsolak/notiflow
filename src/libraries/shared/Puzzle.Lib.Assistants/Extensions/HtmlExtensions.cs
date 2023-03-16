@@ -1,15 +1,16 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
     /// <summary>
-    /// Html extensions
+    /// Provides extension methods for HTML related operations.
     /// </summary>
     public static class HtmlExtensions
     {
         /// <summary>
-        /// Convert html to text
+        /// Converts the given HTML text into plain text by removing all HTML tags.
         /// </summary>
-        /// <param name="htmlText">html text</param>
-        /// <returns>plain text</returns>
+        /// <param name="htmlText">The HTML text to convert.</param>
+        /// <returns>The plain text version of the HTML text.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="htmlText"/> is null.</exception>
         public static string ConvertHtmlToText(this string htmlText)
         {
             if (string.IsNullOrWhiteSpace(htmlText))
