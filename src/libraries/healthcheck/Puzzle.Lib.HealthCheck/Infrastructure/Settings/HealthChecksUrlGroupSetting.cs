@@ -1,19 +1,34 @@
 ﻿namespace Puzzle.Lib.HealthCheck.Infrastructure.Settings
 {
-    internal interface IHealthChecksUrlGroupSetting
+    /// <summary>
+    /// Represents a setting that contains a list of URL groups to be used in health checks.
+    /// </summary>
+    internal sealed record HealthChecksUrlGroupSetting
     {
-        List<UrlGroupInformation> UrlGroups { get; init; }
-    }
-
-    internal sealed record HealthChecksUrlGroupSetting : IHealthChecksUrlGroupSetting
-    {
+        /// <summary>
+        /// Gets or sets the list of URL groups to be used in health checks.
+        /// </summary>
         public List<UrlGroupInformation> UrlGroups { get; init; }
     }
 
+    /// <summary>
+    /// Represents a URL group information that is used in health checks.
+    /// </summary>
     internal sealed record UrlGroupInformation
     {
+        /// <summary>
+        /// Gets or sets the service URI for the URL group.
+        /// </summary>
         public Uri ServiceUri { get; init; }
+
+        /// <summary>
+        /// Gets or sets the name of the URL group.
+        /// </summary>
         public string Name { get; init; }
+
+        /// <summary>
+        /// Gets or sets the array of tags for the URL group.
+        /// </summary>
         public string[] Tags { get; init; }
     }
 }

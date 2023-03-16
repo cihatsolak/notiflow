@@ -1,7 +1,15 @@
 ﻿namespace Puzzle.Lib.HealthCheck.Checks
 {
+    /// <summary>
+    /// Provides a method to add a health check for RabbitMQ message broker to the IHealthChecksBuilder.
+    /// </summary>
     internal static class RabbitMqConnectionHealthCheck
     {
+        /// <summary>
+        /// Adds a health check for RabbitMQ message broker to the IHealthChecksBuilder.
+        /// </summary>
+        /// <param name="healthChecksBuilder">The IHealthChecksBuilder instance to add the health check to.</param>
+        /// <returns>The IHealthChecksBuilder instance with the added RabbitMQ health check.</returns>
         internal static IHealthChecksBuilder AddRabbitMqCheck(this IHealthChecksBuilder healthChecksBuilder)
         {
             healthChecksBuilder.AddRabbitMQ(
