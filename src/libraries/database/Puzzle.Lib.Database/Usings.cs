@@ -11,6 +11,7 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using Puzzle.Lib.Database.Abstract;
 global using Puzzle.Lib.Database.Concrete;
+global using Puzzle.Lib.Database.Entities;
 global using Puzzle.Lib.Database.Infrastructure.Constants;
 global using Puzzle.Lib.Database.Infrastructure.Extensions;
 global using Puzzle.Lib.Database.Infrastructure.Models;

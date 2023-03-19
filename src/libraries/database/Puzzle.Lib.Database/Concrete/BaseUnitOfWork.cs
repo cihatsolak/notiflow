@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Concrete
+﻿using Puzzle.Lib.Database.Interfaces.UnitOfWorks;
+
+namespace Puzzle.Lib.Database.Concrete
 {
     public class BaseUnitOfWork : IBaseUnitOfWork
     {
@@ -28,22 +30,21 @@
         {
             try
             {
-                foreach (var entityEntry in _context.ChangeTracker.Entries())
-                {
-                    if (entityEntry.Entity is BaseHistoricalEntity baseHistoricalEntity)
-                    {
-                        switch (entityEntry.State)
-                        {
-                            case EntityState.Added:
-                                _context.Entry(baseHistoricalEntity).Property(p => p.UpdatedDate).IsModified = false;
-                                baseHistoricalEntity.CreatedDate = DateTime.Now;
-                                break;
+                var baseHistoricalEntryEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();
 
-                            case EntityState.Modified:
-                                _context.Entry(baseHistoricalEntity).Property(p => p.CreatedDate).IsModified = false;
-                                baseHistoricalEntity.UpdatedDate = DateTime.Now;
-                                break;
-                        }
+                foreach (var baseHistoricalEntity in baseHistoricalEntryEntities)
+                {
+                    switch (baseHistoricalEntity.State)
+                    {
+                        case EntityState.Added:
+                            _context.Entry(baseHistoricalEntity.Entity).Property(p => p.UpdatedDate).IsModified = false;
+                            baseHistoricalEntity.Entity.CreatedDate = DateTime.Now;
+                            break;
+
+                        case EntityState.Modified:
+                            _context.Entry(baseHistoricalEntity.Entity).Property(p => p.CreatedDate).IsModified = false;
+                            baseHistoricalEntity.Entity.UpdatedDate = DateTime.Now;
+                            break;
                     }
                 }
 

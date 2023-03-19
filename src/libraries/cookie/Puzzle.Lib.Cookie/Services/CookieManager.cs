@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Cookie.Services
 {
-    public sealed class CookieManager : ICookieService
+    internal sealed class CookieManager : ICookieService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly CookieOptions _cookieOptions;
@@ -18,6 +18,8 @@
 
         public TData Get<TData>(string key)
         {
+            ArgumentException.ThrowIfNullOrEmpty(key);
+
             string cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[key];
             if (string.IsNullOrWhiteSpace(cookieValue))
                 return default;
@@ -27,9 +29,7 @@
 
         public void Set<TData>(string key, TData value)
         {
-            if (string.IsNullOrWhiteSpace(key))
-                throw new ArgumentNullException(nameof(key), ExceptionMessage.CookieKeyRequired);
-
+            ArgumentException.ThrowIfNullOrEmpty(key);
             ArgumentNullException.ThrowIfNull(value);
 
             _httpContextAccessor.HttpContext.Response.Cookies.Append(key, JsonSerializer.Serialize(value), _cookieOptions);
@@ -37,11 +37,8 @@
 
         public void Set<TData>(string key, TData value, DateTime expireDate)
         {
-            if (string.IsNullOrWhiteSpace(key))
-                throw new ArgumentNullException(nameof(key), ExceptionMessage.CookieKeyRequired);
-
+            ArgumentException.ThrowIfNullOrEmpty(key);
             ArgumentNullException.ThrowIfNull(value);
-            ArgumentNullException.ThrowIfNull(expireDate);
 
             _cookieOptions.Expires = expireDate;
             _httpContextAccessor.HttpContext.Response.Cookies.Append(key, JsonSerializer.Serialize(value), _cookieOptions);
@@ -49,8 +46,7 @@
 
         public void Remove(string key)
         {
-            if (string.IsNullOrWhiteSpace(key))
-                throw new ArgumentNullException(nameof(key), ExceptionMessage.CookieKeyRequired);
+            ArgumentException.ThrowIfNullOrEmpty(key);
 
             _httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
         }
