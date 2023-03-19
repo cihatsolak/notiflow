@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Concrete
+﻿using Puzzle.Lib.Database.Abstract;
+
+namespace Puzzle.Lib.Database.Concrete
 {
     public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
@@ -59,7 +61,7 @@
         int pageSize,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
         Expression<Func<TEntity, bool>> filter = null,
-        CancellationToken cancellationToken = default,        
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
         {
             var entityTable = TableNoTracking;
@@ -110,7 +112,7 @@
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
-            Expression<Func<TEntity, bool>> filter, 
+            Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
             CancellationToken cancellationToken = default,
             params string[] includeProperties)
@@ -130,7 +132,7 @@
         }
 
         public virtual async Task<TEntity> GetAsync(
-            Expression<Func<TEntity, bool>> filter, 
+            Expression<Func<TEntity, bool>> filter,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -146,8 +148,8 @@
         }
 
         public virtual async Task<TEntity> GetAsync(
-            Expression<Func<TEntity, bool>> filter, 
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, 
+            Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -166,13 +168,14 @@
 
         public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            ValidateEntity(entity);
+            ArgumentNullException.ThrowIfNull(entity);
             await _entities.AddAsync(entity, cancellationToken);
         }
 
         public virtual async Task InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            ValidateEntities(entities);
+            ArgumentNullException.ThrowIfNull(entities);
+
             await _entities.AddRangeAsync(entities, cancellationToken);
         }
 
@@ -180,15 +183,12 @@
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            if (_context.Entry(entity).State == EntityState.Detached)
-                _entities.Attach(entity);
-
             _entities.Update(entity);
         }
 
         public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
-            ValidateEntities(entities);
+            ArgumentNullException.ThrowIfNull(entities);
 
             _entities.UpdateRange(entities);
         }
@@ -202,9 +202,6 @@
                 throw new ArgumentNullException(nameof(propertyName));
 
             entity.GetType().GetProperty(propertyName).SetValue(entity, true);
-
-            if (_context.Entry(entity).State == EntityState.Detached)
-                _entities.Attach(entity);
 
             _entities.Update(entity);
         }
@@ -222,9 +219,6 @@
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            if (_context.Entry(entity).State == EntityState.Detached)
-                _entities.Attach(entity);
-
             _entities.Remove(entity);
         }
 
@@ -235,7 +229,8 @@
 
         public virtual void DeleteRange(IEnumerable<TEntity> entities)
         {
-            ValidateEntities(entities);
+            ArgumentNullException.ThrowIfNull(entities);
+
             _entities.RemoveRange(entities);
         }
 
@@ -247,17 +242,5 @@
         public IQueryable<TEntity> Table => _entities;
         public IQueryable<TEntity> TableNoTracking => _entities.AsNoTracking();
         private IQueryable<TEntity> TableTracking(bool disableTracking) => disableTracking ? TableNoTracking : Table;
-
-        private static void ValidateEntity(TEntity entity)
-        {
-            if (entity is null)
-                throw new ArgumentNullException(nameof(entity));
-        }
-
-        private static void ValidateEntities(IEnumerable<TEntity> entities)
-        {
-            if (!(entities?.Any() ?? false))
-                throw new ArgumentNullException(nameof(entities));
-        }
     }
 }
