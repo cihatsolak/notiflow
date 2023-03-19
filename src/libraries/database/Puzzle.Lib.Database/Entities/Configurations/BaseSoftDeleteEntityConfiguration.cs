@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Configurations
+﻿namespace Puzzle.Lib.Database.Entities.Configurations
 {
     public class BaseSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseSoftDeleteEntity
     {

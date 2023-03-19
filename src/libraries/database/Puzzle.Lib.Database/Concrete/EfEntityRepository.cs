@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Abstract;
-
-namespace Puzzle.Lib.Database.Concrete
+﻿namespace Puzzle.Lib.Database.Concrete
 {
     public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
