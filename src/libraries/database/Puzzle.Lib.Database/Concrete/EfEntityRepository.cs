@@ -11,22 +11,18 @@
             _entities = context.Set<TEntity>();
         }
 
-        public async Task<PagedResult<TEntity>> GetPageAsync(
+        public virtual async Task<PagedResult<TEntity>> GetPageAsync(
             int pageIndex,
             int pageSize,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-            Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default)
         {
-            var entityTable = TableNoTracking;
+            var query = TableNoTracking;
 
-            if (filter is not null)
-                entityTable = entityTable.Where(filter);
-
-            int totalRecords = await entityTable.CountAsync(cancellationToken);
+            int totalRecords = await query.CountAsync(cancellationToken);
 
             if (orderBy is not null)
-                entityTable = orderBy(entityTable);
+                query = orderBy(query);
 
             int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
 
@@ -39,7 +35,7 @@
                 pageIndex = totalPages;
             }
 
-            var entities = await entityTable
+            var entities = await query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
@@ -54,26 +50,22 @@
             };
         }
 
-        public async Task<PagedResult<TEntity>> GetPageAsync(
-        int pageIndex,
-        int pageSize,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        Expression<Func<TEntity, bool>> filter = null,
-        CancellationToken cancellationToken = default,
-        params Expression<Func<TEntity, object>>[] includes)
+        public virtual async Task<PagedResult<TEntity>> GetPageAsync(
+            int pageIndex,
+            int pageSize,
+            Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            CancellationToken cancellationToken = default)
         {
-            var entityTable = TableNoTracking;
+            var query = TableNoTracking;
 
             if (filter is not null)
-                entityTable = entityTable.Where(filter);
+                query = query.Where(filter);
 
-            if (includes is not null)
-                entityTable = includes.Aggregate(entityTable, (current, include) => current.Include(include));
-
-            int totalRecords = await entityTable.CountAsync(cancellationToken);
+            int totalRecords = await query.CountAsync(cancellationToken);
 
             if (orderBy is not null)
-                entityTable = orderBy(entityTable);
+                query = orderBy(query);
 
             int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
 
@@ -86,7 +78,54 @@
                 pageIndex = totalPages;
             }
 
-            var entities = await entityTable
+            var entities = await query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return new PagedResult<TEntity>
+            {
+                Items = entities,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages
+            };
+        }
+
+        public virtual async Task<PagedResult<TEntity>> GetPageAsync(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>> filter,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+        CancellationToken cancellationToken = default,
+        params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = TableNoTrackingWithIdentityResolution;
+            
+            if (filter is not null)
+                query = query.Where(filter);
+
+            if (includes is not null)
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+            int totalRecords = await query.CountAsync(cancellationToken);
+
+            if (orderBy is not null)
+                query = orderBy(query);
+
+            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            else if (pageIndex > totalPages)
+            {
+                pageIndex = totalPages;
+            }
+
+            var entities = await query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
@@ -103,10 +142,26 @@
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
             Expression<Func<TEntity, bool>> filter,
-            bool disableTracking = true,
+            bool stopTracking = true,
             CancellationToken cancellationToken = default)
         {
-            return await TableTracking(disableTracking).Where(filter).ToListAsync(cancellationToken);
+            return await SelectEntities(stopTracking).Where(filter).ToListAsync(cancellationToken);
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> query = Table;
+
+            if (filter is not null)
+                query = query.Where(filter);
+
+            if (orderBy is not null)
+                query = orderBy(query);
+
+            return await query.ToListAsync(cancellationToken);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
@@ -115,48 +170,49 @@
             CancellationToken cancellationToken = default,
             params string[] includeProperties)
         {
-            IQueryable<TEntity> entityTable = Table;
+            IQueryable<TEntity> query = TableNoTrackingWithIdentityResolution;
 
             if (filter is not null)
-                entityTable = entityTable.Where(filter);
+                query = query.Where(filter);
 
             if (orderBy is not null)
-                entityTable = orderBy(entityTable);
+                query = orderBy(query);
 
             if (includeProperties is not null)
-                entityTable.Includes(includeProperties);
+                query.Includes(includeProperties);
 
-            return await entityTable.ToListAsync(cancellationToken);
+            return await query.ToListAsync(cancellationToken);
         }
 
         public virtual async Task<TEntity> GetAsync(
             Expression<Func<TEntity, bool>> filter,
-            bool disableTracking = true,
+            bool stopTracking = true,
             CancellationToken cancellationToken = default)
         {
-            return await TableTracking(disableTracking).FirstOrDefaultAsync(filter, cancellationToken);
-        }
-
-        public virtual async Task<TEntity> GetAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken cancellationToken = default,
-            params string[] includes)
-        {
-            return await Table.Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
+            return await SelectEntities(stopTracking).FirstOrDefaultAsync(filter, cancellationToken);
         }
 
         public virtual async Task<TEntity> GetAsync(
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-            bool disableTracking = true,
+            bool stopTracking = true,
             CancellationToken cancellationToken = default)
         {
-            IQueryable<TEntity> entityTable = TableTracking(disableTracking);
+            IQueryable<TEntity> query = SelectEntities(stopTracking);
 
             if (orderBy is not null)
-                entityTable = orderBy(entityTable);
+                query = orderBy(query);
 
-            return await entityTable.FirstOrDefaultAsync(filter, cancellationToken);
+            return await query.FirstOrDefaultAsync(filter, cancellationToken);
+        }
+
+        public virtual async Task<TEntity> GetAsync(
+            Expression<Func<TEntity, bool>> filter,
+            bool stopTracking = true,
+            CancellationToken cancellationToken = default,
+            params string[] includes)
+        {
+            return await SelectRelationEntities(stopTracking).Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
         }
 
         public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default)
@@ -170,7 +226,7 @@
             await _entities.AddAsync(entity, cancellationToken);
         }
 
-        public virtual async Task InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(entities);
 
@@ -184,14 +240,14 @@
             _entities.Update(entity);
         }
 
-        public virtual void UpdateRange(IEnumerable<TEntity> entities)
+        public virtual void Update(IEnumerable<TEntity> entities)
         {
             ArgumentNullException.ThrowIfNull(entities);
 
             _entities.UpdateRange(entities);
         }
 
-        public void DeleteByPropertyName(TEntity entity, string propertyName)
+        public virtual void DeleteByPropertyName(TEntity entity, string propertyName)
         {
             ArgumentNullException.ThrowIfNull(entity);
             ArgumentException.ThrowIfNullOrEmpty(propertyName);
@@ -239,6 +295,9 @@
 
         public IQueryable<TEntity> Table => _entities;
         public IQueryable<TEntity> TableNoTracking => _entities.AsNoTracking();
-        private IQueryable<TEntity> TableTracking(bool disableTracking) => disableTracking ? TableNoTracking : Table;
+        public IQueryable<TEntity> TableNoTrackingWithIdentityResolution => _entities.AsNoTrackingWithIdentityResolution();
+
+        private IQueryable<TEntity> SelectEntities(bool stopTracking) => stopTracking ? TableNoTracking : Table;
+        private IQueryable<TEntity> SelectRelationEntities(bool stopTracking) => stopTracking ? TableNoTrackingWithIdentityResolution : Table;
     }
 }
