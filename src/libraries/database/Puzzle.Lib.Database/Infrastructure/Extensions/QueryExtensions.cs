@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Infrastructure.Extensions
+﻿using Puzzle.Lib.Database.Interfaces.Entities;
+
+namespace Puzzle.Lib.Database.Infrastructure.Extensions
 {
     public static class QueryExtensions
     {

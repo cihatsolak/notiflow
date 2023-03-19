@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Infrastructure.Models
+﻿using Puzzle.Lib.Database.Interfaces.Entities;
+
+namespace Puzzle.Lib.Database.Infrastructure.Models
 {
     public class PagedResult<TEntity> where TEntity : class, IEntity, new()
     {

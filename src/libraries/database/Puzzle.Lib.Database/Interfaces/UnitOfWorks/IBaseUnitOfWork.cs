@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Abstract
+﻿namespace Puzzle.Lib.Database.Interfaces.UnitOfWorks
 {
     /// <summary>
     /// Represents a base unit of work <see cref="DbContext"/>

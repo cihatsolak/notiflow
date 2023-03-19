@@ -1,11 +1,15 @@
-﻿namespace Puzzle.Lib.Database.Concrete
+﻿using Puzzle.Lib.Database.Interfaces.Entities;
+using Puzzle.Lib.Database.Interfaces.Repositories.OldVersion;
+
+namespace Puzzle.Lib.Database.Concrete.Repositories.OldVersion
 {
-    public class EfEntityRepository<TEntity> : IEfEntityRepository<TEntity> where TEntity : class, IEntity, new()
+    [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
+    public class EfEntityRepositoryOld<TEntity> : IEfEntityRepositoryOld<TEntity> where TEntity : class, IEntity, new()
     {
         protected readonly DbContext _context;
         protected readonly DbSet<TEntity> _entities;
 
-        public EfEntityRepository(DbContext context)
+        public EfEntityRepositoryOld(DbContext context)
         {
             _context = context;
             _entities = context.Set<TEntity>();
@@ -102,7 +106,7 @@
         params Expression<Func<TEntity, object>>[] includes)
         {
             var query = TableNoTrackingWithIdentityResolution;
-            
+
             if (filter is not null)
                 query = query.Where(filter);
 
