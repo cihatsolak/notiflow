@@ -251,17 +251,9 @@ namespace Puzzle.Lib.Database.Concrete.Repositories.OldVersion
             _entities.UpdateRange(entities);
         }
 
-        public virtual void DeleteByPropertyName(TEntity entity, string propertyName)
+        public virtual void Delete()
         {
-            ArgumentNullException.ThrowIfNull(entity);
-            ArgumentException.ThrowIfNullOrEmpty(propertyName);
-
-            if (entity.GetType().GetProperty(propertyName) is null)
-                throw new ArgumentNullException(nameof(propertyName));
-
-            entity.GetType().GetProperty(propertyName).SetValue(entity, true);
-
-            _entities.Update(entity);
+            _entities.RemoveRange(_entities.AsQueryable());
         }
 
         public virtual void Delete(int id)
@@ -280,21 +272,29 @@ namespace Puzzle.Lib.Database.Concrete.Repositories.OldVersion
             _entities.Remove(entity);
         }
 
-        public virtual void DeleteRange()
-        {
-            _entities.RemoveRange(_entities.AsQueryable());
-        }
-
-        public virtual void DeleteRange(IEnumerable<TEntity> entities)
+        public virtual void Delete(IEnumerable<TEntity> entities)
         {
             ArgumentNullException.ThrowIfNull(entities);
 
             _entities.RemoveRange(entities);
         }
 
-        public virtual void DeleteRange(Expression<Func<TEntity, bool>> predicate)
+        public virtual void Delete(Expression<Func<TEntity, bool>> predicate)
         {
             _entities.RemoveRange(_entities.Where(predicate));
+        }
+
+        public virtual void DeleteByPropertyName(TEntity entity, string propertyName)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            ArgumentException.ThrowIfNullOrEmpty(propertyName);
+
+            if (entity.GetType().GetProperty(propertyName) is null)
+                throw new ArgumentNullException(nameof(propertyName));
+
+            entity.GetType().GetProperty(propertyName).SetValue(entity, true);
+
+            _entities.Update(entity);
         }
 
         public IQueryable<TEntity> Table => _entities;

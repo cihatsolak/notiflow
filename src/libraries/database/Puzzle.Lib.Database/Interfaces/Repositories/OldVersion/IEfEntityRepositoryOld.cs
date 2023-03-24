@@ -185,12 +185,9 @@ namespace Puzzle.Lib.Database.Interfaces.Repositories.OldVersion
         void Update(IEnumerable<TEntity> entities);
 
         /// <summary>
-        /// Deletes the entity by the specified property name.
+        /// Deletes all entities in the database of the current type.
         /// </summary>
-        /// <param name="entity">The entity to delete.</param>
-        /// <param name="propertyName">The name of the property to use for the delete operation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the entity or property name is null.</exception>
-        void DeleteByPropertyName(TEntity entity, string propertyName);
+        void Delete();
 
         /// <summary>
         /// Deletes the entity with the specified ID.
@@ -207,23 +204,26 @@ namespace Puzzle.Lib.Database.Interfaces.Repositories.OldVersion
         void Delete(TEntity entity);
 
         /// <summary>
-        /// Deletes all entities in the database of the current type.
-        /// </summary>
-        void DeleteRange();
-
-        /// <summary>
         /// Deletes the specified entities from the database.
         /// </summary>
         /// <param name="entities">The entities to be deleted.</param>
         /// <exception cref="ArgumentNullException">Thrown when the input entities are null.</exception>
-        void DeleteRange(IEnumerable<TEntity> entities);
+        void Delete(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Deletes all entities that match the specified predicate from the database.
         /// </summary>
         /// <param name="predicate">The predicate to filter entities to be deleted.</param>
         /// <exception cref="ArgumentNullException">Thrown when the input predicate is null.</exception>
-        void DeleteRange(Expression<Func<TEntity, bool>> predicate);
+        void Delete(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// Deletes the entity by the specified property name.
+        /// </summary>
+        /// <param name="entity">The entity to delete.</param>
+        /// <param name="propertyName">The name of the property to use for the delete operation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the entity or property name is null.</exception>
+        void DeleteByPropertyName(TEntity entity, string propertyName);
 
         /// <summary>
         /// Gets the queryable representation of the entity set with change tracking enabled.
