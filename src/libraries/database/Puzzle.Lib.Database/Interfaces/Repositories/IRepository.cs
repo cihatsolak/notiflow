@@ -1,12 +1,15 @@
 ﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class, IEntity, new()
+    /// <summary>
+    /// Represents a generic repository for working with entities of type TEntity.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity that the repository works with.</typeparam>
+    /// <remarks>
+    /// This interface defines methods for working with entities, such as adding, updating, and deleting them.
+    /// The 'out' modifier on the TEntity type parameter indicates that this is a covariant interface, meaning that it can be safely used as a read-only interface for TEntity objects.
+    /// </remarks>
+    public interface IRepository<out TEntity> where TEntity : class, IEntity
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        DbSet<TEntity> DbSet { get; }
-
         /// <summary>
         /// Gets the queryable representation of the entity set with change tracking enabled.
         /// </summary>

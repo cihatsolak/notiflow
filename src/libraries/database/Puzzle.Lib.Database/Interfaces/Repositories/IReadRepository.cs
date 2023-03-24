@@ -1,5 +1,12 @@
 ﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
 {
+    /// <summary>
+    /// Represents a repository for reading entities of type TEntity.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity to read.</typeparam>
+    /// <remarks>
+    /// This interface extends the IRepository<TEntity> interface and adds methods for reading entities without modifying them.
+    /// </remarks>
     public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
     {
         /// <summary>
