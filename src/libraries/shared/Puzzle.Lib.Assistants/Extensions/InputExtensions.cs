@@ -1,10 +1,21 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for input related operations.
+    /// </summary>
     public static class InputExtensions
     {
-        public static string ToClearUnnecessaryCharactersInNumber(this string number)
+        /// <summary>
+        /// Removes unnecessary characters from the given phone number string and returns the cleaned version.
+        /// </summary>
+        /// <param name="phoneNumber">The phone number string to be cleaned.</param>
+        /// <returns>The cleaned phone number string without unnecessary characters.</returns>
+        /// <exception cref="ArgumentException">Thrown when the given phone number string is null or empty.</exception>
+        public static string ToCleanPhoneNumber(this string phoneNumber)
         {
-            return number.Replace("(", string.Empty).Replace(")", string.Empty).Replace("-", string.Empty).Replace(" ", string.Empty);
+            ArgumentException.ThrowIfNullOrEmpty(phoneNumber);
+
+            return phoneNumber.Replace("(", string.Empty).Replace(")", string.Empty).Replace("-", string.Empty).Replace(" ", string.Empty);
         }
     }
 }

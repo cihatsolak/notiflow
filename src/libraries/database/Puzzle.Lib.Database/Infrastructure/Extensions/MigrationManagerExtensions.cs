@@ -19,7 +19,7 @@
             IServiceProvider serviceProvider = asyncServiceScope.ServiceProvider;
 
             IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-            if (webHostEnvironment.IsLiveEnvironment())
+            if (webHostEnvironment.IsProduction())
                 return;
 
             ILogger logger = Log.ForContext(typeof(MigrationManagerExtensions));

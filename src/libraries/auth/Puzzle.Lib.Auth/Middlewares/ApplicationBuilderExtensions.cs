@@ -12,10 +12,7 @@
         /// <returns>The <see cref="IApplicationBuilder"/> instance with middleware added.</returns>
         public static IApplicationBuilder UseAuth(this IApplicationBuilder app)
         {
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            return app;
+            return app.UseAuthentication().UseAuthorization();
         }
     }
 }

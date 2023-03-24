@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Constants
+﻿namespace Puzzle.Lib.Http.Infrastructure.Constants
 {
     /// <summary>
     /// A static class containing constant values for commonly used HTTP header keys.
