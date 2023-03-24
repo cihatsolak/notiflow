@@ -44,15 +44,5 @@
         /// Gets or sets the path to the JSON node where the response status is located.
         /// </summary>
         public string ResponsePath { get; init; }
-
-        /// <summary>
-        /// Gets or sets the URL to view the endpoint in a browser.
-        /// </summary>
-        public string ViewUrl { get; init; }
-
-        /// <summary>
-        /// Gets or sets the path to the custom CSS file.
-        /// </summary>
-        public string CustomCssPath { get; init; }
     }
 }
