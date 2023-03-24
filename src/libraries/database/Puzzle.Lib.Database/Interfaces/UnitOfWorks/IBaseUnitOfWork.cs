@@ -1,26 +1,25 @@
 ﻿namespace Puzzle.Lib.Database.Interfaces.UnitOfWorks
 {
     /// <summary>
-    /// Represents a base unit of work <see cref="DbContext"/>
+    /// Represents a base interface for a unit of work that manages transactions and saves changes to the database.
     /// </summary>
+    /// <remarks>
+    /// This interface defines two asynchronous methods for saving changes to the database: SaveChangesAsync and SaveChangesShadowAsync.
+    /// </remarks>
     public interface IBaseUnitOfWork
     {
         /// <summary>
-        /// Tracked changes are added to the database, updated or deleted
+        /// Asynchronously saves changes to the database.
         /// </summary>
-        /// <remarks>method that can be overridden</remarks>
-        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
-        /// <returns>number of affected entities</returns>
-        /// <exception cref="DatabaseOperationException">thrown if database operation is not successful</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+        /// <returns>A task representing the asynchronous save operation, which returns the number of objects written to the database.</returns>
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Tracked changes are added to the database, updated or deleted. If the entity has inherited from the base historical entity, the corresponding values are added/updated by ef core.
+        /// Asynchronously saves changes to a shadow database for auditing purposes.
         /// </summary>
-        /// <remarks>method that can be overridden</remarks>
-        /// <param name="cancellationToken">token to cancel asynchronous operation</param>
-        /// <returns>number of affected entities</returns>
-        /// <exception cref="DatabaseOperationException">thrown if database operation is not successful</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+        /// <returns>A task representing the asynchronous save operation, which returns the number of objects written to the shadow database.</returns>
         Task<int> SaveChangesShadowAsync(CancellationToken cancellationToken = default);
     }
 }

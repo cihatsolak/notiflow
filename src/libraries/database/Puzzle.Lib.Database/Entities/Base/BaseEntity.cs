@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Interfaces.Entities;
-
-namespace Puzzle.Lib.Database.Entities
+﻿namespace Puzzle.Lib.Database.Entities.Base
 {
     public abstract class BaseEntity : IEntity
     {

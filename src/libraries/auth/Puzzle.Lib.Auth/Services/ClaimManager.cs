@@ -11,6 +11,7 @@
 
         public string EmailAddress => GetEmailAddress();
         public string Name => GetName();
+        public string Surname => GetSurname();
         public int UserId => GetUserId();
         public string Role => GetRole();
         public List<string> Roles => GetRoles();
@@ -18,10 +19,12 @@
         public List<string> Audiences => GetAudiences();
         public string Audience => GetAudience();
         public string Username => GetUsername();
+        public DateTime Iat => GetIat();
+        public DateTime BirthDate => GetBirthDate();
 
         private string GetEmailAddress()
         {
-            string emailAddress = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
+            string emailAddress = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
             if (string.IsNullOrWhiteSpace(emailAddress))
                 throw new ClaimException(ExceptionMessage.ClaimTypeEmailRequired);
 
@@ -30,16 +33,25 @@
 
         private string GetName()
         {
-            string name = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Name))?.Value;
+            string name = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Name))?.Value;
             if (string.IsNullOrWhiteSpace(name))
                 throw new ClaimException(ExceptionMessage.ClaimTypeNameRequired);
 
             return name;
         }
 
+        private string GetSurname()
+        {
+            string surname = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
+            if (string.IsNullOrWhiteSpace(surname))
+                throw new ClaimException(ExceptionMessage.ClaimTypeSurnameRequired);
+
+            return surname;
+        }
+
         private int GetUserId()
         {
-            string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
+            string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
             if (string.IsNullOrWhiteSpace(nameIdentifier))
                 throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
 
@@ -74,7 +86,7 @@
 
         private string GetJti()
         {
-            string jti = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Jti))?.Value;
+            string jti = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Jti))?.Value;
             if (string.IsNullOrWhiteSpace(jti))
                 throw new ClaimException(ExceptionMessage.ClaimTypeJtiRequired);
 
@@ -104,11 +116,29 @@
 
         private string GetUsername()
         {
-            string username = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
+            string username = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
             if (string.IsNullOrWhiteSpace(username))
                 throw new ClaimException(ExceptionMessage.ClaimTypeUsernameRequired);
 
             return username;
+        }
+
+        private DateTime GetIat()
+        {
+            string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
+            if (!DateTime.TryParse(issuedAtValue, out DateTime issuedAt))
+                throw new ClaimException(ExceptionMessage.ClaimTypeIatRequired);
+
+            return issuedAt;
+        }
+
+        private DateTime GetBirthDate()
+        {
+            string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
+            if (!DateTime.TryParse(birthDateValue, out DateTime birthDate))
+                throw new ClaimException(ExceptionMessage.ClaimTypeBirthDateRequired);
+
+            return birthDate;
         }
     }
 }

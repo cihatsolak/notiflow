@@ -1,18 +1,18 @@
 ﻿namespace Puzzle.Lib.Auth.Infrastructure.Extensions
 {
     /// <summary>
-    /// Extension methods for configure claim principal in an <see cref="ClaimsPrincipal" />.
+    /// Provides extension methods for <see cref="ClaimsPrincipal"/> class to simplify access to claims.
     /// </summary>
     public static class ClaimsPrincipalExtensions
     {
         /// <summary>
-        /// Lists claim values for claim type in claims principal
+        /// Retrieves the values of the specified claim type from the current <see cref="ClaimsPrincipal"/>.
         /// </summary>
-        /// <param name="claimsPrincipal">type of claims principal</param>
-        /// <param name="claimType">claim type</param>
-        /// <returns>filtered claim value list</returns>
-        /// <exception cref="ArgumentNullException">thrown when claims principal is null or claim type is null|empty</exception>
-        /// <exception cref="ArgumentException">thrown when claim type is empty or null</exception>
+        /// <param name="claimsPrincipal">The <see cref="ClaimsPrincipal"/> instance.</param>
+        /// <param name="claimType">The type of the claim to retrieve.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of strings containing the values of the specified claim type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="claimsPrincipal"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="claimType"/> is null or empty.</exception>
         public static IEnumerable<string> Claims(this ClaimsPrincipal claimsPrincipal, string claimType)
         {
             ArgumentNullException.ThrowIfNull(claimsPrincipal);
@@ -22,11 +22,11 @@
         }
 
         /// <summary>
-        /// Lists roles in claims principal
+        /// Retrieves the values of the "role" claim type from the current <see cref="ClaimsPrincipal"/>.
         /// </summary>
-        /// <param name="claimsPrincipal">type of claims principal</param>
-        /// <returns>role list</returns>
-        /// <exception cref="ArgumentNullException">thrown when claims principal is null</exception>
+        /// <param name="claimsPrincipal">The <see cref="ClaimsPrincipal"/> instance.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of strings containing the values of the "role" claim type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="claimsPrincipal"/> is null.</exception>
         public static IEnumerable<string> ClaimRoles(this ClaimsPrincipal claimsPrincipal)
         {
             ArgumentNullException.ThrowIfNull(claimsPrincipal);
@@ -35,11 +35,11 @@
         }
 
         /// <summary>
-        /// Lists audiences in claim principal
+        /// Retrieves the values of the "aud" claim type from the current <see cref="ClaimsPrincipal"/>.
         /// </summary>
-        /// <param name="claimsPrincipal">type of claims principal</param>
-        /// <returns>audiences list </returns>
-        /// <exception cref="ArgumentNullException">thrown when claims principal is null</exception>
+        /// <param name="claimsPrincipal">The <see cref="ClaimsPrincipal"/> instance.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of strings containing the values of the "aud" claim type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="claimsPrincipal"/> is null.</exception>
         public static IEnumerable<string> ClaimAudiences(this ClaimsPrincipal claimsPrincipal)
         {
             ArgumentNullException.ThrowIfNull(claimsPrincipal);

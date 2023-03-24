@@ -15,14 +15,10 @@
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            RedisServerSetting redisServerSetting = default;
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<RedisServerSetting>(configuration.GetRequiredSection(nameof(RedisServerSetting)));
-            services.TryAddSingleton<RedisServerSetting>(provider =>
-            {
-                redisServerSetting = provider.GetRequiredService<IOptions<RedisServerSetting>>().Value;
-                return redisServerSetting;
-            });
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(RedisServerSetting));
+            services.Configure<RedisServerSetting>(configurationSection);
+            RedisServerSetting redisServerSetting = configurationSection.Get<RedisServerSetting>();
 
             services.TryAddSingleton<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect(new ConfigurationOptions
             {

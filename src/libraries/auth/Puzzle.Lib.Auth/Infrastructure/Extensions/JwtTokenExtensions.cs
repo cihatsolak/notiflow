@@ -1,18 +1,16 @@
 ﻿namespace Puzzle.Lib.Auth.Infrastructure.Extensions
 {
     /// <summary>
-    /// Extension methods to configure the authorization token
-    /// <see cref="SymmetricSecurityKey"/>
-    /// <see cref="SigningCredentials"/>
+    /// Contains extension methods for creating and managing JWT tokens.
     /// </summary>
     public static class JwtTokenExtensions
     {
         /// <summary>
-        /// Create symmetric security key
+        /// Creates a <see cref="SecurityKey"/> instance from the provided key string.
         /// </summary>
-        /// <param name="key">private secure key</param>
-        /// <returns>type of security key</returns>
-        /// <exception cref="ArgumentNullException">thrown when key is empty or null</exception>
+        /// <param name="key">The key used to create the <see cref="SecurityKey"/> instance.</param>
+        /// <returns>A new <see cref="SecurityKey"/> instance.</returns>
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="key"/> parameter is null or empty.</exception>
         public static SecurityKey CreateSecurityKey(string key)
         {
             ArgumentException.ThrowIfNullOrEmpty(key);
@@ -21,11 +19,11 @@
         }
 
         /// <summary>
-        /// Create signing credentials
+        /// Creates a <see cref="SigningCredentials"/> instance from the provided <see cref="SecurityKey"/> instance.
         /// </summary>
-        /// <param name="securityKey">type of security key</param>
-        /// <returns>type of signing credentials</returns>
-        /// <exception cref="ArgumentNullException">thrown when security key is null</exception>
+        /// <param name="securityKey">The <see cref="SecurityKey"/> instance used to create the <see cref="SigningCredentials"/> instance.</param>
+        /// <returns>A new <see cref="SigningCredentials"/> instance.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="securityKey"/> parameter is null.</exception>
         public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey)
         {
             ArgumentNullException.ThrowIfNull(securityKey);
@@ -34,9 +32,9 @@
         }
 
         /// <summary>
-        /// Create refresh token
+        /// Creates a new refresh token string with a length of 32 bytes.
         /// </summary>
-        /// <returns>type of base 64 string</returns>
+        /// <returns>A new refresh token string.</returns>
         public static string CreateRefreshToken()
         {
             var numberByte = new byte[32];

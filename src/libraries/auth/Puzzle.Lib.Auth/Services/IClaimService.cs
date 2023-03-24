@@ -1,50 +1,68 @@
 ﻿namespace Puzzle.Lib.Auth.Services
 {
+    /// <summary>
+    /// Defines properties for retrieving various claims related to a user's identity.
+    /// </summary>
     public interface IClaimService
     {
         /// <summary>
-        /// Get email address from claim types
+        /// Gets the email address claim value of the user.
         /// </summary>
         string EmailAddress { get; }
 
         /// <summary>
-        /// Get name from claim types
+        /// Gets the name claim value of the user.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Get user id from claim types
+        /// Gets the surname claim value of the user.
+        /// </summary>
+        string Surname { get; }
+
+        /// <summary>
+        /// Gets the user id claim value of the user.
         /// </summary>
         int UserId { get; }
 
         /// <summary>
-        ///  Get role from claim types
+        /// Gets the role claim value of the user.
         /// </summary>
         string Role { get; }
 
         /// <summary>
-        ///  Get roles from claim types
+        /// Gets a list of role claim values of the user.
         /// </summary>
         List<string> Roles { get; }
 
         /// <summary>
-        ///  Get jti from claim types
+        /// Gets the JTI (JWT ID) claim value of the user.
         /// </summary>
         string Jti { get; }
 
         /// <summary>
-        ///  Get audiences from claim types
+        /// Gets a list of audience claim values of the user.
         /// </summary>
         List<string> Audiences { get; }
 
         /// <summary>
-        ///  Get audience claim types
+        /// Gets the audience claim value of the user.
         /// </summary>
         string Audience { get; }
 
         /// <summary>
-        ///  Get username claim types
+        /// Gets the username claim value of the user.
         /// </summary>
         string Username { get; }
+
+        /// <summary>
+        /// Gets the issued-at (IAT) claim value of the user.
+        /// </summary>
+        DateTime Iat { get; }
+
+        /// <summary>
+        /// Gets the birth date claim value of the user.
+        /// </summary>
+        DateTime BirthDate { get; }
     }
 }

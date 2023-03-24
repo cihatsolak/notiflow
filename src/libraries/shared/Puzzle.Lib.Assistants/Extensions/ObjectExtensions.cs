@@ -67,6 +67,11 @@
             return value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).ToDictionary(prop => prop.Name, prop => prop.GetValue(value, null).ToString());
         }
 
+        /// <summary>
+        /// Gets the generic type name of the specified type.
+        /// </summary>
+        /// <param name="type">The type to get the generic type name for.</param>
+        /// <returns>The generic type name of the specified type.</returns>
         private static string GetGenericTypeName(this Type type)
         {
             string typeName;

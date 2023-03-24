@@ -1,5 +1,8 @@
 ﻿namespace Puzzle.Lib.Cache.Services
 {
+    /// <summary>
+    /// Defines methods for interacting with Redis cache.
+    /// </summary>
     public interface IRedisService
     {
         /// <summary>
@@ -33,7 +36,7 @@
         /// </summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <returns>A task containing the retrieved fields and values from the hash.</returns>
-        Task<HashEntry[]> HashGetAllAsync(string cacheKey);
+        Task<IEnumerable<KeyValuePair<string, string>>> HashGetAllAsync(string cacheKey);
 
         /// <summary>
         /// Retrieves the value associated with the specified hash field from the hash stored at the specified cache key and deserializes it to the specified type.

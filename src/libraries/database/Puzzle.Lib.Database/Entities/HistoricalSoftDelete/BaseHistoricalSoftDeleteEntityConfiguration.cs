@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.Configurations
+﻿namespace Puzzle.Lib.Database.Entities.HistoricalSoftDelete
 {
     public class BaseHistoricalSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalSoftDeleteEntity
     {

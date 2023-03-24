@@ -1,31 +1,24 @@
 ﻿namespace Puzzle.Lib.Auth.IOC
 {
     /// <summary>
-    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// Provides extension methods to add JWT authentication and claim services to the <see cref="IServiceCollection"/> container.
     /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add jwt token for authentication and authorization
+        /// Adds JWT authentication services to the <see cref="IServiceCollection"/> container.
         /// </summary>
-        /// <remarks>It should add the necessary information to the application settings file.</remarks>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of built-in service collection interface</returns>
-        /// <seealso cref="https://jwt.io/"/>
-        /// <exception cref="ArgumentNullException">throw when the service provider cannot be built</exception>
+        /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
+        /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            JwtTokenSetting jwtTokenSetting = default;
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<JwtTokenSetting>(configuration.GetRequiredSection(nameof(JwtTokenSetting)));
-            services.TryAddSingleton<IJwtTokenSetting>(provider =>
-            {
-                jwtTokenSetting = provider.GetRequiredService<IOptions<JwtTokenSetting>>().Value;
-                return jwtTokenSetting;
-            });
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(JwtTokenSetting));
+            services.Configure<JwtTokenSetting>(configurationSection);
+            JwtTokenSetting jwtTokenSetting = configurationSection.Get<JwtTokenSetting>();
 
             services.AddAuthentication(options =>
             {
@@ -51,11 +44,10 @@
         }
 
         /// <summary>
-        /// Add claim service
+        /// Adds claim services to the <see cref="IServiceCollection"/> container.
         /// </summary>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims"/>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
+        /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddClaimService(this IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

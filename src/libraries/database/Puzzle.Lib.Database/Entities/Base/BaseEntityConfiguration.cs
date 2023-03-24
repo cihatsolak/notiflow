@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.Configurations
+﻿namespace Puzzle.Lib.Database.Entities.Base
 {
     public class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
     {

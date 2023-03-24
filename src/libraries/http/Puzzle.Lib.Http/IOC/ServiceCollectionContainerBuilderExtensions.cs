@@ -1,21 +1,19 @@
 ﻿namespace Puzzle.Lib.Http.IOC
 {
     /// <summary>
-    /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
+    /// Provides extension methods to register an HTTP REST API service to the dependency injection container.
     /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add custom http client service
+        /// Adds an HTTP REST API service to the dependency injection container.
         /// </summary>
-        /// <remarks>it is a service that contains methods suitable for rest api architecture.</remarks>
-        /// <see cref="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests"/>
-        /// <param name="services">type of built-in service collection interface</param>
-        /// <returns>type of built-in service collection interface</returns>
-        public static IServiceCollection AddHttpService(this IServiceCollection services)
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+        /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+        public static IServiceCollection AddRestApiService(this IServiceCollection services)
         {
             services.AddHttpClient();
-            services.TryAddSingleton<IHttpService, HttpManager>();
+            services.TryAddSingleton<IRestClient, RestManager>();
 
             return services;
         }
