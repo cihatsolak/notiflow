@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Interfaces.UnitOfWorks;
-
-namespace Puzzle.Lib.Database.Concrete
+﻿namespace Puzzle.Lib.Database.Concrete
 {
     public class BaseUnitOfWork : IBaseUnitOfWork
     {

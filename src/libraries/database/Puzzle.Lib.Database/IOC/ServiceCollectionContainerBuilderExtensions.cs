@@ -1,8 +1,4 @@
-﻿using Puzzle.Lib.Database.Concrete.Repositories.OldVersion;
-using Puzzle.Lib.Database.Interfaces.Repositories.OldVersion;
-using Puzzle.Lib.Database.Interfaces.UnitOfWorks;
-
-namespace Puzzle.Lib.Database.IOC
+﻿namespace Puzzle.Lib.Database.IOC
 {
     /// <summary>
     /// Extension methods for setting up MVC services in an <see cref="IServiceCollection" />.
@@ -59,7 +55,7 @@ namespace Puzzle.Lib.Database.IOC
         /// <returns>type of built-in service collection</returns>
         public static IServiceCollection AddEfEntityRepository(IServiceCollection services)
         {
-            services.TryAddScoped(typeof(IEfEntityRepositoryOld<>), typeof(EfEntityRepositoryOld<>));
+            services.TryAddScoped(typeof(IEf6EntityRepository<>), typeof(Ef6EntityRepository<>));
             services.TryAddScoped<IBaseUnitOfWork, BaseUnitOfWork>();
 
             return services;

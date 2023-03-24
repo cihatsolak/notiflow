@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Interfaces.Entities;
-
-namespace Puzzle.Lib.Database.Interfaces.Repositories
+﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
 {
     public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
     {

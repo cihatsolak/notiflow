@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.Configurations
+﻿namespace Puzzle.Lib.Database.Entities.Historical
 {
     public class BaseHistoricalEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalEntity
     {

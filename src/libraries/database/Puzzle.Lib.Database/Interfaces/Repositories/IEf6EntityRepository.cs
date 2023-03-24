@@ -1,13 +1,11 @@
-﻿using Puzzle.Lib.Database.Interfaces.Entities;
-
-namespace Puzzle.Lib.Database.Interfaces.Repositories.OldVersion
+﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
 {
     /// <summary>
     /// Provides a generic repository pattern implementation for entities that are based on Entity Framework and implements the <see cref="IEntity"/> interface.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity for which the repository is defined.</typeparam>
     [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
-    public interface IEfEntityRepositoryOld<TEntity> where TEntity : class, IEntity, new()
+    public interface IEf6EntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
         /// <summary>
         /// Retrieves a paginated list of all the entities from the database, ordered by the given sorting function.

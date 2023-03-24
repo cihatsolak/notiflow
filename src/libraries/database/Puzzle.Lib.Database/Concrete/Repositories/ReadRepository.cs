@@ -1,7 +1,4 @@
-﻿using Puzzle.Lib.Database.Interfaces.Entities;
-using Puzzle.Lib.Database.Interfaces.Repositories;
-
-namespace Puzzle.Lib.Database.Concrete.Repositories
+﻿namespace Puzzle.Lib.Database.Concrete.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
     {

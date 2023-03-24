@@ -1,6 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Entities
+﻿namespace Puzzle.Lib.Database.Entities.SoftDelete
 {
-    public abstract class BaseHistoricalSoftDeleteEntity : BaseHistoricalEntity
+    public abstract class BaseSoftDeleteEntity : BaseEntity
     {
         /// <summary>
         /// Gets or sets is deleted
