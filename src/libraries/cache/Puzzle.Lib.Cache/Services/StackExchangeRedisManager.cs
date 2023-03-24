@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Cache.Services
+﻿using Puzzle.Lib.Cache.Extensions;
+
+namespace Puzzle.Lib.Cache.Services
 {
     internal sealed class StackExchangeRedisManager : IRedisService
     {
@@ -62,7 +64,7 @@
             });
         }
 
-        public async Task<HashEntry[]> HashGetAllAsync(string cacheKey)
+        public async Task<IEnumerable<KeyValuePair<string, string>>> HashGetAllAsync(string cacheKey)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
@@ -75,7 +77,7 @@
                     return default;
                 }
 
-                return hashEntries;
+                return hashEntries.Select(hashEntry => new KeyValuePair<string, string>(hashEntry.Name, hashEntry.Value));
             });
         }
 
@@ -173,6 +175,7 @@
         public async Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            RedisArgumentException.ThrowIfNegativeNumber(start, nameof(start));
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -208,7 +211,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), null, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -226,7 +229,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -244,7 +247,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), null, true, When.Exists, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -318,7 +321,7 @@
                     return default;
                 }
 
-                var totalNumberOfDeletedKeys = await _database.KeyDeleteAsync(redisKeys, CommandFlags.DemandMaster);
+                long totalNumberOfDeletedKeys = await _database.KeyDeleteAsync(redisKeys, CommandFlags.DemandMaster);
                 if (0 >= totalNumberOfDeletedKeys)
                 {
                     Log.Error("A total of {@redisKeysCount} keys for {@searchKey} searched in Redis were found, but none of the keys could be deleted.", searchKey, redisKeys.Length);

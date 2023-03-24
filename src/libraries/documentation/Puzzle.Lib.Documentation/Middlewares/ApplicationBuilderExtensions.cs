@@ -43,8 +43,9 @@
         public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            if (serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction())
+            if (webHostEnvironment.IsProduction())
                 return app;
 
             SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;

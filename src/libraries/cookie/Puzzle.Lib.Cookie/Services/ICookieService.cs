@@ -1,5 +1,8 @@
 ﻿namespace Puzzle.Lib.Cookie.Services
 {
+    /// <summary>
+    /// Defines methods for working with HTTP cookies.
+    /// </summary>
     public interface ICookieService
     {
         /// <summary>

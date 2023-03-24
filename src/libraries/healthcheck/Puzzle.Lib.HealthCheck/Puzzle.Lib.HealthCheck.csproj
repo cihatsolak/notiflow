@@ -21,5 +21,9 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.4" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Middleware\" />
+	</ItemGroup>
 	
 </Project>
