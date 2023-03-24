@@ -16,8 +16,7 @@
             if (webHostEnvironment.EnvironmentName.Equals("Localhost"))
                 return app;
 
-            IConfiguration configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
-            HealthUISetting healthUISetting = configuration.GetRequiredSection(nameof(HealthUISetting)).Get<HealthUISetting>();
+            HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
 
             app.UseHealthChecks(healthUISetting.ResponsePath, new HealthCheckOptions
             {
@@ -47,8 +46,7 @@
             if (isLocalhost)
                 return app;
 
-            IConfiguration configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
-            HealthUISetting healthUISetting = configuration.GetRequiredSection(nameof(HealthUISetting)).Get<HealthUISetting>();
+            HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
 
             app.UseHealthChecksUI(setup =>
             {
