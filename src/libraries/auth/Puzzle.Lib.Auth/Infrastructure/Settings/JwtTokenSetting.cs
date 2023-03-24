@@ -1,15 +1,6 @@
 ﻿namespace Puzzle.Lib.Auth.Infrastructure.Settings
 {
-    public interface IJwtTokenSetting
-    {
-        List<string> Audiences { get; init; }
-        string Issuer { get; init; }
-        int AccessTokenExpiration { get; init; }
-        int RefreshTokenExpiration { get; init; }
-        string SecurityKey { get; init; }
-    }
-
-    internal sealed record JwtTokenSetting : IJwtTokenSetting
+    internal sealed record JwtTokenSetting
     {
         public List<string> Audiences { get; init; }
         public string Issuer { get; init; }

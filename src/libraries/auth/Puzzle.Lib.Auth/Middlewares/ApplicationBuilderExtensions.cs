@@ -1,15 +1,15 @@
 ﻿namespace Puzzle.Lib.Auth.Middlewares
 {
     /// <summary>
-    /// Extension methods to add authentication  and authorization capabilities to an application pipeline.
+    /// Provides extension methods to add authentication and authorization middleware to the request pipeline.
     /// </summary>
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Use middleware for authentication and authorization
+        /// Adds authentication and authorization middleware to the request pipeline.
         /// </summary>
-        /// <param name="app">type of application builder interface</param>
-        /// <returns>type of application builder interface</returns>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+        /// <returns>The <see cref="IApplicationBuilder"/> instance with middleware added.</returns>
         public static IApplicationBuilder UseAuth(this IApplicationBuilder app)
         {
             app.UseAuthentication();
