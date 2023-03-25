@@ -290,7 +290,7 @@ namespace Puzzle.Lib.Cache.Services
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.PreferReplica))
+                if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.DemandMaster))
                 {
                     Log.Warning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
                     return default;
