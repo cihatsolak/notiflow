@@ -154,5 +154,68 @@
             IList<KeyValuePair<string, string>> keyValuePairs,
             NameValueCollection nameValueCollection,
             CancellationToken cancellationToken = default) where TResponse : class, new();
+
+        /// <summary>
+        /// Sends a PUT request to the specified API endpoint with the specified parameters and returns the response as the specified type. 
+        /// </summary>
+        /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
+        /// <param name="clientName">The name of the HTTP client to use for the request.</param>
+        /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
+        /// <param name="parameters">The parameters to include in the request body.</param>
+        /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
+
+        Task<TResponse> PutApiResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            object parameters, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
+
+        /// <summary>
+        /// Sends a PUT request to the specified API endpoint with the specified parameters and headers, and returns the response as the specified type.
+        /// </summary>
+        /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
+        /// <param name="clientName">The name of the HTTP client to use for the request.</param>
+        /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
+        /// <param name="parameters">The parameters to include in the request body.</param>
+        /// <param name="nameValueCollection">The collection of headers to include in the request.</param>
+        /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
+
+        Task<TResponse> PutApiResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            object parameters, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
+
+        /// <summary>
+        /// Sends a DELETE request to the specified API endpoint and returns the response as the specified type.
+        /// </summary>
+        /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
+        /// <param name="clientName">The name of the HTTP client to use for the request.</param>
+        /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
+        /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
+
+        Task<TResponse> DeleteApiResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
+
+        /// <summary>
+        /// Sends a DELETE request to the specified API endpoint with the specified headers and returns the response as the specified type.
+        /// </summary>
+        /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
+        /// <param name="clientName">The name of the HTTP client to use for the request.</param>
+        /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
+        /// <param name="headersCollection">The collection of headers to include in the request.</param>
+        /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
+        Task<TResponse> DeleteApiResponseAsync<TResponse>(
+            string clientName, 
+            string routeUrl, 
+            NameValueCollection nameValueCollection, 
+            CancellationToken cancellationToken = default) where TResponse : class, new();
     }
 }
