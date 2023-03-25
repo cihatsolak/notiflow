@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Http.Services
 {
-    public interface IRestClient
+    public interface IRestService
     {
         /// <summary>
         /// Sends an asynchronous HTTP request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
