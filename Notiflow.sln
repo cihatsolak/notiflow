@@ -113,6 +113,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2580AF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Assistants", "src\libraries\shared\Puzzle.Lib.Assistants\Puzzle.Lib.Assistants.csproj", "{8D458AF5-C799-4B57-BF93-9615A709ED62}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logging", "logging", "{42DB1BCB-0A13-48D6-8259-155D7BFAB8D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Logging", "src\libraries\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj", "{DB468CA3-F92F-4371-9B15-5F324F8B006C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +203,10 @@ Global
 		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D458AF5-C799-4B57-BF93-9615A709ED62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB468CA3-F92F-4371-9B15-5F324F8B006C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB468CA3-F92F-4371-9B15-5F324F8B006C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB468CA3-F92F-4371-9B15-5F324F8B006C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB468CA3-F92F-4371-9B15-5F324F8B006C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,6 +255,8 @@ Global
 		{7BE7C6DC-8052-48D2-B735-8BE0DC54E478} = {EE9FE4FD-1A62-47D6-929A-44822BF75070}
 		{2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{8D458AF5-C799-4B57-BF93-9615A709ED62} = {2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B}
+		{42DB1BCB-0A13-48D6-8259-155D7BFAB8D4} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{DB468CA3-F92F-4371-9B15-5F324F8B006C} = {42DB1BCB-0A13-48D6-8259-155D7BFAB8D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

@@ -13,7 +13,7 @@
         public static IServiceCollection AddRestApiService(this IServiceCollection services)
         {
             services.AddHttpClient();
-            services.TryAddSingleton<IRestClient, RestManager>();
+            services.TryAddSingleton<IRestService, RestManager>();
 
             return services;
         }

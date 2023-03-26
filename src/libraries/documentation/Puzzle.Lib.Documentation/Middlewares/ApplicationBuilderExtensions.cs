@@ -66,10 +66,7 @@
         /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
         public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app)
         {
-            app.UseSwaggerDoc();
-            app.UseRedoclyDoc();
-
-            return app;
+            return app.UseSwaggerDoc().UseRedoclyDoc();
         }
     }
 }

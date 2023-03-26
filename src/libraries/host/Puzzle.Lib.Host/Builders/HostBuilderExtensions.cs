@@ -3,7 +3,7 @@
     /// <summary>
     /// This class provides a set of extension methods for adding additional functionality to .NET Core applications.
     /// </summary>
-    public static class HostExtension
+    public static class HostBuilderExtensions
     {
         /// <summary>
         /// Adds application configuration to the provided IHostBuilder instance by including JSON configuration files.

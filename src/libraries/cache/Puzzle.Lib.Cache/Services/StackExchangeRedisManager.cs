@@ -111,7 +111,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (!succeeded)
                 {
                     Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
-                    return succeeded;
                 }
 
                 return succeeded;
@@ -129,7 +128,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (!succeeded)
                 {
                     Log.Warning("Unable to delete data for key value {@cacheKey}.", cacheKey);
-                    return succeeded;
                 }
 
                 return succeeded;
@@ -190,6 +188,23 @@ namespace Puzzle.Lib.Cache.Services
             });
         }
 
+        public async Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            ArgumentException.ThrowIfNullOrEmpty(memberKey);
+
+            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+            {
+                bool succeeded = await _database.SortedSetRemoveAsync(cacheKey, memberKey, CommandFlags.DemandMaster);
+                if (!succeeded)
+                {
+                    Log.Warning("Could not delete member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
+                }
+
+                return succeeded;
+            });
+        }
+
         public async Task<TResponse> GetAsync<TResponse>(string cacheKey) where TResponse : class, new()
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
@@ -215,7 +230,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return succeeded;
                 }
 
                 return succeeded;
@@ -233,7 +247,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return succeeded;
                 }
 
                 return succeeded;
@@ -251,7 +264,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
-                    return succeeded;
                 }
 
                 return succeeded;
@@ -273,14 +285,13 @@ namespace Puzzle.Lib.Cache.Services
 
                 TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes((int)cacheDuration));
 
-                bool succedeed = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
-                if (!succedeed)
+                bool succeeded = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
+                if (!succeeded)
                 {
                     Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
-                    return default;
                 }
 
-                return succedeed;
+                return succeeded;
             });
         }
 
@@ -290,7 +301,7 @@ namespace Puzzle.Lib.Cache.Services
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.PreferReplica))
+                if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.DemandMaster))
                 {
                     Log.Warning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
                     return default;

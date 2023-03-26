@@ -105,6 +105,8 @@
         /// </remarks>
         Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct;
 
+        Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey);
+
         /// <summary>
         /// Gets the value of the specified key from cache as deserialized object of type TResponse.
         /// </summary>

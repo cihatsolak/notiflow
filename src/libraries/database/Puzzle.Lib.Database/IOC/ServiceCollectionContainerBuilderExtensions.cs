@@ -36,6 +36,7 @@
                     sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.FullName);
                     sqlOptions.CommandTimeout(Convert.ToInt16(TimeSpan.FromSeconds(60).TotalSeconds));
 
+
                     if (isSplitQuery)
                     {
                         sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -72,6 +73,7 @@
 
         private static void ConfigureLog(DbContextOptionsBuilder contextOptions)
         {
+            contextOptions.EnableDetailedErrors(WebHostEnvironment.IsDevEnvironment());
             contextOptions.LogTo(Log.Logger.Warning, LogLevel.Warning);
             contextOptions.EnableSensitiveDataLogging(WebHostEnvironment.IsDevEnvironment());
             contextOptions.UseLoggerFactory(LoggerFactory.Create(builder =>

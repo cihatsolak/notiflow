@@ -1,0 +1,37 @@
+﻿namespace Puzzle.Lib.Logging.Middlewares
+{
+    public sealed class CorrelationIdMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private readonly IHttpContextAccessor _httpContextAccesor;
+
+        public CorrelationIdMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccesor)
+        {
+            _next = next;
+            _httpContextAccesor = httpContextAccesor;
+        }
+
+        public async Task InvokeAsync(HttpContext httpContext)
+        {
+            string correlationId = Guid.NewGuid().ToString();
+
+            httpContext.Request.Headers.TryGetValue("x-correlation-id", out var values);
+            if (values.Any())
+            {
+                correlationId = values.First();
+            }
+
+            _httpContextAccesor.HttpContext.Request.Headers.TryAdd("x-correlation-id", correlationId);
+
+            if (!httpContext.Response.Headers.ContainsKey("x-correlation-id"))
+            {
+                httpContext.Response.Headers.Add("x-correlation-id", correlationId);
+            }
+
+            using (LogContext.PushProperty(LogPushProperties.CorrelationId, correlationId))
+            {
+                await _next(httpContext);
+            }
+        }
+    }
+}
