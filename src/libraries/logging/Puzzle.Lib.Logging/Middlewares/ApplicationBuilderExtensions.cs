@@ -57,5 +57,10 @@
 
             return app;
         }
+
+        public static IApplicationBuilder UseCustomHttpLogging(this IApplicationBuilder app)
+        {
+            return app.UseHttpLogging();
+        }
     }
 }

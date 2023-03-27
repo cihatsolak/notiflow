@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Logging.Services.Protocol;
-
-namespace Puzzle.Lib.Logging.Middlewares
+﻿namespace Puzzle.Lib.Logging.Middlewares
 {
     public sealed class IpAddressMiddleware
     {
