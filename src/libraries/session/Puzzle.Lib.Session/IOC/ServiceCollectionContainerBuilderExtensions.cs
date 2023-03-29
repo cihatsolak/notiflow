@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
-namespace Puzzle.Lib.Session.IOC
+﻿namespace Puzzle.Lib.Session.IOC
 {
+    /// <summary>
+    /// Provides extension methods for <see cref="IServiceCollection"/> to add session service functionality.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Add session service
+        /// Adds session service functionality to the specified <see cref="IServiceCollection"/>.
         /// </summary>
-        /// <seealso cref="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0"/>
-        /// <param name="services">type of built-in service collection</param>
-        /// <param name="idleTimeoutMinute">idle time out minute</param>
-        /// <returns>type of built-in service collection interface</returns>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the session service functionality to.</param>
+        /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
         public static IServiceCollection AddSessionService(this IServiceCollection services)
         {
             services.AddSession(options =>
