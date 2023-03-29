@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.Services.Protocol
+﻿namespace Puzzle.Lib.Security.Services.Protocols
 {
     public interface IProtocolService
     {
