@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{187F85CC-76F1-49FF-B381-24F15EF3F44F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation", "src\libraries\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj", "{62215138-5FA0-4D38-92E3-9EECF7CCAC32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation", "libraries\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj", "{62215138-5FA0-4D38-92E3-9EECF7CCAC32}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backoffice", "backoffice", "{FF1D23DB-6DCE-4C18-8471-355586E8245F}"
 EndProject
@@ -31,23 +31,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "performance", "performance"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{925B00F3-88F1-4586-8AC7-C79E87321181}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Performance", "src\libraries\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj", "{C0DCB7CF-C365-43F8-888C-1288470A256F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Performance", "libraries\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj", "{C0DCB7CF-C365-43F8-888C-1288470A256F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "version", "version", "{00155C6D-95FE-4CD3-9797-99A3906A9467}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Version", "src\libraries\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj", "{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Version", "libraries\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj", "{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cookie", "cookie", "{3A572FCD-08D2-4122-A042-A507A33607FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cookie", "src\libraries\cookie\Puzzle.Lib.Cookie\Puzzle.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cookie", "libraries\cookie\Puzzle.Lib.Cookie\Puzzle.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{68C8B345-22B8-4C86-B6F9-39B2DC97E252}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Http", "src\libraries\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj", "{645BD81F-ADC3-4E72-9DC3-F7E7D1C3A420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Http", "libraries\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj", "{645BD81F-ADC3-4E72-9DC3-F7E7D1C3A420}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "auth", "auth", "{EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth", "src\libraries\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj", "{7B8FEA34-3A17-4002-8320-C96AA53B276E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth", "libraries\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj", "{7B8FEA34-3A17-4002-8320-C96AA53B276E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A29D1ADE-1CAE-418D-B8EF-770A1FCD8E7A}"
 	ProjectSection(SolutionItems) = preProject
@@ -61,7 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cache", "cache", "{EB7323A1-CC71-465D-8DEF-18B14DE16BD6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cache", "src\libraries\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj", "{723A490B-8355-4B8D-B2BC-104EC67FE71C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cache", "libraries\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj", "{723A490B-8355-4B8D-B2BC-104EC67FE71C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{60633EF5-6895-46F5-9FE1-1C027E0E3012}"
 EndProject
@@ -75,51 +75,51 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Gateway", "src\gat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{681CB20C-8A02-4184-97CD-B103C48620B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Database", "src\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj", "{592E19B0-DA6C-44EF-AB33-41F9160DA425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Database", "libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj", "{592E19B0-DA6C-44EF-AB33-41F9160DA425}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "validation", "validation", "{201829B2-D089-45B1-A923-F97A8D31E287}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Validation", "src\libraries\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj", "{57421245-72D7-4638-9BC6-8AE4628E0785}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Validation", "libraries\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj", "{57421245-72D7-4638-9BC6-8AE4628E0785}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schedule", "schedule", "{185C3CF1-D126-443E-B335-DFB7750DAFB8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Hangfire", "src\libraries\schedule\Puzzle.Lib.Hangfire\Puzzle.Lib.Hangfire.csproj", "{6C604D14-7913-4C34-9370-83550F1DAF66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Hangfire", "libraries\schedule\Puzzle.Lib.Hangfire\Puzzle.Lib.Hangfire.csproj", "{6C604D14-7913-4C34-9370-83550F1DAF66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "file", "file", "{C1498836-2F4E-4243-81FC-47C5C44A3338}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.File", "src\libraries\file\Puzzle.Lib.File\Puzzle.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.File", "libraries\file\Puzzle.Lib.File\Puzzle.Lib.File.csproj", "{2A536DFA-CDAF-45A2-8101-B02527787096}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "healthcheck", "healthcheck", "{1347987F-D7A9-414F-89B2-1CE09258C71C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.HealthCheck", "src\libraries\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.HealthCheck", "libraries\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj", "{93CBDD8C-5FFC-4D80-BCA5-9F8765EDC258}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{24BC6A93-AAED-48BE-A74F-DB57A003FBC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Host", "src\libraries\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj", "{D0A192E9-F6BF-4C78-B372-4577C0435061}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Host", "libraries\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj", "{D0A192E9-F6BF-4C78-B372-4577C0435061}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "response", "response", "{366A89CB-4648-4DE3-8CD9-3D1951744C07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Response", "src\libraries\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj", "{603EDDEC-DABD-4C3A-8DBB-02985513D142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Response", "libraries\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj", "{603EDDEC-DABD-4C3A-8DBB-02985513D142}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "security", "security", "{537A222D-7E91-4C20-8C88-289AC5C4EB33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Security", "src\libraries\security\Puzzle.Lib.Security\Puzzle.Lib.Security.csproj", "{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Security", "libraries\security\Puzzle.Lib.Security\Puzzle.Lib.Security.csproj", "{C4FAB42A-B863-436E-AAE7-A1E5D59E90D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "messagebroker", "messagebroker", "{EE9FE4FD-1A62-47D6-929A-44822BF75070}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.MessageBroker", "src\libraries\messagebroker\Puzzle.Lib.MessageBroker\Puzzle.Lib.MessageBroker.csproj", "{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.MessageBroker", "libraries\messagebroker\Puzzle.Lib.MessageBroker\Puzzle.Lib.MessageBroker.csproj", "{7BE7C6DC-8052-48D2-B735-8BE0DC54E478}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Assistants", "src\libraries\shared\Puzzle.Lib.Assistants\Puzzle.Lib.Assistants.csproj", "{8D458AF5-C799-4B57-BF93-9615A709ED62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Assistants", "libraries\shared\Puzzle.Lib.Assistants\Puzzle.Lib.Assistants.csproj", "{8D458AF5-C799-4B57-BF93-9615A709ED62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logging", "logging", "{42DB1BCB-0A13-48D6-8259-155D7BFAB8D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Logging", "src\libraries\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj", "{DB468CA3-F92F-4371-9B15-5F324F8B006C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Logging", "libraries\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj", "{DB468CA3-F92F-4371-9B15-5F324F8B006C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{E7517BF8-B3F9-449A-BFA5-4AD0B036F306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Session", "src\libraries\session\Puzzle.Lib.Session\Puzzle.Lib.Session.csproj", "{5DD8502F-12E1-4702-BC86-2E1FED099468}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Session", "libraries\session\Puzzle.Lib.Session\Puzzle.Lib.Session.csproj", "{5DD8502F-12E1-4702-BC86-2E1FED099468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -220,7 +220,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D57DC945-9274-43EC-8372-953B9EB27E99} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
 		{187F85CC-76F1-49FF-B381-24F15EF3F44F} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 		{FF1D23DB-6DCE-4C18-8471-355586E8245F} = {925B00F3-88F1-4586-8AC7-C79E87321181}

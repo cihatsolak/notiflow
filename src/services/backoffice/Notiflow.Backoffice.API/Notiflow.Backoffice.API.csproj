@@ -14,8 +14,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\libraries\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
-  </ItemGroup>
-
 </Project>
