@@ -9,76 +9,76 @@
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string EmailAddress => GetEmailAddress();
+        public string Email => GetEmail();
         public string Name => GetName();
         public string Surname => GetSurname();
         public int UserId => GetUserId();
         public string Role => GetRole();
-        public List<string> Roles => GetRoles();
+        public IEnumerable<string> Roles => GetRoles();
         public string Jti => GetJti();
-        public List<string> Audiences => GetAudiences();
+        public IEnumerable<string> Audiences => GetAudiences();
         public string Audience => GetAudience();
         public string Username => GetUsername();
         public DateTime Iat => GetIat();
         public DateTime BirthDate => GetBirthDate();
 
-        private string GetEmailAddress()
+        private string GetEmail()
         {
-            string emailAddress = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
-            if (string.IsNullOrWhiteSpace(emailAddress))
-                throw new ClaimException(ExceptionMessage.ClaimTypeEmailRequired);
+            string email = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ClaimException(nameof(email));
 
-            return emailAddress;
+            return email;
         }
 
         private string GetName()
         {
             string name = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Name))?.Value;
             if (string.IsNullOrWhiteSpace(name))
-                throw new ClaimException(ExceptionMessage.ClaimTypeNameRequired);
+                throw new ClaimException(nameof(name));
 
             return name;
         }
 
         private string GetSurname()
         {
-            string surname = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
-            if (string.IsNullOrWhiteSpace(surname))
-                throw new ClaimException(ExceptionMessage.ClaimTypeSurnameRequired);
+            string familyName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
+            if (string.IsNullOrWhiteSpace(familyName))
+                throw new ClaimException(nameof(familyName));
 
-            return surname;
+            return familyName;
         }
 
         private int GetUserId()
         {
             string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
             if (string.IsNullOrWhiteSpace(nameIdentifier))
-                throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
+                throw new ClaimException(nameof(nameIdentifier));
 
             bool result = int.TryParse(nameIdentifier, out int userId);
             if (!result || 0 >= userId)
-                throw new ClaimException(ExceptionMessage.ClaimTypeNameIdentifierRequired);
+                throw new ClaimException(nameof(nameIdentifier));
 
             return userId;
         }
 
         private string GetRole()
         {
-            string roleName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
-            if (string.IsNullOrWhiteSpace(roleName))
-                throw new ClaimException(ExceptionMessage.ClaimTypeRoleRequired);
+            string role = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
+            if (string.IsNullOrWhiteSpace(role))
+                throw new ClaimException(nameof(role));
 
-            return roleName;
+            return role;
         }
 
-        private List<string> GetRoles()
+        private IEnumerable<string> GetRoles()
         {
-            List<string> roles = _httpContextAccessor.HttpContext.User.Claims
+            IEnumerable<string> roles = _httpContextAccessor.HttpContext.User.Claims
                     .Where(p => p.Type.Equals(ClaimTypes.Role))
-                    .Select(p => p.Value).ToList();
+                    .Select(p => p.Value);
 
             if (roles is null || !roles.Any())
-                throw new ClaimException(ExceptionMessage.ClaimTypeRoleRequired);
+                throw new ClaimException(nameof(roles));
 
             return roles;
         }
@@ -88,19 +88,19 @@
         {
             string jti = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Jti))?.Value;
             if (string.IsNullOrWhiteSpace(jti))
-                throw new ClaimException(ExceptionMessage.ClaimTypeJtiRequired);
+                throw new ClaimException(nameof(jti));
 
             return jti;
         }
 
-        private List<string> GetAudiences()
+        private IEnumerable<string> GetAudiences()
         {
-            List<string> audiences = _httpContextAccessor.HttpContext.User.Claims
+            IEnumerable<string> audiences = _httpContextAccessor.HttpContext.User.Claims
                     .Where(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))
-                    .Select(p => p.Value).ToList();
+                    .Select(p => p.Value);
 
             if (audiences is null || !audiences.Any())
-                throw new ClaimException(ExceptionMessage.ClaimTypeAudienceRequired);
+                throw new ClaimException(nameof(audiences));
 
             return audiences;
         }
@@ -109,25 +109,25 @@
         {
             string audience = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))?.Value;
             if (string.IsNullOrWhiteSpace(audience))
-                throw new ClaimException(ExceptionMessage.ClaimTypeAudienceRequired);
+                throw new ClaimException(nameof(audience));
 
             return audience;
         }
 
         private string GetUsername()
         {
-            string username = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
-            if (string.IsNullOrWhiteSpace(username))
-                throw new ClaimException(ExceptionMessage.ClaimTypeUsernameRequired);
+            string givenName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
+            if (string.IsNullOrWhiteSpace(givenName))
+                throw new ClaimException(nameof(givenName));
 
-            return username;
+            return givenName;
         }
 
         private DateTime GetIat()
         {
             string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
             if (!DateTime.TryParse(issuedAtValue, out DateTime issuedAt))
-                throw new ClaimException(ExceptionMessage.ClaimTypeIatRequired);
+                throw new ClaimException(nameof(issuedAtValue));
 
             return issuedAt;
         }
@@ -136,7 +136,7 @@
         {
             string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
             if (!DateTime.TryParse(birthDateValue, out DateTime birthDate))
-                throw new ClaimException(ExceptionMessage.ClaimTypeBirthDateRequired);
+                throw new ClaimException(nameof(birthDate));
 
             return birthDate;
         }

@@ -30,7 +30,7 @@
                 configureOptions.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidIssuer = jwtTokenSetting.Issuer,
-                    ValidAudience = jwtTokenSetting.Audiences[0],
+                    ValidAudience = jwtTokenSetting.Audiences.First(),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenSetting.SecurityKey)),
                     ValidateIssuer = true,
                     ValidateAudience = true,

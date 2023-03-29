@@ -7,7 +7,7 @@
         {
         }
 
-        public ClaimException(string message) : base(message)
+        public ClaimException(string parameterName) : base($"{parameterName} claim type not found.")
         {
         }
 

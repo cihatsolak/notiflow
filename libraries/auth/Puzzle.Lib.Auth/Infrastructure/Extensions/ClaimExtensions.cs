@@ -91,7 +91,7 @@
             ArgumentNullException.ThrowIfNull(claims);
             ArgumentNullException.ThrowIfNull(roles);
 
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role, ClaimValueTypes.String)));
         }
 
         /// <summary>
@@ -126,12 +126,12 @@
         /// <param name="claims">The collection of claims to which the new claims will be added.</param>
         /// <param name="audiences">The list of audiences to be added as new claims.</param>
         /// <exception cref="ArgumentNullException">Thrown when the 'claims' parameter is null or when the 'audiences' parameter is null.</exception>
-        public static void AddAudiences(this List<Claim> claims, List<string> audiences)
+        public static void AddAudiences(this List<Claim> claims, IEnumerable<string> audiences)
         {
             ArgumentNullException.ThrowIfNull(claims);
             ArgumentNullException.ThrowIfNull(audiences);
 
-            claims.AddRange(audiences.Select(audience => new Claim(JwtRegisteredClaimNames.Aud, audience)));
+            claims.AddRange(audiences.Select(audience => new Claim(JwtRegisteredClaimNames.Aud, audience, ClaimValueTypes.String)));
         }
 
         /// <summary>

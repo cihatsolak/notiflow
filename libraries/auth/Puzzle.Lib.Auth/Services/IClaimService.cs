@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets the email address claim value of the user.
         /// </summary>
-        string EmailAddress { get; }
+        string Email { get; }
 
         /// <summary>
         /// Gets the name claim value of the user.
@@ -33,7 +33,7 @@
         /// <summary>
         /// Gets a list of role claim values of the user.
         /// </summary>
-        List<string> Roles { get; }
+        IEnumerable<string> Roles { get; }
 
         /// <summary>
         /// Gets the JTI (JWT ID) claim value of the user.
@@ -43,7 +43,7 @@
         /// <summary>
         /// Gets a list of audience claim values of the user.
         /// </summary>
-        List<string> Audiences { get; }
+        IEnumerable<string> Audiences { get; }
 
         /// <summary>
         /// Gets the audience claim value of the user.
