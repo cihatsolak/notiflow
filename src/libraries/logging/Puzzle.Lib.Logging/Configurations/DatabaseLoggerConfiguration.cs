@@ -10,12 +10,12 @@
             {
                AdditionalColumns = new Collection<SqlColumn>
                {
-                  new SqlColumn(LogPushProperties.IpAddress, SqlDbType.VarChar, allowNull: true, dataLength: 100),
+                  //new SqlColumn(LogPushProperties.IpAddress, SqlDbType.VarChar, allowNull: true, dataLength: 100), //Todo
                   new SqlColumn(LogPushProperties.CorrelationId, SqlDbType.VarChar, allowNull: true, dataLength: 150),
                   new SqlColumn(LogPushProperties.TraceIdentifier, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-                  new SqlColumn(LogPushProperties.Device, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-                  new SqlColumn(LogPushProperties.OperatingSystem, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-                  new SqlColumn(LogPushProperties.Browser, SqlDbType.VarChar, allowNull: true, dataLength: 70),
+                  //new SqlColumn(LogPushProperties.Device, SqlDbType.VarChar, allowNull: true, dataLength: 70),
+                  //new SqlColumn(LogPushProperties.OperatingSystem, SqlDbType.VarChar, allowNull: true, dataLength: 70),
+                  //new SqlColumn(LogPushProperties.Browser, SqlDbType.VarChar, allowNull: true, dataLength: 70),
 
                   new SqlColumn(LogPushProperties.ApplicationName, SqlDbType.VarChar, allowNull: true, dataLength: 70),
                   new SqlColumn(LogPushProperties.MachineName, SqlDbType.NVarChar, allowNull: true, dataLength: 70),

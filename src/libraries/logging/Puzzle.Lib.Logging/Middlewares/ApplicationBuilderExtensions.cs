@@ -25,37 +25,14 @@
             return app.UseMiddleware<CorrelationIdMiddleware>();
         }
 
-        /// <summary>
-        /// Use ip adress id logging
-        /// </summary>
-        /// <param name="app">type of application builder</param>
-        /// <returns>type of application builder</returns>
-        public static IApplicationBuilder UseIpAddressLogging(this IApplicationBuilder app)
-        {
-            return app.UseMiddleware<IpAddressMiddleware>();
-        }
-
-        /// <summary>
-        /// Use request detection logging
-        /// </summary>
-        /// <param name="app">type of application builder</param>
-        /// <returns>type of application builder</returns>
-        public static IApplicationBuilder UseRequestDetectionLogging(this IApplicationBuilder app)
-        {
-            app.UseDetection();
-            return app.UseMiddleware<RequstDetectionMiddleware>();
-        }
-
         public static IApplicationBuilder UseCustomSeriLogging(this IApplicationBuilder app) 
         {
-            app.UseSerilogRequestLogging();
+            return app.UseSerilogRequestLogging().UseHttpRequestPropertyLogging().UseCorrelationIdLogging();
+        }
 
-            app.UseHttpRequestPropertyLogging()
-               .UseCorrelationIdLogging()
-               .UseIpAddressLogging()
-               .UseRequestDetectionLogging();
-
-            return app;
+        public static IApplicationBuilder UseCustomHttpLogging(this IApplicationBuilder app)
+        {
+            return app.UseHttpLogging();
         }
     }
 }
