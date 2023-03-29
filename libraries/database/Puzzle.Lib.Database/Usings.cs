@@ -14,6 +14,7 @@ global using Puzzle.Lib.Database.Concrete.Repositories;
 global using Puzzle.Lib.Database.Concrete.UnitOfWorks;
 global using Puzzle.Lib.Database.Entities.Base;
 global using Puzzle.Lib.Database.Entities.Historical;
+global using Puzzle.Lib.Database.Entities.SoftDelete;
 global using Puzzle.Lib.Database.Infrastructure.Constants;
 global using Puzzle.Lib.Database.Infrastructure.Extensions;
 global using Puzzle.Lib.Database.Infrastructure.Models;
