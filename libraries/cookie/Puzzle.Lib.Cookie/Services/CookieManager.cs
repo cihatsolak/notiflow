@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Cookie.Services
 {
-    internal sealed class CookieManager : ICookieService
+    public sealed class CookieManager : ICookieService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly CookieOptions _cookieOptions;

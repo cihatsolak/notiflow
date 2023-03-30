@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
+    <ProjectReference Include="..\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
   </ItemGroup>
 
 </Project>

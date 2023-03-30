@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Constants.Enums
+﻿namespace Puzzle.Lib.Cache.Infrastructure.Constants.Enums
 {
     /// <summary>
     /// Represents the types of search keys.
@@ -23,5 +23,4 @@
         [Description("Contains")]
         Include = 3
     }
-
 }

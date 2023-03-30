@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Cache.Extensions;
-
-namespace Puzzle.Lib.Cache.Services
+﻿namespace Puzzle.Lib.Cache.Services.Cache
 {
     internal sealed class StackExchangeRedisManager : IRedisService
     {
@@ -39,7 +37,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (0 >= result)
                 {
                     Log.Warning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
-                    return result;
                 }
 
                 return result;
@@ -57,7 +54,6 @@ namespace Puzzle.Lib.Cache.Services
                 if (0 >= result)
                 {
                     Log.Warning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
-                    return result;
                 }
 
                 return result;
@@ -146,14 +142,13 @@ namespace Puzzle.Lib.Cache.Services
                 if (result == 0)
                 {
                     Log.Warning("Could not update member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
-                    return default;
                 }
 
                 return (int)result;
             });
         }
 
-        public async Task<List<T>> GetSortedListInDescendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
+        public async Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
@@ -163,14 +158,14 @@ namespace Puzzle.Lib.Cache.Services
                 if (!redisValues.Any())
                 {
                     Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                    return default;
+                    return Array.Empty<TData>();
                 }
 
-                return redisValues.Select(redisValue => (T)Convert.ChangeType(redisValue, typeof(T))).ToList();
+                return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
             });
         }
 
-        public async Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct
+        public async Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
             RedisArgumentException.ThrowIfNegativeNumber(start, nameof(start));
@@ -181,10 +176,10 @@ namespace Puzzle.Lib.Cache.Services
                 if (!redisValues.Any())
                 {
                     Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                    return default;
+                    return Array.Empty<TData>();
                 }
 
-                return redisValues.Select(redisValue => (T)Convert.ChangeType(redisValue, typeof(T))).ToList();
+                return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
             });
         }
 
@@ -226,7 +221,7 @@ namespace Puzzle.Lib.Cache.Services
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), null, When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), null, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -243,7 +238,7 @@ namespace Puzzle.Lib.Cache.Services
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -260,7 +255,7 @@ namespace Puzzle.Lib.Cache.Services
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToConvertJsonIfNotStringType(), null, true, When.Exists, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), null, true, When.Exists, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -270,7 +265,7 @@ namespace Puzzle.Lib.Cache.Services
             });
         }
 
-        public async Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, CacheDuration cacheDuration)
+        public async Task<bool> ExtendCacheDurationAsync(string cacheKey, CacheDuration cacheDuration)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 

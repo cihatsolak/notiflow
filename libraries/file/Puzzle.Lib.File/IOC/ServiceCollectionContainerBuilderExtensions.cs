@@ -15,7 +15,7 @@
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
             services.Configure<FtpSetting>(configuration.GetRequiredSection(nameof(FtpSetting)));
         }
     }
