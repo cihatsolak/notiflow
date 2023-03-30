@@ -45,7 +45,7 @@
                         {
                           { "x-logo", new OpenApiObject
                             {
-                               {"url", new OpenApiString(swaggerSetting.LogoUrl)}
+                              { "url", new OpenApiString(swaggerSetting.LogoUrl)}
                             }
                           }
                         }
