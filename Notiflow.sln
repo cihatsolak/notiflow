@@ -121,7 +121,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{E751
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Session", "libraries\session\Puzzle.Lib.Session\Puzzle.Lib.Session.csproj", "{5DD8502F-12E1-4702-BC86-2E1FED099468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Auth.Tests", "libraries\auth\Puzzle.Lib.Auth.Test\Puzzle.Lib.Auth.Tests\Puzzle.Lib.Auth.Tests.csproj", "{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth.Tests", "libraries\auth\Puzzle.Lib.Auth.Tests\Puzzle.Lib.Auth.Tests.csproj", "{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Cache.Tests", "libraries\cache\Puzzle.Lib.Cache.Tests\Puzzle.Lib.Cache.Tests.csproj", "{82192188-3AB8-4CA8-9F4D-059127BAF498}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -221,6 +223,10 @@ Global
 		{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +279,7 @@ Global
 		{E7517BF8-B3F9-449A-BFA5-4AD0B036F306} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{5DD8502F-12E1-4702-BC86-2E1FED099468} = {E7517BF8-B3F9-449A-BFA5-4AD0B036F306}
 		{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685} = {EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2}
+		{82192188-3AB8-4CA8-9F4D-059127BAF498} = {EB7323A1-CC71-465D-8DEF-18B14DE16BD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

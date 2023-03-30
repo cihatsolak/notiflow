@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
+    <ProjectReference Include="..\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
   </ItemGroup>
 
 </Project>

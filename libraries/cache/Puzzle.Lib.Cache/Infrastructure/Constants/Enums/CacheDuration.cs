@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Constants.Enums
+﻿namespace Puzzle.Lib.Cache.Infrastructure.Constants.Enums
 {
     /// <summary>
     /// Specifies the duration for which an item should be cached in minutes.
@@ -55,6 +55,4 @@
         /// </summary>
         OneDay = 1440
     }
-
-
 }

@@ -49,5 +49,17 @@
 
             return services;
         }
+
+        /// <summary>
+        /// Adds a Redis messaging service to the specified service collection.
+        /// </summary>
+        /// <param name="services">The service collection to add the Redis messaging service to.</param>
+        /// <returns>The updated service collection.</returns>
+        public static IServiceCollection AddRedisMessagingService(this IServiceCollection services)
+        {
+            services.TryAddSingleton<IRedisPublisherService, RedisPublisherManager>();
+
+            return services;
+        }
     }
 }

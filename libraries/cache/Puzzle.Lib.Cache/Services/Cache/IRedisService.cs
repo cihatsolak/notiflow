@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Services
+﻿namespace Puzzle.Lib.Cache.Services.Cache
 {
     /// <summary>
     /// Defines methods for interacting with Redis cache.
@@ -76,7 +76,7 @@
         /// <summary>
         /// Retrieves a sorted list of elements in the cache with the specified key in descending order of their scores.
         /// </summary>
-        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <typeparam name="TData">The type of the elements in the list.</typeparam>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="start">The zero-based index of the start of the range to retrieve.</param>
         /// <param name="stop">The zero-based index of the end of the range to retrieve.</param>
@@ -87,7 +87,7 @@
         /// <remarks>
         /// The default values for start and stop parameters retrieve the entire list. 
         /// </remarks>
-        Task<List<T>> GetSortedListInDescendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct;
+        Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct;
 
         /// <summary>
         /// Retrieves a sorted list of elements in the cache with the specified key in ascending order of their scores.
@@ -103,8 +103,14 @@
         /// <remarks>
         /// The default values for start and stop parameters retrieve the entire list. 
         /// </remarks>
-        Task<List<T>> GetSortedListInAscendingOrderOfScore<T>(string cacheKey, int start = 0, int stop = -1) where T : struct;
+        Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct;
 
+        /// <summary>
+        /// Removes the specified member from the sorted set with the given cache key.
+        /// </summary>
+        /// <param name="cacheKey">The key of the sorted set in the cache.</param>
+        /// <param name="memberKey">The key of the member to remove from the sorted set.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a value indicating whether the member was successfully removed from the sorted set.</returns>
         Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey);
 
         /// <summary>
@@ -163,7 +169,7 @@
         /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation, returning a <see cref="bool"/> indicating whether the operation was successful.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="cacheKey"/> parameter is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="cacheDuration"/> parameter is negative.</exception>
-        Task<bool> ExtendCacheKeyTimeAsync(string cacheKey, CacheDuration cacheDuration);
+        Task<bool> ExtendCacheDurationAsync(string cacheKey, CacheDuration cacheDuration);
 
         /// <summary>
         /// Removes the cache entry with the specified key.

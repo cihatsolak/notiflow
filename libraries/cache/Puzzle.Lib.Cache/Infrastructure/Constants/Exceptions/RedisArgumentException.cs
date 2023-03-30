@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Constants.Exceptions
+﻿namespace Puzzle.Lib.Cache.Infrastructure.Constants.Exceptions
 {
     /// <summary>
     /// Contains methods to check if an argument is a negative number.
