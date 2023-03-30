@@ -125,6 +125,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth.Tests", "li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Cache.Tests", "libraries\cache\Puzzle.Lib.Cache.Tests\Puzzle.Lib.Cache.Tests.csproj", "{82192188-3AB8-4CA8-9F4D-059127BAF498}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Cookie.Tests", "libraries\cookie\Puzzle.Lib.Cookie.Tests\Puzzle.Lib.Cookie.Tests.csproj", "{DFB8355D-B006-4239-9308-45E40A758F35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,10 @@ Global
 		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82192188-3AB8-4CA8-9F4D-059127BAF498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB8355D-B006-4239-9308-45E40A758F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB8355D-B006-4239-9308-45E40A758F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB8355D-B006-4239-9308-45E40A758F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB8355D-B006-4239-9308-45E40A758F35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -280,6 +286,7 @@ Global
 		{5DD8502F-12E1-4702-BC86-2E1FED099468} = {E7517BF8-B3F9-449A-BFA5-4AD0B036F306}
 		{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685} = {EB7F6EDD-6DA0-4B34-BFA4-3539F7E3A7D2}
 		{82192188-3AB8-4CA8-9F4D-059127BAF498} = {EB7323A1-CC71-465D-8DEF-18B14DE16BD6}
+		{DFB8355D-B006-4239-9308-45E40A758F35} = {3A572FCD-08D2-4122-A042-A507A33607FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
