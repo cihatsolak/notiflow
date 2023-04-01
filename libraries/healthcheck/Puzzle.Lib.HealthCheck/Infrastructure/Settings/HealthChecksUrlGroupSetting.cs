@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets or sets the list of URL groups to be used in health checks.
         /// </summary>
-        public List<UrlGroupInformation> UrlGroups { get; init; }
+        public required List<UrlGroupInformation> UrlGroups { get; init; }
     }
 
     /// <summary>
@@ -19,12 +19,12 @@
         /// <summary>
         /// Gets or sets the service URI for the URL group.
         /// </summary>
-        public Uri ServiceUri { get; init; }
+        public required Uri ServiceUri { get; init; }
 
         /// <summary>
         /// Gets or sets the name of the URL group.
         /// </summary>
-        public string Name { get; init; }
+        public required string Name { get; init; }
 
         /// <summary>
         /// Gets or sets the array of tags for the URL group.

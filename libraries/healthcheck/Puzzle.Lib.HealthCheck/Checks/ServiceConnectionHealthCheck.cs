@@ -3,16 +3,17 @@
     /// <summary>
     /// A class containing a method to add health checks for a group of services with URLs.
     /// </summary>
-    internal static class ServiceConnectionHealthCheck
+    public static class ServiceConnectionHealthCheck
     {
         /// <summary>
         /// Adds health checks for registered services to an <see cref="IHealthChecksBuilder"/>.
         /// </summary>
         /// <param name="healthChecksBuilder">The <see cref="IHealthChecksBuilder"/> to add the health checks to.</param>
-        /// <param name="serviceProvider">The <see cref="IServiceProvider"/> containing the registered services.</param>
         /// <returns>The updated <see cref="IHealthChecksBuilder"/>.</returns>
-        internal static IHealthChecksBuilder AddServicesCheck(this IHealthChecksBuilder healthChecksBuilder, IServiceProvider serviceProvider)
+        public static IHealthChecksBuilder AddServicesCheck(this IHealthChecksBuilder healthChecksBuilder)
         {
+            IServiceProvider serviceProvider = healthChecksBuilder.Services.BuildServiceProvider();
+
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
             IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HealthChecksUrlGroupSetting));
             HealthChecksUrlGroupSetting healthChecksUrlGroupSetting = configurationSection.Get<HealthChecksUrlGroupSetting>();

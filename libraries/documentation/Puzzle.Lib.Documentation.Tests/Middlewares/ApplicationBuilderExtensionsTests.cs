@@ -1,15 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Moq;
-using Puzzle.Lib.Documentation.Infrastructure.Settings;
-using Puzzle.Lib.Documentation.Middlewares;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerUI;
-
-namespace Puzzle.Lib.Documentation.Tests.Middlewares
+﻿namespace Puzzle.Lib.Documentation.Tests.Middlewares
 {
     public class ApplicationBuilderExtensionsTests
     {

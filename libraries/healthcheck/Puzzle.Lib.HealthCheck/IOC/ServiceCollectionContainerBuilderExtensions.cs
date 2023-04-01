@@ -1,8 +1,16 @@
 ﻿namespace Puzzle.Lib.HealthCheck.IOC
 {
-    internal static class ServiceCollectionContainerBuilderExtensions
+    /// <summary>
+    /// Contains extension methods for adding custom health checks to a service collection.
+    /// </summary>
+    public static class ServiceCollectionContainerBuilderExtensions
     {
-        internal static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
+        /// <summary>
+        /// Adds custom health checks to the specified service collection.
+        /// </summary>
+        /// <param name="services">The service collection to add the health checks to.</param>
+        /// <returns>The modified service collection.</returns>
+        public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -18,13 +26,18 @@
             healthChecksBuilder.AddRedisCheck("redis connection string");
             healthChecksBuilder.AddNpgSqlDatabaseCheck("npg sql database connection string");
             healthChecksBuilder.AddSystemConfigurationCheck();
-            healthChecksBuilder.AddServicesCheck(serviceProvider);
+            healthChecksBuilder.AddServicesCheck();
             healthChecksBuilder.AddRabbitMqCheck();
 
             return services;
         }
 
-        internal static IServiceCollection AddHealthChecksUIMemoryStorage(this IServiceCollection services)
+        /// <summary>
+        /// Adds in-memory storage for health check results and configures webhooks and other settings.
+        /// </summary>
+        /// <param name="services">The service collection to add the in-memory storage to.</param>
+        /// <returns>The modified service collection.</returns>
+        public static IServiceCollection AddHealthChecksUIMemoryStorage(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
