@@ -133,6 +133,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.File.Tests", "li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.HealthCheck.Tests", "libraries\healthcheck\Puzzle.Lib.HealthCheck.Tests\Puzzle.Lib.HealthCheck.Tests.csproj", "{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Host.Tests", "libraries\host\Puzzle.Lib.Host.Tests\Puzzle.Lib.Host.Tests.csproj", "{FEC383B5-785F-4352-90F6-103B6142B361}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,10 @@ Global
 		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC383B5-785F-4352-90F6-103B6142B361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC383B5-785F-4352-90F6-103B6142B361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC383B5-785F-4352-90F6-103B6142B361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC383B5-785F-4352-90F6-103B6142B361}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -308,6 +314,7 @@ Global
 		{E657EF56-E155-4E98-89C4-DCEA53077207} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 		{6BB42B15-91B1-4421-8744-97BB77746D3C} = {C1498836-2F4E-4243-81FC-47C5C44A3338}
 		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
+		{FEC383B5-785F-4352-90F6-103B6142B361} = {24BC6A93-AAED-48BE-A74F-DB57A003FBC1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
