@@ -3,21 +3,21 @@
     /// <summary>
     /// Represents the settings for a RabbitMQ server connection.
     /// </summary>
-    internal sealed record RabbitMqSetting
+    public sealed record RabbitMqSetting
     {
         /// <summary>
         /// Gets or sets the host name of the RabbitMQ server.
         /// </summary>
-        public string HostName { get; init; }
+        public required string HostName { get; init; }
 
         /// <summary>
         /// Gets or sets the username for authenticating with the RabbitMQ server.
         /// </summary>
-        public string Username { get; init; }
+        public required string Username { get; init; }
 
         /// <summary>
         /// Gets or sets the password for authenticating with the RabbitMQ server.
         /// </summary>
-        public string Password { get; init; }
+        public required string Password { get; init; }
     }
 }
