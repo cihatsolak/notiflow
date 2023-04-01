@@ -139,6 +139,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Http.Tests", "li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.MessageBroker.Tests", "libraries\messagebroker\Puzzle.Lib.MessageBroker.Tests\Puzzle.Lib.MessageBroker.Tests.csproj", "{413A823E-5A7C-4BB7-BD01-19CDD0071A64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Performance.Tests", "libraries\performance\Puzzle.Lib.Performance.Tests\Puzzle.Lib.Performance.Tests.csproj", "{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -269,6 +271,10 @@ Global
 		{413A823E-5A7C-4BB7-BD01-19CDD0071A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{413A823E-5A7C-4BB7-BD01-19CDD0071A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{413A823E-5A7C-4BB7-BD01-19CDD0071A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -329,6 +335,7 @@ Global
 		{FEC383B5-785F-4352-90F6-103B6142B361} = {24BC6A93-AAED-48BE-A74F-DB57A003FBC1}
 		{36B0E64C-42EF-44D8-A5AB-5AA9ABDA2EE5} = {68C8B345-22B8-4C86-B6F9-39B2DC97E252}
 		{413A823E-5A7C-4BB7-BD01-19CDD0071A64} = {EE9FE4FD-1A62-47D6-929A-44822BF75070}
+		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8} = {8A1D72BA-0C6D-458B-81DE-65D1D8200D13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
