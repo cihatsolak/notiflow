@@ -1,5 +1,8 @@
 ﻿namespace Puzzle.Lib.Http.Infrastructure.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for HttpClient objects.
+    /// </summary>
     public static class HttpClientExtensions
     {
         /// <summary>

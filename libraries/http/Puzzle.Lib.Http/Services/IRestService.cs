@@ -209,7 +209,7 @@
         /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
         /// <param name="clientName">The name of the HTTP client to use for the request.</param>
         /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
-        /// <param name="headersCollection">The collection of headers to include in the request.</param>
+        /// <param name="nameValueCollection">The collection of headers to include in the request.</param>
         /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
         Task<TResponse> DeleteApiResponseAsync<TResponse>(
