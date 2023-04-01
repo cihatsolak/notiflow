@@ -123,13 +123,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Session", "libra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth.Tests", "libraries\auth\Puzzle.Lib.Auth.Tests\Puzzle.Lib.Auth.Tests.csproj", "{6C298BB6-FBA2-48FA-9CEE-26F96CA1F685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Cache.Tests", "libraries\cache\Puzzle.Lib.Cache.Tests\Puzzle.Lib.Cache.Tests.csproj", "{82192188-3AB8-4CA8-9F4D-059127BAF498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cache.Tests", "libraries\cache\Puzzle.Lib.Cache.Tests\Puzzle.Lib.Cache.Tests.csproj", "{82192188-3AB8-4CA8-9F4D-059127BAF498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Cookie.Tests", "libraries\cookie\Puzzle.Lib.Cookie.Tests\Puzzle.Lib.Cookie.Tests.csproj", "{DFB8355D-B006-4239-9308-45E40A758F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cookie.Tests", "libraries\cookie\Puzzle.Lib.Cookie.Tests\Puzzle.Lib.Cookie.Tests.csproj", "{DFB8355D-B006-4239-9308-45E40A758F35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Documentation.Tests", "libraries\documentation\Puzzle.Lib.Documentation.Tests\Puzzle.Lib.Documentation.Tests.csproj", "{E657EF56-E155-4E98-89C4-DCEA53077207}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation.Tests", "libraries\documentation\Puzzle.Lib.Documentation.Tests\Puzzle.Lib.Documentation.Tests.csproj", "{E657EF56-E155-4E98-89C4-DCEA53077207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.File.Tests", "libraries\file\Puzzle.Lib.File.Tests\Puzzle.Lib.File.Tests.csproj", "{6BB42B15-91B1-4421-8744-97BB77746D3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.File.Tests", "libraries\file\Puzzle.Lib.File.Tests\Puzzle.Lib.File.Tests.csproj", "{6BB42B15-91B1-4421-8744-97BB77746D3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.HealthCheck.Tests", "libraries\healthcheck\Puzzle.Lib.HealthCheck.Tests\Puzzle.Lib.HealthCheck.Tests.csproj", "{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -245,6 +247,10 @@ Global
 		{6BB42B15-91B1-4421-8744-97BB77746D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB42B15-91B1-4421-8744-97BB77746D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BB42B15-91B1-4421-8744-97BB77746D3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,6 +307,7 @@ Global
 		{DFB8355D-B006-4239-9308-45E40A758F35} = {3A572FCD-08D2-4122-A042-A507A33607FE}
 		{E657EF56-E155-4E98-89C4-DCEA53077207} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 		{6BB42B15-91B1-4421-8744-97BB77746D3C} = {C1498836-2F4E-4243-81FC-47C5C44A3338}
+		{F6996CA2-E867-4EF7-9B29-A5B590AC0D71} = {1347987F-D7A9-414F-89B2-1CE09258C71C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

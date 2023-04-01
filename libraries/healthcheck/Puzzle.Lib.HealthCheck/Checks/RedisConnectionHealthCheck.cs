@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides extension methods to add Redis connection health checks to the IHealthChecksBuilder.
     /// </summary>
-    internal static class RedisConnectionHealthCheck
+    public static class RedisConnectionHealthCheck
     {
         /// <summary>
         /// Adds a Redis connection health check to the IHealthChecksBuilder.
@@ -12,7 +12,7 @@
         /// <param name="connectionString">The Redis connection string.</param>
         /// <returns>The updated IHealthChecksBuilder.</returns>
         /// <exception cref="ArgumentException">Thrown when the connection string is null or empty.</exception>
-        internal static IHealthChecksBuilder AddRedisCheck(this IHealthChecksBuilder healthChecksBuilder, string connectionString)
+        public static IHealthChecksBuilder AddRedisCheck(this IHealthChecksBuilder healthChecksBuilder, string connectionString)
         {
             ArgumentException.ThrowIfNullOrEmpty(connectionString);
 

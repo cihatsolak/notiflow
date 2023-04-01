@@ -3,14 +3,14 @@
     /// <summary>
     /// Contains extension methods for adding custom health checks to a service collection.
     /// </summary>
-    internal static class ServiceCollectionContainerBuilderExtensions
+    public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
         /// Adds custom health checks to the specified service collection.
         /// </summary>
         /// <param name="services">The service collection to add the health checks to.</param>
         /// <returns>The modified service collection.</returns>
-        internal static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
+        public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -37,7 +37,7 @@
         /// </summary>
         /// <param name="services">The service collection to add the in-memory storage to.</param>
         /// <returns>The modified service collection.</returns>
-        internal static IServiceCollection AddHealthChecksUIMemoryStorage(this IServiceCollection services)
+        public static IServiceCollection AddHealthChecksUIMemoryStorage(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
