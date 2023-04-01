@@ -8,12 +8,12 @@
         /// <summary>
         /// Gets or initializes the path to the health check UI.
         /// </summary>
-        public string UIPath { get; init; }
+        public required string UIPath { get; init; }
 
         /// <summary>
         /// Gets or sets the path to the health check response.
         /// </summary>
-        public string ResponsePath { get; set; }
+        public required string ResponsePath { get; set; }
 
         /// <summary>
         /// Gets or initializes the path to the custom CSS file for the health check UI.
@@ -23,6 +23,6 @@
         /// <summary>
         /// Gets or sets a value indicating whether custom styles are applied to the health check UI.
         /// </summary>
-        public bool IsCustomStyle { get; set; }
+        public required bool IsCustomStyle { get; set; }
     }
 }

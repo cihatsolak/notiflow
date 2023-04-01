@@ -1,7 +1,15 @@
 ﻿namespace Puzzle.Lib.HealthCheck.IOC
 {
+    /// <summary>
+    /// Contains extension methods for adding custom health checks to a service collection.
+    /// </summary>
     internal static class ServiceCollectionContainerBuilderExtensions
     {
+        /// <summary>
+        /// Adds custom health checks to the specified service collection.
+        /// </summary>
+        /// <param name="services">The service collection to add the health checks to.</param>
+        /// <returns>The modified service collection.</returns>
         internal static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -18,12 +26,17 @@
             healthChecksBuilder.AddRedisCheck("redis connection string");
             healthChecksBuilder.AddNpgSqlDatabaseCheck("npg sql database connection string");
             healthChecksBuilder.AddSystemConfigurationCheck();
-            healthChecksBuilder.AddServicesCheck(serviceProvider);
+            healthChecksBuilder.AddServicesCheck();
             healthChecksBuilder.AddRabbitMqCheck();
 
             return services;
         }
 
+        /// <summary>
+        /// Adds in-memory storage for health check results and configures webhooks and other settings.
+        /// </summary>
+        /// <param name="services">The service collection to add the in-memory storage to.</param>
+        /// <returns>The modified service collection.</returns>
         internal static IServiceCollection AddHealthChecksUIMemoryStorage(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();

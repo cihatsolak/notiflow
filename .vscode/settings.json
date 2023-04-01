@@ -1,0 +1,7 @@
+{
+    "editor.tabSize": 4,
+    "editor.wordWrap": "on",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe"
+}
