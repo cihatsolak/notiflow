@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Infrastructure.Constants.Settings
+﻿namespace Puzzle.Lib.Cache.Infrastructure.Settings
 {
     /// <summary>
     /// Represents the configuration settings for the Redis server.

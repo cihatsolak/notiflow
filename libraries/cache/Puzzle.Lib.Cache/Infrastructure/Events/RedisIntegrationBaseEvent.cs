@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Infrastructure.Constants.Events
+﻿namespace Puzzle.Lib.Cache.Infrastructure.Events
 {
     public abstract class RedisIntegrationBaseEvent
     {

@@ -26,9 +26,9 @@
         /// </summary>
         /// <typeparam name="TData">The type of data to encrypt.</typeparam>
         /// <param name="flatData">The flatdata to encrypt.</param>
-        /// <param name="minute">The number of minutes for which the encryption should be time-dependent.</param>
+        /// <param name="minutesToExpire">The number of minutes for which the encryption should be time-dependent.</param>
         /// <returns>The encrypted cipher text as a string.</returns>
-        string TimeDependentEncrypt<TData>(string flatData, int minute);
+        string TimeDependentEncrypt<TData>(TData flatData, int minutesToExpire);
 
         /// <summary>
         /// Decrypts the provided cipher text using the appropriate decryption algorithm that takes into account a specified time duration for increased security, and returns the original plaintext data.

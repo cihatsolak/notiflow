@@ -8,6 +8,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Options;
+global using Puzzle.Lib.Security.Infrastructure.Exceptions;
 global using Puzzle.Lib.Security.Infrastructure.Settings;
 global using Puzzle.Lib.Security.Services.Protocols;
 global using System.Net;
