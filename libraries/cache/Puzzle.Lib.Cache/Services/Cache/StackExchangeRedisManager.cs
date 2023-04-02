@@ -29,7 +29,7 @@
         public async Task<long> IncrementAsync(string cacheKey, int increment)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-            RedisArgumentException.ThrowIfNegativeNumber(increment, nameof(increment));
+            CacheArgumentException.ThrowIfNegativeNumber(increment, nameof(increment));
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -46,7 +46,7 @@
         public async Task<long> DecrementAsync(string cacheKey, int decrement)
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-            RedisArgumentException.ThrowIfNegativeNumber(decrement, nameof(decrement));
+            CacheArgumentException.ThrowIfNegativeNumber(decrement, nameof(decrement));
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -134,7 +134,7 @@
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
             ArgumentException.ThrowIfNullOrEmpty(memberKey);
-            RedisArgumentException.ThrowIfNegativeNumber(increment, nameof(increment));
+            CacheArgumentException.ThrowIfNegativeNumber(increment, nameof(increment));
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -168,7 +168,7 @@
         public async Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-            RedisArgumentException.ThrowIfNegativeNumber(start, nameof(start));
+            CacheArgumentException.ThrowIfNegativeNumber(start, nameof(start));
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {

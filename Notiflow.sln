@@ -131,15 +131,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.File.Tests", "libraries\file\Puzzle.Lib.File.Tests\Puzzle.Lib.File.Tests.csproj", "{6BB42B15-91B1-4421-8744-97BB77746D3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.HealthCheck.Tests", "libraries\healthcheck\Puzzle.Lib.HealthCheck.Tests\Puzzle.Lib.HealthCheck.Tests.csproj", "{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.HealthCheck.Tests", "libraries\healthcheck\Puzzle.Lib.HealthCheck.Tests\Puzzle.Lib.HealthCheck.Tests.csproj", "{F6996CA2-E867-4EF7-9B29-A5B590AC0D71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Host.Tests", "libraries\host\Puzzle.Lib.Host.Tests\Puzzle.Lib.Host.Tests.csproj", "{FEC383B5-785F-4352-90F6-103B6142B361}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Host.Tests", "libraries\host\Puzzle.Lib.Host.Tests\Puzzle.Lib.Host.Tests.csproj", "{FEC383B5-785F-4352-90F6-103B6142B361}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Http.Tests", "libraries\http\Puzzle.Lib.Http.Tests\Puzzle.Lib.Http.Tests.csproj", "{36B0E64C-42EF-44D8-A5AB-5AA9ABDA2EE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Http.Tests", "libraries\http\Puzzle.Lib.Http.Tests\Puzzle.Lib.Http.Tests.csproj", "{36B0E64C-42EF-44D8-A5AB-5AA9ABDA2EE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.MessageBroker.Tests", "libraries\messagebroker\Puzzle.Lib.MessageBroker.Tests\Puzzle.Lib.MessageBroker.Tests.csproj", "{413A823E-5A7C-4BB7-BD01-19CDD0071A64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.MessageBroker.Tests", "libraries\messagebroker\Puzzle.Lib.MessageBroker.Tests\Puzzle.Lib.MessageBroker.Tests.csproj", "{413A823E-5A7C-4BB7-BD01-19CDD0071A64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Performance.Tests", "libraries\performance\Puzzle.Lib.Performance.Tests\Puzzle.Lib.Performance.Tests.csproj", "{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Performance.Tests", "libraries\performance\Puzzle.Lib.Performance.Tests\Puzzle.Lib.Performance.Tests.csproj", "{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Hangfire.Tests", "libraries\schedule\Puzzle.Lib.Hangfire.Tests\Puzzle.Lib.Hangfire.Tests.csproj", "{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Security.Tests", "libraries\security\Puzzle.Lib.Security.Tests\Puzzle.Lib.Security.Tests.csproj", "{1F647598-F4F3-469D-ACA2-C5883C0B15E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,6 +279,14 @@ Global
 		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F647598-F4F3-469D-ACA2-C5883C0B15E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F647598-F4F3-469D-ACA2-C5883C0B15E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F647598-F4F3-469D-ACA2-C5883C0B15E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F647598-F4F3-469D-ACA2-C5883C0B15E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,6 +348,8 @@ Global
 		{36B0E64C-42EF-44D8-A5AB-5AA9ABDA2EE5} = {68C8B345-22B8-4C86-B6F9-39B2DC97E252}
 		{413A823E-5A7C-4BB7-BD01-19CDD0071A64} = {EE9FE4FD-1A62-47D6-929A-44822BF75070}
 		{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8} = {8A1D72BA-0C6D-458B-81DE-65D1D8200D13}
+		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF} = {185C3CF1-D126-443E-B335-DFB7750DAFB8}
+		{1F647598-F4F3-469D-ACA2-C5883C0B15E7} = {537A222D-7E91-4C20-8C88-289AC5C4EB33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

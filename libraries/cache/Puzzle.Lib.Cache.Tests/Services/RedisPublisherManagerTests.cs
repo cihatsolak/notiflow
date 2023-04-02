@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Cache.Tests.Services
+﻿using Puzzle.Lib.Cache.Infrastructure.Events;
+
+namespace Puzzle.Lib.Cache.Tests.Services
 {
     public class RedisPublisherManagerTests
     {

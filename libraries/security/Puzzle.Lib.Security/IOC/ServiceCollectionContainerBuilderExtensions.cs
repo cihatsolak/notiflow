@@ -35,5 +35,23 @@
 
             return services;
         }
+
+        public static IServiceCollection AddStrictTransportSecurity(this IServiceCollection services)
+        {
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            if (!webHostEnvironment.IsProduction())
+                return services;
+
+            services.AddHsts(options =>
+            {
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(365);
+            });
+
+            return services;
+        }
     }
 }
