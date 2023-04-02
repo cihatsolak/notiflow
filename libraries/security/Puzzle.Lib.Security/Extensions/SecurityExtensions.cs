@@ -105,6 +105,8 @@
         /// <exception cref="ArgumentNullException">Thrown when the input string is null.</exception>
         public static string ToSHA512(this string text)
         {
+            ArgumentException.ThrowIfNullOrEmpty(text);
+
             var byteValue = Encoding.UTF8.GetBytes(text);
             var byteHash = SHA512.HashData(byteValue);
             return Convert.ToBase64String(byteHash);

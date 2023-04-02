@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets or sets the name of the HTTP header that contains the client's IP address when forwarded by proxy servers.
         /// </summary>
-        public string ForwardedHttpHeader { get; init; }
+        public required string ForwardedHttpHeader { get; init; }
     }
 }
