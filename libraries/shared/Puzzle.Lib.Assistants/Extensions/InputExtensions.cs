@@ -15,7 +15,7 @@
         {
             ArgumentException.ThrowIfNullOrEmpty(phoneNumber);
 
-            return phoneNumber.Replace("(", string.Empty).Replace(")", string.Empty).Replace("-", string.Empty).Replace(" ", string.Empty);
+            return Regex.Replace(phoneNumber, @"[^\d]", "");
         }
     }
 }

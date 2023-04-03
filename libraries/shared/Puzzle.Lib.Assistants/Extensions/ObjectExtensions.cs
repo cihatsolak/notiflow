@@ -34,19 +34,6 @@
         }
 
         /// <summary>
-        /// Converts the given object to an integer.
-        /// </summary>
-        /// <param name="value">The object to convert.</param>
-        /// <returns>Returns the integer value of the object.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the object is null.</exception>
-        public static int ToInt(this object value)
-        {
-            ArgumentNullException.ThrowIfNull(value);
-
-            return Convert.ToInt32(value);
-        }
-
-        /// <summary>
         /// Gets the type name of the given object.
         /// </summary>
         /// <param name="value">The object to get the type name for.</param>

@@ -10,7 +10,6 @@
         /// </summary>
         /// <param name="htmlText">The HTML text to convert.</param>
         /// <returns>The plain text version of the HTML text.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="htmlText"/> is null.</exception>
         public static string ConvertHtmlToText(this string htmlText)
         {
             if (string.IsNullOrWhiteSpace(htmlText))

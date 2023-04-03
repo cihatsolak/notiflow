@@ -1,7 +1,13 @@
 ﻿namespace Puzzle.Lib.Assistants.Enums
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
-    internal class SampleEnumAttribute : Attribute
+    public class EnumAttribute : Attribute
     {
+        public string Name { get; init; }
+
+        public EnumAttribute(string name)
+        {
+            Name = name;
+        }
     }
 }

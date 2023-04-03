@@ -70,7 +70,7 @@
                 if (!hashEntries.Any())
                 {
                     Log.Warning("Data for key {@cacheKey} not found.", cacheKey);
-                    return default;
+                    return Enumerable.Empty<KeyValuePair<string, string>>();
                 }
 
                 return hashEntries.Select(hashEntry => new KeyValuePair<string, string>(hashEntry.Name, hashEntry.Value));
@@ -158,7 +158,7 @@
                 if (!redisValues.Any())
                 {
                     Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                    return Array.Empty<TData>();
+                    return Enumerable.Empty<TData>();
                 }
 
                 return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
@@ -176,7 +176,7 @@
                 if (!redisValues.Any())
                 {
                     Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                    return Array.Empty<TData>();
+                    return Enumerable.Empty<TData>();
                 }
 
                 return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));

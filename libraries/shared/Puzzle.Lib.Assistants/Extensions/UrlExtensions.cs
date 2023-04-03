@@ -1,7 +1,16 @@
 ﻿namespace Puzzle.Lib.Assistants.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for URL manipulation.
+    /// </summary>
     public static class UrlExtensions
     {
+        /// <summary>
+        /// Converts a string to a slug URL format.
+        /// </summary>
+        /// <param name="text">The string to convert to a slug URL format.</param>
+        /// <returns>The string in a slug URL format.</returns>
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="text"/> parameter is null or empty.</exception>
         public static string ToSlugUrl(this string text)
         {
             ArgumentException.ThrowIfNullOrEmpty(text);
