@@ -9,18 +9,7 @@
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetString(string key)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(key);
-
-            bool isExists = _httpContextAccessor.HttpContext.Session.TryGetValue(key, out byte[] value);
-            if (!isExists)
-                return default;
-
-            return Encoding.UTF8.GetString(value);
-        }
-
-        public TData Get<TData>(string key) where TData : class, new()
+        public TData Get<TData>(string key)
         {
             ArgumentException.ThrowIfNullOrEmpty(key);
 
@@ -31,15 +20,7 @@
             return JsonSerializer.Deserialize<TData>(Encoding.UTF8.GetString(value));
         }
 
-        public void SetString(string key, string value)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(key);
-            ArgumentException.ThrowIfNullOrEmpty(value);
-
-            _httpContextAccessor.HttpContext.Session.Set(key, Encoding.UTF8.GetBytes(value));
-        }
-
-        public void Set<TData>(string key, TData data) where TData : class, new()
+        public void Set<TData>(string key, TData data)
         {
             ArgumentException.ThrowIfNullOrEmpty(key);
             ArgumentNullException.ThrowIfNull(data);
