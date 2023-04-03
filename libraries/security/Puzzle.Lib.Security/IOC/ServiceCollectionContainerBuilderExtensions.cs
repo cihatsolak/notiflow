@@ -36,6 +36,13 @@
             return services;
         }
 
+        /// <summary>
+        /// An IServiceCollection extension that enables the HTTP Strict Transport Security (HSTS) feature.
+        /// </summary>
+        /// <param name="services">The IServiceCollection instance.</param>
+        /// <returns>The IServiceCollection instance.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+
         public static IServiceCollection AddStrictTransportSecurity(this IServiceCollection services)
         {
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -48,8 +55,31 @@
             services.AddHsts(options =>
             {
                 options.IncludeSubDomains = true;
-                options.MaxAge = TimeSpan.FromDays(365);
+                options.MaxAge = TimeSpan.MaxValue;
             });
+
+            return services;
+        }
+
+        /// <summary>
+        /// An IServiceCollection extension that adds a data protection service for the application and registers an implementation of IProtectorService.
+        /// </summary>
+        /// <param name="services">The IServiceCollection instance.</param>
+        /// <returns>The IServiceCollection instance.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+        public static IServiceCollection AddProtectorService(this IServiceCollection services)
+        {
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+
+            string applicationName = $"{webHostEnvironment.ApplicationName}.{webHostEnvironment.EnvironmentName}.dataprotection.key".ToLowerInvariant();
+
+            services.AddDataProtection()
+                .SetApplicationName(applicationName);
+
+            services.TryAddSingleton<IProtectorService, ProtectorManager>();
 
             return services;
         }
