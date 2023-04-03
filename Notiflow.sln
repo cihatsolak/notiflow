@@ -147,6 +147,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Security.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Session.Tests", "libraries\session\Puzzle.Lib.Session.Tests\Puzzle.Lib.Session.Tests.csproj", "{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Assistants.Tests", "libraries\shared\Puzzle.Lib.Assistants.Tests\Puzzle.Lib.Assistants.Tests.csproj", "{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -293,6 +295,10 @@ Global
 		{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -357,6 +363,7 @@ Global
 		{0CCD88EC-A637-437C-B06A-5D1ED5810EBF} = {185C3CF1-D126-443E-B335-DFB7750DAFB8}
 		{1F647598-F4F3-469D-ACA2-C5883C0B15E7} = {537A222D-7E91-4C20-8C88-289AC5C4EB33}
 		{EFAFC068-ED37-4C69-9747-EB8126B8CF2E} = {E7517BF8-B3F9-449A-BFA5-4AD0B036F306}
+		{998B221D-CE8E-42DC-ADEC-E84ECDA432C2} = {2580AFC0-8F1A-4F2F-8C13-C66ED896DF6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
