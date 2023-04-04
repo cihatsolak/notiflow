@@ -14,4 +14,6 @@ global using Puzzle.Lib.Cache.TransientFaultHandling;
 global using Serilog;
 global using StackExchange.Redis;
 global using System.ComponentModel;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Runtime.CompilerServices;
 global using System.Text.Json;

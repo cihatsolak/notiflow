@@ -8,22 +8,22 @@
         /// <summary>
         /// Gets or sets the Redis server connection string.
         /// </summary>
-        public string ConnectionString { get; init; }
+        public required string ConnectionString { get; init; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to abort the connection if the server fails to respond during the connection phase.
         /// </summary>
-        public bool AbortOnConnectFail { get; init; }
+        public required bool AbortOnConnectFail { get; init; }
 
         /// <summary>
         /// Gets or sets the async timeout in milliseconds.
         /// </summary>
-        public int AsyncTimeOutMilliSecond { get; init; }
+        public required int AsyncTimeOutMilliSecond { get; init; }
 
         /// <summary>
         /// Gets or sets the connection timeout in milliseconds.
         /// </summary>
-        public int ConnectTimeOutMilliSecond { get; init; }
+        public required int ConnectTimeOutMilliSecond { get; init; }
 
         /// <summary>
         /// Gets or sets the Redis server username.
@@ -43,7 +43,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether the Redis server allows administrative operations.
         /// </summary>
-        public bool AllowAdmin { get; init; }
+        public required bool AllowAdmin { get; init; }
     }
 
 }
