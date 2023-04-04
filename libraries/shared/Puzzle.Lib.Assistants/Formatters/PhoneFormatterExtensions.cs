@@ -8,11 +8,13 @@
         /// <summary>
         /// Formats the phone number in GSM format.
         /// </summary>
-        /// <param name="phone">The phone number to format.</param>
+        /// <param name="gsmNumber">The phone number to format.</param>
         /// <returns>The phone number formatted in GSM format. {0:0 ### ### ## ##}</returns>
-        public static string ToGsmFormat(this string phone)
+        public static string ToGsmFormat(this string gsmNumber)
         {
-            return string.Format("{0:0 ### ### ## ##}", phone);
+            ArgumentException.ThrowIfNullOrEmpty(gsmNumber);
+
+            return string.Format("{0:0 ### ### ## ##}", long.Parse(gsmNumber));
         }
     }
 }
