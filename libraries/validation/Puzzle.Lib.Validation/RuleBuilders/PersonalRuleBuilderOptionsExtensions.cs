@@ -8,11 +8,11 @@
         /// <summary>
         /// Adds validation rules for a TC number.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TClass, string> TcNumber<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> TcNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -24,11 +24,11 @@
         /// <summary>
         /// Adds validation rules for a landline phone number.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TClass, string> Landline<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> Landline<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -40,11 +40,11 @@
         /// <summary>
         /// Adds validation rules for a mobile phone number.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TClass, string> MobilePhone<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> MobilePhone<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)

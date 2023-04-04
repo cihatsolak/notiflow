@@ -8,11 +8,11 @@
         /// <summary>
         /// Adds a custom validation rule for credit card numbers to the current <see cref="IRuleBuilder{TClass, string}"/> instance.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The current instance of <see cref="IRuleBuilder{TClass, string}"/> being extended.</param>
         /// <param name="errorMessage">The error message to be returned if the validation fails.</param>
         /// <returns>The current instance of <see cref="IRuleBuilderOptions{TClass, string}"/>.</returns>
-        public static IRuleBuilderOptions<TClass, string> CustomCreditCard<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> CustomCreditCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -25,11 +25,11 @@
         /// <summary>
         /// Adds a validation rule for credit or debit card numbers to the current <see cref="IRuleBuilder{TClass, string}"/> instance.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The current instance of <see cref="IRuleBuilder{TClass, string}"/> being extended.</param>
         /// <param name="errorMessage">The error message to be returned if the validation fails.</param>
         /// <returns>The current instance of <see cref="IRuleBuilderOptions{TClass, string}"/>.</returns>
-        public static IRuleBuilderOptions<TClass, string> CreditOrDebitCard<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> CreditOrDebitCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -41,11 +41,11 @@
         /// <summary>
         /// Adds validation rules for a Turkish tax number, which must be 10 characters long.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TClass, string> TaxNumber<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> TaxNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)

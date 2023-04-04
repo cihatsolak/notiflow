@@ -6,6 +6,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Puzzle.Lib.Validation.AbstractValidators;
 global using Puzzle.Lib.Validation.Infrastructure.Constants;
 global using Puzzle.Lib.Validation.Infrastructure.Extensions;
+global using Puzzle.Lib.Validation.Infrastructure.Models;
 global using Serilog;
 global using System.Globalization;
 global using System.Text.RegularExpressions;

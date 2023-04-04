@@ -8,16 +8,16 @@
         /// <summary>
         /// Gets or sets the name of the header used to specify the API version.
         /// </summary>
-        public string HeaderName { get; init; }
+        public required string HeaderName { get; init; }
 
         /// <summary>
         /// Gets or sets the major version number of the API.
         /// </summary>
-        public int MajorVersion { get; init; }
+        public required int MajorVersion { get; init; }
 
         /// <summary>
         /// Gets or sets the minor version number of the API.
         /// </summary>
-        public int MinorVersion { get; init; }
+        public required int MinorVersion { get; init; }
     }
 }

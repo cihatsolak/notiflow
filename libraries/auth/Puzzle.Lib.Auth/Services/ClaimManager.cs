@@ -1,4 +1,7 @@
-﻿namespace Puzzle.Lib.Auth.Services
+﻿using System.Data;
+using System.Xml.Linq;
+
+namespace Puzzle.Lib.Auth.Services
 {
     public sealed class ClaimManager : IClaimService
     {
@@ -25,8 +28,7 @@
         private string GetEmail()
         {
             string email = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
-            if (string.IsNullOrWhiteSpace(email))
-                throw new ClaimException(nameof(email));
+            AuthArgumentException.ThrowIfNullOrEmpty(email);
 
             return email;
         }
@@ -34,8 +36,7 @@
         private string GetName()
         {
             string name = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Name))?.Value;
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ClaimException(nameof(name));
+            AuthArgumentException.ThrowIfNullOrEmpty(name);
 
             return name;
         }
@@ -43,8 +44,7 @@
         private string GetSurname()
         {
             string familyName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
-            if (string.IsNullOrWhiteSpace(familyName))
-                throw new ClaimException(nameof(familyName));
+            AuthArgumentException.ThrowIfNullOrEmpty(familyName);
 
             return familyName;
         }
@@ -65,8 +65,7 @@
         private string GetRole()
         {
             string role = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
-            if (string.IsNullOrWhiteSpace(role))
-                throw new ClaimException(nameof(role));
+            AuthArgumentException.ThrowIfNullOrEmpty(role);
 
             return role;
         }
@@ -77,8 +76,7 @@
                     .Where(p => p.Type.Equals(ClaimTypes.Role))
                     .Select(p => p.Value);
 
-            if (roles is null || !roles.Any())
-                throw new ClaimException(nameof(roles));
+            AuthArgumentException.ThrowIfNullOrEmpty(roles);
 
             return roles;
         }
@@ -87,8 +85,7 @@
         private string GetJti()
         {
             string jti = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Jti))?.Value;
-            if (string.IsNullOrWhiteSpace(jti))
-                throw new ClaimException(nameof(jti));
+            AuthArgumentException.ThrowIfNullOrEmpty(jti);
 
             return jti;
         }
@@ -99,8 +96,7 @@
                     .Where(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))
                     .Select(p => p.Value);
 
-            if (audiences is null || !audiences.Any())
-                throw new ClaimException(nameof(audiences));
+            AuthArgumentException.ThrowIfNullOrEmpty(audiences);
 
             return audiences;
         }
@@ -108,17 +104,15 @@
         private string GetAudience()
         {
             string audience = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))?.Value;
-            if (string.IsNullOrWhiteSpace(audience))
-                throw new ClaimException(nameof(audience));
-
+            AuthArgumentException.ThrowIfNullOrEmpty(audience);
+            
             return audience;
         }
 
         private string GetUsername()
         {
             string givenName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
-            if (string.IsNullOrWhiteSpace(givenName))
-                throw new ClaimException(nameof(givenName));
+            AuthArgumentException.ThrowIfNullOrEmpty(givenName);
 
             return givenName;
         }

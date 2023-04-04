@@ -29,7 +29,7 @@
         /// <summary>
         /// Gets or sets the errors that occurred during the request.
         /// </summary>
-        public List<string> Errors { get; init; }
+        public IEnumerable<string> Errors { get; init; }
 
 
         /// <summary>
@@ -129,7 +129,7 @@
         /// <param name="statusCode">The HTTP status code for the response.</param>
         /// <param name="errors">The list of error messages for the response.</param>
         /// <returns>A response model indicating failure with the specified status code and error messages.</returns>
-        public static ResponseModel<TData> Fail(int statusCode, List<string> errors)
+        public static ResponseModel<TData> Fail(int statusCode, IEnumerable<string> errors)
         {
             return new ResponseModel<TData>
             {
