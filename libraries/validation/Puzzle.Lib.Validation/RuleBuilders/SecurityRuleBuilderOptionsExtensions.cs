@@ -8,11 +8,11 @@
         /// <summary>
         /// Adds validation rules for a strong password.
         /// </summary>
-        /// <typeparam name="TClass">The type of the class being validated.</typeparam>
+        /// <typeparam name="TElement">The type of the class being validated.</typeparam>
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TClass, string> StrongPassword<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> StrongPassword<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)

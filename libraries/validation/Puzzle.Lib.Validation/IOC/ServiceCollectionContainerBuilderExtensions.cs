@@ -39,7 +39,14 @@
 
                     Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));
 
-                    return new BadRequestObjectResult(errors);
+                    ValidationResponseModel validationResponseModel = new()
+                    {
+                        StatusCode = 9004,
+                        StatusMessage = errors.First(),
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(validationResponseModel);
                 };
             });
 

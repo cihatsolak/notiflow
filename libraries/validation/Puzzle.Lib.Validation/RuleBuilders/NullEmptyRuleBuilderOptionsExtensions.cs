@@ -10,9 +10,9 @@
         ///</summary>
         ///<param name="ruleBuilder">The FluentValidation IRuleBuilder instance being extended.</param>
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
-        ///<typeparam name="TClass">The type of the class being validated.</typeparam>
+        ///<typeparam name="TElement">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TClass, string> NotNullAndNotEmpty<TClass>(this IRuleBuilder<TClass, string> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, string> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)
@@ -24,9 +24,9 @@
         ///</summary>
         ///<param name="ruleBuilder">The FluentValidation IRuleBuilder instance being extended.</param>
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
-        ///<typeparam name="TClass">The type of the class being validated.</typeparam>
+        ///<typeparam name="TElement">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TClass, byte[]> NotNullAndNotEmpty<TClass>(this IRuleBuilder<TClass, byte[]> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, byte[]> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, byte[]> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)
@@ -40,7 +40,7 @@
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
         ///<typeparam name="TClass">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TClass, List<string>> NotNullAndNotEmpty<TClass>(this IRuleBuilder<TClass, List<string>> ruleBuilder, string errorMessage) where TClass : class, new()
+        public static IRuleBuilderOptions<TElement, List<string>> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, List<string>> ruleBuilder, string errorMessage) where TElement : class, new()
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)
