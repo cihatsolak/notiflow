@@ -41,6 +41,7 @@
                             Name = swaggerSetting.LicenseName,
                             Url = new(swaggerSetting.LicenseUrl)
                         },
+                        TermsOfService = swaggerSetting.TermsOfService,
                         Extensions = new Dictionary<string, IOpenApiExtension>
                         {
                           { "x-logo", new OpenApiObject
@@ -52,24 +53,20 @@
                     });
 
                 AddIncludeXmlComments(options);
-                AddOperationFilters(options, swaggerSetting);
-                AddJwtSecurityScheme(options, swaggerSetting);
-                AddBasicSecurityScheme(options, swaggerSetting);
+                AddOperationFilters(options);
+                AddJwtSecurityScheme(options);
+                AddBasicSecurityScheme(options);
             });
 
             return services;
         }
 
         /// <summary>
-        /// Adds operation filters to Swagger, if the 'IsHaveDefaultHeaders' property of the SwaggerSetting is true.
+        /// Adds operation filters to Swagger
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
-        private static void AddOperationFilters(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
+        private static void AddOperationFilters(SwaggerGenOptions options)
         {
-            if (!swaggerSetting.IsHaveDefaultHeaders)
-                return;
-
             options.OperationFilter<TenantTokenOperationFilter>();
             options.OperationFilter<CorrelationIdOperationFilter>();
         }
@@ -86,15 +83,11 @@
         }
 
         /// <summary>
-        /// Adds a JWT security scheme to Swagger, if the 'IsHaveJwtSecurityScheme' property of the SwaggerSetting is true.
+        /// Adds a JWT security scheme to Swagger
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
-        private static void AddJwtSecurityScheme(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
+        private static void AddJwtSecurityScheme(SwaggerGenOptions options)
         {
-            if (!swaggerSetting.IsHaveJwtSecurityScheme)
-                return;
-
             OpenApiSecurityScheme jwtSecurityScheme = new()
             {
                 In = ParameterLocation.Header,
@@ -121,12 +114,8 @@
         /// Adds a basic security scheme to Swagger, if the 'IsHaveBasicSecurityScheme' property of the SwaggerSetting is true.
         /// </summary>
         /// <param name="options">The SwaggerGenOptions instance to configure.</param>
-        /// <param name="swaggerSetting">swagger settings obtained from configuration file</param>
-        private static void AddBasicSecurityScheme(SwaggerGenOptions options, SwaggerSetting swaggerSetting)
+        private static void AddBasicSecurityScheme(SwaggerGenOptions options)
         {
-            if (!swaggerSetting.IsHaveBasicSecurityScheme)
-                return;
-
             OpenApiSecurityScheme basicSecurityScheme = new()
             {
                 In = ParameterLocation.Header,

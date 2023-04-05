@@ -25,11 +25,7 @@
             {
                 swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", swaggerSetting.DefinitionName);
                 swaggerUIOptions.RoutePrefix = string.Empty;
-
-                if (swaggerSetting.IsClosedSchema)
-                {
-                    swaggerUIOptions.DefaultModelsExpandDepth(-1);
-                }
+                swaggerUIOptions.DefaultModelsExpandDepth(-1);
             });
 
             return app;

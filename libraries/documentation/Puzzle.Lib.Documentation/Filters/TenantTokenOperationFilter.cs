@@ -1,10 +1,10 @@
 ﻿namespace Puzzle.Lib.Documentation.Filters
 {
-    internal sealed class TenantTokenOperationFilter : SwaggerOperationFilter
+    internal sealed class TenantTokenOperationFilter : IOperationFilter
     {
-        public override void Apply(OpenApiOperation operation, OperationFilterContext context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            base.Apply(operation, context);
+            operation.Parameters ??= new List<OpenApiParameter>();
 
             operation.Parameters.Add(new OpenApiParameter
             {
