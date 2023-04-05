@@ -18,5 +18,18 @@
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
             services.Configure<FtpSetting>(configuration.GetRequiredSection(nameof(FtpSetting)));
         }
+
+        /// <summary>
+        /// Adds a default file provider that uses the physical file system to the specified service collection.
+        /// </summary>
+        /// <param name="services">The service collection to which the default file provider should be added.</param>
+        /// <returns>The updated service collection.</returns>
+
+        public static IServiceCollection AddDefaultFileProvider(this IServiceCollection services)
+        {
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
+
+            return services;
+        }
     }
 }

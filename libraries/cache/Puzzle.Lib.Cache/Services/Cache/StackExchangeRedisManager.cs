@@ -151,6 +151,7 @@
         public async Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
         {
             ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+            CacheArgumentException.ThrowIfNegativeNumber(start);
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
@@ -221,7 +222,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), null, When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -238,7 +239,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -255,7 +256,7 @@
 
             return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                bool succeeded = await _database.StringSetAsync(cacheKey, value.ToJsonIfNotStringType(), null, true, When.Exists, CommandFlags.DemandMaster);
+                bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
                     Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);

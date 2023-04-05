@@ -43,8 +43,7 @@
 
             SwaggerSetting swaggerSetting = new()
             {
-                DefinitionName = "Test Definition",
-                IsClosedSchema = true
+                DefinitionName = "Test Definition"
             };
 
             _optionsMock.Setup(op => op.Value).Returns(swaggerSetting);

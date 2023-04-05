@@ -1,7 +1,15 @@
 ﻿namespace Puzzle.Lib.Logging.IOC
 {
+    /// <summary>
+    /// Provides extension methods for configuring logging options for various operations.
+    /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
+        /// <summary>
+        /// Adds custom HTTP logging options to the service collection.
+        /// </summary>
+        /// <param name="services">The service collection instance.</param>
+        /// <returns>The updated service collection instance.</returns>
         public static IServiceCollection AddCustomHttpLogging(this IServiceCollection services)
         {
             services.AddHttpLogging(httpLoggingOptions =>

@@ -25,12 +25,12 @@
                     {
                         configure.LoginPath = new(cookieAuthenticationSetting.LoginPath);
                         configure.LogoutPath = new(cookieAuthenticationSetting.LogoutPath);
-                        configure.AccessDeniedPath = new PathString(cookieAuthenticationSetting.AccessDeniedPath);
+                        configure.AccessDeniedPath = new(cookieAuthenticationSetting.AccessDeniedPath);
                         configure.ExpireTimeSpan = TimeSpan.FromHours(cookieAuthenticationSetting.ExpireHour);
                         configure.SlidingExpiration = false;
                         configure.Cookie = new()
                         {
-                            Name = Assembly.GetEntryAssembly().GetName().Name.ToLower(CultureInfo.InvariantCulture),
+                            Name = Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant(),
                             HttpOnly = true,
                             SameSite = SameSiteMode.Strict,
                             SecurePolicy = CookieSecurePolicy.Always

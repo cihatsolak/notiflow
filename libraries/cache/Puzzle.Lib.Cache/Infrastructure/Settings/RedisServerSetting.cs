@@ -38,7 +38,7 @@
         /// <summary>
         /// Gets or sets the default database to be used in the Redis server.
         /// </summary>
-        public int DefaultDatabase { get; init; }
+        public required int DefaultDatabase { get; init; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Redis server allows administrative operations.

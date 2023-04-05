@@ -8,12 +8,12 @@
         /// <summary>
         /// Gets or sets the IP address of the FTP server.
         /// </summary>
-        public string Ip { get; init; }
+        public required string Ip { get; init; }
 
         /// <summary>
         /// Gets or sets the port number of the FTP server.
         /// </summary>
-        public string Port { get; init; }
+        public required string Port { get; init; }
 
         /// <summary>
         /// Gets or sets the username to authenticate with the FTP server.
@@ -28,11 +28,11 @@
         /// <summary>
         /// Gets or sets the URL of the FTP server.
         /// </summary>
-        public string Url { get; init; }
+        public required string Url { get; init; }
 
         /// <summary>
         /// Gets or sets the domain of the FTP server.
         /// </summary>
-        public string Domain { get; init; }
+        public required string Domain { get; init; }
     }
 }

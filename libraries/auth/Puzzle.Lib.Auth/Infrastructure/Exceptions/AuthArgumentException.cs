@@ -27,19 +27,6 @@
                 throw new ClaimException(paramName);
             }
         }
-
-        /// <summary>
-        /// Throws a <see cref="ClaimException"/> if the specified string argument is not a valid <see cref="DateTime"/>.
-        /// </summary>
-        /// <param name="argument">The string argument to validate as a <see cref="DateTime"/>.</param>
-        /// <param name="paramName">The name of the parameter being validated (automatically detected by the compiler).</param>
-        internal static void ThrowIfInvalidDateTime([NotNull] string argument, [CallerArgumentExpression("argument")] string paramName = null)
-        {
-            if (!DateTime.TryParse(argument, out _))
-            {
-                throw new ClaimException(paramName);
-            }
-        }
     }
 
 }

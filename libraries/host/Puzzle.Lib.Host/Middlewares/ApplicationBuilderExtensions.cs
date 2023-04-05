@@ -13,8 +13,8 @@
         /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
         public static IApplicationBuilder UseExceptionPage(this IApplicationBuilder app, string redirectRoute = null)
         {
-            var webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-            if (webHostEnvironment.IsProduction())
+            var hostEnvironment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
+            if (hostEnvironment.IsProduction())
             {
                 app.UseExceptionHandler(redirectRoute);
             }
@@ -26,5 +26,4 @@
             return app;
         }
     }
-
 }

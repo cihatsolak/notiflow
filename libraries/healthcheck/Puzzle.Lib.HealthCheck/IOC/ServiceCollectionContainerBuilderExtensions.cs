@@ -43,19 +43,19 @@
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HealthSetting));
-            HealthSetting healthSetting = configurationSection.Get<HealthSetting>();
+            IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HealthWebHookSetting));
+            HealthWebHookSetting healthWebHookSetting = configurationSection.Get<HealthWebHookSetting>();
 
             services.AddHealthChecksUI(setupSettings =>
             {
-                setupSettings.SetEvaluationTimeInSeconds(healthSetting.EvaluationTimeInSeconds);
-                setupSettings.SetApiMaxActiveRequests(healthSetting.ApiMaxActiveRequests);
-                setupSettings.MaximumHistoryEntriesPerEndpoint(healthSetting.MaximumHistoryEntriesPerEndpoint);
+                setupSettings.SetEvaluationTimeInSeconds(60);
+                setupSettings.SetApiMaxActiveRequests(150);
+                setupSettings.MaximumHistoryEntriesPerEndpoint(5000);
                 setupSettings.AddWebhookNotification(
-                    name: healthSetting.Name,
-                    uri: healthSetting.Uri,
-                    payload: healthSetting.Payload,
-                    restorePayload: healthSetting.RestorePayload
+                    name: healthWebHookSetting.Name,
+                    uri: healthWebHookSetting.Uri,
+                    payload: healthWebHookSetting.Payload,
+                    restorePayload: healthWebHookSetting.RestorePayload
                     );
             }).AddInMemoryStorage();
 

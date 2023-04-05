@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.SeriLog.LoggerConfigurations
+﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Configurations
 {
     internal static class DatabaseLoggerConfiguration
     {
@@ -8,7 +8,7 @@
         {
             Serilog.Sinks.MSSqlServer.ColumnOptions columnOptions = new()
             {
-               AdditionalColumns = new Collection<SqlColumn>
+                AdditionalColumns = new Collection<SqlColumn>
                {
                   //new SqlColumn(LogPushProperties.IpAddress, SqlDbType.VarChar, allowNull: true, dataLength: 100), //Todo
                   new SqlColumn(LogPushProperties.CorrelationId, SqlDbType.VarChar, allowNull: true, dataLength: 150),
@@ -55,7 +55,7 @@
                 {"exception", new ExceptionColumnWriter(NpgsqlDbType.Text)},
                 {"log_event", new LogEventSerializedColumnWriter(NpgsqlDbType.Json)},
                 {"user_name", new UsernameColumnWriter()}
-            }, 
+            },
             restrictedToMinimumLevel: LogEventLevel.Verbose
             );
 

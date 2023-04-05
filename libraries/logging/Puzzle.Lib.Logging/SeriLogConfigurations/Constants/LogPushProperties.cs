@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.SeriLog.Constants
+﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Constants
 {
     internal static class LogPushProperties
     {

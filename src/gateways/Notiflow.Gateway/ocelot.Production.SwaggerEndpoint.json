@@ -1,0 +1,14 @@
+{
+  "SwaggerEndPoints": [
+    {
+      "Key": "User",
+      "Config": [
+        {
+          "Name": "User API",
+          "Version": "v1",
+          "Url": "https://user.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

@@ -52,7 +52,7 @@
             {
                 setup.UIPath = healthUISetting.UIPath;
 
-                if (healthUISetting.IsCustomStyle && !isLocalhost)
+                if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath) && !isLocalhost)
                 {
                     setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), healthUISetting.CustomCssPath));
                 }

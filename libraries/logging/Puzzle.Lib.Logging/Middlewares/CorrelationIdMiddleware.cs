@@ -15,8 +15,8 @@
         {
             string correlationId = Guid.NewGuid().ToString();
 
-            httpContext.Request.Headers.TryGetValue("x-correlation-id", out var values);
-            if (values.Any())
+            bool isCorrelationIdExists = httpContext.Request.Headers.TryGetValue("x-correlation-id", out var values);
+            if (isCorrelationIdExists)
             {
                 correlationId = values.First();
             }

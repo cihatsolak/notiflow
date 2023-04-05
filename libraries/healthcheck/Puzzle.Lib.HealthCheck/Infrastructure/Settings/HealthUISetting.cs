@@ -19,10 +19,5 @@
         /// Gets or initializes the path to the custom CSS file for the health check UI.
         /// </summary>
         public string CustomCssPath { get; init; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether custom styles are applied to the health check UI.
-        /// </summary>
-        public required bool IsCustomStyle { get; set; }
     }
 }
