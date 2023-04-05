@@ -57,5 +57,33 @@
 
             return hostBuilder;
         }
+
+        /// <summary>
+        /// Starts the web host asynchronously and handles any exceptions that may occur.
+        /// </summary>
+        /// <param name="app">The web application instance to start.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+
+        public static async Task StartProjectAsync(this WebApplication app)
+        {
+            string applicationName = app.Environment.ApplicationName;
+            var logger = Log.ForContext(typeof(HostBuilderExtensions));
+
+            try
+            {
+                logger.Information("-- Starting web host: {@applicationName} --", applicationName);
+                await app.RunAsync();
+            }
+            catch (Exception exception)
+            {
+                logger.Fatal(exception, "-- Host terminated unexpectedly. {@applicationName} -- ", applicationName);
+                await app.StopAsync();
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+                await app.DisposeAsync();
+            }
+        }
     }
 }

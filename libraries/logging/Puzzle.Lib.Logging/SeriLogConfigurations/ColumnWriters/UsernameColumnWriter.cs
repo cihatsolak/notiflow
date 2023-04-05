@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.SeriLog.ColumnWriters
+﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.ColumnWriters
 {
     public class UsernameColumnWriter : ColumnWriterBase
     {
