@@ -52,7 +52,7 @@
         {
             hostBuilder.ConfigureHostOptions(configureOptions =>
             {
-                configureOptions.ShutdownTimeout = TimeSpan.FromMinutes(10);
+                configureOptions.ShutdownTimeout = TimeSpan.FromMinutes(5);
             });
 
             return hostBuilder;

@@ -1,5 +1,4 @@
-﻿
-namespace Puzzle.Lib.Host.IOC
+﻿namespace Puzzle.Lib.Host.IOC
 {
     /// <summary>
     /// This class provides a set of extension methods for adding additional functionality to the IServiceCollection and ContainerBuilder instances.
@@ -12,7 +11,7 @@ namespace Puzzle.Lib.Host.IOC
         /// <param name="services">The <see cref="IServiceCollection"/> to add the tag helper initializers to.</param>
         /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
 
-        public static IServiceCollection AddTagHelperInitializer(this IServiceCollection services)
+        public static IServiceCollection AddTagHelperInitializers(this IServiceCollection services)
         {
             services.AddSingleton<ITagHelperInitializer<ScriptTagHelper>, ScriptVersionTagHelperInitializer>();
             services.AddSingleton<ITagHelperInitializer<LinkTagHelper>, StyleVersionTagHelperInitializer>();
@@ -32,29 +31,6 @@ namespace Puzzle.Lib.Host.IOC
             {
                 options.LowercaseUrls = true;
             });
-
-            return services;
-        }
-
-        /// <summary>
-        /// Adds a controller with an authorization filter to the provided IServiceCollection instance.
-        /// </summary>
-        /// <param name="services">The IServiceCollection instance to which the controller and filter are added.</param>
-        /// <returns>The modified IServiceCollection instance.</returns>
-        public static IServiceCollection AddControllerWithAuthorizeFilter(this IServiceCollection services)
-        {
-            //var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            //services.AddControllers(options =>
-            //{
-            //    options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
-            //}).AddJsonOptions(options =>
-            //{
-            //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            //    options.JsonSerializerOptions.WriteIndented = true;
-            //});
-
-            //Todo: should be examined
 
             return services;
         }
