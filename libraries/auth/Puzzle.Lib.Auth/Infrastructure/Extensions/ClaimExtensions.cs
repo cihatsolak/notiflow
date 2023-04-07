@@ -36,18 +36,18 @@
         }
 
         /// <summary>
-        /// Adds a surname claim to a collection of claims.
+        /// Adds a family name claim to a collection of claims.
         /// </summary>
         /// <param name="claims">The collection of claims.</param>
-        /// <param name="surname">The surname to add as a claim.</param>
+        /// <param name="familyName">The family name to add as a claim.</param>
         /// <exception cref="ArgumentNullException">Thrown when the claims collection is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when the surname is null or empty.</exception>
-        public static void AddSurname(this ICollection<Claim> claims, string surname)
+        /// <exception cref="ArgumentException">Thrown when the family name is null or empty.</exception>
+        public static void AddFamilyName(this ICollection<Claim> claims, string familyName)
         {
             ArgumentNullException.ThrowIfNull(claims);
-            ArgumentException.ThrowIfNullOrEmpty(surname);
+            ArgumentException.ThrowIfNullOrEmpty(familyName);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, surname, ClaimValueTypes.String));
+            claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, familyName, ClaimValueTypes.String));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@
         {
             ArgumentNullException.ThrowIfNull(claims);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString(), ClaimValueTypes.String));
         }
 
         /// <summary>
@@ -135,18 +135,18 @@
         }
 
         /// <summary>
-        /// Adds a claim representing the username of a user to a collection of claims.
+        /// Adds a claim representing the given name of a user to a collection of claims.
         /// </summary>
-        /// <param name="claims">The collection of claims to which the username claim will be added.</param>
-        /// <param name="username">The username to be represented by the claim.</param>
+        /// <param name="claims">The collection of claims to which the given name claim will be added.</param>
+        /// <param name="givenName">The given name to be represented by the claim.</param>
         /// <exception cref="ArgumentNullException">Thrown if the claims parameter is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if the username parameter is null or empty.</exception>
-        public static void AddUsername(this ICollection<Claim> claims, string username)
+        /// <exception cref="ArgumentException">Thrown if the given name parameter is null or empty.</exception>
+        public static void AddGivenName(this ICollection<Claim> claims, string givenName)
         {
             ArgumentNullException.ThrowIfNull(claims);
-            ArgumentException.ThrowIfNullOrEmpty(username);
+            ArgumentException.ThrowIfNullOrEmpty(givenName);
 
-            claims.Add(new Claim(ClaimTypes.GivenName, username, ClaimValueTypes.String));
+            claims.Add(new Claim(ClaimTypes.GivenName, givenName, ClaimValueTypes.String));
         }
 
         /// <summary>

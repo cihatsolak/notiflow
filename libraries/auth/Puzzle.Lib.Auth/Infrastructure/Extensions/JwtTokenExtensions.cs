@@ -37,11 +37,11 @@
         /// <returns>A new refresh token string.</returns>
         public static string CreateRefreshToken()
         {
-            var numberByte = new byte[32];
-            using var random = RandomNumberGenerator.Create();
-            random.GetBytes(numberByte);
+            var number = new byte[32];
+            using var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(number);
 
-            return Convert.ToBase64String(numberByte);
+            return Convert.ToBase64String(number);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.Data;
-using System.Xml.Linq;
-
-namespace Puzzle.Lib.Auth.Services
+﻿namespace Puzzle.Lib.Auth.Services
 {
     public sealed class ClaimManager : IClaimService
     {
@@ -14,14 +11,14 @@ namespace Puzzle.Lib.Auth.Services
 
         public string Email => GetEmail();
         public string Name => GetName();
-        public string Surname => GetSurname();
-        public int UserId => GetUserId();
+        public string FamilyName => GetFamilyName();
+        public int NameIdentifier => GetNameIdentifier();
         public string Role => GetRole();
         public IEnumerable<string> Roles => GetRoles();
         public string Jti => GetJti();
-        public IEnumerable<string> Audiences => GetAudiences();
         public string Audience => GetAudience();
-        public string Username => GetUsername();
+        public IEnumerable<string> Audiences => GetAudiences();
+        public string GivenName => GetGivenName();
         public DateTime Iat => GetIat();
         public DateTime BirthDate => GetBirthDate();
 
@@ -41,7 +38,7 @@ namespace Puzzle.Lib.Auth.Services
             return name;
         }
 
-        private string GetSurname()
+        private string GetFamilyName()
         {
             string familyName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
             AuthArgumentException.ThrowIfNullOrEmpty(familyName);
@@ -49,17 +46,16 @@ namespace Puzzle.Lib.Auth.Services
             return familyName;
         }
 
-        private int GetUserId()
+        private int GetNameIdentifier()
         {
             string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
-            if (string.IsNullOrWhiteSpace(nameIdentifier))
+            AuthArgumentException.ThrowIfNullOrEmpty(nameIdentifier);
+
+            bool succeeded = int.TryParse(nameIdentifier, out int identifier);
+            if (!succeeded || 0 >= identifier)
                 throw new ClaimException(nameof(nameIdentifier));
 
-            bool result = int.TryParse(nameIdentifier, out int userId);
-            if (!result || 0 >= userId)
-                throw new ClaimException(nameof(nameIdentifier));
-
-            return userId;
+            return identifier;
         }
 
         private string GetRole()
@@ -90,6 +86,14 @@ namespace Puzzle.Lib.Auth.Services
             return jti;
         }
 
+        private string GetAudience()
+        {
+            string audience = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))?.Value;
+            AuthArgumentException.ThrowIfNullOrEmpty(audience);
+
+            return audience;
+        }
+
         private IEnumerable<string> GetAudiences()
         {
             IEnumerable<string> audiences = _httpContextAccessor.HttpContext.User.Claims
@@ -101,15 +105,7 @@ namespace Puzzle.Lib.Auth.Services
             return audiences;
         }
 
-        private string GetAudience()
-        {
-            string audience = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))?.Value;
-            AuthArgumentException.ThrowIfNullOrEmpty(audience);
-            
-            return audience;
-        }
-
-        private string GetUsername()
+        private string GetGivenName()
         {
             string givenName = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
             AuthArgumentException.ThrowIfNullOrEmpty(givenName);
