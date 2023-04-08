@@ -1,8 +1,15 @@
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.IdentityModel.Tokens;
 global using Moq;
 global using Puzzle.Lib.Auth.Infrastructure.Exceptions;
+global using Puzzle.Lib.Auth.Infrastructure.Extensions;
+global using Puzzle.Lib.Auth.Middlewares;
 global using Puzzle.Lib.Auth.Services;
+global using Puzzle.Lib.Auth.Tests.Data;
+global using System.Collections;
+global using System.ComponentModel;
+global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using Xunit;
-global using ApplicationBuilderExtensions = Puzzle.Lib.Auth.Middlewares.ApplicationBuilderExtensions;

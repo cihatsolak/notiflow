@@ -4,12 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:52881",
-      "sslPort": 44344
-    },
-    "iis": {
-      "applicationUrl": "https://localhost/Notiflow",
-      "sslPort": 44345
+      "applicationUrl": "http://localhost:21437",
+      "sslPort": 44331
     }
   },
   "profiles": {
@@ -18,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5173",
+      "applicationUrl": "http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -28,7 +24,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:7033;http://localhost:5173",
+      "applicationUrl": "https://localhost:7139;http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -37,14 +33,6 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS": {
-      "commandName": "IIS",
-      "launchBrowser": true,
-      "launchUrl": "https://localhost/Notiflow",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

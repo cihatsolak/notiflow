@@ -24,8 +24,8 @@
             {
                 EndPoints = { redisServerSetting.ConnectionString },
                 AbortOnConnectFail = redisServerSetting.AbortOnConnectFail,
-                AsyncTimeout = redisServerSetting.AsyncTimeOutMilliSecond,
-                ConnectTimeout = redisServerSetting.ConnectTimeOutMilliSecond,
+                AsyncTimeout = (int)TimeSpan.FromSeconds(redisServerSetting.AsyncTimeOutSecond).TotalMilliseconds,
+                ConnectTimeout = (int)TimeSpan.FromSeconds(redisServerSetting.ConnectTimeOutSecond).TotalMilliseconds,
                 User = redisServerSetting.Username,
                 Password = redisServerSetting.Password,
                 DefaultDatabase = redisServerSetting.DefaultDatabase,

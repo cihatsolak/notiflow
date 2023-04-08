@@ -11,7 +11,8 @@
         /// <typeparam name="TEvent">The type of the event to publish. Must inherit from RedisIntegrationBaseEvent.</typeparam>
         /// <param name="channelName">The name of the Redis channel to publish the event to.</param>
         /// <param name="event">The event to publish.</param>
-        /// <returns>A task that represents the asynchronous publish operation.</returns>
-        Task PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent;
+        /// The number of clients that received the message *on the destination server*,
+        /// note that this doesn't mean much in a cluster as clients can get the message through other nodes.
+        Task<long> PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent;
     }
 }

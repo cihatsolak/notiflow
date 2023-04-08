@@ -1,5 +1,9 @@
 ﻿namespace Puzzle.Lib.Auth.Infrastructure.Exceptions
 {
+    /// <summary>
+    /// Represents an exception that is thrown when there is an authentication-related argument error.
+    /// This class cannot be inherited.
+    /// </summary>
     internal static class AuthArgumentException
     {
         /// <summary>

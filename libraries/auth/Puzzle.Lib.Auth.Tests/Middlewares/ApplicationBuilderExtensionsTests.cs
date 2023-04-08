@@ -1,27 +1,35 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Puzzle.Lib.Auth.Tests.Middlewares
+﻿namespace Puzzle.Lib.Auth.Tests.Middlewares
 {
     public class ApplicationBuilderExtensionsTests
     {
         [Fact]
-        public void UseAuth_AddsAuthenticationAndAuthorizationMiddleware()
+        public void UseAuth_ShouldCallUseAuthenticationAndUseAuthorization()
         {
             // Arrange
-            var mockApp = new Mock<IApplicationBuilder>();
-            var mockServices = new Mock<IServiceCollection>();
-            var mockServicess = new Mock<IServiceProvider>();
-            mockApp.Setup(m => m.ApplicationServices).Returns(mockServicess.Object);
+            var services = new ServiceCollection();
+            services.AddAuthentication();
+            services.AddAuthorization();
+            var serviceProvider = services.BuildServiceProvider();
+
+            var app = new ApplicationBuilder(serviceProvider);
 
             // Act
-            var result = ApplicationBuilderExtensions.UseAuth(mockApp.Object);
+            app.UseAuth();
 
             // Assert
-            Assert.Equal(mockApp.Object, result);
-            mockServices.Verify(m => m.AddAuthentication(), Times.Once);
-            mockServices.Verify(m => m.AddAuthorization(), Times.Once);
-            mockApp.Verify(m => m.UseAuthentication(), Times.Once);
-            mockApp.Verify(m => m.UseAuthorization(), Times.Once);
+            Assert.True(app.Properties.ContainsKey("__AuthenticationMiddlewareSet"));
+            Assert.True(app.Properties.ContainsKey("__AuthorizationMiddlewareSet"));
+        }
+
+        [Fact]
+        public void UseAuth_WhenAppIsNull_ThrowArgumentNullException()
+        {
+            // Arrange
+            IApplicationBuilder app = null;
+
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentNullException>(() => app.UseAuth());
+            Assert.Equal("Value cannot be null. (Parameter 'app')", exception.Message);
         }
     }
 }

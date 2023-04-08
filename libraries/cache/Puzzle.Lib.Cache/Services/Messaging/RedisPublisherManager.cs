@@ -9,13 +9,13 @@
             _subscriber = subscriber;
         }
 
-        public async Task PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent
+        public async Task<long> PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent
         {
             ArgumentException.ThrowIfNullOrEmpty(channelName);
 
-            await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
             {
-                await _subscriber.PublishAsync(channelName, JsonSerializer.Serialize(@event), CommandFlags.FireAndForget);
+                return await _subscriber.PublishAsync(channelName, JsonSerializer.Serialize(@event), CommandFlags.FireAndForget);
             });
         }
     }
