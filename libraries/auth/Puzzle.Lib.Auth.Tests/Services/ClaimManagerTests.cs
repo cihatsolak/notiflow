@@ -1,8 +1,4 @@
-﻿using Puzzle.Lib.Auth.Tests.Data;
-using System.Linq;
-using System.Xml.Linq;
-
-namespace Puzzle.Lib.Auth.Tests.Services
+﻿namespace Puzzle.Lib.Auth.Tests.Services
 {
     public class ClaimManagerTests
     {
