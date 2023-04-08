@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backoffice", "backoffice", "{FF1D23DB-6DCE-4C18-8471-355586E8245F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API.csproj", "{83536B7A-FF5E-4F24-9E80-E7BF10E70834}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "performance", "performance", "{8A1D72BA-0C6D-458B-81DE-65D1D8200D13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{925B00F3-88F1-4586-8AC7-C79E87321181}"
@@ -64,6 +62,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cache", "libraries\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj", "{723A490B-8355-4B8D-B2BC-104EC67FE71C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{60633EF5-6895-46F5-9FE1-1C027E0E3012}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\settings.json = .vscode\settings.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity-server", "identity-server", "{E8A4051C-D079-49F3-A956-45917EE3E02A}"
 EndProject
@@ -159,17 +160,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Response.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{6CE50543-2E2B-4065-AB83-CD901F758888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Application", "src\services\backoffice\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj", "{674BC85D-B7DC-4AD3-B45A-0836868A96E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.Application", "src\services\backoffice\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj", "{674BC85D-B7DC-4AD3-B45A-0836868A96E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Domain", "src\services\backoffice\core\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj", "{A8285912-39FC-4193-96EE-C07DC9D962DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.Domain", "src\services\backoffice\core\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj", "{A8285912-39FC-4193-96EE-C07DC9D962DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{97AD861A-A36D-4CFF-AF79-63C4E4351896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Infrastructure", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj", "{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.Infrastructure", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj", "{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Persistence", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj", "{03417312-D6F4-4B5F-8950-A35EFB6F1289}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.Persistence", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj", "{03417312-D6F4-4B5F-8950-A35EFB6F1289}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API\Notiflow.Backoffice.API\Notiflow.Backoffice.API.csproj", "{88C617A9-D4FC-4B4A-A1CD-7662D495C440}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,10 +184,6 @@ Global
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C0DCB7CF-C365-43F8-888C-1288470A256F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C0DCB7CF-C365-43F8-888C-1288470A256F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0DCB7CF-C365-43F8-888C-1288470A256F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -353,6 +352,10 @@ Global
 		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -361,7 +364,6 @@ Global
 		{187F85CC-76F1-49FF-B381-24F15EF3F44F} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 		{FF1D23DB-6DCE-4C18-8471-355586E8245F} = {925B00F3-88F1-4586-8AC7-C79E87321181}
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834} = {1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}
 		{8A1D72BA-0C6D-458B-81DE-65D1D8200D13} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{925B00F3-88F1-4586-8AC7-C79E87321181} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
 		{C0DCB7CF-C365-43F8-888C-1288470A256F} = {8A1D72BA-0C6D-458B-81DE-65D1D8200D13}
@@ -429,6 +431,7 @@ Global
 		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
 		{03417312-D6F4-4B5F-8950-A35EFB6F1289} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
 		{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
+		{88C617A9-D4FC-4B4A-A1CD-7662D495C440} = {1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
