@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backoffice", "backoffice", "{FF1D23DB-6DCE-4C18-8471-355586E8245F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\Notiflow.Backoffice.API\Notiflow.Backoffice.API.csproj", "{83536B7A-FF5E-4F24-9E80-E7BF10E70834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API.csproj", "{83536B7A-FF5E-4F24-9E80-E7BF10E70834}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "performance", "performance", "{8A1D72BA-0C6D-458B-81DE-65D1D8200D13}"
 EndProject
@@ -141,21 +141,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.MessageBroker.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Performance.Tests", "libraries\performance\Puzzle.Lib.Performance.Tests\Puzzle.Lib.Performance.Tests.csproj", "{D4DFB982-C0F8-48E0-AA05-46FA7016ACB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Hangfire.Tests", "libraries\schedule\Puzzle.Lib.Hangfire.Tests\Puzzle.Lib.Hangfire.Tests.csproj", "{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Hangfire.Tests", "libraries\schedule\Puzzle.Lib.Hangfire.Tests\Puzzle.Lib.Hangfire.Tests.csproj", "{0CCD88EC-A637-437C-B06A-5D1ED5810EBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Security.Tests", "libraries\security\Puzzle.Lib.Security.Tests\Puzzle.Lib.Security.Tests.csproj", "{1F647598-F4F3-469D-ACA2-C5883C0B15E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Security.Tests", "libraries\security\Puzzle.Lib.Security.Tests\Puzzle.Lib.Security.Tests.csproj", "{1F647598-F4F3-469D-ACA2-C5883C0B15E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Session.Tests", "libraries\session\Puzzle.Lib.Session.Tests\Puzzle.Lib.Session.Tests.csproj", "{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Session.Tests", "libraries\session\Puzzle.Lib.Session.Tests\Puzzle.Lib.Session.Tests.csproj", "{EFAFC068-ED37-4C69-9747-EB8126B8CF2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Assistants.Tests", "libraries\shared\Puzzle.Lib.Assistants.Tests\Puzzle.Lib.Assistants.Tests.csproj", "{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Assistants.Tests", "libraries\shared\Puzzle.Lib.Assistants.Tests\Puzzle.Lib.Assistants.Tests.csproj", "{998B221D-CE8E-42DC-ADEC-E84ECDA432C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Validation.Tests", "libraries\validation\Puzzle.Lib.Validation.Tests\Puzzle.Lib.Validation.Tests.csproj", "{62711E48-607C-4E2F-8646-609390A5225A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Validation.Tests", "libraries\validation\Puzzle.Lib.Validation.Tests\Puzzle.Lib.Validation.Tests.csproj", "{62711E48-607C-4E2F-8646-609390A5225A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Version.Tests", "libraries\version\Puzzle.Lib.Version.Tests\Puzzle.Lib.Version.Tests.csproj", "{D982EECE-F4D7-40BE-94E6-C0C187DA013D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Version.Tests", "libraries\version\Puzzle.Lib.Version.Tests\Puzzle.Lib.Version.Tests.csproj", "{D982EECE-F4D7-40BE-94E6-C0C187DA013D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Logging.Tests", "libraries\logging\Puzzle.Lib.Logging.Tests\Puzzle.Lib.Logging.Tests.csproj", "{DC55ECE9-C9F1-4833-B9A8-93861DC6A344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Logging.Tests", "libraries\logging\Puzzle.Lib.Logging.Tests\Puzzle.Lib.Logging.Tests.csproj", "{DC55ECE9-C9F1-4833-B9A8-93861DC6A344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Response.Tests", "libraries\response\Puzzle.Lib.Response.Tests\Puzzle.Lib.Response.Tests.csproj", "{E76FC60B-0058-429B-A9A1-C690642C7B50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Response.Tests", "libraries\response\Puzzle.Lib.Response.Tests\Puzzle.Lib.Response.Tests.csproj", "{E76FC60B-0058-429B-A9A1-C690642C7B50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{6CE50543-2E2B-4065-AB83-CD901F758888}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Application", "src\services\backoffice\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj", "{674BC85D-B7DC-4AD3-B45A-0836868A96E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Domain", "src\services\backoffice\core\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj", "{A8285912-39FC-4193-96EE-C07DC9D962DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{97AD861A-A36D-4CFF-AF79-63C4E4351896}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Infrastructure", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj", "{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.Persistence", "src\services\backoffice\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj", "{03417312-D6F4-4B5F-8950-A35EFB6F1289}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -323,6 +337,22 @@ Global
 		{E76FC60B-0058-429B-A9A1-C690642C7B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E76FC60B-0058-429B-A9A1-C690642C7B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E76FC60B-0058-429B-A9A1-C690642C7B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{674BC85D-B7DC-4AD3-B45A-0836868A96E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{674BC85D-B7DC-4AD3-B45A-0836868A96E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{674BC85D-B7DC-4AD3-B45A-0836868A96E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{674BC85D-B7DC-4AD3-B45A-0836868A96E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8285912-39FC-4193-96EE-C07DC9D962DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8285912-39FC-4193-96EE-C07DC9D962DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8285912-39FC-4193-96EE-C07DC9D962DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8285912-39FC-4193-96EE-C07DC9D962DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03417312-D6F4-4B5F-8950-A35EFB6F1289}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -331,7 +361,7 @@ Global
 		{187F85CC-76F1-49FF-B381-24F15EF3F44F} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{62215138-5FA0-4D38-92E3-9EECF7CCAC32} = {187F85CC-76F1-49FF-B381-24F15EF3F44F}
 		{FF1D23DB-6DCE-4C18-8471-355586E8245F} = {925B00F3-88F1-4586-8AC7-C79E87321181}
-		{83536B7A-FF5E-4F24-9E80-E7BF10E70834} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
+		{83536B7A-FF5E-4F24-9E80-E7BF10E70834} = {1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}
 		{8A1D72BA-0C6D-458B-81DE-65D1D8200D13} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{925B00F3-88F1-4586-8AC7-C79E87321181} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
 		{C0DCB7CF-C365-43F8-888C-1288470A256F} = {8A1D72BA-0C6D-458B-81DE-65D1D8200D13}
@@ -392,6 +422,13 @@ Global
 		{D982EECE-F4D7-40BE-94E6-C0C187DA013D} = {00155C6D-95FE-4CD3-9797-99A3906A9467}
 		{DC55ECE9-C9F1-4833-B9A8-93861DC6A344} = {42DB1BCB-0A13-48D6-8259-155D7BFAB8D4}
 		{E76FC60B-0058-429B-A9A1-C690642C7B50} = {366A89CB-4648-4DE3-8CD9-3D1951744C07}
+		{6CE50543-2E2B-4065-AB83-CD901F758888} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
+		{674BC85D-B7DC-4AD3-B45A-0836868A96E9} = {6CE50543-2E2B-4065-AB83-CD901F758888}
+		{A8285912-39FC-4193-96EE-C07DC9D962DA} = {6CE50543-2E2B-4065-AB83-CD901F758888}
+		{97AD861A-A36D-4CFF-AF79-63C4E4351896} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
+		{A7449262-A0F2-4DA8-8AB7-04BB7F15D767} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
+		{03417312-D6F4-4B5F-8950-A35EFB6F1289} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
+		{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
