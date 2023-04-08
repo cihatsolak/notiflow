@@ -3,6 +3,7 @@ global using Microsoft.AspNetCore.Http;
 global using Moq;
 global using Puzzle.Lib.Auth.Infrastructure.Exceptions;
 global using Puzzle.Lib.Auth.Services;
+global using System.Collections;
 global using System.ComponentModel;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
