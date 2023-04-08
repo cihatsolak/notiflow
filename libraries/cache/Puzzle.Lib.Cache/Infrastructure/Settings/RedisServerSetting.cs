@@ -16,14 +16,14 @@
         public required bool AbortOnConnectFail { get; init; }
 
         /// <summary>
-        /// Gets or sets the async timeout in milliseconds.
+        /// Gets or sets the async timeout in seconds.
         /// </summary>
-        public required int AsyncTimeOutMilliSecond { get; init; }
+        public required int AsyncTimeOutSecond { get; init; }
 
         /// <summary>
-        /// Gets or sets the connection timeout in milliseconds.
+        /// Gets or sets the connection timeout in seconds.
         /// </summary>
-        public required int ConnectTimeOutMilliSecond { get; init; }
+        public required int ConnectTimeOutSecond { get; init; }
 
         /// <summary>
         /// Gets or sets the Redis server username.
