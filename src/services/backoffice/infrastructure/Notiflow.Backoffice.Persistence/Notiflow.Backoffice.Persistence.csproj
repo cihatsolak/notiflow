@@ -6,4 +6,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+    <ProjectReference Include="..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
+  </ItemGroup>
+
 </Project>
