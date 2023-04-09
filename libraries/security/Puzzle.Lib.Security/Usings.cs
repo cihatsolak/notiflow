@@ -13,6 +13,7 @@ global using Puzzle.Lib.Security.Infrastructure.Settings;
 global using Puzzle.Lib.Security.Services.Protectors;
 global using Puzzle.Lib.Security.Services.Protocols;
 global using System.Net;
+global using System.Reflection;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Json;
