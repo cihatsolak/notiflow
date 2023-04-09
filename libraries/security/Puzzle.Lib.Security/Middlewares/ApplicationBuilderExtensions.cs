@@ -32,6 +32,6 @@
             app.UseMiddleware<SecurityHeadersMiddleware>();
 
             return app;
-        }
+        }        
     }
 }

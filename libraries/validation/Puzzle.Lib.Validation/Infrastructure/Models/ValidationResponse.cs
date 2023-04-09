@@ -4,7 +4,7 @@
     /// Represents the response model for a validation operation.
     /// This class is internal and sealed, meaning it can only be accessed from within the assembly in which it is defined, and cannot be inherited from.
     /// </summary>
-    internal sealed class ValidationResponseModel
+    internal sealed class ValidationResponse
     {
         /// <summary>
         /// Gets or sets a value indicating whether the request was successful or not.

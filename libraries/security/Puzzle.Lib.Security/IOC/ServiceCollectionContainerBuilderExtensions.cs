@@ -83,5 +83,21 @@
 
             return services;
         }
+
+        /// <summary>
+        /// Configures a public CORS policy for an ASP.NET Core application using the IServiceCollection interface. 
+        /// This allows cross-origin requests from any origin, with any HTTP method and header.
+        /// </summary>
+        /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
+        public static void ConfigurePublicCorsPolicy(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+        }
     }
 }
