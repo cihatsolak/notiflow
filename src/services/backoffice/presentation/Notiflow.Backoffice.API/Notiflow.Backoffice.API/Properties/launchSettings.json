@@ -6,6 +6,10 @@
     "iisExpress": {
       "applicationUrl": "http://localhost:21437",
       "sslPort": 44331
+    },
+    "iis": {
+      "applicationUrl": "https://localhost/NotiflowBackofficeAPI",
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -33,6 +37,14 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Local IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost/NotiflowBackofficeAPI",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
