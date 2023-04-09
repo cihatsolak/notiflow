@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
+    <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

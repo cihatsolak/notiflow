@@ -33,5 +33,15 @@
 
             return app;
         }
+
+        /// <summary>
+        /// Adds custom CORS policy to the specified application builder using the executing assembly's full name.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <returns>The updated application builder with the custom CORS policy added.</returns>
+        public static IApplicationBuilder UseCustomCors(IApplicationBuilder app)
+        {
+           return app.UseCors(Assembly.GetExecutingAssembly().FullName);
+        }
     }
 }

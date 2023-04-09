@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
+  </ItemGroup>
+
 </Project>

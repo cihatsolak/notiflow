@@ -11,7 +11,7 @@
         /// <param name="app">The <see cref="IApplicationBuilder"/> instance to add the middleware to.</param>
         /// <param name="redirectRoute">The route to redirect to in the event of an exception in a production environment.</param>
         /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseExceptionPage(this IApplicationBuilder app, string redirectRoute = null)
+        public static IApplicationBuilder UseUIExceptionHandler(this IApplicationBuilder app, string redirectRoute = null)
         {
             var hostEnvironment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
             if (hostEnvironment.IsProduction())
@@ -22,6 +22,47 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            return app;
+        }
+
+        /// <summary>
+        /// Registers an API exception handler middleware that catches unhandled exceptions during API requests and returns a JSON error response.
+        /// </summary>
+        /// <param name="app">The IApplicationBuilder instance used to configure the middleware pipeline.</param>
+        /// <returns>The IApplicationBuilder instance after the middleware has been registered.</returns>
+        public static IApplicationBuilder UseApiExceptionHandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(applicationBuilder =>
+            {
+                applicationBuilder.Run(async httpContext =>
+                {
+                    IExceptionHandlerFeature exceptionHandlerFeature = httpContext.Features.Get<IExceptionHandlerFeature>();
+                    if (exceptionHandlerFeature is null)
+                    {
+                        await Task.CompletedTask;
+                        return;
+                    }
+
+                    httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+                    httpContext.Response.StatusCode = exceptionHandlerFeature.Error switch
+                    {
+                        OperationCanceledException => StatusCodes.Status503ServiceUnavailable,
+                        _ => StatusCodes.Status500InternalServerError
+                    }; 
+
+                    Log.Error(exceptionHandlerFeature.Error, "-- HTTP {@httpStatusCode} -- {@message}", httpContext.Response.StatusCode, exceptionHandlerFeature.Error?.Message);
+
+                    ErrorHandlerResponse errorHandlerResponse = new()
+                    {
+                        StatusCode = 9000,
+                        StatusMessage = "We are unable to process your transaction at this time.",
+                        Succeeded = false
+                    };
+
+                    await httpContext.Response.WriteAsync(JsonSerializer.Serialize(errorHandlerResponse));
+                });
+            });
 
             return app;
         }

@@ -6,4 +6,14 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\libraries\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
+    <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
