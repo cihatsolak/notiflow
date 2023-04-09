@@ -20,8 +20,8 @@
 
                 var failures = validationResults
                            .SelectMany(validationResult => validationResult.Errors)
-                           .Where(validationFailure => validationFailure is not null)
-                           .ToList();
+                           .Where(validationFailure => validationFailure is not null);
+                           
 
                 _logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName());
 

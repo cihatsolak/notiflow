@@ -18,7 +18,7 @@ namespace Puzzle.Lib.Response.Tests
             };
 
             // Act
-            var attributes = controllerType.GetCustomAttributes(true).Select(attributes => attributes.GetType()).ToList();
+            var attributes = controllerType.GetCustomAttributes(true).Select(attributes => attributes.GetType());
 
             // Assert
             Assert.Equal(expectedAttributes, attributes);
