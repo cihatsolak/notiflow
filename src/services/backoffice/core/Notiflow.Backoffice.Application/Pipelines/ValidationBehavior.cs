@@ -23,7 +23,7 @@
                            .Where(validationFailure => validationFailure is not null);
                            
 
-                _logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName());
+                //_logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName()); //Todo
 
                 if (failures.Any())
                 {

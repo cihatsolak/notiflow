@@ -4,9 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\libraries\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
     <ProjectReference Include="..\..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
     <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj" />

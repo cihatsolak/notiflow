@@ -24,33 +24,32 @@
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllParametersInCamelCase();
-                options.SwaggerDoc(swaggerSetting.Version,
-                    new()
+#pragma warning disable S1075 // URIs should not be hardcoded
+                options.SwaggerDoc(swaggerSetting.Version, new OpenApiInfo
+                {
+                    Title = swaggerSetting.Title,
+                    Version = swaggerSetting.Version,
+                    Description = swaggerSetting.Description,
+                    Contact = new OpenApiContact
                     {
-                        Title = swaggerSetting.Title,
-                        Description = swaggerSetting.Description,
-                        Version = swaggerSetting.Version,
-                        Contact = new()
+                        Name = swaggerSetting.ContactName,
+                        Email = swaggerSetting.ContactEmail
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
+                    },
+                    Extensions = new Dictionary<string, IOpenApiExtension>
+                    {
+                      { "x-logo", new OpenApiObject
                         {
-                            Email = swaggerSetting.ContactEmail,
-                            Name = swaggerSetting.ContactName,
-                            Url = new(swaggerSetting.ContactUrl)
-                        },
-                        License = new()
-                        {
-                            Name = swaggerSetting.LicenseName,
-                            Url = new(swaggerSetting.LicenseUrl)
-                        },
-                        TermsOfService = swaggerSetting.TermsOfService,
-                        Extensions = new Dictionary<string, IOpenApiExtension>
-                        {
-                          { "x-logo", new OpenApiObject
-                            {
-                              { "url", new OpenApiString(swaggerSetting.LogoUrl)}
-                            }
-                          }
+                          { "url", new OpenApiString("https://avatars.githubusercontent.com/u/9141961")}
                         }
-                    });
+                      }
+                    }
+                });
+#pragma warning restore S1075 // URIs should not be hardcoded
 
                 AddIncludeXmlComments(options);
                 AddOperationFilters(options);
@@ -93,7 +92,7 @@
                 In = ParameterLocation.Header,
                 Name = HeaderNames.Authorization,
                 Type = SecuritySchemeType.Http,
-                Description = "user authentication and authorization",
+                Description = "Industry standard RFC 7519 method for representing claims securely between two parties.",
                 BearerFormat = "JWT",
                 Scheme = "bearer",
                 Reference = new()
@@ -120,7 +119,7 @@
             {
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Description = "user authentication and authorization",
+                Description = "Authenticate user with username and password.",
                 Scheme = "basic",
                 Reference = new()
                 {

@@ -43,7 +43,7 @@
 
             SwaggerSetting swaggerSetting = new()
             {
-                DefinitionName = "Test Definition"
+               
             };
 
             _optionsMock.Setup(op => op.Value).Returns(swaggerSetting);
