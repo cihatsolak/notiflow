@@ -18,12 +18,10 @@
             if (webHostEnvironment.IsProduction())
                 return app;
 
-            SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
-
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
             {
-                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", swaggerSetting.DefinitionName);
+                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetEntryAssembly().GetName().Name);
                 swaggerUIOptions.RoutePrefix = string.Empty;
                 swaggerUIOptions.DefaultModelsExpandDepth(-1);
             });

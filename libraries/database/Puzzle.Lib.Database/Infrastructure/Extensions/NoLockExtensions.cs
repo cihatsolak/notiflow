@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Interfaces.Entities;
-
-namespace Puzzle.Lib.Database.Infrastructure.Extensions
+﻿namespace Puzzle.Lib.Database.Infrastructure.Extensions
 {
     /// <summary>
     /// Extension method to manage queries according to isolation levels

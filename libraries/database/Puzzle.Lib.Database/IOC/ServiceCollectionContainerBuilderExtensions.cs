@@ -5,8 +5,6 @@
     /// </summary>
     public static class ServiceCollectionContainerBuilderExtensions
     {
-        private static IWebHostEnvironment WebHostEnvironment { get; set; }
-
         /// <summary>
         /// Add postgresql provider as database context
         /// </summary>
@@ -22,19 +20,19 @@
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            WebHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            var webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             services.AddDbContextPool<TDbContext>(contextOptions =>
             {
                 ConfigureWarnings(contextOptions);
-                ConfigureLog(contextOptions);
+                ConfigureLog(contextOptions, webHostEnvironment);
 
                 contextOptions.UseLazyLoadingProxies(false);
                 contextOptions.UseNpgsql(configuration.GetConnectionString(contextName), sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.FullName);
-                    sqlOptions.CommandTimeout(Convert.ToInt16(TimeSpan.FromSeconds(60).TotalSeconds));
+                    sqlOptions.CommandTimeout((int)TimeSpan.FromSeconds(60).TotalSeconds);
 
 
                     if (isSplitQuery)
@@ -44,7 +42,7 @@
                 });
             });
 
-            ConfigureException(services);
+            ConfigureException(services, webHostEnvironment);
 
             return services;
         }
@@ -54,6 +52,7 @@
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of built-in service collection</returns>
+        [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
         public static IServiceCollection AddEfEntityRepository(IServiceCollection services)
         {
             services.TryAddScoped(typeof(IEf6EntityRepository<>), typeof(Ef6EntityRepository<>));
@@ -71,23 +70,17 @@
             contextOptions.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.RowLimitingOperationWithoutOrderByWarning));
         }
 
-        private static void ConfigureLog(DbContextOptionsBuilder contextOptions)
+        private static void ConfigureLog(DbContextOptionsBuilder contextOptions, IWebHostEnvironment webHostEnvironment)
         {
-            contextOptions.EnableDetailedErrors(WebHostEnvironment.IsDevEnvironment());
-            contextOptions.LogTo(Log.Logger.Warning, LogLevel.Warning);
-            contextOptions.EnableSensitiveDataLogging(WebHostEnvironment.IsDevEnvironment());
-            contextOptions.UseLoggerFactory(LoggerFactory.Create(builder =>
-            {
-                if (WebHostEnvironment.IsDevEnvironment())
-                {
-                    builder.AddConsole();
-                }
-            }));
+            contextOptions.EnableDetailedErrors(!webHostEnvironment.IsProduction());
+            contextOptions.EnableSensitiveDataLogging(!webHostEnvironment.IsProduction());
+            contextOptions.LogTo(Console.WriteLine, LogLevel.Warning);
+            contextOptions.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         }
 
-        private static void ConfigureException(IServiceCollection services)
+        private static void ConfigureException(IServiceCollection services, IWebHostEnvironment webHostEnvironment)
         {
-            if (WebHostEnvironment.IsDevEnvironment())
+            if (!webHostEnvironment.IsProduction())
             {
                 services.AddDatabaseDeveloperPageExceptionFilter();
             }

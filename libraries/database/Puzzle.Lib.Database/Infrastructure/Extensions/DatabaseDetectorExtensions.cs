@@ -9,8 +9,8 @@
         {
             return database.ProviderName switch
             {
-                MSSQL => DatabaseSchema.Dbo,
-                PostgreSQL => DatabaseSchema.Public,
+                MSSQL => "dbo",
+                PostgreSQL => "public",
                 _ => throw new NotImplementedException("Unidentified database provider"),
             };
         }

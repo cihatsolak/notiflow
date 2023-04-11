@@ -101,7 +101,7 @@
 
             services.AddCors(options =>
             {
-                options.AddPolicy(Assembly.GetExecutingAssembly().FullName, builder => builder
+                options.AddPolicy(Assembly.GetEntryAssembly().GetName().Name, builder => builder
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
