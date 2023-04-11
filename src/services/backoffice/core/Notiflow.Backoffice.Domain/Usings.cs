@@ -1,1 +1,1 @@
-﻿
+﻿global using Puzzle.Lib.Entities.Entities.Historical;
