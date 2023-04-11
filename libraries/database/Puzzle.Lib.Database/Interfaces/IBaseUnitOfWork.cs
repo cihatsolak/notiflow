@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Interfaces.UnitOfWorks
+﻿namespace Puzzle.Lib.Database.Interfaces
 {
     /// <summary>
     /// Represents a base interface for a unit of work that manages transactions and saves changes to the database.

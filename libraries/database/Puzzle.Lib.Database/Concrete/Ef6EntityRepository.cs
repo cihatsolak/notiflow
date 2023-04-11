@@ -1,16 +1,22 @@
-﻿namespace Puzzle.Lib.Database.Concrete.Repositories
+﻿namespace Puzzle.Lib.Database.Concrete
 {
-    public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEntity> where TEntity : class, IEntity, new()
+    [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
+    public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where TEntity : class, IEntity, new()
     {
-        public ReadRepository(DbContext dbContext) : base(dbContext)
+        protected readonly DbContext _context;
+        protected readonly DbSet<TEntity> _entities;
+
+        public Ef6EntityRepository(DbContext context)
         {
+            _context = context;
+            _entities = context.Set<TEntity>();
         }
 
         public virtual async Task<PagedResult<TEntity>> GetPageAsync(
-           int pageIndex,
-           int pageSize,
-           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-           CancellationToken cancellationToken = default)
+            int pageIndex,
+            int pageSize,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            CancellationToken cancellationToken = default)
         {
             var query = TableNoTracking;
 
@@ -214,6 +220,83 @@
         {
             return await _entities.FindAsync(new object[] { id }, cancellationToken);
         }
+
+        public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            await _entities.AddAsync(entity, cancellationToken);
+        }
+
+        public virtual async Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(entities);
+
+            await _entities.AddRangeAsync(entities, cancellationToken);
+        }
+
+        public virtual void Update(TEntity entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+
+            _entities.Update(entity);
+        }
+
+        public virtual void Update(IEnumerable<TEntity> entities)
+        {
+            ArgumentNullException.ThrowIfNull(entities);
+
+            _entities.UpdateRange(entities);
+        }
+
+        public virtual void Delete()
+        {
+            _entities.RemoveRange(_entities.AsQueryable());
+        }
+
+        public virtual void Delete(int id)
+        {
+            var entity = _entities.Find(id);
+            if (entity is not null)
+            {
+                Delete(entity);
+            }
+        }
+
+        public virtual void Delete(TEntity entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+
+            _entities.Remove(entity);
+        }
+
+        public virtual void Delete(IEnumerable<TEntity> entities)
+        {
+            ArgumentNullException.ThrowIfNull(entities);
+
+            _entities.RemoveRange(entities);
+        }
+
+        public virtual void Delete(Expression<Func<TEntity, bool>> predicate)
+        {
+            _entities.RemoveRange(_entities.Where(predicate));
+        }
+
+        public virtual void DeleteByPropertyName(TEntity entity, string propertyName)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            ArgumentException.ThrowIfNullOrEmpty(propertyName);
+
+            if (entity.GetType().GetProperty(propertyName) is null)
+                throw new ArgumentNullException(nameof(propertyName));
+
+            entity.GetType().GetProperty(propertyName).SetValue(entity, true);
+
+            _entities.Update(entity);
+        }
+
+        public IQueryable<TEntity> Table => _entities;
+        public IQueryable<TEntity> TableNoTracking => _entities.AsNoTracking();
+        public IQueryable<TEntity> TableNoTrackingWithIdentityResolution => _entities.AsNoTrackingWithIdentityResolution();
 
         private IQueryable<TEntity> SelectEntities(bool stopTracking) => stopTracking ? TableNoTracking : Table;
         private IQueryable<TEntity> SelectRelationEntities(bool stopTracking) => stopTracking ? TableNoTrackingWithIdentityResolution : Table;

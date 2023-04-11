@@ -32,7 +32,7 @@
                 contextOptions.UseNpgsql(configuration.GetConnectionString(contextName), sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.FullName);
-                    sqlOptions.CommandTimeout(Convert.ToInt16(TimeSpan.FromSeconds(60).TotalSeconds));
+                    sqlOptions.CommandTimeout((int)TimeSpan.FromSeconds(60).TotalSeconds);
 
 
                     if (isSplitQuery)
@@ -52,6 +52,7 @@
         /// </summary>
         /// <param name="services">type of built-in service collection interface</param>
         /// <returns>type of built-in service collection</returns>
+        [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
         public static IServiceCollection AddEfEntityRepository(IServiceCollection services)
         {
             services.TryAddScoped(typeof(IEf6EntityRepository<>), typeof(Ef6EntityRepository<>));
@@ -71,18 +72,10 @@
 
         private static void ConfigureLog(DbContextOptionsBuilder contextOptions, IWebHostEnvironment webHostEnvironment)
         {
-            bool notProductionEnvironment = !webHostEnvironment.IsProduction();
-
-            contextOptions.EnableDetailedErrors(notProductionEnvironment);
-            contextOptions.LogTo(Log.Logger.Warning, LogLevel.Warning);
-            contextOptions.EnableSensitiveDataLogging(notProductionEnvironment);
-            contextOptions.UseLoggerFactory(LoggerFactory.Create(builder =>
-            {
-                if (notProductionEnvironment)
-                {
-                    builder.AddConsole();
-                }
-            }));
+            contextOptions.EnableDetailedErrors(!webHostEnvironment.IsProduction());
+            contextOptions.EnableSensitiveDataLogging(!webHostEnvironment.IsProduction());
+            contextOptions.LogTo(Console.WriteLine, LogLevel.Warning);
+            contextOptions.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         }
 
         private static void ConfigureException(IServiceCollection services, IWebHostEnvironment webHostEnvironment)

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
+﻿namespace Puzzle.Lib.Database.Interfaces
 {
     /// <summary>
     /// Provides a generic repository pattern implementation for entities that are based on Entity Framework and implements the <see cref="IEntity"/> interface.

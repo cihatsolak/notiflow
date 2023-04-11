@@ -22,7 +22,7 @@
             if (webHostEnvironment.IsProduction())
                 return;
 
-            ILogger logger = Log.ForContext(typeof(MigrationManagerExtensions));
+            var logger = serviceProvider.GetRequiredService<ILogger<TDbContext>>();
 
             try
             {
@@ -30,12 +30,12 @@
                 if (!context.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory"))
                 {
                     await context.Database.MigrateAsync();
-                    logger.Information("Migration completed successfully.");
+                    logger.LogInformation("Migration completed successfully.");
                 }
             }
             catch (Exception exception)
             {
-                logger.Error(exception, "The migration process ended with an error.");
+                logger.LogError(exception, "The migration process ended with an error.");
             }
         }
     }

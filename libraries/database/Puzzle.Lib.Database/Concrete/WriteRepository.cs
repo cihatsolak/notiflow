@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Concrete.Repositories
+﻿namespace Puzzle.Lib.Database.Concrete
 {
     public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TEntity> where TEntity : BaseEntity
     {
@@ -42,7 +42,7 @@
 
         public virtual async Task<int> ExecuteUpdateAsync(
             Expression<Func<TEntity, bool>> predicate,
-            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, 
+            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
             CancellationToken cancellationToken = default)
         {
             return await _entities.Where(predicate).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);

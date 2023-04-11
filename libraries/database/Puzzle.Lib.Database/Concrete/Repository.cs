@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Concrete.Repositories
+﻿namespace Puzzle.Lib.Database.Concrete
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Interfaces.Repositories
+﻿namespace Puzzle.Lib.Database.Interfaces
 {
     /// <summary>
     /// Represents a repository for writing entities of type TEntity.

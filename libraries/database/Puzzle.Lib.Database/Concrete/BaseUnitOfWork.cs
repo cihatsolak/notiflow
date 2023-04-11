@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Concrete.UnitOfWorks
+﻿namespace Puzzle.Lib.Database.Concrete
 {
     public class BaseUnitOfWork : IBaseUnitOfWork
     {
