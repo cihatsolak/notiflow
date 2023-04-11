@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Http.Infrastructure.Policies
+﻿namespace Puzzle.Lib.Http.Policies
 {
     /// <summary>
     /// Extension methods to manage error status of http calls <see cref="HttpPolicyExtensions" />.

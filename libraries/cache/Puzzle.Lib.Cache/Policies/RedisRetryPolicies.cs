@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.TransientFaultHandling
+﻿namespace Puzzle.Lib.Cache.Policies
 {
     /// <summary>
     /// This class provides a retry policy for handling errors while communicating with Redis. 
