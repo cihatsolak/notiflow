@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
+    <ProjectReference Include="..\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
   </ItemGroup>
 
 </Project>

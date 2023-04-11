@@ -174,7 +174,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API\Notiflow.Backoffice.API\Notiflow.Backoffice.API.csproj", "{88C617A9-D4FC-4B4A-A1CD-7662D495C440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Entities", "libraries\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj", "{D721C939-E88E-47DE-800C-B0A471A398EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Entities", "libraries\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj", "{EE705B25-E66C-48B0-BCA9-667478BA0A2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -358,10 +358,10 @@ Global
 		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88C617A9-D4FC-4B4A-A1CD-7662D495C440}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D721C939-E88E-47DE-800C-B0A471A398EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D721C939-E88E-47DE-800C-B0A471A398EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D721C939-E88E-47DE-800C-B0A471A398EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D721C939-E88E-47DE-800C-B0A471A398EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -438,7 +438,7 @@ Global
 		{03417312-D6F4-4B5F-8950-A35EFB6F1289} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
 		{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
 		{88C617A9-D4FC-4B4A-A1CD-7662D495C440} = {1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}
-		{D721C939-E88E-47DE-800C-B0A471A398EB} = {681CB20C-8A02-4184-97CD-B103C48620B2}
+		{EE705B25-E66C-48B0-BCA9-667478BA0A2B} = {681CB20C-8A02-4184-97CD-B103C48620B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
