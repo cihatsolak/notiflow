@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.Base
+﻿namespace Puzzle.Lib.Entities.Entities.Base
 {
     public abstract class BaseEntity : IEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Interfaces.Entities
+﻿namespace Puzzle.Lib.Entities.Interfaces
 {
     /// <summary>
     /// Represents a marker interface for entities.

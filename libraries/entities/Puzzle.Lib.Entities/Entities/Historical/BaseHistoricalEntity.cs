@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.Historical
+﻿namespace Puzzle.Lib.Entities.Entities.Historical
 {
     public abstract class BaseHistoricalEntity : BaseEntity
     {

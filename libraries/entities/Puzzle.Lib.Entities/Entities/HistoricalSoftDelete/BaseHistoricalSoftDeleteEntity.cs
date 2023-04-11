@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Entities.HistoricalSoftDelete
+﻿namespace Puzzle.Lib.Entities.Entities.HistoricalSoftDelete
 {
     public abstract class BaseHistoricalSoftDeleteEntity : BaseHistoricalEntity
     {
