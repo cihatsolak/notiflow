@@ -176,6 +176,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Entities", "libraries\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj", "{EE705B25-E66C-48B0-BCA9-667478BA0A2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Database.Tests", "libraries\database\Puzzle.Lib.Database.Tests\Puzzle.Lib.Database.Tests.csproj", "{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -362,6 +364,10 @@ Global
 		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE705B25-E66C-48B0-BCA9-667478BA0A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -439,6 +445,7 @@ Global
 		{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40} = {FF1D23DB-6DCE-4C18-8471-355586E8245F}
 		{88C617A9-D4FC-4B4A-A1CD-7662D495C440} = {1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}
 		{EE705B25-E66C-48B0-BCA9-667478BA0A2B} = {681CB20C-8A02-4184-97CD-B103C48620B2}
+		{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36} = {681CB20C-8A02-4184-97CD-B103C48620B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
