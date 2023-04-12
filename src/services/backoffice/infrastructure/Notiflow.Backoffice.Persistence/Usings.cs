@@ -4,7 +4,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories;
 global using Notiflow.Backoffice.Domain.Entities.Customers;
 global using Notiflow.Backoffice.Domain.Entities.Devices;
-global using Notiflow.Backoffice.Domain.Entities.Notifications;
+global using Notiflow.Backoffice.Domain.Entities.Histories;
 global using Notiflow.Backoffice.Domain.Entities.Tenants;
 global using Notiflow.Backoffice.Domain.Entities.Users;
 global using Notiflow.Backoffice.Domain.Enums;

@@ -16,4 +16,6 @@ public class Customer : BaseHistoricalSoftDeleteEntity
     public Tenant Tenant { get; set; }
 
     public ICollection<NotificationHistory> NotificationHistories { get; set; }
+    public ICollection<EmailHistory> EmailHistories { get; set; }
+    public ICollection<TextMessageHistory> TextMessageHistories { get; set; }
 }
