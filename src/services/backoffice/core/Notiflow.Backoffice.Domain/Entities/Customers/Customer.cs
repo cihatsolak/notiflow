@@ -13,5 +13,7 @@ public class Customer : BaseHistoricalSoftDeleteEntity
     public Device Device { get; set; }
 
     public int TenantId { get; set; }
-    public Tenant Tenant { get; set; }  
+    public Tenant Tenant { get; set; }
+
+    public ICollection<NotificationHistory> NotificationHistories { get; set; }
 }
