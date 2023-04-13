@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+    <ProjectReference Include="..\..\..\..\..\libraries\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
     <ProjectReference Include="..\..\..\..\..\libraries\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
     <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
   </ItemGroup>
