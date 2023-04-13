@@ -1,10 +1,23 @@
-﻿namespace Notiflow.Backoffice.Persistence
+﻿namespace Notiflow.Backoffice.Persistence;
+
+public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static class ServiceCollectionContainerBuilderExtensions
+    public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        public static void Add(this IServiceCollection services)
-        {
-            services.AddScoped<IFirebaseRepository, FirebaseRepository>();
-        }
+        services.AddDbContext();
+        services.AddRepositories();
+
+        return services;
+    }
+
+    private static void AddDbContext(this IServiceCollection services)
+    {
+        services.AddPostgreSql<NotiflowDbContext>(nameof(NotiflowDbContext));
+    }
+
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
+        services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
     }
 }

@@ -9,6 +9,7 @@ public class Customer : BaseHistoricalSoftDeleteEntity
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public MarriageStatus MarriageStatus { get; set; }
+    public bool IsBlocked { get; set; }
 
     public Device Device { get; set; }
 
