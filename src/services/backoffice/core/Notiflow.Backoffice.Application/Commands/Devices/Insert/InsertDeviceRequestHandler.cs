@@ -11,7 +11,18 @@ public sealed class InsertDeviceRequestHandler : IRequestHandler<InsertDeviceReq
 
     public async Task<ResponseModel<Unit>> Handle(InsertDeviceRequest request, CancellationToken cancellationToken)
     {
-        await _notiflowUnitOfWork.DeviceWrite.InsertAsync(ObjectMapper.Mapper.Map<Device>(request), cancellationToken);
+        var device = await _notiflowUnitOfWork.DeviceRead.GetByIdAsync(1, cancellationToken);
+
+        device.OSVersion = OSVersion.Windows;
+
+
+        //var device = ObjectMapper.Mapper.Map<Device>(request);
+        //await _notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
+        //await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
+
+        //device.OSVersion = OSVersion.Other;
+
+        _notiflowUnitOfWork.DeviceWrite.Update(device);
         await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
         return ResponseModel<Unit>.Success(-1);

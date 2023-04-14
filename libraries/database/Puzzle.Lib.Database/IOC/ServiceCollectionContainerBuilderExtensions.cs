@@ -30,7 +30,7 @@
 
                 contextOptions.UseNpgsql(sqlSetting.ConnectionString, sqlOptions =>
                 {
-                    sqlOptions.MigrationsAssembly(Assembly.GetCallingAssembly().FullName);
+                    sqlOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(TDbContext)).FullName);
                     sqlOptions.CommandTimeout((int)TimeSpan.FromSeconds(60).TotalSeconds);
 
                     if (sqlSetting.IsSplitQuery)
