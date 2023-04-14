@@ -9,4 +9,5 @@ global using Puzzle.Lib.Validation.Infrastructure.Extensions;
 global using Puzzle.Lib.Validation.Infrastructure.Models;
 global using Serilog;
 global using System.Globalization;
+global using System.Reflection;
 global using System.Text.RegularExpressions;

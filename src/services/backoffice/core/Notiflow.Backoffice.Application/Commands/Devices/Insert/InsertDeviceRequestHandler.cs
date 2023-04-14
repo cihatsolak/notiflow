@@ -1,17 +1,19 @@
-﻿namespace Notiflow.Backoffice.Application.Commands.Devices.Insert
+﻿namespace Notiflow.Backoffice.Application.Commands.Devices.Insert;
+
+public sealed class InsertDeviceRequestHandler : IRequestHandler<InsertDeviceRequest, ResponseModel<Unit>>
 {
-    public sealed class InsertDeviceRequestHandler : IRequestHandler<InsertDeviceRequest, ResponseModel<Unit>>
+    private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
+
+    public InsertDeviceRequestHandler(INotiflowUnitOfWork notiflowUnitOfWork)
     {
-        private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
+        _notiflowUnitOfWork = notiflowUnitOfWork;
+    }
 
-        public InsertDeviceRequestHandler(INotiflowUnitOfWork notiflowUnitOfWork)
-        {
-            _notiflowUnitOfWork = notiflowUnitOfWork;
-        }
+    public async Task<ResponseModel<Unit>> Handle(InsertDeviceRequest request, CancellationToken cancellationToken)
+    {
+        await _notiflowUnitOfWork.DeviceWrite.InsertAsync(ObjectMapper.Mapper.Map<Device>(request), cancellationToken);
+        await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        public Task<ResponseModel<Unit>> Handle(InsertDeviceRequest request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        return ResponseModel<Unit>.Success(-1);
     }
 }

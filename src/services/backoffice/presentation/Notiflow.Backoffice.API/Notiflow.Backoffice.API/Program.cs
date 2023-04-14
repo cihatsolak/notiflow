@@ -1,6 +1,3 @@
-using Puzzle.Lib.Documentation.IOC;
-using Puzzle.Lib.Documentation.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,11 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwagger();
 
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
+builder.Services.AddPersistence();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-
 
 app.UseHttpsRedirection();
 app.UseSwaggerWithRedoclyDoc();

@@ -1,12 +1,9 @@
-﻿using AutoMapper;
+﻿namespace Notiflow.Backoffice.Application.Mappers;
 
-namespace Notiflow.Backoffice.Application.Mappers
+internal sealed class DeviceProfile : Profile
 {
-    internal sealed class DeviceProfile : Profile
+    public DeviceProfile()
     {
-        public DeviceProfile()
-        {
-          
-        }
+        CreateMap<InsertDeviceRequest, Device>();
     }
 }
