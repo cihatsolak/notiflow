@@ -4,26 +4,32 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext();
-        services.AddRepositories();
+        services
+            .AddDbContext()
+            .AddRepositories()
+            .AddUnitOfWorks();
 
         return services;
     }
 
-    private static void AddDbContext(this IServiceCollection services)
+    private static IServiceCollection AddDbContext(this IServiceCollection services)
     {
-        services.AddPostgreSql<NotiflowDbContext>(nameof(NotiflowDbContext));
+        return services.AddPostgreSql<NotiflowDbContext>(nameof(NotiflowDbContext));
     }
 
-    private static void AddRepositories(this IServiceCollection services)
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
-        services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
+        return services
+            .AddScoped<ICustomerReadRepository, CustomerReadRepository>()
+            .AddScoped<ICustomerWriteRepository, CustomerWriteRepository>()
+            .AddScoped<ITenantReadRepository, TenantReadRepository>()
+            .AddScoped<ITenantWriteRepository, TenantWriteRepository>()
+            .AddScoped<IDeviceReadRepository, DeviceReadRepository>()
+            .AddScoped<IDeviceWriteRepository, DeviceWriteRepository>();
+    }
 
-        services.AddScoped<ITenantReadRepository, TenantReadRepository>();
-        services.AddScoped<ITenantWriteRepository, TenantWriteRepository>();
-
-        services.AddScoped<IDeviceReadRepository, DeviceReadRepository>();
-        services.AddScoped<IDeviceWriteRepository, DeviceWriteRepository>();
+    private static IServiceCollection AddUnitOfWorks(this IServiceCollection services)
+    {
+        return services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
     }
 }
