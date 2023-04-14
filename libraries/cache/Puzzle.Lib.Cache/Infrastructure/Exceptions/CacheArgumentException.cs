@@ -11,7 +11,7 @@
         /// <param name="argument">The argument to check.</param>
         /// <param name="paramName">The name of the parameter that the argument represents.</param>
         /// <exception cref="ArgumentException">Thrown when the argument is a negative number.</exception>
-        internal static void ThrowIfNegativeNumber([NotNull] int argument, [CallerArgumentExpression("argument")] string paramName = null)
+        internal static void ThrowIfNegativeNumber([NotNull] int argument, [CallerArgumentExpression(nameof(argument))] string paramName = null)
         {
             if (Math.Sign(argument) == -1)
             {

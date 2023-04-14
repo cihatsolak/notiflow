@@ -12,7 +12,7 @@
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
         ///<typeparam name="TElement">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TElement, string> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage)
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)

@@ -6,14 +6,13 @@
     public static class ServiceCollectionContainerBuilderExtensions
     {
         /// <summary>
-        /// Registers validators from the assembly containing TAssembyScanner with the provided service collection and adds FluentValidation auto-validation and client-side adapters.
+        /// Configures the service collection to enable Fluent Design validation using the validators from the calling assembly, auto validation, client-side adapters, and sets the language manager culture to the current culture.
         /// </summary>
-        /// <typeparam name="TAssembyScanner">The type to be scanned for validators.</typeparam>
-        /// <param name="services">The service collection to add the validators and related services to.</param>
-        /// <returns>The updated service collection.</returns>
-        public static IServiceCollection AddFluentValidation<TAssembyScanner>(this IServiceCollection services)
+        /// <param name="services">The service collection to configure.</param>
+        /// <returns>The configured service collection.</returns>
+        public static IServiceCollection AddFluentDesignValidation(this IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<TAssembyScanner>();
+            services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
 

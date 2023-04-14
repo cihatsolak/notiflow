@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Behaviors
+﻿namespace Notiflow.Backoffice.Application.Pipelines
 {
     public sealed class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
