@@ -16,11 +16,7 @@
             builder.Property(p => p.MailFromName).HasMaxLength(150).IsUnicode(false).IsRequired();
             builder.Property(p => p.MailReplyAddress).HasMaxLength(150).IsUnicode(false).IsRequired();
 
-            builder.HasOne(p => p.Tenant)
-                .WithOne(p => p.TenantApplication)
-                .HasForeignKey<TenantApplication>(p => p.TenantId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.HasOne(p => p.Tenant).WithOne(p => p.TenantApplication).HasForeignKey<TenantApplication>(p => p.TenantId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

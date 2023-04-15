@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notiflow.Backoffice.Persistence.Migrations
 {
     [DbContext(typeof(NotiflowDbContext))]
-    [Migration("20230414202820_InitialCommit")]
+    [Migration("20230415100516_InitialCommit")]
     partial class InitialCommit
     {
         /// <inheritdoc />
@@ -29,182 +29,225 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BirthDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("birth_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
 
                     b.Property<int>("Gender")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnName("gender");
 
                     b.Property<bool>("IsBlocked")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_blocked");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
 
                     b.Property<int>("MarriageStatus")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnName("marriage_status");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("name");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(false)
                         .HasColumnType("character(10)")
+                        .HasColumnName("phone_number")
                         .IsFixedLength();
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("surname");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("tenant_id");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_customer");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("ix_customer_tenant_id");
 
-                    b.ToTable("customer", (string)null);
+                    b.ToTable("customer", null, t =>
+                        {
+                            t.HasCheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
+
+                            t.HasCheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
+
+                            t.HasCheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
+                        });
                 });
 
             modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Devices.Device", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CloudMessagePlatform")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(1)
+                        .HasColumnName("cloud_message_platform");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
 
                     b.Property<int>("OSVersion")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnName("os_version");
 
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasMaxLength(180)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(180)");
+                        .HasColumnType("character varying(180)")
+                        .HasColumnName("token");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_device");
 
                     b.HasIndex("CustomerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_device_customer_id");
 
-                    b.ToTable("device", (string)null);
+                    b.ToTable("device", null, t =>
+                        {
+                            t.HasCheckConstraint("chk_cloud_message_platform_value_limitation", "cloud_message_platform IN (1,2)");
+
+                            t.HasCheckConstraint("chk_os_version_value_limitation", "os_version IN (1,2, 3, 4)");
+                        });
                 });
 
             modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Histories.EmailHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bcc")
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("bcc");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("body");
 
                     b.Property<string>("Cc")
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("cc");
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
 
                     b.Property<string>("ErrorMessage")
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("error_message");
 
                     b.Property<bool>("IsSent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_sent");
 
                     b.Property<string>("Recipients")
                         .IsRequired()
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("recipients");
 
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("sent_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Subject")
                         .IsRequired()
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("subject");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_emailhistory");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_emailhistory_customer_id");
 
                     b.ToTable("emailhistory", (string)null);
                 });
@@ -213,42 +256,51 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
 
                     b.Property<string>("ErrorMessage")
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("error_message");
 
                     b.Property<bool>("IsSent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_sent");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(500)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("message");
 
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("sent_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(250)");
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("title");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_notificationhistory");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_notificationhistory_customer_id");
 
                     b.ToTable("notificationhistory", (string)null);
                 });
@@ -257,35 +309,43 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
 
                     b.Property<string>("ErrorMessage")
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("error_message");
 
                     b.Property<bool>("IsSent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_sent");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .IsUnicode(false)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("message");
 
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("sent_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_textmessagehistory");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_textmessagehistory_customer_id");
 
                     b.ToTable("textmessagehistory", (string)null);
                 });
@@ -294,7 +354,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -302,31 +363,37 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasMaxLength(36)
                         .IsUnicode(false)
                         .HasColumnType("uuid")
+                        .HasColumnName("app_id")
                         .IsFixedLength();
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Definition")
                         .IsRequired()
                         .HasMaxLength(200)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("definition");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tenant");
 
                     b.ToTable("tenant", (string)null);
                 });
@@ -335,13 +402,15 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("FirebaseSenderId")
@@ -349,6 +418,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasMaxLength(11)
                         .IsUnicode(false)
                         .HasColumnType("character(11)")
+                        .HasColumnName("firebase_sender_id")
                         .IsFixedLength();
 
                     b.Property<string>("FirebaseServerKey")
@@ -356,6 +426,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasMaxLength(152)
                         .IsUnicode(false)
                         .HasColumnType("character(152)")
+                        .HasColumnName("firebase_server_key")
                         .IsFixedLength();
 
                     b.Property<string>("HuaweiSenderId")
@@ -363,6 +434,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasMaxLength(12)
                         .IsUnicode(false)
                         .HasColumnType("character(12)")
+                        .HasColumnName("huawei_sender_id")
                         .IsFixedLength();
 
                     b.Property<string>("HuaweiServerKey")
@@ -370,38 +442,46 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasMaxLength(44)
                         .IsUnicode(false)
                         .HasColumnType("character(44)")
+                        .HasColumnName("huawei_server_key")
                         .IsFixedLength();
 
                     b.Property<string>("MailFromAddress")
                         .IsRequired()
                         .HasMaxLength(150)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("mail_from_address");
 
                     b.Property<string>("MailFromName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("mail_from_name");
 
                     b.Property<string>("MailReplyAddress")
                         .IsRequired()
                         .HasMaxLength(150)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("mail_reply_address");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("tenant_id");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tenantapplication");
 
                     b.HasIndex("TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_tenantapplication_tenant_id");
 
                     b.ToTable("tenantapplication", (string)null);
                 });
@@ -410,42 +490,51 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<bool>("IsSendEmailPermission")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_send_email_permission");
 
                     b.Property<bool>("IsSendMessagePermission")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_send_message_permission");
 
                     b.Property<bool>("IsSendNotificationPermission")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_send_notification_permission");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("tenant_id");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tenantpermission");
 
                     b.HasIndex("TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_tenantpermission_tenant_id");
 
                     b.ToTable("tenantpermission", (string)null);
                 });
@@ -454,38 +543,46 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("password");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("tenant_id");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_date")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(25)");
+                        .HasColumnType("character varying(25)")
+                        .HasColumnName("username");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_user");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("ix_user_tenant_id");
 
                     b.ToTable("user", (string)null);
                 });
@@ -496,7 +593,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithMany("Customers")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_customer_tenants_tenant_id");
 
                     b.Navigation("Tenant");
                 });
@@ -507,7 +605,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithOne("Device")
                         .HasForeignKey("Notiflow.Backoffice.Domain.Entities.Devices.Device", "CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_device_customer_customer_id");
 
                     b.Navigation("Customer");
                 });
@@ -518,7 +617,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithMany("EmailHistories")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_emailhistory_customer_customer_id");
 
                     b.Navigation("Customer");
                 });
@@ -529,7 +629,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithMany("NotificationHistories")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_notificationhistory_customer_customer_id");
 
                     b.Navigation("Customer");
                 });
@@ -540,7 +641,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithMany("TextMessageHistories")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_textmessagehistory_customer_customer_id");
 
                     b.Navigation("Customer");
                 });
@@ -551,7 +653,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithOne("TenantApplication")
                         .HasForeignKey("Notiflow.Backoffice.Domain.Entities.Tenants.TenantApplication", "TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_tenantapplication_tenants_tenant_id");
 
                     b.Navigation("Tenant");
                 });
@@ -562,7 +665,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithOne("TenantPermission")
                         .HasForeignKey("Notiflow.Backoffice.Domain.Entities.Tenants.TenantPermission", "TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_tenantpermission_tenant_tenant_id");
 
                     b.Navigation("Tenant");
                 });
@@ -573,7 +677,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .WithMany("Users")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_tenant_tenant_id");
 
                     b.Navigation("Tenant");
                 });

@@ -6,6 +6,12 @@ internal sealed class NotificationHistoryConfiguration : BaseEntityConfiguration
     {
         base.Configure(builder);
 
+        builder.ToTable(nameof(NotificationHistory).ToLowerInvariant(), table =>
+        {
+            table.HasCheckConstraint("chk_senddate_greaterthan_createddate", "send_date >= created_date");
+            table.HasCheckConstraint("chk_emailhistory_issent_errormessage", "(is_send = 0 and error_message IS NOT NULL) OR (is_send = 1 and error_message IS NULL)");
+        });
+
         builder.Property(p => p.Title).HasMaxLength(250).IsUnicode().IsRequired();
         builder.Property(p => p.Message).HasMaxLength(500).IsUnicode().IsRequired();
         builder.Property(p => p.IsSent).HasDefaultValue(true).IsRequired();

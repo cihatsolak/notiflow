@@ -2,8 +2,7 @@
 
 public enum OSVersion
 {
-    None,
-    Android,
+    Android = 1,
     IOS,
     Windows,
     Other

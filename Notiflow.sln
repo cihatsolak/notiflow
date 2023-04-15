@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F5D8B786-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EEA12CDE-AA95-4F62-98B0-1235C054E19F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71F0CA3A-4D5E-40C2-9B44-7E2D0959AFEC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{D57DC945-9274-43EC-8372-953B9EB27E99}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{187F85CC-76F1-49FF-B381-24F15EF3F44F}"
@@ -176,7 +174,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Entities", "libraries\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj", "{EE705B25-E66C-48B0-BCA9-667478BA0A2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Database.Tests", "libraries\database\Puzzle.Lib.Database.Tests\Puzzle.Lib.Database.Tests.csproj", "{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Database.Tests", "libraries\database\Puzzle.Lib.Database.Tests\Puzzle.Lib.Database.Tests.csproj", "{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
