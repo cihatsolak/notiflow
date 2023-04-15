@@ -6,9 +6,9 @@ internal class TextMessageHistoryConfiguration : BaseEntityConfiguration<TextMes
     {
         base.Configure(builder);
 
-        builder.ToTable(nameof(NotificationHistory).ToLowerInvariant(), table =>
+        builder.ToTable(nameof(TextMessageHistory).ToLowerInvariant(), table =>
         {
-            table.HasCheckConstraint("chk_senddate_greaterthan_createddate", "send_date >= created_date");
+            table.HasCheckConstraint("chk_senddate_greaterthan_createddate", "send_date <= created_date");
             table.HasCheckConstraint("chk_emailhistory_issent_errormessage", "(is_send = 0 and error_message IS NOT NULL) OR (is_send = 1 and error_message IS NULL)");
         });
 

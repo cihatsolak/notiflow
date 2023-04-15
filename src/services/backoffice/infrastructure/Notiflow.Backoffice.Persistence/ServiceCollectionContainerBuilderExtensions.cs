@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Persistence;
+﻿using Notiflow.Backoffice.Persistence.Seeds;
+
+namespace Notiflow.Backoffice.Persistence;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -8,6 +10,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddDbContext()
             .AddRepositories()
             .AddUnitOfWorks();
+
+        SeedManager.SeedAsync(services.BuildServiceProvider().GetRequiredService<NotiflowDbContext>()).Wait();
 
         return services;
     }
