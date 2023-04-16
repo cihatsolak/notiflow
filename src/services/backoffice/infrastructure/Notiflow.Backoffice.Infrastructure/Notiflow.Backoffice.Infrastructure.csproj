@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\libraries\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\..\..\..\..\libraries\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj" />
     <ProjectReference Include="..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
   </ItemGroup>

@@ -13,6 +13,8 @@ public static class ServiceCollectionContainerBuilderExtensions
 
     private static IServiceCollection AddLibraries(this IServiceCollection services)
     {
-       return services.AddRestApiService();
+        services.AddRouteSettings();
+
+        return services.AddRestApiService();
     }
 }

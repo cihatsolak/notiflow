@@ -13,6 +13,7 @@ global using Notiflow.Backoffice.Application.Interfaces.UnitOfWorks;
 global using Notiflow.Backoffice.Application.Mappers;
 global using Notiflow.Backoffice.Application.Models;
 global using Notiflow.Backoffice.Application.Pipelines;
+global using Notiflow.Backoffice.Application.Queries.Tenants.GetDetailById;
 global using Notiflow.Backoffice.Domain.Entities.Customers;
 global using Notiflow.Backoffice.Domain.Entities.Devices;
 global using Notiflow.Backoffice.Domain.Entities.Tenants;

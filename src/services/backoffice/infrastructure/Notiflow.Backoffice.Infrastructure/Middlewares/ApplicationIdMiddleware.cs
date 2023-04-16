@@ -11,14 +11,14 @@ public sealed class ApplicationIdMiddleware
 
     public async Task Invoke(HttpContext httpContext)
     {
-        if (!httpContext.Request.Headers.ContainsKey("x-application-id"))
-        {
-            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            httpContext.Response.ContentType = MediaTypeNames.Application.Json;
-            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(ResponseModel<Unit>.Fail(1, "authorization error")));
+        //if (!httpContext.Request.Headers.ContainsKey("x-application-id"))
+        //{
+        //    httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        //    httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+        //    await httpContext.Response.WriteAsync(JsonSerializer.Serialize(ResponseModel<Unit>.Fail(1, "authorization error")));
 
-            return;
-        }
+        //    return;
+        //}
 
         await _next(httpContext);
     }

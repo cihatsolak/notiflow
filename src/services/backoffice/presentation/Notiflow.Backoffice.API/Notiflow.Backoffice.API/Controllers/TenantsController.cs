@@ -2,10 +2,16 @@
 
 public sealed class TenantsController : BaseApiController
 {
-    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    public async Task<IActionResult> Detail(int id, CancellationToken cancellationToken)
+    [HttpGet("{id}/detail")]
+    public async Task<IActionResult> GetDetailById([FromRoute] GetDetailByIdQueryRequest request, CancellationToken cancellationToken)
     {
-        return Ok();
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
     }
 
 
@@ -24,6 +30,6 @@ public sealed class TenantsController : BaseApiController
             return BadRequest(response);
         }
 
-        return CreatedAtAction(nameof(Detail), new { id = response.Data });
+        return CreatedAtAction(nameof(GetDetailById), new { id = response.Data });
     }
 }
