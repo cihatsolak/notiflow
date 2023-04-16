@@ -10,11 +10,11 @@
         /// <summary>
         /// Gets or sets the status code of the response.
         /// </summary>
-        public int StatusCode { get; init; }
+        public int Code { get; init; }
 
         /// <summary>
         /// Gets or sets the status message of the response.
         /// </summary>
-        public string StatusMessage { get; init; }
+        public string Message { get; init; }
     }
 }
