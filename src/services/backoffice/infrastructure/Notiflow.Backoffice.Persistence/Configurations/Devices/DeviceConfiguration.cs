@@ -13,9 +13,9 @@ internal sealed class DeviceConfiguration : BaseHistoricalEntityConfiguration<De
         });
 
         builder.Property(p => p.OSVersion).HasConversion<int>().IsRequired();
-        builder.Property(p => p.Code).HasMaxLength(100).IsUnicode(false).IsRequired();
-        builder.Property(p => p.Token).HasMaxLength(180).IsUnicode(false).IsRequired();
-        builder.Property(p => p.CloudMessagePlatform).HasConversion<int>().HasDefaultValue(CloudMessagePlatform.Firesabe).IsRequired();
+        builder.Property(p => p.Code).HasMaxLength(150).IsUnicode(false).IsRequired();
+        builder.Property(p => p.Token).HasMaxLength(250).IsUnicode(false).IsRequired();
+        builder.Property(p => p.CloudMessagePlatform).HasConversion<int>().IsRequired();
 
         builder.HasOne(p => p.Customer).WithOne(p => p.Device).HasForeignKey<Device>(p => p.CustomerId).OnDelete(DeleteBehavior.Restrict);
     }
