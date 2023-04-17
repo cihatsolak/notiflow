@@ -4,6 +4,7 @@ global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Commands.Devices.Insert;
 global using Notiflow.Backoffice.Application.Commands.Notifications.SendNotification;
 global using Notiflow.Backoffice.Application.Commands.Tenants.Add;
+global using Notiflow.Backoffice.Application.Queries.Customers.GetCustomerById;
 global using Notiflow.Backoffice.Application.Queries.Tenants.GetDetailById;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;

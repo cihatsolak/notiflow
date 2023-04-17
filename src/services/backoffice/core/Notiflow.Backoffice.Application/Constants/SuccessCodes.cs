@@ -6,5 +6,7 @@
     internal static class SuccessCodes
     {
         internal const int TENANT_FOUND = 1000;
+
+        internal const int CUSTOMER_FOUND = 1001;
     }
 }
