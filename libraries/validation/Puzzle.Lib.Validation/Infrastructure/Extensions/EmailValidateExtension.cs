@@ -17,7 +17,7 @@
         /// <returns>A boolean value indicating whether the TLD of the email address is valid.</returns>
         internal static bool ValidateTld(string email)
         {
-            return tlds.Any(tld => tld == email.Split('.').Last());
+            return tlds.Any(tld => tld == email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last());
         }
     }
 }
