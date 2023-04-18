@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Commands.Tenants.Add;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
 
 public sealed record AddTenantRequest : IRequest<ResponseModel<int>>
 {

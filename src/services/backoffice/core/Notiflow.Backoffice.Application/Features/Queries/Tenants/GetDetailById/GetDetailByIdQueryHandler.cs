@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Queries.Tenants.GetDetailById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Tenants.GetDetailById;
 
 public sealed class GetDetailByIdQueryHandler : IRequestHandler<GetDetailByIdQueryRequest, ResponseModel<GetDetailByIdQueryResponse>>
 {

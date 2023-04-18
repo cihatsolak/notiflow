@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Queries.Customers.GetCustomerById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
 
 public sealed class GetCustomerByIdQueryValidor : AbstractValidator<GetCustomerByIdQueryRequest>
 {

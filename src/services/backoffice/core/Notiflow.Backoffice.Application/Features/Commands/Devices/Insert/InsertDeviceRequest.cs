@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Commands.Devices.Insert;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Insert;
 
 public sealed record InsertDeviceRequest : IRequest<ResponseModel<Unit>>
 {

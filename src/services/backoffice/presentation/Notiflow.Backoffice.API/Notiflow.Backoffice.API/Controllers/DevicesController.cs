@@ -2,6 +2,13 @@
 
 public sealed class DevicesController : BaseApiController
 {
+    [HttpGet("{id}/detail")]
+    public async Task<IActionResult> GetDeviceById()
+    {
+        return Ok();
+    }
+
+
     /// <summary>
     /// Adds a new device information of the customer
     /// </summary>
@@ -10,11 +17,11 @@ public sealed class DevicesController : BaseApiController
     /// <response code="400">request is illegal</response>
     [ProducesResponseType(typeof(ResponseModel<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseModel<Unit>), StatusCodes.Status404NotFound)]
-    [HttpPost("insert")]
-    public async Task<IActionResult> Insert(InsertDeviceRequest insertDeviceRequest)
+    [HttpPost("add")]
+    public async Task<IActionResult> Add(InsertDeviceRequest insertDeviceRequest)
     {
         await Sender.Send(insertDeviceRequest);
 
-        return CreatedAtAction(nameof(Insert), new { id = 1 });
+        return CreatedAtAction(nameof(Add), new { id = 1 });
     }
 }

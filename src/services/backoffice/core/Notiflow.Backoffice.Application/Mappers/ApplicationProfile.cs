@@ -1,4 +1,8 @@
-﻿namespace Notiflow.Backoffice.Application.Mappers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Devices.Insert;
+using Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
+using Notiflow.Backoffice.Application.Features.Queries.Tenants.GetDetailById;
+
+namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {
