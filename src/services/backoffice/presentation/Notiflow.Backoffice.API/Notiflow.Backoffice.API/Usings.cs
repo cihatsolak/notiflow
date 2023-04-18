@@ -1,7 +1,8 @@
 ﻿global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using Notiflow.Backoffice.Application;
-global using Notiflow.Backoffice.Application.Features.Commands.Devices.Insert;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.GetDeviceById;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendNotification;
 global using Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;

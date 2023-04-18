@@ -9,6 +9,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether the request was successful or not.
         /// </summary>
+        [JsonIgnore]
         public bool Succeeded { get; init; }
 
         /// <summary>

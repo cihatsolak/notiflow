@@ -2,10 +2,22 @@
 
 public sealed class DevicesController : BaseApiController
 {
-    [HttpGet("{id}/detail")]
-    public async Task<IActionResult> GetDeviceById()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
+    public async Task<IActionResult> GetDeviceById([FromRoute] GetDeviceByIdRequest request, CancellationToken cancellationToken)
     {
-        return Ok();
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
     }
 
 
@@ -15,13 +27,13 @@ public sealed class DevicesController : BaseApiController
     /// <response code="200">notification sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
-    [ProducesResponseType(typeof(ResponseModel<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseModel<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ResponseModel<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseModel<int>), StatusCodes.Status404NotFound)]
     [HttpPost("add")]
-    public async Task<IActionResult> Add(InsertDeviceRequest insertDeviceRequest)
+    public async Task<IActionResult> Add([FromBody] AddDeviceRequest request)
     {
-        await Sender.Send(insertDeviceRequest);
+        var response = await Sender.Send(request);
 
-        return CreatedAtAction(nameof(Add), new { id = 1 });
+        return CreatedAtAction(nameof(GetDeviceById), new { id = response.Data }, null);
     }
 }

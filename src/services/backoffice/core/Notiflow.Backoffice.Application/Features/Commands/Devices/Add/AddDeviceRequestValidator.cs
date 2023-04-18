@@ -1,8 +1,8 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Insert;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
-public sealed class InsertDeviceRequestValidator : AbstractValidator<InsertDeviceRequest>
+public sealed class AddDeviceRequestValidator : AbstractValidator<AddDeviceRequest>
 {
-    public InsertDeviceRequestValidator()
+    public AddDeviceRequestValidator()
     {
         RuleFor(p => p.CustomerId).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
         RuleFor(p => p.OSVersion).IsInEnum().WithMessage("-1");
