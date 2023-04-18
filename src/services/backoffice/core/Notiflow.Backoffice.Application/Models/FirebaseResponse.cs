@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Models;
 
-public sealed record FirebaseNotificationResponse
+public sealed record FirebaseResponse
 {
     [JsonPropertyName("multicast_id")]
     public double MulticastId { get; init; }
@@ -17,10 +17,7 @@ public sealed record FirebaseNotificationResponse
     [JsonPropertyName("results")]
     public List<FirebaseResult> Results { get; init; }
 
-    public bool IsSuccess => Success == 1;
-
-    public string MessageId => Results.FirstOrDefault()?.MessageId;
-    public string ErrorMessage => Results.FirstOrDefault()?.ErrorMessage;
+    public bool Succeeded => Success == 1;
 }
 
 public sealed record FirebaseResult

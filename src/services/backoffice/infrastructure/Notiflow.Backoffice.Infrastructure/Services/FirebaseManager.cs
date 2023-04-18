@@ -9,11 +9,20 @@ public sealed class FirebaseManager : IFirebaseService
         _restService = restService;
     }
 
-    public Task<FirebaseNotificationResponse> SendNotificationAsync(CancellationToken cancellationToken)
+    public async Task<FirebaseResponse> SendNotificationAsync(FirebaseSingleRequest firebaseRequest, CancellationToken cancellationToken)
     {
         var credentials = HttpClientExtensions.GenerateHeader(HeaderNames.Authorization, $"key=xxx");
         credentials.AddHeaderItem("Sender", $"id=xxx");
 
-        return _restService.PostResponseAsync<FirebaseNotificationResponse>("ClientName", "RouteUrl", credentials, cancellationToken);
+        return await _restService.PostResponseAsync<FirebaseResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+    }
+
+    public async Task<FirebaseResponse> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken)
+    {
+        var credentials = HttpClientExtensions.GenerateHeader(HeaderNames.Authorization, $"key=xxx");
+        credentials.AddHeaderItem("Sender", $"id=xxx");
+
+
+        return await _restService.PostResponseAsync<FirebaseResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
     }
 }

@@ -2,5 +2,6 @@
 
 public interface IFirebaseService
 {
-    Task<FirebaseNotificationResponse> SendNotificationAsync(CancellationToken cancellationToken);
+    Task<FirebaseResponse> SendNotificationAsync(FirebaseSingleRequest firebaseRequest, CancellationToken cancellationToken);
+    Task<FirebaseResponse> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken);
 }
