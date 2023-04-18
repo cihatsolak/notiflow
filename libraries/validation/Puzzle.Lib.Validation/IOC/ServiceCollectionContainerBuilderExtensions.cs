@@ -40,8 +40,8 @@
 
                     ValidationResponse validationResponse = new()
                     {
-                        StatusCode = 9004,
-                        StatusMessage = errors.First(),
+                        Code = 9004,
+                        Message = errors.First(),
                         Errors = errors
                     };
 

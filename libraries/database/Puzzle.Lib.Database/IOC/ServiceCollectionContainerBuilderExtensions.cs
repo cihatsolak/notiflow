@@ -27,7 +27,8 @@
             {
                 contextOptions.ConfigureCustomWarnings();
                 contextOptions.ConfigureCustomLogs(isProductionEnvironment);
-
+                contextOptions.UseSnakeCaseNamingConvention();
+               
                 contextOptions.UseNpgsql(sqlSetting.ConnectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(TDbContext)).FullName);

@@ -2,7 +2,6 @@
 
 public enum Gender
 {
-    None,
-    Single,
-    Married
+    Male = 1,
+    Female
 }

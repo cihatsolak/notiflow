@@ -6,9 +6,13 @@ internal class TextMessageHistoryConfiguration : BaseEntityConfiguration<TextMes
     {
         base.Configure(builder);
 
-        builder.Property(p => p.Message).IsUnicode(false).IsRequired();
+        builder.ToTable(nameof(TextMessageHistory).ToLowerInvariant(), table =>
+        {
+            table.HasCheckConstraint("chk_textmessagehistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+        });
 
-        builder.Property(p => p.IsSent).HasDefaultValue(true).IsRequired();
+        builder.Property(p => p.Message).IsUnicode(false).IsRequired();
+        builder.Property(p => p.IsSent).IsRequired();
         builder.Property(p => p.ErrorMessage).IsUnicode(false).IsRequired(false);
         builder.Property(p => p.SentDate).ValueGeneratedOnAdd().HasDefaultValueSql("now()").IsRequired();
 

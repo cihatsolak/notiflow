@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Tenants;
 
-public sealed class TenantApplication : BaseHistoricalEntity
+public class TenantApplication : BaseHistoricalEntity
 {
     public string FirebaseServerKey { get; set; }
     public string FirebaseSenderId { get; set; }

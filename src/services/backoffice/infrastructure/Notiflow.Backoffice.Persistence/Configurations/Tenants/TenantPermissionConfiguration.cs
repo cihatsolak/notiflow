@@ -6,14 +6,11 @@
         {
             base.Configure(builder);
 
-            builder.Property(p => p.IsSendMessagePermission).HasDefaultValue(false).IsRequired();
-            builder.Property(p => p.IsSendNotificationPermission).HasDefaultValue(false).IsRequired();
-            builder.Property(p => p.IsSendEmailPermission).HasDefaultValue(false).IsRequired();
+            builder.Property(p => p.IsSendMessagePermission).IsRequired();
+            builder.Property(p => p.IsSendNotificationPermission).IsRequired();
+            builder.Property(p => p.IsSendEmailPermission).IsRequired();
 
-            builder.HasOne(p => p.Tenant)
-                .WithOne(p => p.TenantPermission)
-                .HasForeignKey<TenantPermission>(p => p.TenantId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(p => p.Tenant).WithOne(p => p.TenantPermission).HasForeignKey<TenantPermission>(p => p.TenantId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

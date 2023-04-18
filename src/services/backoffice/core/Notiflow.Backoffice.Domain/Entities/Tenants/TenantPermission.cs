@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Tenants;
 
-public sealed class TenantPermission : BaseHistoricalEntity
+public class TenantPermission : BaseHistoricalEntity
 {
     public bool IsSendMessagePermission { get; set; }
     public bool IsSendNotificationPermission { get; set; }

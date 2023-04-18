@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Tenants;
 
-public sealed class Tenant : BaseHistoricalEntity
+public class Tenant : BaseHistoricalEntity
 {
     public string Name { get; set; }
     public string Definition { get; set; }

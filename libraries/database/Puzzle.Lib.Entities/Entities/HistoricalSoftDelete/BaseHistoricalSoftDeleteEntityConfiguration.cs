@@ -11,7 +11,7 @@
             builder.Property(p => p.CreatedDate).ValueGeneratedOnAdd().HasDefaultValueSql("now()").IsRequired();
             builder.Property(p => p.UpdatedDate).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("now()").IsRequired();
 
-            builder.Property(p => p.IsDeleted).HasDefaultValue(false).IsRequired();
+            builder.Property(p => p.IsDeleted).IsRequired();
         }
     }
 }

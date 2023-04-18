@@ -9,6 +9,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddRepositories()
             .AddUnitOfWorks();
 
+        services.SeedAsync().Wait();
+
         return services;
     }
 

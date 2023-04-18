@@ -55,8 +55,8 @@
 
                     ErrorHandlerResponse errorHandlerResponse = new()
                     {
-                        StatusCode = 9000,
-                        StatusMessage = "We are unable to process your transaction at this time.",
+                        Code = 9000,
+                        Message = "We are unable to process your transaction at this time.",
                         Succeeded = false
                     };
 

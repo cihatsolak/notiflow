@@ -1,10 +1,8 @@
-﻿namespace Notiflow.Backoffice.API.Controllers
+﻿namespace Notiflow.Backoffice.API.Controllers;
+
+[Route("api/[controller]")]
+public class BaseApiController : MainController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BaseApiController : ControllerBase
-    {
-        private ISender _sender = null!;
-        protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
-    }
+    private ISender _sender = null!;
+    protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 }

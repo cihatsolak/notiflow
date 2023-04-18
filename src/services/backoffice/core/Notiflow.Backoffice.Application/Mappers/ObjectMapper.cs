@@ -8,7 +8,7 @@ internal static class ObjectMapper
     {
         MapperConfiguration mapperConfiguration = new(configuration =>
         {
-            configuration.AddProfile<DeviceProfile>();
+            configuration.AddProfile<ApplicationProfile>();
         });
 
         return mapperConfiguration.CreateMapper();

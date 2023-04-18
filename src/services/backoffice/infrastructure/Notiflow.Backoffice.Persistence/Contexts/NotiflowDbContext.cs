@@ -5,7 +5,6 @@ public sealed class NotiflowDbContext : DbContext
     public NotiflowDbContext(DbContextOptions<NotiflowDbContext> options) : base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,4 +21,6 @@ public sealed class NotiflowDbContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<NotificationHistory> NotificationHistories { get; set; }
+    public DbSet<EmailHistory> EmailHistories { get; set; }
+    public DbSet<TextMessageHistory> TextMessageHistories { get; set; }
 }

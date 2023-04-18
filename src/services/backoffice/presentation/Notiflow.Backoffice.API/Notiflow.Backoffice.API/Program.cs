@@ -18,6 +18,8 @@ app.UseSwaggerWithRedoclyDoc();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<ApplicationIdMiddleware>();
+
 app.MapControllers();
 
 app.Run();

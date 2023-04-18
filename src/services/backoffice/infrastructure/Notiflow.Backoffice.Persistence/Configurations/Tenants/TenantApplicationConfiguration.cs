@@ -12,15 +12,11 @@
             builder.Property(p => p.HuaweiServerKey).HasMaxLength(44).IsUnicode(false).IsFixedLength().IsRequired();
             builder.Property(p => p.HuaweiSenderId).HasMaxLength(12).IsUnicode(false).IsFixedLength().IsRequired();
 
-            builder.Property(p => p.MailFromAddress).HasMaxLength(150).IsUnicode(false).IsRequired();
+            builder.Property(p => p.MailFromAddress).HasMaxLength(200).IsUnicode(false).IsRequired();
             builder.Property(p => p.MailFromName).HasMaxLength(150).IsUnicode(false).IsRequired();
-            builder.Property(p => p.MailReplyAddress).HasMaxLength(150).IsUnicode(false).IsRequired();
+            builder.Property(p => p.MailReplyAddress).HasMaxLength(200).IsUnicode(false).IsRequired();
 
-            builder.HasOne(p => p.Tenant)
-                .WithOne(p => p.TenantApplication)
-                .HasForeignKey<TenantApplication>(p => p.TenantId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.HasOne(p => p.Tenant).WithOne(p => p.TenantApplication).HasForeignKey<TenantApplication>(p => p.TenantId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

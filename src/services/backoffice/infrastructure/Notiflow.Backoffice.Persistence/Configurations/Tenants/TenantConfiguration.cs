@@ -6,8 +6,8 @@
         {
             base.Configure(builder);
 
-            builder.Property(p => p.Name).HasMaxLength(50).IsUnicode(false).IsRequired();
-            builder.Property(p => p.Definition).HasMaxLength(200).IsUnicode(false).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(100).IsUnicode(false).IsRequired();
+            builder.Property(p => p.Definition).HasMaxLength(300).IsUnicode(false).IsRequired();
             builder.Property(p => p.AppId).HasMaxLength(36).IsUnicode(false).IsFixedLength().IsRequired();
         }
     }
