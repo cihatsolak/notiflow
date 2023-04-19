@@ -2,5 +2,6 @@
 {
     public interface IEmailService
     {
+        Task<bool> SendAsync();
     }
 }

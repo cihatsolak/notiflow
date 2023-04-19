@@ -8,6 +8,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddFirebase()
             .AddHuawei();
 
+        services.AddSingleton<IEmailService, EmailManager>();
+
         return services.AddLibraries();
     }
 

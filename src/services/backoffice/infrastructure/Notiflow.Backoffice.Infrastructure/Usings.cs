@@ -12,3 +12,5 @@ global using Puzzle.Lib.Host.IOC;
 global using Puzzle.Lib.Http.Infrastructure.Extensions;
 global using Puzzle.Lib.Http.IOC;
 global using Puzzle.Lib.Http.Services;
+global using System.Net.Mail;
+global using System.Text;

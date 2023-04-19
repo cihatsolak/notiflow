@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
-public sealed class FirebaseManager : IFirebaseService
+internal sealed class FirebaseManager : IFirebaseService
 {
     private readonly IRestService _restService;
     private readonly ILogger<FirebaseManager> _logger;
