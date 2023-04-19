@@ -9,20 +9,21 @@ public sealed class FirebaseManager : IFirebaseService
         _restService = restService;
     }
 
-    public async Task<FirebaseResponse> SendNotificationAsync(FirebaseSingleRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<FirebasePushResponse> SendNotificationAsync(FirebaseSingleRequest firebaseRequest, CancellationToken cancellationToken)
     {
-        var credentials = HttpClientExtensions.GenerateHeader(HeaderNames.Authorization, $"key=xxx");
-        credentials.AddHeaderItem("Sender", $"id=xxx");
-
-        return await _restService.PostResponseAsync<FirebaseResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+        var credentials = HttpClientExtensions
+                            .GenerateHeader(HeaderNames.Authorization, $"key=xxx")
+                            .AddHeaderItem("Sender", $"id=xxx");
+    
+        return await _restService.PostResponseAsync<FirebasePushResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
     }
 
-    public async Task<FirebaseResponse> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<FirebasePushResponse> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken)
     {
-        var credentials = HttpClientExtensions.GenerateHeader(HeaderNames.Authorization, $"key=xxx");
-        credentials.AddHeaderItem("Sender", $"id=xxx");
+        var credentials = HttpClientExtensions
+                           .GenerateHeader(HeaderNames.Authorization, $"key=xxx")
+                           .AddHeaderItem("Sender", $"id=xxx");
 
-
-        return await _restService.PostResponseAsync<FirebaseResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+        return await _restService.PostResponseAsync<FirebasePushResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
     }
 }

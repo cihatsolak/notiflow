@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendNotification;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
 public sealed class SendNotificationHandler : IRequestHandler<SendNotificationRequest, ResponseModel<Unit>>
 {
