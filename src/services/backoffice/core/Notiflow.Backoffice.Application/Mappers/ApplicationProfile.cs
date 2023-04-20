@@ -19,6 +19,8 @@ internal sealed class ApplicationProfile : Profile
 
     private void DeviceMaps()
     {
-        CreateMap<InsertDeviceRequest, Device>();
+        CreateMap<AddDeviceRequest, Device>();
+
+        CreateMap<Device, GetDeviceByIdResponse>();
     }
 }

@@ -63,13 +63,15 @@
         /// <param name="value">collection item value</param>
         /// <returns>type of name value collection</returns>
         /// <exception cref="ArgumentNullException">thrown when name is empty|null or value empty|null or name value collection null</exception>
-        public static void AddHeaderItem(this NameValueCollection nameValueCollection, string name, string value)
+        public static NameValueCollection AddHeaderItem(this NameValueCollection nameValueCollection, string name, string value)
         {
             ArgumentNullException.ThrowIfNull(nameValueCollection);
             ArgumentException.ThrowIfNullOrEmpty(name);
             ArgumentException.ThrowIfNullOrEmpty(value);
 
             nameValueCollection.Add(name, value);
+
+            return nameValueCollection;
         }
     }
 }

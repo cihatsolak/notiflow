@@ -39,7 +39,8 @@
         /// <returns>A boolean value indicating whether the list of email addresses is valid.</returns>
         private static bool ValidateEmails(string emails, char parser)
         {
-            return emails.Split(parser, StringSplitOptions.RemoveEmptyEntries).All(email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
+            return emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .All(email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
         }
     }
 }

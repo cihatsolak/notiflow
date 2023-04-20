@@ -55,7 +55,7 @@
             }
             else if (!string.IsNullOrEmpty(ipAddress))
             {
-                ipAddress = ipAddress.Split(':').FirstOrDefault();
+                ipAddress = ipAddress.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).FirstOrDefault();
             }
 
             return ipAddress;

@@ -32,8 +32,8 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 
         foreach (var baseHistoricalEntity in baseHistoricalEntities)
         {
-            baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
-            baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
+            //baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
+            //baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
         }
 
         var baseSoftDeleteEntities = _context.ChangeTracker.Entries<BaseSoftDeleteEntity>();
