@@ -8,6 +8,7 @@
         /// <summary>
         /// Gets or sets the IP address of the FTP server.
         /// </summary>
+        [JsonRequired]
         public required string Ip { get; init; }
 
         /// <summary>

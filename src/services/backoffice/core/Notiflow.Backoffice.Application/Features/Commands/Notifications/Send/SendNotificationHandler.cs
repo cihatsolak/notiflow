@@ -11,8 +11,8 @@ public sealed class SendNotificationHandler : IRequestHandler<SendNotificationRe
 
     public async Task<ResponseModel<Unit>> Handle(SendNotificationRequest request, CancellationToken cancellationToken)
     {
-        var firebaseNotificationResponse = await _firebaseService.SendNotificationAsync(cancellationToken);
-        if (firebaseNotificationResponse.IsSuccess)
+        var firebaseNotificationResponse = await _firebaseService.SendNotificationAsync(null, cancellationToken);
+        if (firebaseNotificationResponse.Succeeded)
         {
             return ResponseModel<Unit>.Fail(-1);
         }

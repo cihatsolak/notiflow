@@ -13,6 +13,7 @@
         /// <summary>
         /// Gets or sets the issuer of the JWT token.
         /// </summary>
+        [JsonRequired]
         public required string Issuer { get; init; }
 
         /// <summary>
@@ -28,6 +29,7 @@
         /// <summary>
         /// Gets or sets the security key for JWT token authentication.
         /// </summary>
+        [JsonRequired]
         public required string SecurityKey { get; init; }
     }
 }

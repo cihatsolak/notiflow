@@ -13,3 +13,4 @@ global using Puzzle.Lib.Documentation.Filters;
 global using Puzzle.Lib.Documentation.Infrastructure.Settings;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using System.Reflection;
+global using System.Text.Json.Serialization;
