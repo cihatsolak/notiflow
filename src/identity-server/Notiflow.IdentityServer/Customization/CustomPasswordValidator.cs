@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Infrastructure;
+﻿namespace Notiflow.IdentityServer.Customization;
 
 public sealed class CustomPasswordValidator : IPasswordValidator<AppUser>
 {

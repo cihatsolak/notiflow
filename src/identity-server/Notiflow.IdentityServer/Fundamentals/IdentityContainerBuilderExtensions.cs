@@ -1,11 +1,8 @@
-﻿using Notiflow.IdentityServer.Infrastructure.Entities;
-using System;
-
-namespace Notiflow.IdentityServer.Fundamentals
+﻿namespace Notiflow.IdentityServer.Fundamentals
 {
     public static class IdentityContainerBuilderExtensions
     {
-        public IServiceCollection AddIdentity(this IServiceCollection services)
+        public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services)
         {
             services.AddIdentity<AppUser, AppRole>(options =>
             {
@@ -26,6 +23,16 @@ namespace Notiflow.IdentityServer.Fundamentals
             .AddErrorDescriber<LocalizationIdentityErrorDescriber>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
+            return services;
+        }
+
+        public static IServiceCollection AddDataProtectionTokenProviderOptions(this IServiceCollection services)
+        {
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
 
             return services;
         }
