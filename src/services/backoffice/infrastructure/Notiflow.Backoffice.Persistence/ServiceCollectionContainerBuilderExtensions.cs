@@ -24,8 +24,6 @@ public static class ServiceCollectionContainerBuilderExtensions
         return services
             .AddScoped<ICustomerReadRepository, CustomerReadRepository>()
             .AddScoped<ICustomerWriteRepository, CustomerWriteRepository>()
-            .AddScoped<ITenantReadRepository, TenantReadRepository>()
-            .AddScoped<ITenantWriteRepository, TenantWriteRepository>()
             .AddScoped<IDeviceReadRepository, DeviceReadRepository>()
             .AddScoped<IDeviceWriteRepository, DeviceWriteRepository>();
     }

@@ -11,12 +11,14 @@ public sealed class GetDetailByIdQueryHandler : IRequestHandler<GetDetailByIdQue
 
     public async Task<ResponseModel<GetDetailByIdQueryResponse>> Handle(GetDetailByIdQueryRequest request, CancellationToken cancellationToken)
     {
-        var tenant = await _unitOfWork.TenantRead.GetByIdAsync(request.Id, cancellationToken);
-        if (tenant is null)
-        {
-            return ResponseModel<GetDetailByIdQueryResponse>.Fail(ErrorCodes.TENANT_NOT_FOUND);
-        }
+        //var tenant = await _unitOfWork.TenantRead.GetByIdAsync(request.Id, cancellationToken);
+        //if (tenant is null)
+        //{
+        //    return ResponseModel<GetDetailByIdQueryResponse>.Fail(ErrorCodes.TENANT_NOT_FOUND);
+        //}
 
-        return ResponseModel<GetDetailByIdQueryResponse>.Success(SuccessCodes.TENANT_FOUND, ObjectMapper.Mapper.Map<GetDetailByIdQueryResponse>(tenant));
+        //return ResponseModel<GetDetailByIdQueryResponse>.Success(SuccessCodes.TENANT_FOUND, ObjectMapper.Mapper.Map<GetDetailByIdQueryResponse>(tenant));
+
+        return null;
     }
 }

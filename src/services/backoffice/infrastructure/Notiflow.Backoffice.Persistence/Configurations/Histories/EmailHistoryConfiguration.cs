@@ -2,13 +2,17 @@
 
 internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailHistory>
 {
+    public EmailHistoryConfiguration() : base(true)
+    {
+    }
+
     public override void Configure(EntityTypeBuilder<EmailHistory> builder)
     {
         base.Configure(builder);
 
         builder.ToTable(nameof(EmailHistory).ToLowerInvariant(), table =>
         {
-           table.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+            table.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
         });
 
         builder.Property(p => p.Recipients).IsUnicode(false).IsRequired();

@@ -11,11 +11,11 @@ public sealed class AddTenantRequestHandler : IRequestHandler<AddTenantRequest, 
 
     public async Task<ResponseModel<int>> Handle(AddTenantRequest request, CancellationToken cancellationToken)
     {
-        var tenant = ObjectMapper.Mapper.Map<Tenant>(request);
+        //var tenant = ObjectMapper.Mapper.Map<Tenant>(request);
 
-        await _unitOfWork.TenantWrite.InsertAsync(tenant, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        //await _unitOfWork.TenantWrite.InsertAsync(tenant, cancellationToken);
+        //await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return ResponseModel<int>.Success(-1, tenant.Id);
+        return ResponseModel<int>.Success(-1);
     }
 }

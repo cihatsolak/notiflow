@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Core\Notiflow.IdentityServer.Core.csproj" />
   </ItemGroup>

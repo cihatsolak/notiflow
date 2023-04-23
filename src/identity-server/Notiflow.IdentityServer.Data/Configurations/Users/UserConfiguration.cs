@@ -2,6 +2,10 @@
 
 internal sealed class UserConfiguration : BaseHistoricalEntityConfiguration<User>
 {
+    public UserConfiguration() : base("getdate()")
+    {
+    }
+
     public override void Configure(EntityTypeBuilder<User> builder)
     {
         base.Configure(builder);

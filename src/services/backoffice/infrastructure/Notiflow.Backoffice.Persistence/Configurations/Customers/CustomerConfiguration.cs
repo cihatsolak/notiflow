@@ -2,6 +2,11 @@
 
 internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConfiguration<Customer>
 {
+    public CustomerConfiguration() : base("now()", true)
+    {
+
+    }
+
     public override void Configure(EntityTypeBuilder<Customer> builder)
     {
         base.Configure(builder);

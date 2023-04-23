@@ -1,14 +1,18 @@
-﻿namespace Notiflow.IdentityServer.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Notiflow.IdentityServer.Infrastructure.Data;
 
 public sealed class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+       // modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.ApplicationId == "");
+
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(modelBuilder);

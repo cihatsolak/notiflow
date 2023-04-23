@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Persistence.Seeds;
+﻿namespace Notiflow.IdentityServer.Data.Seeds;
 
 internal static class SeedManager
 {
@@ -7,21 +7,21 @@ internal static class SeedManager
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
-        var notiflowDbContext = serviceProvider.GetRequiredService<NotiflowDbContext>();
+        var applicationDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-        if (!notiflowDbContext.Database.CanConnect())
+        if (!applicationDbContext.Database.CanConnect())
         {
             Debug.WriteLine("Could not connect to database. The database may not be available.");
             return;
         }
 
-        if (notiflowDbContext.Customers.Any())
+        if (applicationDbContext.Tenants.Any())
         {
             Debug.WriteLine("There is no need for migration as there is tenant information in the database.");
             return;
         }
 
-        await notiflowDbContext.Customers.AddRangeAsync(TenantSeedData.GenerateCustomers());
-        await  notiflowDbContext.SaveChangesAsync();
+        await applicationDbContext.Tenants.AddRangeAsync(TenantSeedData.GenerateFakeTenants());
+        await applicationDbContext.SaveChangesAsync();
     }
 }

@@ -1,9 +1,12 @@
-﻿namespace Notiflow.IdentityServer.Service;
+﻿namespace Notiflow.IdentityServer.Data;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddData(this IServiceCollection services)
     {
-        return services.AddMicrosoftSql<ApplicationDbContext>(nameof(ApplicationDbContext));
+        services.AddMicrosoftSql<ApplicationDbContext>(nameof(ApplicationDbContext));
+        services.SeedAsync().Wait();
+
+        return services;
     }
 }

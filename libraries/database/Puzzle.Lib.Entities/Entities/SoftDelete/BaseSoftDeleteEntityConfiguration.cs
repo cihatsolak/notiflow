@@ -2,9 +2,18 @@
 {
     public class BaseSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseSoftDeleteEntity
     {
+        private readonly bool _useLowerTableName;
+
+        public BaseSoftDeleteEntityConfiguration(bool useLowerTableName = false)
+        {
+            _useLowerTableName = useLowerTableName;
+        }
+
         public void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.ToTable(typeof(TEntity).Name.ToLowerInvariant());
+            string tableName = _useLowerTableName ? typeof(TEntity).Name.ToLowerInvariant() : typeof(TEntity).Name;
+
+            builder.ToTable(tableName);
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
