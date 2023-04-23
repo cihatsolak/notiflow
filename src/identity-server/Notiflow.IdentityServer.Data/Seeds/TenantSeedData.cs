@@ -6,7 +6,7 @@ internal static class TenantSeedData
     {
         return new Faker<Tenant>("tr")
              .RuleFor(tenant => tenant.Name, faker => faker.Company.CompanyName())
-             .RuleFor(tenant => tenant.ApplicationId, faker => Guid.NewGuid())
+             .RuleFor(tenant => tenant.Token, faker => Guid.NewGuid())
              .RuleFor(tenant => tenant.Definition, faker => faker.Company.CatchPhrase())
              .RuleFor(tenant => tenant.TenantApplication, faker => GenerateTenantApplication())
              .RuleFor(tenant => tenant.TenantPermission, faker => GenerateTenantPermission())

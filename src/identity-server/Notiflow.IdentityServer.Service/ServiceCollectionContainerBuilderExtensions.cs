@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service;
+﻿using Notiflow.IdentityServer.Service.Auth;
+
+namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -6,6 +8,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         services.TryAddSingleton<ITenantService, TenantManager>();
         services.TryAddSingleton<ITokenService, TokenManager>();
+        services.TryAddScoped<IAuthService, AuthManager>();
 
         return services;
     }

@@ -35,11 +35,20 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -70,12 +79,6 @@ namespace Notiflow.IdentityServer.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("ApplicationId")
-                        .HasMaxLength(36)
-                        .IsUnicode(false)
-                        .HasColumnType("uniqueidentifier")
-                        .IsFixedLength();
-
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -92,6 +95,12 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("Token")
+                        .HasMaxLength(36)
+                        .IsUnicode(false)
+                        .HasColumnType("uniqueidentifier")
+                        .IsFixedLength();
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()

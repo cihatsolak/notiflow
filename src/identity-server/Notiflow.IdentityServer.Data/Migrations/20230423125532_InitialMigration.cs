@@ -19,7 +19,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Definition = table.Column<string>(type: "varchar(300)", unicode: false, maxLength: 300, nullable: false),
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    Token = table.Column<Guid>(type: "uniqueidentifier", unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
@@ -86,6 +86,9 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Username = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),

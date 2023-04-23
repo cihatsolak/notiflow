@@ -1,6 +1,9 @@
-﻿global using Microsoft.Extensions.DependencyInjection;
+﻿global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
+global using Microsoft.Extensions.Primitives;
 global using Microsoft.IdentityModel.Tokens;
 global using Notiflow.Backoffice.Domain.Entities.Users;
 global using Notiflow.IdentityServer.Service.Tenants;

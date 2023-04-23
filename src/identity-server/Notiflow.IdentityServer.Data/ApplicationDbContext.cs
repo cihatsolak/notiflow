@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Notiflow.IdentityServer.Infrastructure.Data;
+﻿namespace Notiflow.IdentityServer.Infrastructure.Data;
 
 public sealed class ApplicationDbContext : DbContext
 {
+   
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
         
@@ -11,7 +11,7 @@ public sealed class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       // modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.ApplicationId == "");
+       modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.Token == Guid.Parse("43A7E7C5-DA5C-4C96-BF1E-D547C0B70B82"));
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

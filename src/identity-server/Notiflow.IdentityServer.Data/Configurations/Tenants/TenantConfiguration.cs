@@ -12,6 +12,6 @@ internal sealed class TenantConfiguration : BaseHistoricalEntityConfiguration<Te
 
         builder.Property(p => p.Name).HasMaxLength(100).IsUnicode(false).IsRequired();
         builder.Property(p => p.Definition).HasMaxLength(300).IsUnicode(false).IsRequired();
-        builder.Property(p => p.ApplicationId).HasMaxLength(36).IsUnicode(false).IsFixedLength().IsRequired();
+        builder.Property(p => p.Token).HasMaxLength(36).IsUnicode(false).IsFixedLength().IsRequired();
     }
 }
