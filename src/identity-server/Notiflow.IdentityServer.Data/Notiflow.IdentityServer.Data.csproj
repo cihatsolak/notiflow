@@ -1,13 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+    <ProjectReference Include="..\Notiflow.IdentityServer.Core\Notiflow.IdentityServer.Core.csproj" />
   </ItemGroup>
 
 </Project>

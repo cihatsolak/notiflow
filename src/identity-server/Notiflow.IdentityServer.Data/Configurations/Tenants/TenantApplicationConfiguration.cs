@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Persistence.Configurations.Tenants
+﻿using Notiflow.IdentityServer.Core.Entities.Tenants;
+
+namespace Notiflow.IdentityServer.Data.Configurations.Tenants
 {
     internal sealed class TenantApplicationConfiguration : BaseHistoricalEntityConfiguration<TenantApplication>
     {

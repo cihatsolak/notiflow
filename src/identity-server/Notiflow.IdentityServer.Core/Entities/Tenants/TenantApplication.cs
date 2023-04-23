@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Domain.Entities.Tenants;
+﻿namespace Notiflow.IdentityServer.Core.Entities.Tenants;
 
 public class TenantApplication : BaseHistoricalEntity
 {
