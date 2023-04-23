@@ -2,5 +2,5 @@
 
 public interface ITenantService
 {
-    Guid TenantToken { get; }
+    Guid Token { get; }
 }

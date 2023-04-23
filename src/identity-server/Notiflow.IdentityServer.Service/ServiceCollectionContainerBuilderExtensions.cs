@@ -10,6 +10,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.TryAddSingleton<ITokenService, TokenManager>();
         services.TryAddScoped<IAuthService, AuthManager>();
 
+        
+
         return services;
     }
 }

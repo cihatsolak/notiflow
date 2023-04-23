@@ -37,6 +37,9 @@ internal static class TenantSeedData
     private static List<User> GenerateUsers()
     {
         return new Faker<User>("tr")
+            .RuleFor(user => user.Name, faker => faker.Person.FirstName)
+            .RuleFor(user => user.Surname, faker => faker.Person.LastName)
+            .RuleFor(user => user.Email, faker => faker.Internet.Email())
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
             .Generate(5);

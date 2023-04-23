@@ -13,7 +13,7 @@ internal class TenantManager : ITenantService
         _logger = logger;
     }
 
-    public Guid TenantToken => GetTenantTokenFromRequest();
+    public Guid Token => GetTenantTokenFromRequest();
 
     private Guid GetTenantTokenFromRequest()
     {

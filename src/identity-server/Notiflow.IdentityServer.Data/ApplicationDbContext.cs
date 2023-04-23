@@ -1,21 +1,18 @@
-﻿namespace Notiflow.IdentityServer.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+
+namespace Notiflow.IdentityServer.Infrastructure.Data;
 
 public sealed class ApplicationDbContext : DbContext
 {
-   
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.Token == Guid.Parse("43A7E7C5-DA5C-4C96-BF1E-D547C0B70B82"));
-
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public DbSet<Tenant> Tenants { get; set; }
