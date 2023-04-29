@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Data.Seeds;
+﻿using Notiflow.IdentityServer.Core.Entities.Users;
+
+namespace Notiflow.IdentityServer.Data.Seeds;
 
 internal static class TenantSeedData
 {
@@ -42,6 +44,14 @@ internal static class TenantSeedData
             .RuleFor(user => user.Email, faker => faker.Internet.Email())
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
+            .RuleFor(user => user.UserRefreshToken, faker => GenerateUserRefreshToken())
             .Generate(5);
+    }
+
+    private static UserRefreshToken GenerateUserRefreshToken()
+    {
+        return new Faker<UserRefreshToken>("tr")
+            .RuleFor(userRefreshToken => userRefreshToken.Token, faker => faker.Random.AlphaNumeric(50))
+            .RuleFor(userRefreshToken => userRefreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
     }
 }

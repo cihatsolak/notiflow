@@ -1,20 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Notiflow.Backoffice.Domain.Entities.Users;
-using Notiflow.IdentityServer.Core.Models;
-using Notiflow.IdentityServer.Infrastructure.Data;
-
-namespace Notiflow.IdentityServer.Service.Auth
+﻿namespace Notiflow.IdentityServer.Service.Auth
 {
     internal class AuthManager : IAuthService
     {
         private readonly ApplicationDbContext _appDbContext;
         private readonly ITokenService _tokenService;
+        private readonly IClaimService _claimService;
         private readonly ILogger<AuthManager> _logger;
 
-        public AuthManager(ApplicationDbContext appDbContext, ITokenService tokenService, ILogger<AuthManager> logger)
+        public AuthManager(
+            ApplicationDbContext appDbContext,
+            ITokenService tokenService,
+            IClaimService claimService,
+            ILogger<AuthManager> logger)
         {
             _appDbContext = appDbContext;
             _tokenService = tokenService;
+            _claimService = claimService;
             _logger = logger;
         }
 
@@ -67,6 +68,30 @@ namespace Notiflow.IdentityServer.Service.Auth
             await _appDbContext.SaveChangesAsync(cancellationToken);
 
             return tokenResponse;
+        }
+
+        public async Task<ResponseModel<int>> RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+        {
+            var userRefreshToken = await _appDbContext.UserRefreshTokens.SingleOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
+            if (userRefreshToken is null)
+            {
+                return ResponseModel<int>.Fail(-1);
+            }
+
+            await _appDbContext.UserRefreshTokens.Where(p => p.Token == userRefreshToken.Token).ExecuteDeleteAsync(cancellationToken);
+
+            return ResponseModel<int>.Fail(-1);
+        }
+
+        public async Task<ResponseModel<int>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
+        {
+            var user = await _appDbContext.Users.FindAsync(_claimService.NameIdentifier, cancellationToken);
+            if (user is null)
+            {
+                return ResponseModel<int>.Fail(-1);
+            }
+
+            return ResponseModel<int>.Fail(-1);
         }
     }
 }
