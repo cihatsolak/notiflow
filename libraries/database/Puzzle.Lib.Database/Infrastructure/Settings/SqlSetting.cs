@@ -8,6 +8,7 @@
         /// <summary>
         /// Gets or sets the connection string.
         /// </summary>
+        [JsonRequired]
         public required string ConnectionString { get; set; }
 
         /// <summary>

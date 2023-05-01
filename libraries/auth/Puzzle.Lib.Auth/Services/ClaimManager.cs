@@ -10,6 +10,7 @@
         }
 
         public string Email => GetEmail();
+        public string Username => GetUsername();
         public string Name => GetName();
         public string FamilyName => GetFamilyName();
         public int NameIdentifier => GetNameIdentifier();
@@ -28,6 +29,14 @@
             AuthArgumentException.ThrowIfNullOrEmpty(email);
 
             return email;
+        }
+
+        private string GetUsername()
+        {
+            string username = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.UniqueName))?.Value;
+            AuthArgumentException.ThrowIfNullOrEmpty(username);
+
+            return username;
         }
 
         private string GetName()

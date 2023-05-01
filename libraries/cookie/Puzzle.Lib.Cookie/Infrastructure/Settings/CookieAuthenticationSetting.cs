@@ -8,6 +8,7 @@
         /// <summary>
         /// Gets or sets the path to the page where users can log in.
         /// </summary>
+        [JsonRequired]
         public required string LoginPath { get; init; }
 
         /// <summary>

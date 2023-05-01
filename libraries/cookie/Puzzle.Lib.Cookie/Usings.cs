@@ -9,3 +9,4 @@ global using Puzzle.Lib.Cookie.Infrastructure.Settings;
 global using Puzzle.Lib.Cookie.Services;
 global using System.Reflection;
 global using System.Text.Json;
+global using System.Text.Json.Serialization;

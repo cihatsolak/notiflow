@@ -19,6 +19,7 @@
         /// <summary>
         /// Gets or sets the service URI for the URL group.
         /// </summary>
+        [JsonRequired]
         public required Uri ServiceUri { get; init; }
 
         /// <summary>

@@ -2,3 +2,4 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.FileProviders;
 global using Puzzle.Lib.File.Infrastructure.Settings;
+global using System.Text.Json.Serialization;

@@ -21,6 +21,21 @@
         }
 
         /// <summary>
+        /// Adds an username claim to a collection of claims.
+        /// </summary>
+        /// <param name="claims">The collection of claims.</param>
+        /// <param name="username">The usernameto add as a claim.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the claims collection is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the username is null or empty.</exception>
+        public static void AddUsername(this ICollection<Claim> claims, string username)
+        {
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentException.ThrowIfNullOrEmpty(username);
+
+            claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, username, ClaimValueTypes.String));
+        }
+
+        /// <summary>
         /// Adds a name claim to a collection of claims.
         /// </summary>
         /// <param name="claims">The collection of claims.</param>

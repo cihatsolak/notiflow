@@ -43,7 +43,9 @@
 
             SwaggerSetting swaggerSetting = new()
             {
-               
+                Description = "",
+                Title = "",
+                Version = ""
             };
 
             _optionsMock.Setup(op => op.Value).Returns(swaggerSetting);

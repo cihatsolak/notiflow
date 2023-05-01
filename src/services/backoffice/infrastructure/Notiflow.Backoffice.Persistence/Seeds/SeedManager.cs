@@ -15,12 +15,13 @@ internal static class SeedManager
             return;
         }
 
-        if (notiflowDbContext.Tenants.Any())
+        if (notiflowDbContext.Customers.Any())
         {
             Debug.WriteLine("There is no need for migration as there is tenant information in the database.");
             return;
         }
 
-        await Task.WhenAll(notiflowDbContext.Tenants.AddRangeAsync(TenantSeedData.GenerateFakeTenants()), notiflowDbContext.SaveChangesAsync());
+        await notiflowDbContext.Customers.AddRangeAsync(TenantSeedData.GenerateCustomers());
+        await  notiflowDbContext.SaveChangesAsync();
     }
 }

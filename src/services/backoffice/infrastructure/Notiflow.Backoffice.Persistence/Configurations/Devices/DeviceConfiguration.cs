@@ -2,6 +2,10 @@
 
 internal sealed class DeviceConfiguration : BaseHistoricalEntityConfiguration<Device>
 {
+    public DeviceConfiguration() : base("now()", true)
+    {
+    }
+
     public override void Configure(EntityTypeBuilder<Device> builder)
     {
         base.Configure(builder);

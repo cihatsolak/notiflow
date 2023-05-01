@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
-public sealed class AddDeviceRequestHandler : IRequestHandler<AddDeviceRequest, ResponseModel<int>>
+public sealed class AddDeviceRequestHandler : IRequestHandler<AddDeviceRequest, ResponseData<int>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
 
@@ -9,7 +9,7 @@ public sealed class AddDeviceRequestHandler : IRequestHandler<AddDeviceRequest, 
         _notiflowUnitOfWork = notiflowUnitOfWork;
     }
 
-    public async Task<ResponseModel<int>> Handle(AddDeviceRequest request, CancellationToken cancellationToken)
+    public async Task<ResponseData<int>> Handle(AddDeviceRequest request, CancellationToken cancellationToken)
     {
         var device = await _notiflowUnitOfWork.DeviceRead.GetByIdAsync(1, cancellationToken);
 
@@ -25,6 +25,6 @@ public sealed class AddDeviceRequestHandler : IRequestHandler<AddDeviceRequest, 
         //_notiflowUnitOfWork.DeviceWrite.Update(device);
         await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return ResponseModel<int>.Success(-1);
+        return ResponseData<int>.Success(-1);
     }
 }

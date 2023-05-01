@@ -8,6 +8,7 @@
         /// <summary>
         /// Gets or sets the Redis server connection string.
         /// </summary>
+        [JsonRequired]
         public required string ConnectionString { get; init; }
 
         /// <summary>
