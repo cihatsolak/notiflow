@@ -31,6 +31,7 @@ public sealed class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<TenantPermission>().HasQueryFilter(p => p.Tenant.Token == _tenantToken);
     }
 
     public DbSet<Tenant> Tenants { get; set; }
