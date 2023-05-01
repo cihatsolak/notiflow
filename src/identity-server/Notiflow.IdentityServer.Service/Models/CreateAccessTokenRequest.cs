@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Core.Models;
+﻿namespace Notiflow.IdentityServer.Service.Models;
 
 public sealed record CreateAccessTokenRequest
 {
@@ -6,10 +6,10 @@ public sealed record CreateAccessTokenRequest
     public string Password { get; init; }
 }
 
-public  sealed class CreateAccessTokenRequestValidator
+public sealed class CreateAccessTokenRequestValidator
 {
     public CreateAccessTokenRequestValidator()
     {
-        
+
     }
 }

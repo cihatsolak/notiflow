@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Persistence.Configurations.Users;
+﻿namespace Notiflow.IdentityServer.Data.Configurations.Users;
 
 internal sealed class UserConfiguration : BaseHistoricalEntityConfiguration<User>
 {

@@ -1,10 +1,7 @@
-﻿using Notiflow.IdentityServer.Service.Users;
-
-namespace Notiflow.IdentityServer.Controllers;
+﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
-[ApiController]
-public sealed class UsersController : ControllerBase
+public sealed class UsersController : MainController
 {
     private readonly IUserService _userService;
 
@@ -14,11 +11,11 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Retrieves detailed information about the user with the given ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="400">Invalid request</response>
+    /// <response code="401">Unauthorized user</response>
     [HttpGet("{id:int:min(1)}/detail")]
     [ProducesResponseType(typeof(ResponseData<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
@@ -27,6 +24,12 @@ public sealed class UsersController : ControllerBase
         return Ok(userResponse);
     }
 
+    /// <summary>
+    /// Adds a new user to the system.
+    /// </summary>
+    /// <response code="200">Operation successful</response>
+    /// <response code="400">Invalid request</response>
+    /// <response code="401">Unauthorized user</response>
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
@@ -35,12 +38,11 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Updates the information of the user with the given ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="400">Invalid request</response>
+    /// <response code="401">Unauthorized user</response>
     [HttpPut("{id:int:min(1)}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
@@ -49,11 +51,11 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Deletes the user with the given ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="400">Invalid request</response>
+    /// <response code="401">Unauthorized user</response>
     [HttpDelete("{id:int:min(1)}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {

@@ -1,27 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-using Notiflow.IdentityServer.Core.Entities.Users;
-
-namespace Notiflow.IdentityServer.Infrastructure.Data;
+﻿namespace Notiflow.IdentityServer.Data;
 
 public sealed class ApplicationDbContext : DbContext
 {
     private readonly Guid _tenantToken;
 
-    //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    //{
-       
-    //}
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
-        if (httpContextAccessor.HttpContext is not null)
+        if (httpContextAccessor.HttpContext is null)
+            return;
+
+        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
+        if (isExists)
         {
-            bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
-            if (isExists)
-            {
-                _tenantToken = Guid.Parse(tenantToken.First());
-            }
+            _tenantToken = Guid.Parse(tenantToken.Single());
         }
     }
 
@@ -30,8 +21,9 @@ public sealed class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        modelBuilder.Entity<User>().HasQueryFilter(p => p.Tenant.Token == _tenantToken);
-        modelBuilder.Entity<TenantPermission>().HasQueryFilter(p => p.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<User>().HasQueryFilter(user => user.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<TenantPermission>().HasQueryFilter(tenantPermission => tenantPermission.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<TenantApplication>().HasQueryFilter(tenantApplication => tenantApplication.Tenant.Token == _tenantToken);
     }
 
     public DbSet<Tenant> Tenants { get; set; }

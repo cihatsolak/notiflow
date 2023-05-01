@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using Puzzle.Lib.Database.Concrete;
-using Puzzle.Lib.Database.Interfaces;
-
-namespace Notiflow.IdentityServer.Data;
+﻿namespace Notiflow.IdentityServer.Data;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {

@@ -1,19 +1,25 @@
-﻿using Notiflow.IdentityServer.Service.Auth;
-using Puzzle.Lib.Auth.IOC;
-
-namespace Notiflow.IdentityServer.Service;
+﻿namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddService(this IServiceCollection services)
     {
-        services.TryAddSingleton<ITenantService, TenantManager>();
-        services.TryAddSingleton<ITokenService, TokenManager>();
+        AddLibraries(services);
 
         services.TryAddScoped<IAuthService, AuthManager>();
 
-        services.AddClaimService();
+        services.TryAddSingleton<ITenantService, TenantManager>();
+        services.TryAddScoped<ITenantPermissionService, TenantPermissionManager>();
+        
+        services.TryAddSingleton<ITokenService, TokenManager>();
+
+        services.TryAddScoped<IUserService, UserManager>();
 
         return services;
+    }
+
+    private static void AddLibraries(IServiceCollection services)
+    {
+        services.AddClaimService();
     }
 }

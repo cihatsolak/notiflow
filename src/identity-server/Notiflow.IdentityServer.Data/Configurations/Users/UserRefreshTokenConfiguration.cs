@@ -1,7 +1,4 @@
-﻿using Notiflow.IdentityServer.Core.Entities.Users;
-using Puzzle.Lib.Entities.Entities.Base;
-
-namespace Notiflow.IdentityServer.Data.Configurations.Users;
+﻿namespace Notiflow.IdentityServer.Data.Configurations.Users;
 
 internal sealed class UserRefreshTokenConfiguration : BaseEntityConfiguration<UserRefreshToken>
 {

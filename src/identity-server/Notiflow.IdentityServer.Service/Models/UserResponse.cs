@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Core.Models
+﻿namespace Notiflow.IdentityServer.Service.Models
 {
     public sealed record UserResponse
     {

@@ -1,7 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Tokens
+﻿namespace Notiflow.IdentityServer.Service.Tokens;
+
+public interface ITokenService
 {
-    public interface ITokenService
-    {
-        ResponseData<TokenResponse> CreateToken(User user);
-    }
+    ResponseData<TokenResponse> CreateToken(User user);
 }
