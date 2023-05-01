@@ -43,11 +43,11 @@
                 {
                     OnChallenge = context =>
                     {
-                        context.HandleResponse();
-                        if (!context.Response.HasStarted)
-                        {
-                            throw new Exception("Authentication Failed."); //Todo
-                        }
+                        //context.HandleResponse();
+                        //if (!context.Response.HasStarted)
+                        //{
+                        //    throw new Exception("Authentication Failed."); //Todo
+                        //}
 
                         return Task.CompletedTask;
                     },

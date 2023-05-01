@@ -2,6 +2,10 @@
 
 internal class TextMessageHistoryConfiguration : BaseEntityConfiguration<TextMessageHistory>
 {
+    public TextMessageHistoryConfiguration() : base(true)
+    {
+    }
+
     public override void Configure(EntityTypeBuilder<TextMessageHistory> builder)
     {
         base.Configure(builder);

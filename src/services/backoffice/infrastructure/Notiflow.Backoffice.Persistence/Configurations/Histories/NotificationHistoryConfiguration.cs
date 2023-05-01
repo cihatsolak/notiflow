@@ -2,6 +2,10 @@
 
 internal sealed class NotificationHistoryConfiguration : BaseEntityConfiguration<NotificationHistory>
 {
+    public NotificationHistoryConfiguration() : base(true)
+    {
+    }
+
     public override void Configure(EntityTypeBuilder<NotificationHistory> builder)
     {
         base.Configure(builder);

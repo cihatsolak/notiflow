@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libraries\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
+    <ProjectReference Include="..\..\..\libraries\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
+    <ProjectReference Include="..\Notiflow.IdentityServer.Data\Notiflow.IdentityServer.Data.csproj" />
+  </ItemGroup>
+
+</Project>

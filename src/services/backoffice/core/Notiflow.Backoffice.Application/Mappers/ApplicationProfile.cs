@@ -10,11 +10,11 @@ internal sealed class ApplicationProfile : Profile
     
     private void TenantMaps()
     {
-        //Commands
-        CreateMap<AddTenantRequest, Tenant>();
+        ////Commands
+        //CreateMap<AddTenantRequest, Tenant>();
 
-        //Queries
-        CreateMap<Tenant, GetDetailByIdQueryResponse>();
+        ////Queries
+        //CreateMap<Tenant, GetDetailByIdQueryResponse>();
     }
 
     private void DeviceMaps()

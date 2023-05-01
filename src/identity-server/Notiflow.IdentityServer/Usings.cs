@@ -1,7 +1,9 @@
-﻿global using Microsoft.AspNetCore.Identity;
-global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-global using Microsoft.EntityFrameworkCore;
-global using Notiflow.IdentityServer.Customization;
-global using Notiflow.IdentityServer.Fundamentals;
-global using Notiflow.IdentityServer.Infrastructure.Data;
-global using Notiflow.IdentityServer.Infrastructure.Entities;
+﻿global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Notiflow.IdentityServer.Service.Auth;
+global using Notiflow.IdentityServer.Service.Models;
+global using Notiflow.IdentityServer.Service.Tenants;
+global using Notiflow.IdentityServer.Service.Users;
+global using Puzzle.Lib.Auth.Models;
+global using Puzzle.Lib.Response.Controllers;
+global using Puzzle.Lib.Response.Models;

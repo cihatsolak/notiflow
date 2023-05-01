@@ -32,16 +32,20 @@
         }
 
         /// <summary>
-        /// Creates a new refresh token string with a length of 32 bytes.
+        /// Creates a refresh token with the specified size.
         /// </summary>
-        /// <returns>A new refresh token string.</returns>
-        public static string CreateRefreshToken()
+        /// <param name="size">The size of the refresh token to be created. Default value is 32.</param>
+        /// <returns>A string representation of the created refresh token.</returns>
+        public static string CreateRefreshToken(int size = 32)
         {
-            var number = new byte[32];
+            var number = new byte[size];
             using var randomNumberGenerator = RandomNumberGenerator.Create();
             randomNumberGenerator.GetBytes(number);
 
-            return Convert.ToBase64String(number);
+            return Convert.ToBase64String(number)
+                .Replace("+", "-")
+                .Replace("/", "_")
+                .Replace("=", string.Empty);
         }
     }
 }
