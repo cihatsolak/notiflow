@@ -2,6 +2,7 @@ using Notiflow.IdentityServer.Data;
 using Notiflow.IdentityServer.Service;
 using Puzzle.Lib.Database.Middlewares;
 using Puzzle.Lib.Auth.IOC;
+using Puzzle.Lib.Auth.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +22,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuth();
 
 app.UseMigrations();
 

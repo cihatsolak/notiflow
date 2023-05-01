@@ -8,12 +8,20 @@ public sealed class ApplicationDbContext : DbContext
 {
     private readonly Guid _tenantToken;
 
+    //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    //{
+       
+    //}
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
-        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
-        if (isExists)
+        if (httpContextAccessor.HttpContext is not null)
         {
-            _tenantToken = Guid.Parse(tenantToken.First());
+            bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
+            if (isExists)
+            {
+                _tenantToken = Guid.Parse(tenantToken.First());
+            }
         }
     }
 

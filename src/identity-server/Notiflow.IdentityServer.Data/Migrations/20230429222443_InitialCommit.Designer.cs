@@ -12,8 +12,8 @@ using Notiflow.IdentityServer.Infrastructure.Data;
 namespace Notiflow.IdentityServer.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230423125532_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230429222443_InitialCommit")]
+    partial class InitialCommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,6 +228,35 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.ToTable("TenantPermission", (string)null);
                 });
 
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserRefreshToken", (string)null);
+                });
+
             modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
                 {
                     b.HasOne("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", "Tenant")
@@ -259,6 +288,22 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
+                {
+                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Users.User", "User")
+                        .WithOne("UserRefreshToken")
+                        .HasForeignKey("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
+                {
+                    b.Navigation("UserRefreshToken");
                 });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", b =>

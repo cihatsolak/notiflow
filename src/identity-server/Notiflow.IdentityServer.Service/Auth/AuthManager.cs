@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Auth
+﻿using Mapster;
+
+namespace Notiflow.IdentityServer.Service.Auth
 {
     internal class AuthManager : IAuthService
     {
@@ -50,7 +52,7 @@
 
         public async Task<ResponseModel<TokenResponse>> CreateAccessTokenAsync(string refreshToken, CancellationToken cancellationToken)
         {
-            var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).FirstOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
+            var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
             if (userRefreshToken is null)
             {
                 return ResponseModel<TokenResponse>.Fail(-1);
@@ -83,15 +85,15 @@
             return ResponseModel<int>.Fail(-1);
         }
 
-        public async Task<ResponseModel<int>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
+        public async Task<ResponseModel<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
         {
-            var user = await _appDbContext.Users.FindAsync(_claimService.NameIdentifier, cancellationToken);
+            var user = await _appDbContext.Users.FindAsync(new object[] { _claimService.NameIdentifier }, cancellationToken);
             if (user is null)
             {
-                return ResponseModel<int>.Fail(-1);
+                return ResponseModel<UserResponse>.Fail(-1);
             }
 
-            return ResponseModel<int>.Fail(-1);
+            return ResponseModel<UserResponse>.Success(user.Adapt<UserResponse>());
         }
     }
 }

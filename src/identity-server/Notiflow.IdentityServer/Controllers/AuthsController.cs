@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -58,6 +60,7 @@ public sealed class AuthsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("user")]
+    [Authorize]
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)
     {
         var user = await _authService.GetAuthenticatedUserAsync(cancellationToken);
