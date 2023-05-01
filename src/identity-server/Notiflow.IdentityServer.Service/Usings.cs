@@ -1,4 +1,5 @@
-﻿global using Microsoft.AspNetCore.Http;
+﻿global using Mapster;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;

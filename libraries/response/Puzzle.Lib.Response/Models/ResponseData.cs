@@ -4,7 +4,7 @@
     /// Represents a response model that can hold data, status code, success flag, status message and errors.
     /// </summary>
     /// <typeparam name="TData">The type of the data that the response model holds.</typeparam>
-    public sealed record ResponseModel<TData>
+    public sealed record ResponseData<TData>
     {
         /// <summary>
         /// Gets or sets a value indicating whether the request was successful or not.
@@ -40,9 +40,9 @@
         /// </summary>
         /// <param name="code">The status code of the response.</param>
         /// <returns>A success response with the specified status code.</returns>
-        public static ResponseModel<TData> Success(int code)
+        public static ResponseData<TData> Success(int code)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Code = code,
                 Succeeded = true
@@ -54,9 +54,9 @@
         /// </summary>
         /// <param name="data">The data that the response model holds.</param>
         /// <returns>A success response with the specified data.</returns>
-        public static ResponseModel<TData> Success(TData data)
+        public static ResponseData<TData> Success(TData data)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Data = data,
                 Code = 9001,
@@ -70,9 +70,9 @@
         /// <param name="code">The status code of the response.</param>
         /// <param name="data">The data that the response model holds.</param>
         /// <returns>A success response with the specified status code and data.</returns>
-        public static ResponseModel<TData> Success(int code, TData data)
+        public static ResponseData<TData> Success(int code, TData data)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Data = data,
                 Code = code,
@@ -87,9 +87,9 @@
         /// <param name="message">The status message of the response.</param>
         /// <param name="data">The data that the response model holds.</param>
         /// <returns>A success response with the specified status code, status message and data.</returns>
-        public static ResponseModel<TData> Success(int code, string message, TData data)
+        public static ResponseData<TData> Success(int code, string message, TData data)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Data = data,
                 Code = code,
@@ -103,9 +103,9 @@
         /// </summary>
         /// <param name="code">The HTTP status code.</param>
         /// <returns>A failed response with the specified status code.</returns>
-        public static ResponseModel<TData> Fail(int code)
+        public static ResponseData<TData> Fail(int code)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Code = code
             };
@@ -117,9 +117,9 @@
         /// <param name="code">The HTTP status code for the response.</param>
         /// <param name="error">The error message for the response.</param>
         /// <returns>A response model indicating failure with the specified status code and error message.</returns>
-        public static ResponseModel<TData> Fail(int code, string error)
+        public static ResponseData<TData> Fail(int code, string error)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Errors = new List<string>() { error },
                 Code = code
@@ -132,9 +132,9 @@
         /// <param name="code">The HTTP status code for the response.</param>
         /// <param name="errors">The list of error messages for the response.</param>
         /// <returns>A response model indicating failure with the specified status code and error messages.</returns>
-        public static ResponseModel<TData> Fail(int code, IEnumerable<string> errors)
+        public static ResponseData<TData> Fail(int code, IEnumerable<string> errors)
         {
-            return new ResponseModel<TData>
+            return new ResponseData<TData>
             {
                 Errors = errors,
                 Code = code

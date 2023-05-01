@@ -27,8 +27,8 @@ public sealed class DevicesController : BaseApiController
     /// <response code="200">notification sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
-    [ProducesResponseType(typeof(ResponseModel<int>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseModel<int>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status404NotFound)]
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddDeviceRequest request)
     {

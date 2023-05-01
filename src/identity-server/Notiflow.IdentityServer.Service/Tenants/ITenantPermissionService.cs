@@ -5,8 +5,8 @@ namespace Notiflow.IdentityServer.Service.Tenants
 {
     public interface ITenantPermissionService
     {
-        Task<ResponseModel<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
-        Task<ResponseModel<int>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
+        Task<ResponseData<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
+        Task<ResponseData<int>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
     }
 
     internal sealed class TenantPermissionManager : ITenantPermissionService
@@ -22,25 +22,25 @@ namespace Notiflow.IdentityServer.Service.Tenants
             _logger = logger;
         }
 
-        public async Task<ResponseModel<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
+        public async Task<ResponseData<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
         {
             var tenantPermission = await _context.TenantPermissions.AsNoTracking().ProjectToType<TenantPermissionResponse>().FirstAsync(cancellationToken);
             if (tenantPermission is null)
             {
                 _logger.LogInformation("");
-                return ResponseModel<TenantPermissionResponse>.Fail(-1);
+                return ResponseData<TenantPermissionResponse>.Fail(-1);
             }
 
-            return ResponseModel<TenantPermissionResponse>.Success(tenantPermission);
+            return ResponseData<TenantPermissionResponse>.Success(tenantPermission);
         }
 
-        public async Task<ResponseModel<int>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
+        public async Task<ResponseData<int>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
         {
             var tenantPermission = await _context.TenantPermissions.FirstAsync(cancellationToken);
             if (tenantPermission is null)
             {
                 _logger.LogInformation("");
-                return ResponseModel<int>.Fail(-1);
+                return ResponseData<int>.Fail(-1);
             }
 
             tenantPermission.IsSendMessagePermission = request.IsSendMessagePermission;

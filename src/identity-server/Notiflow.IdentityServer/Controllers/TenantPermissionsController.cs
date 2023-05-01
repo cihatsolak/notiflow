@@ -17,7 +17,7 @@ public sealed class TenantPermissionsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("detail")]
-    [ProducesResponseType(typeof(ResponseModel<TenantPermissionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseData<TenantPermissionResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPermissions(CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.GetPermissionsAsync(cancellationToken);
@@ -31,7 +31,7 @@ public sealed class TenantPermissionsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("update-preferences")]
-    [ProducesResponseType(typeof(ResponseModel<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdatePreferences([FromBody] TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.UpdateAsync(request, cancellationToken);

@@ -20,7 +20,7 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id:int:min(1)}/detail")]
-    [ProducesResponseType(typeof(ResponseModel<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseData<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var userResponse = await _userService.GetDetailAsync(id, cancellationToken);

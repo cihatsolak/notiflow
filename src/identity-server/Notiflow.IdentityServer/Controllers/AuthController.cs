@@ -1,52 +1,34 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace Notiflow.IdentityServer.Controllers;
+﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
-[ApiController]
-public sealed class AuthsController : ControllerBase
+public sealed class AuthController : MainController
 {
     private readonly IAuthService _authService;
 
-    public AuthsController(IAuthService authService)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    
     [HttpPost("create-access-token")]
-    [ProducesResponseType(typeof(ResponseModel<TokenResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateAccessTokenByUser(CreateAccessTokenRequest request, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateAccessToken(CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var tokenResponse = await _authService.CreateAccessTokenAsync(request, cancellationToken);
         return Ok(tokenResponse);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpPost("create-refresh-token")]
-    [ProducesResponseType(typeof(ResponseModel<TokenResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] string refreshToken, CancellationToken cancellationToken)
     {
         var tokenResponse = await _authService.CreateAccessTokenAsync(refreshToken, cancellationToken);
         return Ok(tokenResponse);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpDelete("revoke-refresh-token/{refreshToken:length(44)}")]
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
     {
@@ -54,11 +36,6 @@ public sealed class AuthsController : ControllerBase
         return Ok(token);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpGet("user")]
     [Authorize]
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)

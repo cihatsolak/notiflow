@@ -14,25 +14,25 @@ namespace Notiflow.IdentityServer.Service.Users
             _logger = logger;
         }
 
-        public async Task<ResponseModel<UserResponse>> GetDetailAsync(int id, CancellationToken cancellationToken)
+        public async Task<ResponseData<UserResponse>> GetDetailAsync(int id, CancellationToken cancellationToken)
         {
             var user = await _context.Users.AsNoTracking().SingleAsync(p => p.Id == id, cancellationToken);
             if (user is null)
             {
                 _logger.LogInformation("");
-                return ResponseModel<UserResponse>.Fail(-1);
+                return ResponseData<UserResponse>.Fail(-1);
             }
 
-            return ResponseModel<UserResponse>.Success(user.Adapt<UserResponse>());
+            return ResponseData<UserResponse>.Success(user.Adapt<UserResponse>());
         }
 
-        public async Task<ResponseModel<int>> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<ResponseData<int>> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken)
         {
             bool isExists = _context.Users.Any(p => p.Username.Equals(request.Username) || p.Email.Equals(request.Email));
             if (isExists)
             {
                 _logger.LogInformation("");
-                return ResponseModel<int>.Fail(-1);
+                return ResponseData<int>.Fail(-1);
             }
 
             var user = request.Adapt<User>();
@@ -41,34 +41,34 @@ namespace Notiflow.IdentityServer.Service.Users
             await _context.Users.AddAsync(user, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return ResponseModel<int>.Success(1);
+            return ResponseData<int>.Success(1);
         }
 
-        public async Task<ResponseModel<int>> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)
+        public async Task<ResponseData<int>> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(new object[] { id }, cancellationToken);
             if (user is null)
             {
                 _logger.LogInformation("");
-                return ResponseModel<int>.Fail(-1);
+                return ResponseData<int>.Fail(-1);
             }
 
             request.Adapt(user);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return ResponseModel<int>.Success(1);
+            return ResponseData<int>.Success(1);
         }
 
-        public async Task<ResponseModel<int>> DeleteAsync(int id, CancellationToken cancellationToken)
+        public async Task<ResponseData<int>> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             int numberOfRowsDeleted = await _context.Users.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (numberOfRowsDeleted != 1)
             {
                 _logger.LogInformation("");
-                return ResponseModel<int>.Fail(-1);
+                return ResponseData<int>.Fail(-1);
             }
 
-            return ResponseModel<int>.Success(1);
+            return ResponseData<int>.Success(1);
         }
     }
 }
