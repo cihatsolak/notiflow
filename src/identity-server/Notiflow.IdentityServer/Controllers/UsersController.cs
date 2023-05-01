@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using Notiflow.IdentityServer.Service.Users;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
