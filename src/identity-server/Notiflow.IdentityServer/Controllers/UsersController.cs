@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using Notiflow.IdentityServer.Service.Models.Users;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 public sealed class UsersController : MainController
@@ -33,7 +35,7 @@ public sealed class UsersController : MainController
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var asd = await _userService.CreateAsync(request, cancellationToken);
+        var asd = await _userService.AddAsync(request, cancellationToken);
         return Created("", asd);
     }
 

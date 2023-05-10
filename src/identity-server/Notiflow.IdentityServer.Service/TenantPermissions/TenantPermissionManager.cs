@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Tenants;
+﻿namespace Notiflow.IdentityServer.Service.TenantPermissions;
 
 internal sealed class TenantPermissionManager : ITenantPermissionService
 {

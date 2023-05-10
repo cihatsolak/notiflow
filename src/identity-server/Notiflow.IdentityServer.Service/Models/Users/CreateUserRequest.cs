@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Models
+﻿namespace Notiflow.IdentityServer.Service.Models.Users
 {
     public sealed record CreateUserRequest
     {

@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Users;
+﻿using Notiflow.IdentityServer.Service.Models.Users;
+
+namespace Notiflow.IdentityServer.Service.Users;
 
 internal sealed class UserManager : IUserService
 {
@@ -23,7 +25,7 @@ internal sealed class UserManager : IUserService
         return ResponseData<UserResponse>.Success(user.Adapt<UserResponse>());
     }
 
-    public async Task<Response> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken)
+    public async Task<Response> AddAsync(CreateUserRequest request, CancellationToken cancellationToken)
     {
         bool isExists = _context.Users.Any(p => p.Username.Equals(request.Username) || p.Email.Equals(request.Email));
         if (isExists)

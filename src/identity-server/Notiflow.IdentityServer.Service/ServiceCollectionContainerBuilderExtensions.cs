@@ -5,21 +5,29 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddService(this IServiceCollection services)
     {
         AddLibraries(services);
-
-        services.TryAddScoped<IAuthService, AuthManager>();
-
-        services.TryAddSingleton<ITenantService, TenantManager>();
-        services.TryAddScoped<ITenantPermissionService, TenantPermissionManager>();
+        AddSingletionServices(services);
+        AddScopedServices(services);
         
-        services.TryAddSingleton<ITokenService, TokenManager>();
-
-        services.TryAddScoped<IUserService, UserManager>();
-
         return services;
+    }
+    
+    private static void AddSingletionServices(IServiceCollection services)
+    {
+        services.TryAddSingleton<ITenantService, TenantManager>();
+        services.TryAddSingleton<ITokenService, TokenManager>();
+    }
+
+    private static void AddScopedServices(IServiceCollection services) 
+    {
+        services.TryAddScoped<IAuthService, AuthManager>();
+        services.TryAddScoped<ITenantPermissionService, TenantPermissionManager>();
+        services.TryAddScoped<IUserService, UserManager>();
     }
 
     private static void AddLibraries(IServiceCollection services)
     {
         services.AddClaimService();
+        services.AddFluentDesignValidation();
+        services.AddApiBehaviorOptions();
     }
 }

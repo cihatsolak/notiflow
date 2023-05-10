@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\libraries\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
     <ProjectReference Include="..\..\..\libraries\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
+    <ProjectReference Include="..\..\..\libraries\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Data\Notiflow.IdentityServer.Data.csproj" />
   </ItemGroup>
 

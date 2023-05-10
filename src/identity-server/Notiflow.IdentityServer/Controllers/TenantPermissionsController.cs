@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using Notiflow.IdentityServer.Service.TenantPermissions;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/tenant-permissions")]
 public sealed class TenantPermissionsController : MainController

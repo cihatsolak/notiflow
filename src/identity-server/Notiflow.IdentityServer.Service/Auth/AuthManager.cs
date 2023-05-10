@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Auth;
+﻿using Notiflow.IdentityServer.Service.Models.Auths;
+
+namespace Notiflow.IdentityServer.Service.Auth;
 
 internal class AuthManager : IAuthService
 {
@@ -38,9 +40,9 @@ internal class AuthManager : IAuthService
         return tokenResponse;
     }
 
-    public async Task<ResponseData<TokenResponse>> CreateAccessTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    public async Task<ResponseData<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
+        var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
         if (userRefreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");

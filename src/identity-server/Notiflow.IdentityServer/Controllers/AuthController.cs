@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using Notiflow.IdentityServer.Service.Models.Auths;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 [AllowAnonymous]
@@ -35,9 +37,9 @@ public sealed class AuthController : MainController
     [HttpPost("create-refresh-token")]
     [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] string refreshToken, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var tokenResponse = await _authService.CreateAccessTokenAsync(refreshToken, cancellationToken);
+        var tokenResponse = await _authService.CreateAccessTokenAsync(request, cancellationToken);
         return Ok(tokenResponse);
     }
 
