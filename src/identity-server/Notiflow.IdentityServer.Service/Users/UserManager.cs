@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.Users;
-
-namespace Notiflow.IdentityServer.Service.Users;
+﻿namespace Notiflow.IdentityServer.Service.Users;
 
 internal sealed class UserManager : IUserService
 {

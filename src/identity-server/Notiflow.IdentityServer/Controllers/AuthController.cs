@@ -1,7 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.Auths;
-using Notiflow.IdentityServer.Service.Models.Users;
-
-namespace Notiflow.IdentityServer.Controllers;
+﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 [AllowAnonymous]
@@ -23,7 +20,7 @@ public sealed class AuthController : MainController
     [HttpPost("create-access-token")]
     [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateAccessToken(CreateAccessTokenRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var tokenResponse = await _authService.CreateAccessTokenAsync(request, cancellationToken);
         return Ok(tokenResponse);

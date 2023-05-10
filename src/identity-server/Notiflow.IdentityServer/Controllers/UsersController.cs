@@ -32,7 +32,7 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPost("add")]
-    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
@@ -47,8 +47,8 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPut("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         await _userService.UpdateAsync(id, request, cancellationToken);
@@ -61,7 +61,9 @@ public sealed class UsersController : MainController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
-    [HttpDelete("{id:int:min(1)}")]
+    [HttpDelete("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         await _userService.DeleteAsync(id, cancellationToken);
