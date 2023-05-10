@@ -25,13 +25,13 @@ internal sealed class UserManager : IUserService
         return ResponseData<UserResponse>.Success(user.Adapt<UserResponse>());
     }
 
-    public async Task<Response> AddAsync(CreateUserRequest request, CancellationToken cancellationToken)
+    public async Task<ResponseData<int>> AddAsync(CreateUserRequest request, CancellationToken cancellationToken)
     {
         bool isExists = _context.Users.Any(p => p.Username.Equals(request.Username) || p.Email.Equals(request.Email));
         if (isExists)
         {
             _logger.LogInformation("There is an existing user by username or e-mail.");
-            return Response.Fail(-1);
+            return ResponseData<int>.Fail(-1);
         }
 
         var user = request.Adapt<User>();
@@ -40,7 +40,7 @@ internal sealed class UserManager : IUserService
         await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Response.Success(1);
+        return ResponseData<int>.Success(1);
     }
 
     public async Task<Response> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)

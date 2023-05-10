@@ -1,4 +1,5 @@
 ﻿using Notiflow.IdentityServer.Service.Models.Auths;
+using Notiflow.IdentityServer.Service.Models.Users;
 
 namespace Notiflow.IdentityServer.Controllers;
 

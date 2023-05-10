@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.Users;
-
-namespace Notiflow.IdentityServer.Controllers;
+﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/[controller]")]
 public sealed class UsersController : MainController
@@ -18,8 +16,9 @@ public sealed class UsersController : MainController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
-    [HttpGet("{id:int:min(1)}/detail")]
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(ResponseData<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var userResponse = await _userService.GetDetailAsync(id, cancellationToken);
@@ -33,10 +32,12 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPost("add")]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var asd = await _userService.AddAsync(request, cancellationToken);
-        return Created("", asd);
+        var response = await _userService.AddAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetDetail), new { id = response.Data });
     }
 
     /// <summary>
@@ -45,7 +46,9 @@ public sealed class UsersController : MainController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
-    [HttpPut("{id:int:min(1)}")]
+    [HttpPut("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         await _userService.UpdateAsync(id, request, cancellationToken);
