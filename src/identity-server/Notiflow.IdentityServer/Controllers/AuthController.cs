@@ -18,8 +18,8 @@ public sealed class AuthController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPost("create-access-token")]
-    [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<TokenResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var tokenResponse = await _authService.CreateAccessTokenAsync(request, cancellationToken);
@@ -33,8 +33,8 @@ public sealed class AuthController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPost("create-refresh-token")]
-    [ProducesResponseType(typeof(ResponseData<TokenResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<TokenResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var tokenResponse = await _authService.CreateAccessTokenAsync(request, cancellationToken);
@@ -48,8 +48,8 @@ public sealed class AuthController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpDelete("revoke-refresh-token/{refreshToken:length(44)}")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
     {
         var token = await _authService.RevokeRefreshTokenAsync(refreshToken, cancellationToken);
@@ -64,8 +64,8 @@ public sealed class AuthController : MainController
     /// <response code="404">User not found</response>
     [Authorize]
     [HttpGet("user")]
-    [ProducesResponseType(typeof(ResponseData<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)
     {
         var user = await _authService.GetAuthenticatedUserAsync(cancellationToken);

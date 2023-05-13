@@ -4,6 +4,6 @@ namespace Notiflow.IdentityServer.Service.TenantPermissions;
 
 public interface ITenantPermissionService
 {
-    Task<ResponseData<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
-    Task<Response> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
+    Task<Response<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
+    Task<Response<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
 }

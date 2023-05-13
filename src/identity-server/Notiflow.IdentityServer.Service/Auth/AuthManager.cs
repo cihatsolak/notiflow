@@ -1,7 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.Auths;
-using Notiflow.IdentityServer.Service.Models.Users;
-
-namespace Notiflow.IdentityServer.Service.Auth;
+﻿namespace Notiflow.IdentityServer.Service.Auth;
 
 internal class AuthManager : IAuthService
 {
@@ -22,39 +19,39 @@ internal class AuthManager : IAuthService
         _logger = logger;
     }
 
-    public async Task<ResponseData<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
+    public async Task<Response<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var user = await _appDbContext.Users.AsNoTracking().SingleOrDefaultAsync(p => p.Username == request.Username, cancellationToken);
         if (user is null)
         {
             _logger.LogInformation("No user found with username {@username}.", request.Username);
-            return ResponseData<TokenResponse>.Fail(-1);
+            return Response<TokenResponse>.Fail(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(user);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", request.Username);
-            return ResponseData<TokenResponse>.Fail(-1);
+            return Response<TokenResponse>.Fail(-1);
         }
 
         return tokenResponse;
     }
 
-    public async Task<ResponseData<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
         if (userRefreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return ResponseData<TokenResponse>.Fail(-1);
+            return Response<TokenResponse>.Fail(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(userRefreshToken.User);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", userRefreshToken.User.Username);
-            return ResponseData<TokenResponse>.Fail(-1);
+            return Response<TokenResponse>.Fail(-1);
         }
 
         userRefreshToken.Token = tokenResponse.Data.RefreshToken;
@@ -65,34 +62,34 @@ internal class AuthManager : IAuthService
         return tokenResponse;
     }
 
-    public async Task<Response> RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var userRefreshToken = await _appDbContext.UserRefreshTokens.AsNoTracking().SingleOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
         if (userRefreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return Response.Fail(-1);
+            return Response<EmptyResponse>.Fail(-1);
         }
 
         int numberOfRowsDeleted = await _appDbContext.UserRefreshTokens.Where(p => p.Token == userRefreshToken.Token).ExecuteDeleteAsync(cancellationToken);
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete refresh token.");
-            return Response.Fail(-1);
+            return Response<EmptyResponse>.Fail(-1);
         }
 
-        return Response.Success(-1);
+        return Response<EmptyResponse>.Success(-1);
     }
 
-    public async Task<ResponseData<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
+    public async Task<Response<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
     {
         var user = await _appDbContext.Users.FindAsync(new object[] { _claimService.NameIdentifier }, cancellationToken);
         if (user is null)
         {
             _logger.LogInformation("No authorized user found.");
-            return ResponseData<UserResponse>.Fail(-1);
+            return Response<UserResponse>.Fail(-1);
         }
 
-        return ResponseData<UserResponse>.Success(user.Adapt<UserResponse>());
+        return Response<UserResponse>.Success(user.Adapt<UserResponse>());
     }
 }

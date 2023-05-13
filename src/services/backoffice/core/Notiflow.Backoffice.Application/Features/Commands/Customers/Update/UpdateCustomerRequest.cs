@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-public sealed record UpdateCustomerRequest : IRequest<Response>
+public sealed record UpdateCustomerRequest : IRequest<Response<EmptyResponse>>
 {
     public int Id { get; set; }
     public string Name { get; init; }

@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 
-public sealed class AddCustomerRequestHandler : IRequestHandler<AddCustomerRequest, ResponseData<int>>
+public sealed class AddCustomerRequestHandler : IRequestHandler<AddCustomerRequest, Response<int>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,12 +9,12 @@ public sealed class AddCustomerRequestHandler : IRequestHandler<AddCustomerReque
         _uow = uow;
     }
 
-    public async Task<ResponseData<int>> Handle(AddCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<Response<int>> Handle(AddCustomerRequest request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetCustomerByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
         if (customer is not null)
         {
-            return ResponseData<int>.Fail(-1);
+            return Response<int>.Fail(-1);
         }
 
         customer = ObjectMapper.Mapper.Map<Customer>(request);
@@ -22,6 +22,6 @@ public sealed class AddCustomerRequestHandler : IRequestHandler<AddCustomerReque
         await _uow.CustomerWrite.InsertAsync(customer, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        return ResponseData<int>.Success(-1, customer.Id);
+        return Response<int>.Success(-1, customer.Id);
     }
 }

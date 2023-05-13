@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-public sealed class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustomerRequest, Response>
+public sealed class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustomerRequest, Response<EmptyResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,12 +9,12 @@ public sealed class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustome
         _uow = uow;
     }
 
-    public async Task<Response> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Response.Fail(-1);
+            return Response<EmptyResponse>.Fail(-1);
         }
 
         ObjectMapper.Mapper.Map(request, customer);
@@ -22,6 +22,6 @@ public sealed class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustome
         _uow.CustomerWrite.Update(customer);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        return Response.Success(1);
+        return Response<EmptyResponse>.Success(1);
     }
 }

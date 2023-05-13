@@ -17,8 +17,8 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(ResponseData<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var userResponse = await _userService.GetDetailAsync(id, cancellationToken);
@@ -33,7 +33,7 @@ public sealed class UsersController : MainController
     /// <response code="401">Unauthorized user</response>
     [HttpPost("add")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);

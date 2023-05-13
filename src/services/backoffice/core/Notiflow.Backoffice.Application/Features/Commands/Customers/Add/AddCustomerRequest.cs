@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 
-public sealed record AddCustomerRequest : IRequest<ResponseData<int>>
+public sealed record AddCustomerRequest : IRequest<Response<int>>
 {
     public string Name { get; init; }
     public string Surname { get; init; }
