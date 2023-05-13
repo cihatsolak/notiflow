@@ -11,10 +11,17 @@ public sealed class UpdateCustomerRequestHandler : IRequestHandler<UpdateCustome
 
     public async Task<Response> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
-        var customer = _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
-        if (true)
+        var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
+        if (customer is null)
         {
-
+            return Response.Fail(-1);
         }
+
+        ObjectMapper.Mapper.Map(request, customer);
+
+        _uow.CustomerWrite.Update(customer);
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        return Response.Success(1);
     }
 }
