@@ -1,7 +1,8 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-public sealed record AddCustomerRequest : IRequest<ResponseData<int>>
+public sealed record UpdateCustomerRequest : IRequest<Response>
 {
+    public int Id { get; set; }
     public string Name { get; init; }
     public string Surname { get; init; }
     public string PhoneNumber { get; init; }

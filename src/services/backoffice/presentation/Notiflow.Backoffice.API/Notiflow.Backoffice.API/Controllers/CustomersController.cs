@@ -1,4 +1,7 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
+using Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {
@@ -27,8 +30,30 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401"></response>
     /// <response code="404"></response>
     [HttpPost("add")]
-    public async Task<IActionResult> Add()
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Add([FromBody] AddCustomerRequest request, CancellationToken cancellationToken)
     {
-        return Ok();
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return CreatedAtAction(nameof(GetDetailById), new { id = response.Data }, null);
+    }
+
+    [HttpPut("update")]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
     }
 }
