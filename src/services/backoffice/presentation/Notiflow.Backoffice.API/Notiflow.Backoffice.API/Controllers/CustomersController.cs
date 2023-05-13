@@ -8,7 +8,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="200"></response>
     /// <response code="401"></response>
     /// <response code="404"></response>
-    [HttpGet("{id}/detail")]
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     public async Task<IActionResult> GetDetailById([FromRoute] GetCustomerByIdQueryRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -20,6 +20,12 @@ public sealed class CustomersController : BaseApiController
         return Ok(response);
     }
 
+    /// <summary>
+    /// Add a new customer
+    /// </summary>
+    /// <response code="200"></response>
+    /// <response code="401"></response>
+    /// <response code="404"></response>
     [HttpPost("add")]
     public async Task<IActionResult> Add()
     {

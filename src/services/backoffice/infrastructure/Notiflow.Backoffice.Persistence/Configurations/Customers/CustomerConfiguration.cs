@@ -26,5 +26,8 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
         builder.Property(p => p.MarriageStatus).HasConversion<int>().IsRequired();
         builder.Property(p => p.BirthDate).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("now()").IsRequired();
         builder.Property(p => p.IsBlocked).IsRequired();
+
+        builder.HasIndex(p => new { p.Email, p.CreatedDate }).IsDescending(false, true);
+        builder.HasIndex(p => new { p.PhoneNumber, p.CreatedDate }).IsDescending(false, true);
     }
 }

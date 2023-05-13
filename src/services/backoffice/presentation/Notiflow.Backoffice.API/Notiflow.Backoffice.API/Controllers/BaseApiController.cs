@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class BaseApiController : MainController
 {
     private ISender _sender = null!;
