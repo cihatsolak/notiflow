@@ -11,13 +11,13 @@ public sealed class AddCustomerRequestHandler : IRequestHandler<AddCustomerReque
 
     public async Task<Response<int>> Handle(AddCustomerRequest request, CancellationToken cancellationToken)
     {
-        var customer = await _uow.CustomerRead.GetCustomerByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
-        if (customer is not null)
+        bool isExists = await _uow.CustomerRead.IsExistsByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
+        if (isExists)
         {
             return Response<int>.Fail(-1);
         }
 
-        customer = ObjectMapper.Mapper.Map<Customer>(request);
+        var customer = ObjectMapper.Mapper.Map<Customer>(request);
 
         await _uow.CustomerWrite.InsertAsync(customer, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);

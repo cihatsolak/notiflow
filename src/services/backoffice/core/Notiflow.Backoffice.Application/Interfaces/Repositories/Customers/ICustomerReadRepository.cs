@@ -2,5 +2,6 @@
 
 public interface ICustomerReadRepository : IReadRepository<Customer>
 {
-    Task<Customer> GetCustomerByPhoneNumberOrEmailAsync(string phoneNumber, string email, CancellationToken cancellationToken = default);
+    Task<bool> IsExistsByPhoneNumberOrEmailAsync(string phoneNumber, string email, CancellationToken cancellationToken = default);
+    Task<string> GetPhoneNumberByIdAsync(int id, CancellationToken cancellationToken = default); 
 }
