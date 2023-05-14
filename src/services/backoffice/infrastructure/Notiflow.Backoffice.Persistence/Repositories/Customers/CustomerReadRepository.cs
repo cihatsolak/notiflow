@@ -15,10 +15,23 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
 
     public async Task<string> GetPhoneNumberByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-         return await TableNoTracking
-                .TagWith("Queries the customer's phone number.")
-                .Where(customer => customer.Id == id)
-                .Select(customer => customer.PhoneNumber)
-                .SingleOrDefaultAsync(cancellationToken);
+        return await TableNoTracking
+               .TagWith("Queries the customer's phone number.")
+               .Where(customer => customer.Id == id)
+               .Select(customer => customer.PhoneNumber)
+               .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<List<Customer>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
+    {
+        return await TableNoTracking
+                    .TagWith("Queries the phone numbers of the customer IDs")
+                    .Where(customer => ids.Any(id => id == customer.Id))
+                    .Select(customer => new Customer
+                    {
+                        Id = customer.Id,
+                        PhoneNumber = customer.PhoneNumber
+                    })
+                    .ToListAsync(cancellationToken);
     }
 }

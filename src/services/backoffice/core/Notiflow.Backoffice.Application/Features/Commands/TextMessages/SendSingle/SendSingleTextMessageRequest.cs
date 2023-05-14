@@ -2,6 +2,6 @@
 
 public sealed record SendSingleTextMessageRequest : IRequest<Response<Unit>>
 {
-    public int CustomerId { get; init; }
-    public string Message { get; init; }
+    public required int CustomerId { get; init; }
+    public required string Message { get; init; }
 }
