@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class DevicesController : BaseApiController
 {
@@ -53,6 +51,46 @@ public sealed class DevicesController : BaseApiController
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateDeviceRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Delete current device
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpDelete("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete([FromRoute] DeleteDeviceRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Update device token information
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPatch("update-token")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateToken([FromBody] UpdateDeviceTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)

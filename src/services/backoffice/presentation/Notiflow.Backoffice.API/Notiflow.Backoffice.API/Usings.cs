@@ -8,7 +8,10 @@ global using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeP
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.GetDeviceById;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateToken;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 global using Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
