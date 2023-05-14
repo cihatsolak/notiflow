@@ -1,4 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeBlocking;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeEmail;
 
 namespace Notiflow.Backoffice.API.Controllers;
 
@@ -45,7 +45,7 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Update current user
+    /// Update current customer
     /// </summary>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
@@ -90,10 +90,30 @@ public sealed class CustomersController : BaseApiController
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
-    [HttpPatch("{id:int:min(1):max(2147483647)}/change-blocking")]
+    [HttpPatch("change-blocking")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangeBlocking([FromRoute] ChangeBlockingRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ChangeBlocking([FromBody] ChangeCustomerBlockingRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Changes the customer's email address
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPatch("change-email")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangeEmail([FromBody] ChangeCustomerEmailRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
