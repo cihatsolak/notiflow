@@ -27,7 +27,7 @@
         {
             contextOptions.EnableDetailedErrors(!isProductionEnvironment);
             contextOptions.EnableSensitiveDataLogging(!isProductionEnvironment);
-            contextOptions.LogTo(Console.WriteLine, LogLevel.Warning);
+            contextOptions.LogTo(Console.WriteLine, LogLevel.Information);
             contextOptions.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         }
     }

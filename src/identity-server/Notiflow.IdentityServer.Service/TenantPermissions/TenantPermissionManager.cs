@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Tenants;
+﻿namespace Notiflow.IdentityServer.Service.TenantPermissions;
 
 internal sealed class TenantPermissionManager : ITenantPermissionService
 {
@@ -13,25 +13,25 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         _logger = logger;
     }
 
-    public async Task<ResponseData<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
+    public async Task<Response<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
     {
-        var tenantPermission = await _context.TenantPermissions.AsNoTracking().ProjectToType<TenantPermissionResponse>().FirstAsync(cancellationToken);
+        var tenantPermission = await _context.TenantPermissions.AsNoTracking().ProjectToType<TenantPermissionResponse>().SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return ResponseData<TenantPermissionResponse>.Fail(-1);
+            return Response<TenantPermissionResponse>.Fail(-1);
         }
 
-        return ResponseData<TenantPermissionResponse>.Success(tenantPermission);
+        return Response<TenantPermissionResponse>.Success(tenantPermission);
     }
 
-    public async Task<Response> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
     {
-        var tenantPermission = await _context.TenantPermissions.FirstAsync(cancellationToken);
+        var tenantPermission = await _context.TenantPermissions.SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return Response.Fail(-1);
+            return Response<EmptyResponse>.Fail(-1);
         }
 
         tenantPermission.IsSendMessagePermission = request.IsSendMessagePermission;
@@ -40,6 +40,6 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Response.Success(-1);
+        return Response<EmptyResponse>.Success(-1);
     }
 }

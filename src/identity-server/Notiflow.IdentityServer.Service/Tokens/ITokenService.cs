@@ -2,5 +2,5 @@
 
 public interface ITokenService
 {
-    ResponseData<TokenResponse> CreateToken(User user);
+    Response<TokenResponse> CreateToken(User user);
 }

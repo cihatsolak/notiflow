@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Tenants.GetDetailById;
 
-public sealed class GetDetailByIdQueryHandler : IRequestHandler<GetDetailByIdQueryRequest, ResponseData<GetDetailByIdQueryResponse>>
+public sealed class GetDetailByIdQueryHandler : IRequestHandler<GetDetailByIdQueryRequest, Response<GetDetailByIdQueryResponse>>
 {
     private readonly INotiflowUnitOfWork _unitOfWork;
 
@@ -9,7 +9,7 @@ public sealed class GetDetailByIdQueryHandler : IRequestHandler<GetDetailByIdQue
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ResponseData<GetDetailByIdQueryResponse>> Handle(GetDetailByIdQueryRequest request, CancellationToken cancellationToken)
+    public async Task<Response<GetDetailByIdQueryResponse>> Handle(GetDetailByIdQueryRequest request, CancellationToken cancellationToken)
     {
         //var tenant = await _unitOfWork.TenantRead.GetByIdAsync(request.Id, cancellationToken);
         //if (tenant is null)

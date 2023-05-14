@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
 
-public sealed record AddTenantRequest : IRequest<ResponseData<int>>
+public sealed record AddTenantRequest : IRequest<Response<int>>
 {
     public string Name { get; init; }
     public string Definition { get; init; }

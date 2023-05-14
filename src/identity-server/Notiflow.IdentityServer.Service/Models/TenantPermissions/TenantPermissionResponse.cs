@@ -1,6 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Models;
+﻿namespace Notiflow.IdentityServer.Service.Models.TenantPermissions;
 
-public sealed record TenantPermissionRequest
+public sealed record TenantPermissionResponse
 {
     public bool IsSendMessagePermission { get; init; }
     public bool IsSendNotificationPermission { get; init; }

@@ -11,6 +11,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F5D8B786-DC50-403E-A48F-8767F243F93F}"
 	ProjectSection(SolutionItems) = preProject
 		docs\project-host-information.txt = docs\project-host-information.txt
+		docs\tokens.txt = docs\tokens.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EEA12CDE-AA95-4F62-98B0-1235C054E19F}"
@@ -176,11 +177,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Entities", "libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Database.Tests", "libraries\database\Puzzle.Lib.Database.Tests\Puzzle.Lib.Database.Tests.csproj", "{0BA073BC-AF1C-410A-ABE3-33B5CEB1FD36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.IdentityServer.Core", "src\identity-server\Notiflow.IdentityServer.Core\Notiflow.IdentityServer.Core.csproj", "{72E06DEF-DB7D-4B15-9890-F9CACFFFCD06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.IdentityServer.Core", "src\identity-server\Notiflow.IdentityServer.Core\Notiflow.IdentityServer.Core.csproj", "{72E06DEF-DB7D-4B15-9890-F9CACFFFCD06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.IdentityServer.Data", "src\identity-server\Notiflow.IdentityServer.Data\Notiflow.IdentityServer.Data.csproj", "{7AFFE956-94A9-4F6C-8370-A8D50329D019}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.IdentityServer.Data", "src\identity-server\Notiflow.IdentityServer.Data\Notiflow.IdentityServer.Data.csproj", "{7AFFE956-94A9-4F6C-8370-A8D50329D019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.IdentityServer.Service", "src\identity-server\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj", "{CF791DD7-B86E-40BC-8E11-1CED9823BA46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.IdentityServer.Service", "src\identity-server\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj", "{CF791DD7-B86E-40BC-8E11-1CED9823BA46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

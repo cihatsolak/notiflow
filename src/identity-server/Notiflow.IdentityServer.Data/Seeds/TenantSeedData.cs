@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Core.Entities.Users;
-
-namespace Notiflow.IdentityServer.Data.Seeds;
+﻿namespace Notiflow.IdentityServer.Data.Seeds;
 
 internal static class TenantSeedData
 {

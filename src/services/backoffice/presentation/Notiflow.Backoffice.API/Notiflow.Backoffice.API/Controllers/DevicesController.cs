@@ -25,15 +25,79 @@ public sealed class DevicesController : BaseApiController
     /// Adds a new device information of the customer
     /// </summary>
     /// <response code="200">notification sent</response>
-    /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
-    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseData<int>), StatusCodes.Status404NotFound)]
+    /// <response code="401">unauthorized user</response>
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] AddDeviceRequest request)
+    [ProducesResponseType(typeof(Response<int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<int>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Add([FromBody] AddDeviceRequest request, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request);
+        var response = await Sender.Send(request, cancellationToken);
+        if (response.Succeeded)
+        {
+            return BadRequest(response);
+        }
 
         return CreatedAtAction(nameof(GetDeviceById), new { id = response.Data }, null);
+    }
+
+    /// <summary>
+    /// Update device information
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPut("update")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateDeviceRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Delete current device
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpDelete("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete([FromRoute] DeleteDeviceRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Update device token information
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPatch("update-token")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateToken([FromBody] UpdateDeviceTokenRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
     }
 }

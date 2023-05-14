@@ -8,9 +8,9 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="200">notification sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
-    [ProducesResponseType(typeof(ResponseData<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseData<Unit>), StatusCodes.Status404NotFound)]
     [HttpPost("send")]
+    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SendNotification([FromBody] SendNotificationRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
