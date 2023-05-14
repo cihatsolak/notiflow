@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeBlocking;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {
@@ -9,7 +11,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customer information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetailById([FromRoute] GetCustomerByIdQueryRequest request, CancellationToken cancellationToken)
     {
@@ -25,12 +27,12 @@ public sealed class CustomersController : BaseApiController
     /// <summary>
     /// Add a new customer
     /// </summary>
-    /// <response code="201"></response>
-    /// <response code="401"></response>
-    /// <response code="404"></response>
+    /// <response code="201">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
     [HttpPost("add")]
     [ProducesResponseType(typeof(Response<int>), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(Response<int>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<EmptyResult>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] AddCustomerRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -43,11 +45,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// 
+    /// Update current user
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
     [HttpPut("update")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
@@ -63,15 +65,35 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// 
+    /// Delete current user
     /// </summary>
-    /// <response code="204"></response>
-    /// <response code="401"></response>
-    /// <response code="404"></response>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromRoute] DeleteCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Changes the customer's blocking status. blocked/unblocked.
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPatch("{id:int:min(1):max(2147483647)}/change-blocking")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangeBlocking([FromRoute] ChangeBlockingRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
