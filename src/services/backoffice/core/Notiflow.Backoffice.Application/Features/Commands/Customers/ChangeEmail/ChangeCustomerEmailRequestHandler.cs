@@ -1,11 +1,11 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeEmail;
 
-public sealed class ChangeCustomerEmailRequestHandler : IRequestHandler<ChangeCustomerEmailRequest, Response<EmptyResponse>>
+public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<ChangeCustomerEmailRequest, Response<EmptyResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<ChangeCustomerEmailRequestHandler> _logger;
+    private readonly ILogger<ChangePhoneNumberRequestHandler> _logger;
 
-    public ChangeCustomerEmailRequestHandler(INotiflowUnitOfWork uow, ILogger<ChangeCustomerEmailRequestHandler> logger)
+    public ChangePhoneNumberRequestHandler(INotiflowUnitOfWork uow, ILogger<ChangePhoneNumberRequestHandler> logger)
     {
         _uow = uow;
         _logger = logger;

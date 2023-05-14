@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeEmail;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {
@@ -114,6 +112,26 @@ public sealed class CustomersController : BaseApiController
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ChangeEmail([FromBody] ChangeCustomerEmailRequest request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Changes the customer's phone number
+    /// </summary>
+    /// <response code="204">Operation successful</response>
+    /// <response code="400">Operation failed</response>
+    /// <response code="401">Unauthorized action</response>
+    [HttpPatch("change-phone-number")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangePhoneNumber([FromBody] ChangeCustomerPhoneNumberRequest request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)

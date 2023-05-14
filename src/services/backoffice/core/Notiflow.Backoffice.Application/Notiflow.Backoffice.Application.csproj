@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Commands\Customers\ChangePhoneNumber\" />
-  </ItemGroup>
-
 </Project>
