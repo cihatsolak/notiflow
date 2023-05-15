@@ -2,6 +2,14 @@
 
 public sealed class TextMessagesController : BaseApiController
 {
+    [HttpGet("{customerId:int:min(1):max(2147483647)}/history")]
+    [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetHistoryByCustomerId()
+    {
+
+    }
+
     /// <summary>
     /// Sends a message to a single customer
     /// </summary>

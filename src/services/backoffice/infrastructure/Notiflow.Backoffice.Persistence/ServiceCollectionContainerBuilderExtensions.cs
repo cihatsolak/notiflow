@@ -25,7 +25,9 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddScoped<ICustomerReadRepository, CustomerReadRepository>()
             .AddScoped<ICustomerWriteRepository, CustomerWriteRepository>()
             .AddScoped<IDeviceReadRepository, DeviceReadRepository>()
-            .AddScoped<IDeviceWriteRepository, DeviceWriteRepository>();
+            .AddScoped<IDeviceWriteRepository, DeviceWriteRepository>()
+            .AddScoped<ITextMessageHistoryReadRepository, TextMessageHistoryReadRepository>()
+            .AddScoped<ITextMessageHistoryWriteRepository, TextMessageHistoryWriteRepository>();
     }
 
     private static IServiceCollection AddUnitOfWorks(this IServiceCollection services)
