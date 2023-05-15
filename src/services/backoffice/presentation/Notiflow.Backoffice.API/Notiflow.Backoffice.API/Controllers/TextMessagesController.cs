@@ -2,12 +2,25 @@
 
 public sealed class TextMessagesController : BaseApiController
 {
-    [HttpGet("{customerId:int:min(1):max(2147483647)}/history")]
+
+    /// <summary>
+    /// Lists the customer's detail information
+    /// </summary>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Customer information not found</response>
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHistoryByCustomerId()
+    public async Task<IActionResult> GetDetailById([FromRoute] GetCustomerByIdQueryRequest request, CancellationToken cancellationToken)
     {
+        var response = await Sender.Send(request, cancellationToken);
+        if (!response.Succeeded)
+        {
+            return NotFound(response);
+        }
 
+        return Ok(response);
     }
 
     /// <summary>
