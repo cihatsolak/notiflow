@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Validation.AbstractValidators
+﻿namespace Puzzle.Lib.Validation.CustomValidators
 {
     /// <summary>
     /// Validates an email address or a list of comma-separated email addresses with a specified parser character.

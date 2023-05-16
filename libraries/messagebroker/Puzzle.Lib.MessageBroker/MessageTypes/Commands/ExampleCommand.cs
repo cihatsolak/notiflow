@@ -1,10 +1,10 @@
-﻿namespace Puzzle.Lib.MessageBroker.MessageType.Commands
+﻿namespace Puzzle.Lib.MessageBroker.MessageTypes.Commands
 {
     public interface IExampleCommand
     {
     }
 
-    public sealed record ExampleCommand: IExampleCommand
+    public sealed record ExampleCommand : IExampleCommand
     {
     }
 }

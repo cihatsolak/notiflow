@@ -1,8 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
-using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
-using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {

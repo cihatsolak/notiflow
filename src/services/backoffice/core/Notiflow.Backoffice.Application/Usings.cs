@@ -5,7 +5,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Notiflow.Backoffice.Application.Constants;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
-global using Notiflow.Backoffice.Application.Features.Commands.Devices.GetDeviceById;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Customers;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Devices;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Tenants;
