@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.GetDeviceById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
 
 public sealed record GetDeviceByIdRequest : IRequest<Response<GetDeviceByIdResponse>>
 {

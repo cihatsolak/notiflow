@@ -1,17 +1,17 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateToken;
 
-public sealed class UpdateDeviceTokenRequestHandler : IRequestHandler<UpdateDeviceTokenRequest, Response<Unit>>
+public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDeviceTokenCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<UpdateDeviceTokenRequestHandler> _logger;
+    private readonly ILogger<UpdateDeviceTokenCommandHandler> _logger;
 
-    public UpdateDeviceTokenRequestHandler(INotiflowUnitOfWork uow, ILogger<UpdateDeviceTokenRequestHandler> logger)
+    public UpdateDeviceTokenCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateDeviceTokenCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(UpdateDeviceTokenRequest request, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(UpdateDeviceTokenCommand request, CancellationToken cancellationToken)
     {
         var device = await _uow.DeviceRead.GetByIdAsync(1, cancellationToken);
         if (device is null)

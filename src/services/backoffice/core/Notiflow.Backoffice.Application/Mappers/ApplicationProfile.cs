@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Mappers;
+﻿using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
+
+namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {
@@ -19,7 +21,7 @@ internal sealed class ApplicationProfile : Profile
 
     private void DeviceMaps()
     {
-        CreateMap<AddDeviceRequest, Device>();
+        CreateMap<AddDeviceCommand, Device>();
 
         CreateMap<Device, GetDeviceByIdResponse>();
     }

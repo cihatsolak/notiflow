@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
-public sealed record AddDeviceRequest : IRequest<Response<int>>
+public sealed record AddDeviceCommand : IRequest<Response<int>>
 {
     public required int CustomerId { get; init; }
     public required OSVersion OSVersion { get; init; }

@@ -1,17 +1,17 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 
-public sealed class DeleteDeviceRequestHandler : IRequestHandler<DeleteDeviceRequest, Response<Unit>>
+public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<DeleteDeviceRequestHandler> _logger;
+    private readonly ILogger<DeleteDeviceCommandHandler> _logger;
 
-    public DeleteDeviceRequestHandler(INotiflowUnitOfWork uow, ILogger<DeleteDeviceRequestHandler> logger)
+    public DeleteDeviceCommandHandler(INotiflowUnitOfWork uow, ILogger<DeleteDeviceCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(DeleteDeviceRequest request, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
         int numberOfRowsDeleted = await _uow.DeviceWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (numberOfRowsDeleted != 1)

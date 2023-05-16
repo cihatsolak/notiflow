@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class DevicesController : BaseApiController
 {
@@ -30,7 +32,7 @@ public sealed class DevicesController : BaseApiController
     [HttpPost("add")]
     [ProducesResponseType(typeof(Response<int>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<int>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Add([FromBody] AddDeviceRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (response.Succeeded)
@@ -50,7 +52,7 @@ public sealed class DevicesController : BaseApiController
     [HttpPut("update")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateDeviceRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody] UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -70,7 +72,7 @@ public sealed class DevicesController : BaseApiController
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete([FromRoute] DeleteDeviceRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete([FromRoute] DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -90,7 +92,7 @@ public sealed class DevicesController : BaseApiController
     [HttpPatch("update-token")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateToken([FromBody] UpdateDeviceTokenRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateToken([FromBody] UpdateDeviceTokenCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)

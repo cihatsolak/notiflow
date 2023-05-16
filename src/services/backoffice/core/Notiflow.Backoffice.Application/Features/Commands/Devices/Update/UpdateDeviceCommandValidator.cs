@@ -1,8 +1,8 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 
-public sealed class UpdateDeviceRequestValidator : AbstractValidator<UpdateDeviceRequest>
+public sealed class UpdateDeviceCommandValidator : AbstractValidator<UpdateDeviceCommand>
 {
-    public UpdateDeviceRequestValidator()
+    public UpdateDeviceCommandValidator()
     {
         RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
         RuleFor(p => p.OSVersion).IsInEnum().WithMessage("-1");
