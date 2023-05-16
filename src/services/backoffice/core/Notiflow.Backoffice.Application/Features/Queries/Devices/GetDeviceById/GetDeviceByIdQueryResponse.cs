@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
 
-public sealed record GetDeviceByIdResponse
+public sealed record GetDeviceByIdQueryResponse
 {
     public OSVersion OSVersion { get; init; }
     public string Code { get; init; }

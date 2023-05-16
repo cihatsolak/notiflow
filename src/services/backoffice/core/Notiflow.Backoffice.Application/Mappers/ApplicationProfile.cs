@@ -23,6 +23,6 @@ internal sealed class ApplicationProfile : Profile
     {
         CreateMap<AddDeviceCommand, Device>();
 
-        CreateMap<Device, GetDeviceByIdResponse>();
+        CreateMap<Device, GetDeviceByIdQueryResponse>();
     }
 }

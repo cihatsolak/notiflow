@@ -1,15 +1,15 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
-public sealed class SendNotificationHandler : IRequestHandler<SendNotificationRequest, Response<Unit>>
+public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Response<Unit>>
 {
     private readonly IFirebaseService _firebaseService;
 
-    public SendNotificationHandler(IFirebaseService firebaseService)
+    public SendNotificationCommandHandler(IFirebaseService firebaseService)
     {
         _firebaseService = firebaseService;
     }
 
-    public async Task<Response<Unit>> Handle(SendNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
     {
         var firebaseNotificationResponse = await _firebaseService.SendNotificationAsync(null, cancellationToken);
         if (firebaseNotificationResponse.Succeeded)

@@ -1,8 +1,8 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
-public sealed class SendNotificationRequestValidator : AbstractValidator<SendNotificationRequest>
+public sealed class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {
-    public SendNotificationRequestValidator()
+    public SendNotificationCommandValidator()
     {
         RuleFor(p => p.Title).NotNullAndNotEmpty("errorCode");
     }

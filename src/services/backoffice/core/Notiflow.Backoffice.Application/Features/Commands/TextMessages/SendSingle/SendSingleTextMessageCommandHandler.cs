@@ -1,22 +1,22 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
 
-public sealed class SendSingleTextMessageRequestHandler : IRequestHandler<SendSingleTextMessageRequest, Response<Unit>>
+public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSingleTextMessageCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
-    private readonly ILogger<SendSingleTextMessageRequestHandler> _logger;
+    private readonly ILogger<SendSingleTextMessageCommandHandler> _logger;
 
-    public SendSingleTextMessageRequestHandler(
+    public SendSingleTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
-        ILogger<SendSingleTextMessageRequestHandler> logger)
+        ILogger<SendSingleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(SendSingleTextMessageRequest request, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
         string phoneNumber = await _uow.CustomerRead.GetPhoneNumberByIdAsync(request.CustomerId, cancellationToken);
         if (string.IsNullOrWhiteSpace(phoneNumber))

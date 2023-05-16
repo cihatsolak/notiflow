@@ -1,22 +1,22 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendMultiple;
 
-public sealed class SendMultipleTextMessageRequestHandler : IRequestHandler<SendMultipleTextMessageRequest, Response<Unit>>
+public sealed class SendMultipleTextMessageCommandHandler : IRequestHandler<SendMultipleTextMessageCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
-    private readonly ILogger<SendMultipleTextMessageRequestHandler> _logger;
+    private readonly ILogger<SendMultipleTextMessageCommandHandler> _logger;
 
-    public SendMultipleTextMessageRequestHandler(
+    public SendMultipleTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
-        ILogger<SendMultipleTextMessageRequestHandler> logger)
+        ILogger<SendMultipleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(SendMultipleTextMessageRequest request, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(SendMultipleTextMessageCommand request, CancellationToken cancellationToken)
     {
         var customers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
         if (customers is null) //Todo: IsNullOrNotAny
