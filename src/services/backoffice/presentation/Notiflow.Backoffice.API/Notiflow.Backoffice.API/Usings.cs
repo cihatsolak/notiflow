@@ -18,6 +18,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
 global using Notiflow.Backoffice.Application.Features.Queries.Tenants.GetDetailById;
+global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetTextMessageHistoryById;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;

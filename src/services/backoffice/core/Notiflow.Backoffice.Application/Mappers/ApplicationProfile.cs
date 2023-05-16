@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
-
-namespace Notiflow.Backoffice.Application.Mappers;
+﻿namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {
@@ -8,6 +6,7 @@ internal sealed class ApplicationProfile : Profile
     {
         TenantMaps();
         DeviceMaps();
+        TextMessageHistoryMaps();
     }
     
     private void TenantMaps()
@@ -22,7 +21,11 @@ internal sealed class ApplicationProfile : Profile
     private void DeviceMaps()
     {
         CreateMap<AddDeviceCommand, Device>();
-
         CreateMap<Device, GetDeviceByIdQueryResponse>();
+    }
+
+    private void TextMessageHistoryMaps()
+    {
+        CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
     }
 }

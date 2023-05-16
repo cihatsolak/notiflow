@@ -11,7 +11,7 @@ public sealed class NotificationsController : BaseApiController
     [HttpPost("send")]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SendNotification([FromBody] SendNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> SendNotification([FromBody] SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return Ok(response);

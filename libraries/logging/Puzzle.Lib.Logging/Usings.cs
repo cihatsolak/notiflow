@@ -9,7 +9,6 @@ global using NpgsqlTypes;
 global using Puzzle.Lib.Logging.SeriLogConfigurations.ColumnWriters;
 global using Puzzle.Lib.Logging.SeriLogConfigurations.Configurations;
 global using Puzzle.Lib.Logging.SeriLogConfigurations.Constants;
-global using Puzzle.Lib.SeriLog.Middlewares;
 global using Serilog;
 global using Serilog.Context;
 global using Serilog.Events;
