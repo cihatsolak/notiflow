@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Histories;
 
-public sealed class TextMessageHistory : BaseEntity
+public class TextMessageHistory : BaseEntity
 {
     public string Message { get; set; }
     public bool IsSent { get; set; }

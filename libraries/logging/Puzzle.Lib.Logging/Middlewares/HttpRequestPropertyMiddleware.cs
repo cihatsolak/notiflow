@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.SeriLog.Middlewares
+﻿namespace Puzzle.Lib.Logging.Middlewares
 {
     public sealed class HttpRequestPropertyMiddleware
     {

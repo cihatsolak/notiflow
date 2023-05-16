@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Puzzle.Lib.Validation.RuleBuilders
+﻿namespace Puzzle.Lib.Validation.RuleBuilders
 {
     /// <summary>
     /// Contains extension methods for building validation rules for personal information such as TC number, landline and mobile phone.
@@ -14,7 +12,7 @@ namespace Puzzle.Lib.Validation.RuleBuilders
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TElement, string> TcNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> TcNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -30,7 +28,7 @@ namespace Puzzle.Lib.Validation.RuleBuilders
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TElement, string> Landline<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> Landline<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -46,7 +44,7 @@ namespace Puzzle.Lib.Validation.RuleBuilders
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TElement, string> MobilePhone<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> MobilePhone<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -67,7 +65,7 @@ namespace Puzzle.Lib.Validation.RuleBuilders
         /// <returns>The rule builder with the birth date validation rule added.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the rule builder is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the minimum or maximum age is not a positive value.</exception>
-        public static IRuleBuilderOptions<TElement, DateTime> BirthDate<TElement>(this IRuleBuilder<TElement, DateTime> ruleBuilder, string errorMessage, int minimumAge = 18, int maximumAge = 70) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, DateTime> BirthDate<TElement>(this IRuleBuilder<TElement, DateTime> ruleBuilder, string errorMessage, int minimumAge = 18, int maximumAge = 70) where TElement : class
         {
             return ruleBuilder
                 .Must(birthDate => (birthDate >= DateTime.Today || birthDate.Year < DateTime.Today.Year - maximumAge || birthDate.Year > DateTime.Today.Year - minimumAge))

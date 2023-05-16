@@ -2,8 +2,8 @@
 
 public sealed class TenantsController : BaseApiController
 {
-    [HttpGet("{id}/detail")]
-    public async Task<IActionResult> GetDetailById([FromRoute] GetDetailByIdQueryRequest request, CancellationToken cancellationToken)
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
+    public async Task<IActionResult> GetDetailById([FromRoute] GetTenantDetailByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -22,7 +22,7 @@ public sealed class TenantsController : BaseApiController
     /// <response code="401">unauthorized user</response>
     /// <response code="400">invalid request</response>
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] AddTenantRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] AddTenantCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)

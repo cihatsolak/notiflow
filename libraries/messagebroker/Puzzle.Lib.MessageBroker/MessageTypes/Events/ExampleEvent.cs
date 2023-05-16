@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.MessageBroker.MessageType.Events
+﻿namespace Puzzle.Lib.MessageBroker.MessageTypes.Events
 {
     public interface IExampleEvent
     {

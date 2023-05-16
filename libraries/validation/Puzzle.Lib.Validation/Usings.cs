@@ -3,7 +3,7 @@ global using FluentValidation.AspNetCore;
 global using FluentValidation.Validators;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.DependencyInjection;
-global using Puzzle.Lib.Validation.AbstractValidators;
+global using Puzzle.Lib.Validation.CustomValidators;
 global using Puzzle.Lib.Validation.Infrastructure.Constants;
 global using Puzzle.Lib.Validation.Infrastructure.Extensions;
 global using Puzzle.Lib.Validation.Infrastructure.Models;

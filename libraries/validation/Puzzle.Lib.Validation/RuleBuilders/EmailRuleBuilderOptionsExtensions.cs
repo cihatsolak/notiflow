@@ -12,7 +12,7 @@
         /// <param name="ruleBuilder">The <see cref="IRuleBuilder{TElement, TProperty}"/> instance.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The <see cref="IRuleBuilderOptions{TElement, TProperty}"/> instance.</returns>
-        public static IRuleBuilderOptions<TElement, string> Email<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> Email<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -28,7 +28,7 @@
         /// <param name="ruleBuilder">The <see cref="IRuleBuilder{TElement, TProperty}"/> instance.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The <see cref="IRuleBuilderOptions{TElement, TProperty}"/> instance.</returns>
-        public static IRuleBuilderOptions<TElement, string> EmailListWithSemicolon<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> EmailListWithSemicolon<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder.SetValidator(new EmailValidationWithParserValidator(';', errorMessage));
         }

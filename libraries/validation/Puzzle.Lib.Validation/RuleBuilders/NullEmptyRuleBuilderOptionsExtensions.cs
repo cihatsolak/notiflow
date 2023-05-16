@@ -26,7 +26,7 @@
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
         ///<typeparam name="TElement">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TElement, byte[]> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, byte[]> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, byte[]> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, byte[]> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)
@@ -40,7 +40,7 @@
         ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
         ///<typeparam name="TClass">The type of the class being validated.</typeparam>
         ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-        public static IRuleBuilderOptions<TElement, List<string>> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, List<string>> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, List<string>> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, List<string>> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                     .NotEmpty().WithMessage(errorMessage)

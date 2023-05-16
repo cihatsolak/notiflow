@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
 
-public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQueryRequest, Response<GetCustomerByIdQueryResponse>>
+public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, Response<GetCustomerByIdQueryResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
         _uow = notiflowUnitOfWork;
     }
 
-    public async Task<Response<GetCustomerByIdQueryResponse>> Handle(GetCustomerByIdQueryRequest request, CancellationToken cancellationToken)
+    public async Task<Response<GetCustomerByIdQueryResponse>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)

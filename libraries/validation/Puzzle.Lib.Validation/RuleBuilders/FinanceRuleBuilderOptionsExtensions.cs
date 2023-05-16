@@ -12,7 +12,7 @@
         /// <param name="ruleBuilder">The current instance of <see cref="IRuleBuilder{TClass, string}"/> being extended.</param>
         /// <param name="errorMessage">The error message to be returned if the validation fails.</param>
         /// <returns>The current instance of <see cref="IRuleBuilderOptions{TClass, string}"/>.</returns>
-        public static IRuleBuilderOptions<TElement, string> CustomCreditCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> CustomCreditCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -29,7 +29,7 @@
         /// <param name="ruleBuilder">The current instance of <see cref="IRuleBuilder{TClass, string}"/> being extended.</param>
         /// <param name="errorMessage">The error message to be returned if the validation fails.</param>
         /// <returns>The current instance of <see cref="IRuleBuilderOptions{TClass, string}"/>.</returns>
-        public static IRuleBuilderOptions<TElement, string> CreditOrDebitCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> CreditOrDebitCard<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -45,7 +45,7 @@
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TElement, string> TaxNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> TaxNumber<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)

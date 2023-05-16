@@ -6,6 +6,7 @@ internal sealed class ApplicationProfile : Profile
     {
         TenantMaps();
         DeviceMaps();
+        TextMessageHistoryMaps();
     }
     
     private void TenantMaps()
@@ -19,8 +20,12 @@ internal sealed class ApplicationProfile : Profile
 
     private void DeviceMaps()
     {
-        CreateMap<AddDeviceRequest, Device>();
+        CreateMap<AddDeviceCommand, Device>();
+        CreateMap<Device, GetDeviceByIdQueryResponse>();
+    }
 
-        CreateMap<Device, GetDeviceByIdResponse>();
+    private void TextMessageHistoryMaps()
+    {
+        CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
     }
 }

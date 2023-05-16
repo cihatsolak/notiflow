@@ -1,4 +1,4 @@
-﻿using Puzzle.Lib.Entities.Entities.SoftDelete;
+﻿using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
 
 namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
 
@@ -24,6 +24,10 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
     public IDeviceReadRepository DeviceRead => _serviceProvider.GetRequiredService<IDeviceReadRepository>();
 
     public IDeviceWriteRepository DeviceWrite => _serviceProvider.GetRequiredService<IDeviceWriteRepository>();
+
+    public ITextMessageHistoryReadRepository TextMessageHistoryRead => _serviceProvider.GetRequiredService<ITextMessageHistoryReadRepository>();
+
+    public ITextMessageHistoryWriteRepository TextMessageHistoryWrite => _serviceProvider.GetRequiredService<ITextMessageHistoryWriteRepository>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
