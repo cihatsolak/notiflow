@@ -1,4 +1,8 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
+using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
+using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {
@@ -31,7 +35,7 @@ public sealed class CustomersController : BaseApiController
     [HttpPost("add")]
     [ProducesResponseType(typeof(Response<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Response<EmptyResult>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] AddCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] AddCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -51,7 +55,7 @@ public sealed class CustomersController : BaseApiController
     [HttpPut("update")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody] UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -71,7 +75,7 @@ public sealed class CustomersController : BaseApiController
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete([FromRoute] DeleteCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete([FromRoute] DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -88,10 +92,10 @@ public sealed class CustomersController : BaseApiController
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
-    [HttpPatch("change-blocking")]
+    [HttpPatch("update-blocking")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangeBlocking([FromBody] ChangeCustomerBlockingRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateBlocking([FromBody] UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -111,7 +115,7 @@ public sealed class CustomersController : BaseApiController
     [HttpPatch("change-email")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangeEmail([FromBody] ChangeCustomerEmailRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ChangeEmail([FromBody] UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)
@@ -131,7 +135,7 @@ public sealed class CustomersController : BaseApiController
     [HttpPatch("change-phone-number")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangePhoneNumber([FromBody] ChangeCustomerPhoneNumberRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ChangePhoneNumber([FromBody] UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         if (!response.Succeeded)

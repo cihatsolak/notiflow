@@ -1,19 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
-public sealed class DeleteCustomerRequestHandler : IRequestHandler<DeleteCustomerRequest, Response<EmptyResponse>>
+public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Response<EmptyResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<DeleteCustomerRequestHandler> _logger;
+    private readonly ILogger<DeleteCustomerCommandHandler> _logger;
 
-    public DeleteCustomerRequestHandler(
+    public DeleteCustomerCommandHandler(
         INotiflowUnitOfWork uow,
-        ILogger<DeleteCustomerRequestHandler> logger)
+        ILogger<DeleteCustomerCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
     }
 
-    public async Task<Response<EmptyResponse>> Handle(DeleteCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         int numberOfRowsDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (numberOfRowsDeleted != 1)

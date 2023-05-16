@@ -12,7 +12,7 @@
         /// <param name="ruleBuilder">The rule builder.</param>
         /// <param name="errorMessage">The error message to display if the validation fails.</param>
         /// <returns>The rule builder options.</returns>
-        public static IRuleBuilderOptions<TElement, string> StrongPassword<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class, new()
+        public static IRuleBuilderOptions<TElement, string> StrongPassword<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)

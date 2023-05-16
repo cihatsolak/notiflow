@@ -2,11 +2,11 @@
 global using Microsoft.AspNetCore.Mvc;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
-global using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeBlocking;
-global using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeEmail;
-global using Notiflow.Backoffice.Application.Features.Commands.Customers.ChangePhoneNumber;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
+global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
+global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
+global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.GetDeviceById;

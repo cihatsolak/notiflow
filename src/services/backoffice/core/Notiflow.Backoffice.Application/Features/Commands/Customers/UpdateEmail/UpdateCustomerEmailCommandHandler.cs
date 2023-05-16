@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeEmail;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 
-public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<ChangeCustomerEmailRequest, Response<EmptyResponse>>
+public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<UpdateCustomerEmailCommand, Response<EmptyResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<ChangePhoneNumberRequestHandler> _logger;
@@ -11,7 +11,7 @@ public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<ChangeCust
         _logger = logger;
     }
 
-    public async Task<Response<EmptyResponse>> Handle(ChangeCustomerEmailRequest request, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> Handle(UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)

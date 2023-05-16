@@ -1,9 +1,10 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-public sealed class AddCustomerRequestValidator : AbstractValidator<AddCustomerRequest>
+public sealed class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCommand>
 {
-    public AddCustomerRequestValidator()
+    public UpdateCustomerCommandValidator()
     {
+        RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
         RuleFor(p => p.Name).NotNullAndNotEmpty("-1").MaximumLength(50).WithMessage("-1");
         RuleFor(p => p.Surname).NotNullAndNotEmpty("-1").MaximumLength(75).WithMessage("-1");
         RuleFor(p => p.PhoneNumber).MobilePhone("-1");

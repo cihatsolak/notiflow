@@ -1,17 +1,17 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.ChangeBlocking;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
 
-public sealed class ChangeCustomerBlockingRequestHandler : IRequestHandler<ChangeCustomerBlockingRequest, Response<EmptyResponse>>
+public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<UpdateCustomerBlockingCommand, Response<EmptyResponse>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<ChangeCustomerBlockingRequestHandler> _logger;
+    private readonly ILogger<UpdateCustomerBlockingCommandHandler> _logger;
 
-    public ChangeCustomerBlockingRequestHandler(INotiflowUnitOfWork uow, ILogger<ChangeCustomerBlockingRequestHandler> logger)
+    public UpdateCustomerBlockingCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateCustomerBlockingCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
     }
 
-    public async Task<Response<EmptyResponse>> Handle(ChangeCustomerBlockingRequest request, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> Handle(UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
