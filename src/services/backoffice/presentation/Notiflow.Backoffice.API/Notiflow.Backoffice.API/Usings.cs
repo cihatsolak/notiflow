@@ -12,6 +12,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateToken;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
 global using Notiflow.Backoffice.Application.Features.Commands.Tenants.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendMultiple;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
