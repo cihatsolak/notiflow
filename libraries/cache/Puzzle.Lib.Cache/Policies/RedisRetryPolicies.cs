@@ -7,7 +7,7 @@
     /// </summary>
     internal static class RedisRetryPolicies
     {
-        private static ILogger Logger => Log.ForContext(typeof(RedisRetryPolicies));
+        //private static ILogger Logger => Log.ForContext(typeof(RedisRetryPolicies)); //Todo:
 
         /// <summary>
         /// Gets an asynchronous retry policy for Redis.
@@ -46,7 +46,8 @@
         /// <param name="context">The context of the retry attempt.</param>
         private static void OnRedisRetry(Exception exception, TimeSpan timeSpan, int retryAttempt, Context context)
         {
-            Logger.Error(exception, "An error occurred in redis communication. Waiting for {@timeSpan} before next attempt. Retry attempt: {@retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
+            //Todo:
+            //Logger.Error(exception, "An error occurred in redis communication. Waiting for {@timeSpan} before next attempt. Retry attempt: {@retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
         }
 
         /// <summary>

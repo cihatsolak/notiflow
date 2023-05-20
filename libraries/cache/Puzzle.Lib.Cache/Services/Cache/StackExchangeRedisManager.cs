@@ -4,15 +4,18 @@
     {
         private readonly IDatabase _database;
         private readonly IServer _server;
+        private readonly ILogger<StackExchangeRedisManager> _logger;
         private readonly int _defaultDatabase;
 
         public StackExchangeRedisManager(
              IDatabase database,
              IServer server,
+             ILogger<StackExchangeRedisManager> logger,
              int defaultDatabase)
         {
             _database = database;
             _server = server;
+            _logger = logger;
             _defaultDatabase = defaultDatabase;
         }
 
@@ -36,7 +39,7 @@
                 long result = await _database.StringIncrementAsync(cacheKey, increment, CommandFlags.DemandMaster);
                 if (0 >= result)
                 {
-                    Log.Warning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
+                    _logger.LogWarning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
                 }
 
                 return result;
@@ -53,7 +56,7 @@
                 long result = await _database.StringDecrementAsync(cacheKey, decrement, CommandFlags.DemandMaster);
                 if (0 >= result)
                 {
-                    Log.Warning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
+                    _logger.LogWarning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
                 }
 
                 return result;
@@ -69,7 +72,7 @@
                 var hashEntries = await _database.HashGetAllAsync(cacheKey, CommandFlags.PreferReplica);
                 if (!hashEntries.Any())
                 {
-                    Log.Warning("Data for key {@cacheKey} not found.", cacheKey);
+                    _logger.LogWarning("Data for key {@cacheKey} not found.", cacheKey);
                     return Enumerable.Empty<KeyValuePair<string, string>>();
                 }
 
@@ -87,7 +90,7 @@
                 var hashEntry = await _database.HashGetAsync(cacheKey, hashField, CommandFlags.PreferReplica);
                 if (!hashEntry.HasValue)
                 {
-                    Log.Warning("Data for key {@cacheKey} not found.", cacheKey);
+                    _logger.LogWarning("Data for key {@cacheKey} not found.", cacheKey);
                     return default;
                 }
 
@@ -106,7 +109,7 @@
                 bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
+                    _logger.LogWarning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
                 }
 
                 return succeeded;
@@ -123,7 +126,7 @@
                 bool succeeded = await _database.HashDeleteAsync(cacheKey, hashField, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Unable to delete data for key value {@cacheKey}.", cacheKey);
+                    _logger.LogWarning("Unable to delete data for key value {@cacheKey}.", cacheKey);
                 }
 
                 return succeeded;
@@ -141,7 +144,7 @@
                 double result = await _database.SortedSetIncrementAsync(cacheKey, memberKey, increment, CommandFlags.DemandMaster);
                 if (result == 0)
                 {
-                    Log.Warning("Could not update member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
+                    _logger.LogWarning("Could not update member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
                 }
 
                 return (int)result;
@@ -158,7 +161,7 @@
                 var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
                 if (!redisValues.Any())
                 {
-                    Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                    _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                     return Enumerable.Empty<TData>();
                 }
 
@@ -176,7 +179,7 @@
                 var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
                 if (!redisValues.Any())
                 {
-                    Log.Warning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                    _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                     return Enumerable.Empty<TData>();
                 }
 
@@ -194,7 +197,7 @@
                 bool succeeded = await _database.SortedSetRemoveAsync(cacheKey, memberKey, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Could not delete member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
+                    _logger.LogWarning("Could not delete member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
                 }
 
                 return succeeded;
@@ -225,7 +228,7 @@
                 bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                    _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
                 }
 
                 return succeeded;
@@ -242,7 +245,7 @@
                 bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                    _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
                 }
 
                 return succeeded;
@@ -259,7 +262,7 @@
                 bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                    _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
                 }
 
                 return succeeded;
@@ -275,7 +278,7 @@
                 TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(cacheKey, CommandFlags.PreferReplica);
                 if (currentExpiration is null)
                 {
-                    Log.Warning("The key {@cacheKey} could not be found.", cacheKey);
+                    _logger.LogWarning("The key {@cacheKey} could not be found.", cacheKey);
                     return default;
                 }
 
@@ -284,7 +287,7 @@
                 bool succeeded = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
                 if (!succeeded)
                 {
-                    Log.Warning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
+                    _logger.LogWarning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
                 }
 
                 return succeeded;
@@ -299,7 +302,7 @@
             {
                 if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.DemandMaster))
                 {
-                    Log.Warning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
+                    _logger.LogWarning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
                     return default;
                 }
 
@@ -324,24 +327,24 @@
                 var redisKeys = _server.Keys(_defaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
                 if (redisKeys is null || !redisKeys.Any())
                 {
-                    Log.Information("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
+                    _logger.LogInformation("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
                     return default;
                 }
 
                 long totalNumberOfDeletedKeys = await _database.KeyDeleteAsync(redisKeys, CommandFlags.DemandMaster);
                 if (0 >= totalNumberOfDeletedKeys)
                 {
-                    Log.Error("A total of {@redisKeysCount} keys for {@searchKey} searched in Redis were found, but none of the keys could be deleted.", searchKey, redisKeys.Length);
+                    _logger.LogError("A total of {@redisKeysCount} keys for {@searchKey} searched in Redis were found, but none of the keys could be deleted.", searchKey, redisKeys.Length);
                     return default;
                 }
                 else if (totalNumberOfDeletedKeys > 0 && totalNumberOfDeletedKeys != redisKeys.Length)
                 {
-                    Log.Warning("A total of {@redisKeysCount} keys for the searched keyword {@searchKey} were found in redis, but the total {@totalNumberOfDeletedKeys} keys were deleted.", searchKey, redisKeys.Length, totalNumberOfDeletedKeys);
+                    _logger.LogWarning("A total of {@redisKeysCount} keys for the searched keyword {@searchKey} were found in redis, but the total {@totalNumberOfDeletedKeys} keys were deleted.", searchKey, redisKeys.Length, totalNumberOfDeletedKeys);
                     return true;
                 }
                 else
                 {
-                    Log.Information("All keys belonging to {@searchKey} searched in redis have been deleted.", searchKey);
+                    _logger.LogInformation("All keys belonging to {@searchKey} searched in redis have been deleted.", searchKey);
                 }
 
                 return true;

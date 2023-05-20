@@ -43,8 +43,9 @@
                 IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
                 IDatabase database = connectionMultiplexer.GetDatabase(redisServerSetting.DefaultDatabase);
                 IServer server = connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
+                ILogger<StackExchangeRedisManager> logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
-                return new StackExchangeRedisManager(database, server, redisServerSetting.DefaultDatabase);
+                return new StackExchangeRedisManager(database, server, logger, redisServerSetting.DefaultDatabase);
             });
 
             return services;
