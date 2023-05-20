@@ -27,5 +27,8 @@ internal sealed class ApplicationProfile : Profile
     private void TextMessageHistoryMaps()
     {
         CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
+
+        CreateMap<SendSingleTextMessageCommand, TextMessageDeliveredEvent>();
+        CreateMap<SendSingleTextMessageCommand, TextMessageNotDeliveredEvent>();
     }
 }

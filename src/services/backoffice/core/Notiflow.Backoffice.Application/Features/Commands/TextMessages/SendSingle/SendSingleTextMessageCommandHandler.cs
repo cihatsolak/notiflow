@@ -4,15 +4,18 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
+    private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<SendSingleTextMessageCommandHandler> _logger;
 
     public SendSingleTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
+        IPublishEndpoint publishEndpoint,
         ILogger<SendSingleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
+        _publishEndpoint = publishEndpoint;
         _logger = logger;
     }
 
@@ -28,11 +31,13 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
         bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumber, request.Message);
         if (!succeeded)
         {
+            await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
             _logger.LogWarning("A message could not be sent to the customer with the number {@phoneNumber} and the ID {@customerId}.", phoneNumber, request.CustomerId);
+
             return Response<Unit>.Fail(-1);
         }
 
-        //Todo: insert text message history
+        await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
 
         _logger.LogInformation("A message was sent to customer number {@phoneNumber} and number {@customerId}.", phoneNumber, request.CustomerId);
 

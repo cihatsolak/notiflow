@@ -1,5 +1,4 @@
-﻿
-namespace Notiflow.Projections.TextMessageService;
+﻿namespace Notiflow.Projections.TextMessageService;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
