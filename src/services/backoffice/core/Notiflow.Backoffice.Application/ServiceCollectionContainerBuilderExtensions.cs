@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application;
+﻿using MassTransit;
+
+namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -11,11 +13,34 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddLibraries();
 
+        services.AddMassTransit();
+
         return services;
     }
 
     private static IServiceCollection AddLibraries(this IServiceCollection services)
     {
         return services.AddFluentDesignValidation();
+    }
+
+    private static IServiceCollection AddMassTransit(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        RabbitMqSetting rabbitMqSetting = configuration.GetRequiredSection(nameof(RabbitMqSetting)).Get<RabbitMqSetting>();
+
+        services.AddMassTransit(serviceCollectionBusConfigurator =>
+        {
+            serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+            {
+                rabbitMqBusFactoryConfigurator.Host(rabbitMqSetting.ConnectionString, "/", hostConfigurator =>
+                {
+                    hostConfigurator.Username(rabbitMqSetting.Username);
+                    hostConfigurator.Password(rabbitMqSetting.Password);
+                });
+            });
+        });
+
+        return services;
     }
 }

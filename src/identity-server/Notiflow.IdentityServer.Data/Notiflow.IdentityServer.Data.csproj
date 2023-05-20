@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libraries\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+    <ProjectReference Include="..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Core\Notiflow.IdentityServer.Core.csproj" />
   </ItemGroup>
 

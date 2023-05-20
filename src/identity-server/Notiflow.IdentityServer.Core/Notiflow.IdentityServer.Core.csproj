@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libraries\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
+    <ProjectReference Include="..\..\..\libs\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
   </ItemGroup>
 
 </Project>

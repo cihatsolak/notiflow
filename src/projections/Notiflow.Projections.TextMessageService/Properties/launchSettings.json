@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Notiflow.Projections.TextMessageService": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
