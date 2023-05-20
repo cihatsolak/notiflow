@@ -14,12 +14,7 @@ public sealed class TenantsController : BaseApiController
     public async Task<IActionResult> GetDetailById([FromRoute] GetTenantDetailByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return NotFound(response);
-        }
-
-        return Ok(response);
+        return CreateGetResultInstance(response);
     }
 
 
@@ -35,11 +30,6 @@ public sealed class TenantsController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddTenantCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return CreatedAtAction(nameof(GetDetailById), new { id = response.Data });
+        return CreateCreatedResultInstance(response, nameof(GetDetailById));
     }
 }

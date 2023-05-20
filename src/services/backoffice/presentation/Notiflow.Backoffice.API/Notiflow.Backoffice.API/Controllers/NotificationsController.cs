@@ -14,12 +14,7 @@ public sealed class NotificationsController : BaseApiController
     public async Task<IActionResult> SendSingle([FromBody] SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        return CreateGetResultInstance(response);
     }
 
     /// <summary>
@@ -34,11 +29,6 @@ public sealed class NotificationsController : BaseApiController
     public async Task<IActionResult> SendMultiple([FromBody] SendMultipleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        return CreateGetResultInstance(response);
     }
 }

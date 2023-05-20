@@ -14,12 +14,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> GetDetailById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return NotFound(response);
-        }
-
-        return Ok(response);
+        return CreateGetResultInstance(response);
     }
 
     /// <summary>
@@ -34,12 +29,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> SendSingle([FromBody] SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        return CreateOkResultInstance(response);
     }
 
     /// <summary>
@@ -54,11 +44,6 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> SendMultiple([FromBody] SendMultipleTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        return CreateOkResultInstance(response);
     }
 }
