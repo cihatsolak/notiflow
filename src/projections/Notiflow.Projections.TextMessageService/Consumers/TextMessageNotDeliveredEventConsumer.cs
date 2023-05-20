@@ -1,17 +1,17 @@
 ﻿namespace Notiflow.Projections.TextMessageService.Consumers;
 
-public sealed class TestMessageSendEventConsumer : IConsumer<TestMessageSendEvent>
+public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessageNotDeliveredEvent>
 {
-    public async Task Consume(ConsumeContext<TestMessageSendEvent> context)
+    public async Task Consume(ConsumeContext<TextMessageNotDeliveredEvent> context)
     {
-        using var connection = new SqlConnection("_connectionString");
+        using SqlConnection connection = new("_connectionString");
 
         await connection
                 .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, send_date, customer_id) VALUES (@message, @is_sent, @error_message, @send_date, @customer_id)",
                 new
                 {
                     context.Message.Message,
-                    context.Message.IsSent,
+                    IsSent = false,
                     context.Message.ErrorMessage,
                     context.Message.SentDate,
                     context.Message.CustomerId
