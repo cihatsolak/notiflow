@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Constants
+﻿namespace Puzzle.Lib.Assistant.Constants
 {
     /// <summary>
     /// A record that contains parameter names used in authentication.

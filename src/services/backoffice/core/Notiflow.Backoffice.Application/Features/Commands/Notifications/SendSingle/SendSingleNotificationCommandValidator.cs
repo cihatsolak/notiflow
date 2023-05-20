@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed class SendSingleNotificationCommandValidator : AbstractValidator<SendSingleNotificationCommand>
 {

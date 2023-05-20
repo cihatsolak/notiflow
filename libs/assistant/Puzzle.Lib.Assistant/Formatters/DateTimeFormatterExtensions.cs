@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Formatters
+﻿namespace Puzzle.Lib.Assistant.Formatters
 {
     /// <summary>
     /// Provides extension methods to format date and time values to string representations using custom formats.

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Provides extension methods for calculating prices and discounts.
@@ -13,7 +13,7 @@
         /// <returns>The new price with VAT included, rounded up to the nearest integer.</returns>
         public static int ToCalculatePriceWithVat(this decimal price, int vatRate)
         {
-            return (int)Math.Ceiling(price + (price * vatRate / 100));
+            return (int)Math.Ceiling(price + price * vatRate / 100);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {
@@ -6,7 +6,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     private readonly ILogger<SendSingleNotificationCommandHandler> _logger;
 
     public SendSingleNotificationCommandHandler(
-        IFirebaseService firebaseService, 
+        IFirebaseService firebaseService,
         ILogger<SendSingleNotificationCommandHandler> logger)
     {
         _firebaseService = firebaseService;

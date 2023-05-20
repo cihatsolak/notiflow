@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed record SendSingleNotificationCommand : IRequest<Response<Unit>>
 {

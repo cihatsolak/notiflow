@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Provides extension methods for string comparison with ordinal ignore case, ordinal and current culture ignore case options.

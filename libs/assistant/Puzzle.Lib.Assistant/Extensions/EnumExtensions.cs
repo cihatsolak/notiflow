@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿using Puzzle.Lib.Assistant.Enums;
+
+namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Contains extension methods for working with enums.

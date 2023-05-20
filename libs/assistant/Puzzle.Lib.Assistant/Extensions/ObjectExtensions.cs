@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿using Puzzle.Lib.Assistant.Extensions;
+
+namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Provides extension methods for objects.

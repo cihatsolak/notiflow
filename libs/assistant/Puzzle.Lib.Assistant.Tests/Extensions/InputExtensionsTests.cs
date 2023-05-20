@@ -1,4 +1,4 @@
-namespace Puzzle.Lib.Assistants.Tests.Extensions
+namespace Puzzle.Lib.Assistant.Tests.Extensions
 {
     public class InputExtensionsTests
     {

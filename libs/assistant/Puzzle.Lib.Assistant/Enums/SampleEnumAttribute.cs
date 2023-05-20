@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Enums
+﻿namespace Puzzle.Lib.Assistant.Enums
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
     public class EnumAttribute : Attribute

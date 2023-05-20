@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Contains extension methods for the <see cref="IHostEnvironment"/> interface related to localhost environment.

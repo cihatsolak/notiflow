@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Provides extension methods for input related operations.

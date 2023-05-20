@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Tests.Formatters
+﻿namespace Puzzle.Lib.Assistant.Tests.Formatters
 {
     public sealed class PhoneFormatterExtensionsTests
     {

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistants.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions
 {
     /// <summary>
     /// Contains extension methods for JSON serialization and deserialization.
