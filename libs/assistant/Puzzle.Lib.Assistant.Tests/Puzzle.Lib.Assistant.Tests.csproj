@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Puzzle.Lib.Assistants\Puzzle.Lib.Assistants.csproj" />
+    <ProjectReference Include="..\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
   </ItemGroup>
 
 </Project>
