@@ -2,19 +2,39 @@
 
 public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
 {
+    private readonly NotiflowDbSetting _notiflowDbSetting;
+    private readonly ILogger<TextMessageDeliveredEventConsumer> _logger;
+
+    public TextMessageDeliveredEventConsumer(
+        IOptions<NotiflowDbSetting> notiflowDbSetting,
+        ILogger<TextMessageDeliveredEventConsumer> logger)
+    {
+        _notiflowDbSetting = notiflowDbSetting.Value;
+        _logger = logger;
+    }
+
     public async Task Consume(ConsumeContext<TextMessageDeliveredEvent> context)
     {
-        using SqlConnection connection = new("_connectionString");
+        try
+        {
+            using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
 
-        await connection
-                .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, send_date, customer_id) VALUES (@message, @is_sent, @error_message, @send_date, @customer_id)",
-                new
-                {
-                    context.Message.Message,
-                    IsSent = true,
-                    ErrorMessage = DBNull.Value,
-                    context.Message.SentDate,
-                    context.Message.CustomerId
-                });
+            await npgsqlConnection
+                    .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) VALUES (@message, @is_sent, @error_message, @sent_date, @customer_id)",
+                    new
+                    {
+                        message = context.Message.Message,
+                        is_sent = true,
+                        error_message = (string)null,
+                        sent_date = context.Message.SentDate,
+                        customer_id = context.Message.CustomerId
+                    });
+
+            _logger.LogInformation("The sent message has been saved in the database.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The sent message could not be saved to the database.");
+        }
     }
 }

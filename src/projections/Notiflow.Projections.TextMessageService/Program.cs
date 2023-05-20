@@ -1,7 +1,10 @@
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddMassTransit();
+        services
+        .AddNotiflowDbSetting()
+        .AddMassTransit();
+
         services.AddHostedService<TextMessageServiceWorker>();
     })
     .Build();

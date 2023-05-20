@@ -7,7 +7,7 @@ public class TextMessageDeliveredEvent
         SentDate = DateTime.Now;
     }
 
-    public string CustomerId { get; set; }
+    public int CustomerId { get; set; }
     public string Message { get; set; }
     public DateTime SentDate { get; set; }
 }

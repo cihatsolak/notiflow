@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application;
+﻿using MassTransit;
+
+namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
