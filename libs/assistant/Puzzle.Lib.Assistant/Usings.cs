@@ -5,4 +5,4 @@ global using System.Reflection;
 global using System.Text;
 global using System.Text.Json;
 global using System.Text.RegularExpressions;
-global using Puzzle.Lib.Assistants.Enums;
+global using Puzzle.Lib.Assistant.Enums;

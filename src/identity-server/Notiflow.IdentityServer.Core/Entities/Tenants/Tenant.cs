@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Core.Entities.Users;
-
-namespace Notiflow.IdentityServer.Core.Entities.Tenants;
+﻿namespace Notiflow.IdentityServer.Core.Entities.Tenants;
 
 public class Tenant : BaseHistoricalEntity
 {

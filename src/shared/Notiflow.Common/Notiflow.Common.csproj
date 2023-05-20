@@ -6,8 +6,4 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\libs\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
-  </ItemGroup>
-
 </Project>
