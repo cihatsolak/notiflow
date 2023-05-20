@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 
-public sealed record UpdateDeviceCommand : IRequest<Response<EmptyResponse>>
+public sealed record UpdateDeviceCommand : IRequest<Response<Unit>>
 {
     public required int Id { get; init; }
     public required OSVersion OSVersion { get; init; }
