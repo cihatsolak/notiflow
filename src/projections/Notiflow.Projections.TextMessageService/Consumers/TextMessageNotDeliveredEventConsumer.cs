@@ -17,9 +17,9 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
     {
         try
         {
-            using SqlConnection connection = new(_notiflowDbSetting.ConnectionString);
+            using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
 
-            await connection
+            await npgsqlConnection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) VALUES (@message, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {

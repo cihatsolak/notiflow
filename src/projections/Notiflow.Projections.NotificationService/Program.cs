@@ -1,10 +1,12 @@
-using Notiflow.Projections.NotificationService;
-
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<Worker>();
+        services
+        .AddNotiflowDbSetting()
+        .AddMassTransit();
+
+        services.AddHostedService<NotificationServiceWorker>();
     })
     .Build();
 
-host.Run();
+await host.RunAsync();

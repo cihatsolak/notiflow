@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class NotificationsController : BaseApiController
 {

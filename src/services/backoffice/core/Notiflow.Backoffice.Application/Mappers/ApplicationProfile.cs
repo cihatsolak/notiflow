@@ -7,6 +7,7 @@ internal sealed class ApplicationProfile : Profile
         TenantMaps();
         DeviceMaps();
         TextMessageHistoryMaps();
+        NotificationMaps();
     }
     
     private void TenantMaps()
@@ -30,5 +31,11 @@ internal sealed class ApplicationProfile : Profile
 
         CreateMap<SendSingleTextMessageCommand, TextMessageDeliveredEvent>();
         CreateMap<SendSingleTextMessageCommand, TextMessageNotDeliveredEvent>();
+    }
+
+    private void NotificationMaps()
+    {
+        CreateMap<SendSingleNotificationCommand, NotificationDeliveredEvent>();
+        CreateMap<SendSingleNotificationCommand, NotificationNotDeliveredEvent>();
     }
 }
