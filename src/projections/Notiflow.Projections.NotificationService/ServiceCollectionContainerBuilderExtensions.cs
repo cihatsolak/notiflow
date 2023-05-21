@@ -18,8 +18,8 @@ internal static class ServiceCollectionContainerBuilderExtensions
 
         services.AddMassTransit(serviceCollectionBusConfigurator =>
         {
-            serviceCollectionBusConfigurator.AddConsumer<TextMessageDeliveredEventConsumer>();
-            serviceCollectionBusConfigurator.AddConsumer<TextMessageNotDeliveredEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<NotificationDeliveredEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<NotificationNotDeliveredEventConsumer>();
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
@@ -29,14 +29,14 @@ internal static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("text-message-delivered-event-queue", options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("notification-delivered-event-queue", options =>
                 {
-                    options.ConfigureConsumer<TextMessageDeliveredEventConsumer>(busRegistrationContext);
+                    options.ConfigureConsumer<NotificationDeliveredEventConsumer>(busRegistrationContext);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("text-message-not-delivered-event-queue", options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("notification-not-delivered-event-queue", options =>
                 {
-                    options.ConfigureConsumer<TextMessageNotDeliveredEventConsumer>(busRegistrationContext);
+                    options.ConfigureConsumer<NotificationNotDeliveredEventConsumer>(busRegistrationContext);
                 });
             });
         });
