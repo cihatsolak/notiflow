@@ -5,7 +5,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-var logger = host.Services.GetRequiredService<ILogger<TextMessageServiceWorker>>();
+var logger = host.Services.GetRequiredService<ILogger<EmailServiceWorker>>();
 var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
 
 string applicationName = hostEnvironment.ApplicationName;

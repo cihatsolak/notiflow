@@ -1,7 +1,7 @@
 ﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/tenant-permissions")]
-public sealed class TenantPermissionsController : MainController
+public sealed class TenantPermissionsController : BaseApiController
 {
     private readonly ITenantPermissionService _tenantPermissionService;
 
@@ -22,7 +22,7 @@ public sealed class TenantPermissionsController : MainController
     public async Task<IActionResult> GetPermissions(CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.GetPermissionsAsync(cancellationToken);
-        return Ok(response);
+        return CreateGetResultInstance(response);
     }
 
     /// <summary>
@@ -31,12 +31,12 @@ public sealed class TenantPermissionsController : MainController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
-    [HttpPost("update-preferences")]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status200OK)]
+    [HttpPut("update-preferences")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdatePreferences([FromBody] TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.UpdateAsync(request, cancellationToken);
-        return Ok(response);
+        return CreateNoContentResultInstance(response);
     }
 }
