@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Common.Events.Notifications;
+﻿namespace Notiflow.Common.MessageBroker.Events.Notifications;
 
 public sealed record NotificationDeliveredEvent
 {

@@ -1,4 +1,7 @@
-﻿namespace Notiflow.Backoffice.Application.Mappers;
+﻿using Notiflow.Common.MessageBroker.Events.Notifications;
+using Notiflow.Common.MessageBroker.Events.TextMessage;
+
+namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {

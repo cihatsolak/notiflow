@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Projections.TextMessageService.Consumers;
+﻿using Notiflow.Common.MessageBroker.Events.TextMessage;
+
+namespace Notiflow.Projections.TextMessageService.Consumers;
 
 public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
 {
