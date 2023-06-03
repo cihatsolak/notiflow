@@ -29,12 +29,12 @@ internal static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(SharedRabbitQueueName.NOTIFICATION_DELIVERED_EVENT_QUEUE, options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.NOTIFICATION_DELIVERED_EVENT_QUEUE, options =>
                 {
                     options.ConfigureConsumer<NotificationDeliveredEventConsumer>(busRegistrationContext);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(SharedRabbitQueueName.NOTIFICATION_NOT_DELIVERED_EVENT_QUEUE, options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.NOTIFICATION_NOT_DELIVERED_EVENT_QUEUE, options =>
                 {
                     options.ConfigureConsumer<NotificationNotDeliveredEventConsumer>(busRegistrationContext);
                 });

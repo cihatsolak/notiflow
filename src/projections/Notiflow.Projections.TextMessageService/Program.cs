@@ -3,7 +3,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services
         .AddNotiflowDbSetting()
-        .AddMassTransit();
+        .AddCustomMassTransit();
 
         services.AddHostedService<TextMessageServiceWorker>();
     })

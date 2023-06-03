@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.MessageBroker.Events.TextMessage;
-
-namespace Notiflow.Projections.TextMessageService.Consumers;
+﻿namespace Notiflow.Projections.TextMessageService.Consumers;
 
 public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
 {
@@ -17,11 +15,11 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
 
     public async Task Consume(ConsumeContext<TextMessageDeliveredEvent> context)
     {
+        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
+
         try
         {
-            using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
-
-            await npgsqlConnection
+            await npgSqlConnection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) VALUES (@message, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {
@@ -37,6 +35,11 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
         catch (Exception ex)
         {
             _logger.LogError(ex, "The sent message could not be saved to the database.");
+        }
+        finally
+        {
+            await npgSqlConnection.CloseAsync();
+            await npgSqlConnection.DisposeAsync();
         }
     }
 }
