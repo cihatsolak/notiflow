@@ -6,7 +6,17 @@
         {
           "Name": "User API",
           "Version": "v1",
-          "Url": "https://localhost:7000/swagger/v1/swagger.json"
+          "Url": "https://localhost:7006/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "BackOffice",
+      "Config": [
+        {
+          "Name": "Notiflow API",
+          "Version": "v1",
+          "Url": "https://localhost:7139/swagger/v1/swagger.json"
         }
       ]
     }

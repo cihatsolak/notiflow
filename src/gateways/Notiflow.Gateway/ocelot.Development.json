@@ -6,13 +6,27 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 2400
+          "Port": 7006
         }
       ],
       "UpstreamPathTemplate": "/services/user/{everything}",
       "UpstreamHttpMethod": [ "Get", "POST", "PUT", "DELETE" ],
       "UpstreamScheme": "http",
       "SwaggerKey": "User"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7139
+        }
+      ],
+      "UpstreamPathTemplate": "/services/backoffice/{everything}",
+      "UpstreamHttpMethod": [ "Get", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "http",
+      "SwaggerKey": "BackOffice"
     }
   ]
 }

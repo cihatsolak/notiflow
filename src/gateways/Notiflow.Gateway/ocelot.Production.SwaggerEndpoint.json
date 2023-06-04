@@ -9,6 +9,16 @@
           "Url": "https://user.api:80/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "BackOffice",
+      "Config": [
+        {
+          "Name": "Notiflow API",
+          "Version": "v1",
+          "Url": "https://notiflow.api:80/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }
