@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
+﻿using Notiflow.Common.MessageBroker.Events.TextMessage;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
 
 public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSingleTextMessageCommand, Response<Unit>>
 {

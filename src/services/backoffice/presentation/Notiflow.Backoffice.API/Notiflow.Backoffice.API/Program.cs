@@ -19,6 +19,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
+app.UseRequestLocalization();
 
 app.MapControllers();
 

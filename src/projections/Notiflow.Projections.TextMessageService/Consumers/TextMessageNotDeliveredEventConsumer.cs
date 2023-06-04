@@ -15,11 +15,11 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
 
     public async Task Consume(ConsumeContext<TextMessageNotDeliveredEvent> context)
     {
+        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
+
         try
         {
-            using SqlConnection connection = new(_notiflowDbSetting.ConnectionString);
-
-            await connection
+            await npgSqlConnection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) VALUES (@message, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {
@@ -35,6 +35,11 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
         catch (Exception ex)
         {
             _logger.LogError(ex, "The not sent message could not be saved to the database.");
+        }
+        finally
+        {
+            await npgSqlConnection.CloseAsync();
+            await npgSqlConnection.DisposeAsync();
         }
     }
 }

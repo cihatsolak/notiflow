@@ -10,7 +10,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         return services.Configure<NotiflowDbSetting>(configuration.GetRequiredSection(nameof(NotiflowDbSetting)));
     }
 
-    internal static IServiceCollection AddMassTransit(this IServiceCollection services)
+    internal static IServiceCollection AddCustomMassTransit(this IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
@@ -29,12 +29,12 @@ internal static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("text-message-delivered-event-queue", options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_DELIVERED_EVENT_QUEUE, options =>
                 {
                     options.ConfigureConsumer<TextMessageDeliveredEventConsumer>(busRegistrationContext);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint("text-message-not-delivered-event-queue", options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_NOT_DELIVERED_EVENT_QUEUE, options =>
                 {
                     options.ConfigureConsumer<TextMessageNotDeliveredEventConsumer>(busRegistrationContext);
                 });

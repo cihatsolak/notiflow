@@ -1,48 +1,49 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
 [Route("api/[controller]")]
-public class BaseApiController : MainController
+public class BaseApiController : ResultController
 {
     private ISender _sender = null!;
     protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    protected IActionResult CreateGetResultInstance<T>(Response<T> response)
-    {
-        if (!response.Succeeded)
-        {
-            return NotFound(response);
-        }
 
-        return Ok(response);
+    private IStringLocalizer<Resource> _localizer = null!;
+    protected IStringLocalizer<Resource> Localizer => _localizer ??= HttpContext.RequestServices.GetRequiredService<IStringLocalizer<Resource>>();
+
+    
+    protected override IActionResult CreateGetResultInstance<T>(Response<T> response)
+    {
+        CreateMessageByLanguage(response);
+        return base.CreateGetResultInstance(response);
     }
 
-    protected IActionResult CreateOkResultInstance<T>(Response<T> response)
+    protected override IActionResult CreateOkResultInstance<T>(Response<T> response)
     {
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        CreateMessageByLanguage(response);
+        return base.CreateOkResultInstance(response);
     }
 
-    protected IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
+    protected override IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
     {
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
-
-        return CreatedAtAction(actionName, new { id = response.Data }, null);
+        CreateMessageByLanguage(response);
+        return base.CreateCreatedResultInstance(response, actionName);
     }
 
-    protected IActionResult CreateNoContentResultInstance<T>(Response<T> response)
+    protected override IActionResult CreateNoContentResultInstance<T>(Response<T> response)
     {
-        if (!response.Succeeded)
-        {
-            return BadRequest(response);
-        }
+        CreateMessageByLanguage(response);
+        return base.CreateNoContentResultInstance(response);
+    }
 
-        return NoContent();
+    private void CreateMessageByLanguage<T>(Response<T> response)
+    {
+        if (response.Code == 0)
+        {
+            response.Message = Localizer["1000"];
+        }
+        else
+        {
+            response.Message = Localizer[response.Code.ToString()];
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Controllers;
 
-[Route("api/[controller]")]
-public sealed class UsersController : MainController
+public sealed class UsersController : BaseApiController
 {
     private readonly IUserService _userService;
 
@@ -21,8 +20,8 @@ public sealed class UsersController : MainController
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
-        var userResponse = await _userService.GetDetailAsync(id, cancellationToken);
-        return Ok(userResponse);
+        var response = await _userService.GetDetailAsync(id, cancellationToken);
+        return CreateGetResultInstance(response);
     }
 
     /// <summary>
@@ -32,12 +31,12 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPost("add")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Response<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);
-        return CreatedAtAction(nameof(GetDetail), new { id = response.Data });
+        return CreateCreatedResultInstance(response, nameof(GetDetail));
     }
 
     /// <summary>
@@ -47,12 +46,12 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpPut("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
-        await _userService.UpdateAsync(id, request, cancellationToken);
-        return NoContent();
+        var response = await _userService.UpdateAsync(id, request, cancellationToken);
+        return CreateNoContentResultInstance(response);
     }
 
     /// <summary>
@@ -62,11 +61,11 @@ public sealed class UsersController : MainController
     /// <response code="400">Invalid request</response>
     /// <response code="401">Unauthorized user</response>
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        await _userService.DeleteAsync(id, cancellationToken);
-        return NoContent();
+        var response = await _userService.DeleteAsync(id, cancellationToken);
+        return CreateNoContentResultInstance(response);
     }
 }

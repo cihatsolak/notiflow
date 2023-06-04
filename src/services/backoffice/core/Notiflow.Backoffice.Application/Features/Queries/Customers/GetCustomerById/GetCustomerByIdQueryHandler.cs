@@ -17,6 +17,6 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
             return Response<GetCustomerByIdQueryResponse>.Fail(ErrorCodes.CUSTOMER_NOT_FOUND);
         }
 
-        return Response<GetCustomerByIdQueryResponse>.Success(SuccessCodes.CUSTOMER_FOUND, ObjectMapper.Mapper.Map<GetCustomerByIdQueryResponse>(customer));
+        return Response<GetCustomerByIdQueryResponse>.Success(ObjectMapper.Mapper.Map<GetCustomerByIdQueryResponse>(customer));
     }
 }

@@ -8,11 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.15" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
     <PackageReference Include="MediatR" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />

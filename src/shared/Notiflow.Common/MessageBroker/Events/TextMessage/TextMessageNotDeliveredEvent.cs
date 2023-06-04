@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Common.Events;
+﻿namespace Notiflow.Common.MessageBroker.Events.TextMessage;
 
 public class TextMessageNotDeliveredEvent
 {
