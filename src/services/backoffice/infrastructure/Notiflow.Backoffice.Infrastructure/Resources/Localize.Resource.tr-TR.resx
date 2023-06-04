@@ -120,4 +120,19 @@
   <data name="1000" xml:space="preserve">
     <value>Müşteri bulunamadı.</value>
   </data>
+  <data name="1001" xml:space="preserve">
+    <value>Müşteri mevcutta kayıtlıdır.</value>
+  </data>
+  <data name="1002" xml:space="preserve">
+    <value>Müşteri silinemedi.</value>
+  </data>
+  <data name="1003" xml:space="preserve">
+    <value>Müşteri engel durumu, güncellenmek istenen engel durumundan farklı olmalıdır.</value>
+  </data>
+  <data name="1004" xml:space="preserve">
+    <value>Müşterinin e-posta adresi, güncellenmek istenen e-posta adresten farklı olmalıdır.</value>
+  </data>
+  <data name="1005" xml:space="preserve">
+    <value>Müşterinin telefon numarası, güncellenmek istenen telefon numarasından farklı olmalıdır.</value>
+  </data>
 </root>

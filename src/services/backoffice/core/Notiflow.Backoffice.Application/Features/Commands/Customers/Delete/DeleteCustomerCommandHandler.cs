@@ -19,9 +19,9 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete user of ID {@userId}.", request.Id);
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_DELETED);
         }
 
-        return Response<Unit>.Success(1);
+        return Response<Unit>.Success(Unit.Value);
     }
 }

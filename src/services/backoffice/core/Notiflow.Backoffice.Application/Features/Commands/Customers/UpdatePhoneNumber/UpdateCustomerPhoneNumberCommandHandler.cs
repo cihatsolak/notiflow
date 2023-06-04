@@ -23,7 +23,7 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
         if (customer.PhoneNumber == request.PhoneNumber)
         {
             _logger.LogWarning("The phone number to be changed is the same as in the current one.. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_FOUND);
+            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
         customer.PhoneNumber = request.PhoneNumber;
@@ -32,6 +32,6 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
 
         _logger.LogInformation("The customer's phone number has been updated. Customer ID: {@id}", request.Id);
 
-        return Response<Unit>.Success(-1);
+        return Response<Unit>.Success(Unit.Value);
     }
 }

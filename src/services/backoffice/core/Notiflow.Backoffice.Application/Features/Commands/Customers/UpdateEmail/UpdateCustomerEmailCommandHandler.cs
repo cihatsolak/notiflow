@@ -1,11 +1,11 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 
-public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<UpdateCustomerEmailCommand, Response<Unit>>
+public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCustomerEmailCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<ChangePhoneNumberRequestHandler> _logger;
+    private readonly ILogger<UpdateCustomerEmailCommandHandler> _logger;
 
-    public ChangePhoneNumberRequestHandler(INotiflowUnitOfWork uow, ILogger<ChangePhoneNumberRequestHandler> logger)
+    public UpdateCustomerEmailCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateCustomerEmailCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
@@ -23,7 +23,7 @@ public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<UpdateCust
         if (customer.Email == request.Email)
         {
             _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_FOUND);
+            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_EMAIL_ADDRESS_SAME);
         }
 
         customer.Email = request.Email;
@@ -32,6 +32,6 @@ public sealed class ChangePhoneNumberRequestHandler : IRequestHandler<UpdateCust
 
         _logger.LogInformation("The customer's email address has been updated. Customer ID: {@id}", request.Id);
 
-        return Response<Unit>.Success(-1);
+        return Response<Unit>.Success(Unit.Value);
     }
 }

@@ -120,4 +120,19 @@
   <data name="1000" xml:space="preserve">
     <value>Customer not found.</value>
   </data>
+  <data name="1001" xml:space="preserve">
+    <value>The customer is currently registered.</value>
+  </data>
+  <data name="1002" xml:space="preserve">
+    <value>The customer could not be deleted.</value>
+  </data>
+  <data name="1003" xml:space="preserve">
+    <value>The customer's disability status must be different from the one to be updated.</value>
+  </data>
+  <data name="1004" xml:space="preserve">
+    <value>The customer's e-mail address must be different from the e-mail address to be updated.</value>
+  </data>
+  <data name="1005" xml:space="preserve">
+    <value>The customer's phone number must be different from the phone number to be updated.</value>
+  </data>
 </root>
