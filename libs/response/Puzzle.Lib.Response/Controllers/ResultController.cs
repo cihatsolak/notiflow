@@ -2,7 +2,7 @@
 {
     public class ResultController : MainController
     {
-        protected IActionResult CreateGetResultInstance<T>(Response<T> response)
+        protected virtual IActionResult CreateGetResultInstance<T>(Response<T> response)
         {
             if (!response.Succeeded)
             {
@@ -12,7 +12,7 @@
             return Ok(response);
         }
 
-        protected IActionResult CreateOkResultInstance<T>(Response<T> response)
+        protected virtual IActionResult CreateOkResultInstance<T>(Response<T> response)
         {
             if (!response.Succeeded)
             {
@@ -22,7 +22,7 @@
             return Ok(response);
         }
 
-        protected IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
+        protected virtual IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
         {
             if (!response.Succeeded)
             {
@@ -32,7 +32,7 @@
             return CreatedAtAction(actionName, new { id = response.Data }, null);
         }
 
-        protected IActionResult CreateNoContentResultInstance<T>(Response<T> response)
+        protected virtual IActionResult CreateNoContentResultInstance<T>(Response<T> response)
         {
             if (!response.Succeeded)
             {

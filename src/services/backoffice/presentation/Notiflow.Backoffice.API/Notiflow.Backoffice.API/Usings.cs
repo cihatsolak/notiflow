@@ -1,4 +1,5 @@
 ﻿global using MediatR;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
@@ -18,6 +19,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
+global using Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 global using Notiflow.Backoffice.Application.Features.Queries.Tenants.GetDetailById;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetTextMessageHistoryById;
 global using Notiflow.Backoffice.Infrastructure;

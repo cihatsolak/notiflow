@@ -27,7 +27,7 @@
         /// Gets or sets the status message of the response.
         /// </summary>
         [JsonRequired]
-        public string Message { get; init; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets or sets the errors that occurred during the request.
