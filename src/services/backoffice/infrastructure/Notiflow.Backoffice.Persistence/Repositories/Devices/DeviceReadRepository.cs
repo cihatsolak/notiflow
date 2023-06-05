@@ -5,4 +5,9 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
     public DeviceReadRepository(NotiflowDbContext notiflowDbContext) : base(notiflowDbContext)
     {
     }
+
+    public Task<Device> GetByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
+    {
+        return Table.SingleOrDefaultAsync(device => device.CustomerId == customerId, cancellationToken);
+    }
 }

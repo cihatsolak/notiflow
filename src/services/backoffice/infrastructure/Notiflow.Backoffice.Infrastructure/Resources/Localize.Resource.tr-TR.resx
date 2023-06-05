@@ -135,4 +135,13 @@
   <data name="1005" xml:space="preserve">
     <value>Müşterinin telefon numarası, güncellenmek istenen telefon numarasından farklı olmalıdır.</value>
   </data>
+  <data name="2000" xml:space="preserve">
+    <value>Müşteriye ait mevcutta cihaz bulunmaktadır.</value>
+  </data>
+  <data name="2001" xml:space="preserve">
+    <value>Müşteriye ait cihaz silinemedi.</value>
+  </data>
+  <data name="2002" xml:space="preserve">
+    <value>Cihaz bulunamadı.</value>
+  </data>
 </root>

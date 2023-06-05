@@ -17,11 +17,11 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogWarning("Could not delete device of ID {@deviceId}.", request.Id);
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_DELETED);
         }
 
         _logger.LogInformation("The device with ID {@deviceId} has been deleted.", request.Id);
 
-        return Response<Unit>.Success(1);
+        return Response<Unit>.Success(Unit.Value);
     }
 }
