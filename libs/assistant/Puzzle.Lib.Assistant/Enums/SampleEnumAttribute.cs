@@ -1,13 +1,12 @@
-﻿namespace Puzzle.Lib.Assistant.Enums
-{
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
-    public class EnumAttribute : Attribute
-    {
-        public string Name { get; init; }
+﻿namespace Puzzle.Lib.Assistant.Enums;
 
-        public EnumAttribute(string name)
-        {
-            Name = name;
-        }
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+public class EnumAttribute : Attribute
+{
+    public string Name { get; init; }
+
+    public EnumAttribute(string name)
+    {
+        Name = name;
     }
 }

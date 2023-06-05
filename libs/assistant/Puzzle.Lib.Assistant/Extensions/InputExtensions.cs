@@ -1,21 +1,20 @@
-﻿namespace Puzzle.Lib.Assistant.Extensions
+﻿namespace Puzzle.Lib.Assistant.Extensions;
+
+/// <summary>
+/// Provides extension methods for input related operations.
+/// </summary>
+public static class InputExtensions
 {
     /// <summary>
-    /// Provides extension methods for input related operations.
+    /// Removes unnecessary characters from the given phone number string and returns the cleaned version.
     /// </summary>
-    public static class InputExtensions
+    /// <param name="phoneNumber">The phone number string to be cleaned.</param>
+    /// <returns>The cleaned phone number string without unnecessary characters.</returns>
+    /// <exception cref="ArgumentException">Thrown when the given phone number string is null or empty.</exception>
+    public static string ToCleanPhoneNumber(this string phoneNumber)
     {
-        /// <summary>
-        /// Removes unnecessary characters from the given phone number string and returns the cleaned version.
-        /// </summary>
-        /// <param name="phoneNumber">The phone number string to be cleaned.</param>
-        /// <returns>The cleaned phone number string without unnecessary characters.</returns>
-        /// <exception cref="ArgumentException">Thrown when the given phone number string is null or empty.</exception>
-        public static string ToCleanPhoneNumber(this string phoneNumber)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(phoneNumber);
+        ArgumentException.ThrowIfNullOrEmpty(phoneNumber);
 
-            return Regex.Replace(phoneNumber, @"[^\d]", "");
-        }
+        return Regex.Replace(phoneNumber, @"[^\d]", "");
     }
 }
