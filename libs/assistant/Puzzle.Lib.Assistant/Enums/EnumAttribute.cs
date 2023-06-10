@@ -3,10 +3,12 @@
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
 public class EnumAttribute : Attribute
 {
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     public EnumAttribute(string name)
     {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+
         Name = name;
     }
 }

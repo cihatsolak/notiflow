@@ -3,8 +3,11 @@
 /// <summary>
 /// Provides extension methods for HTML related operations.
 /// </summary>
-public static class HtmlExtensions
+public static partial class HtmlExtensions
 {
+    [GeneratedRegex("<[^>]*>")]
+    private static partial Regex CleanHtmlRegex();
+
     /// <summary>
     /// Converts the given HTML text into plain text by removing all HTML tags.
     /// </summary>
@@ -15,6 +18,6 @@ public static class HtmlExtensions
         if (string.IsNullOrWhiteSpace(htmlText))
             return string.Empty;
 
-        return Regex.Replace(htmlText, "<[^>]*>", string.Empty);
+        return CleanHtmlRegex().Replace(htmlText, string.Empty);
     }
 }

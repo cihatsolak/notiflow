@@ -29,9 +29,6 @@ public static class JsonExtensions
         if (string.IsNullOrWhiteSpace(value))
             return default;
 
-        return JsonSerializer.Deserialize<TModel>(value, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        return JsonSerializer.Deserialize<TModel>(value);
     }
 }

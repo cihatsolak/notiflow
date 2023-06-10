@@ -26,7 +26,7 @@ public static class TextExtensions
     public static string ToClearSpaces(this string text)
     {
         if (string.IsNullOrWhiteSpace(text))
-            return default;
+            return text;
 
         return text.Replace(" ", string.Empty).Trim();
     }

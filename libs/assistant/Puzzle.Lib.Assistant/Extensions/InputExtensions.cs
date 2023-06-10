@@ -3,8 +3,11 @@
 /// <summary>
 /// Provides extension methods for input related operations.
 /// </summary>
-public static class InputExtensions
+public static partial class InputExtensions
 {
+    [GeneratedRegex("[^\\d]")]
+    private static partial Regex NonNumericRemoverRegex();
+
     /// <summary>
     /// Removes unnecessary characters from the given phone number string and returns the cleaned version.
     /// </summary>
@@ -15,6 +18,6 @@ public static class InputExtensions
     {
         ArgumentException.ThrowIfNullOrEmpty(phoneNumber);
 
-        return Regex.Replace(phoneNumber, @"[^\d]", "");
+        return NonNumericRemoverRegex().Replace(phoneNumber, string.Empty);
     }
 }

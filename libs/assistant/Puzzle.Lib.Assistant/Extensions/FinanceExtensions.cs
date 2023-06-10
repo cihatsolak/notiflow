@@ -13,6 +13,9 @@ public static class FinanceExtensions
     /// <returns>The new price with VAT included, rounded up to the nearest integer.</returns>
     public static int ToCalculateVATPrice(this decimal price, int vatRate)
     {
+        if (Math.Sign(price) != 1 || Math.Sign(vatRate) != 1)
+            return default;
+
         return (int)Math.Ceiling(price + price * vatRate / 100);
     }
 
@@ -24,12 +27,12 @@ public static class FinanceExtensions
     /// <returns>The discount rate as a percentage, rounded to two decimal places.</returns>
     public static int ToDiscountRate(this decimal mainPrice, decimal salesPrice)
     {
-        if (0 >= mainPrice || 0 >= salesPrice)
-            return 0;
+        if (Math.Sign(mainPrice) != 1 || Math.Sign(salesPrice) != 1)
+            return default;
 
         decimal discountRate = Math.Round((mainPrice - salesPrice) / mainPrice * 100, 2);
-        if (0 > discountRate)
-            return 0;
+        if (default(int) > discountRate)
+            return default;
 
         return (int)discountRate;
     }

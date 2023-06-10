@@ -11,8 +11,11 @@ public static class ObjectExtensions
     /// <typeparam name="TClass">The type of the class to check.</typeparam>
     /// <param name="class">The class instance to check.</param>
     /// <returns>Returns true if any of the properties are empty or null, otherwise false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="@class"/> is null.</exception>
     public static bool CheckIfClassPropertiesEmptyOrNull<TClass>(this TClass @class) where TClass : class, new()
     {
+        ArgumentNullException.ThrowIfNull(@class);
+
         foreach (PropertyInfo pi in @class.GetType().GetProperties())
         {
             if (pi.PropertyType == typeof(string))
@@ -37,8 +40,11 @@ public static class ObjectExtensions
     /// </summary>
     /// <param name="value">The object to get the type name for.</param>
     /// <returns>Returns the type name of the object.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public static string GetTypeName(this object value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         return value.GetType().GetGenericTypeName();
     }
 
@@ -46,11 +52,14 @@ public static class ObjectExtensions
     /// Converts the given object to a dictionary of property names and values.
     /// </summary>
     /// <typeparam name="TClass">The type of the object to convert.</typeparam>
-    /// <param name="value">The object to convert.</param>
+    /// <param name="class">The class to convert.</param>
     /// <returns>Returns a dictionary of property names and values.</returns>
-    public static Dictionary<string, string> ToDictionary<TClass>(this TClass value) where TClass : class, new()
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="@class"/> is null.</exception>
+    public static Dictionary<string, string> ToDictionary<TClass>(this TClass @class) where TClass : class, new()
     {
-        return value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).ToDictionary(prop => prop.Name, prop => prop.GetValue(value, null).ToString());
+        ArgumentNullException.ThrowIfNull(@class);
+
+        return @class.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).ToDictionary(prop => prop.Name, prop => prop.GetValue(@class, null).ToString());
     }
 
     /// <summary>
@@ -58,8 +67,11 @@ public static class ObjectExtensions
     /// </summary>
     /// <param name="type">The type to get the generic type name for.</param>
     /// <returns>The generic type name of the specified type.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="type"/> is null.</exception>
     private static string GetGenericTypeName(this Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
         string typeName;
 
         if (type.IsGenericType)

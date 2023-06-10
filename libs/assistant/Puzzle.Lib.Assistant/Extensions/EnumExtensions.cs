@@ -88,9 +88,11 @@ public static class EnumExtensions
     /// <typeparam name="TAttribute">The type of the attribute to get.</typeparam>
     /// <param name="value">The enum value.</param>
     /// <returns>The name of the specified attribute.</returns>
-
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public static string GetAttributeName<TAttribute>(this Enum value) where TAttribute : EnumAttribute
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         var enumType = value.GetType();
         string name = Enum.GetName(enumType, value);
         return enumType.GetField(name).GetCustomAttributes(false).OfType<TAttribute>().Single().Name;

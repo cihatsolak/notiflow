@@ -3,8 +3,17 @@
 /// <summary>
 /// Provides extension methods for URL manipulation.
 /// </summary>
-public static class UrlExtensions
+public static partial class UrlExtensions
 {
+    [GeneratedRegex("\\s", RegexOptions.Compiled)]
+    private static partial Regex SpaceToDashConverter();
+
+    [GeneratedRegex("[^a-z0-9\\s-_]", RegexOptions.Compiled)]
+    private static partial Regex NonAlphanumericRemover();
+
+    [GeneratedRegex("([-_]){2,}", RegexOptions.Compiled)]
+    private static partial Regex ConsecutiveSymbolReducer();
+
     /// <summary>
     /// Converts a string to a slug URL format.
     /// </summary>
@@ -15,21 +24,14 @@ public static class UrlExtensions
     {
         ArgumentException.ThrowIfNullOrEmpty(text);
 
-        return PrepareUrl(text);
-    }
-
-    private static string PrepareUrl(string text)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(text);
-
         text = text.ToLowerInvariant();
 
         var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(text);
         text = Encoding.ASCII.GetString(bytes);
-        text = Regex.Replace(text, @"\s", "-", RegexOptions.Compiled);
-        text = Regex.Replace(text, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
+        text = SpaceToDashConverter().Replace(text, "-");
+        text = NonAlphanumericRemover().Replace(text, "");
         text = text.Trim('-', '_');
-        text = Regex.Replace(text, @"([-_]){2,}", "$1", RegexOptions.Compiled);
+        text = ConsecutiveSymbolReducer().Replace(text, "$1");
 
         return text;
     }
