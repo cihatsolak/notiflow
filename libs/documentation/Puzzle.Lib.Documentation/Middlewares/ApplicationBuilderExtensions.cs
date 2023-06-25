@@ -1,66 +1,65 @@
-﻿namespace Puzzle.Lib.Documentation.Middlewares
+﻿namespace Puzzle.Lib.Documentation.Middlewares;
+
+/// <summary>
+/// Provides extension methods for configuring Swagger and ReDoc documentation in the application pipeline.
+/// </summary>
+public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods for configuring Swagger and ReDoc documentation in the application pipeline.
+    /// Adds Swagger middleware and Swagger UI to the application pipeline.
     /// </summary>
-    public static class ApplicationBuilderExtensions
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds Swagger middleware and Swagger UI to the application pipeline.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
-        {
-            IServiceProvider serviceProvider = app.ApplicationServices;
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+        IServiceProvider serviceProvider = app.ApplicationServices;
+        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            if (webHostEnvironment.IsProduction())
-                return app;
-
-            app.UseSwagger();
-            app.UseSwaggerUI(swaggerUIOptions =>
-            {
-                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetEntryAssembly().GetName().Name);
-                swaggerUIOptions.RoutePrefix = string.Empty;
-                swaggerUIOptions.DefaultModelsExpandDepth(-1);
-            });
-
+        if (webHostEnvironment.IsProduction())
             return app;
-        }
 
-        /// <summary>
-        /// Adds ReDoc middleware to the application pipeline for displaying the OpenAPI specification.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
+        app.UseSwagger();
+        app.UseSwaggerUI(swaggerUIOptions =>
         {
-            IServiceProvider serviceProvider = app.ApplicationServices;
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetEntryAssembly().GetName().Name);
+            swaggerUIOptions.RoutePrefix = string.Empty;
+            swaggerUIOptions.DefaultModelsExpandDepth(-1);
+        });
 
-            if (webHostEnvironment.IsProduction())
-                return app;
+        return app;
+    }
 
-            SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
+    /// <summary>
+    /// Adds ReDoc middleware to the application pipeline for displaying the OpenAPI specification.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
+    {
+        IServiceProvider serviceProvider = app.ApplicationServices;
+        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            app.UseReDoc(options =>
-            {
-                options.DocumentTitle = swaggerSetting.Title;
-                options.SpecUrl = "/swagger/v1/swagger.json";
-            });
-
+        if (webHostEnvironment.IsProduction())
             return app;
-        }
 
-        /// <summary>
-        /// Adds both Swagger middleware and ReDoc middleware to the application pipeline.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app)
+        SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
+
+        app.UseReDoc(options =>
         {
-            return app.UseSwaggerDoc().UseRedoclyDoc();
-        }
+            options.DocumentTitle = swaggerSetting.Title;
+            options.SpecUrl = "/swagger/v1/swagger.json";
+        });
+
+        return app;
+    }
+
+    /// <summary>
+    /// Adds both Swagger middleware and ReDoc middleware to the application pipeline.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app)
+    {
+        return app.UseSwaggerDoc().UseRedoclyDoc();
     }
 }
