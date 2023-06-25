@@ -9,6 +9,10 @@
         internal const int CUSTOMER_EMAIL_ADDRESS_SAME = 1004;
         internal const int CUSTOMER_PHONE_NUMBER_SAME = 1005;
 
+        internal const int DEVICE_EXISTS = 2000;
+        internal const int DEVICE_NOT_DELETED = 2001;
+        internal const int DEVICE_NOT_FOUND = 2002;
+
         internal const int TENANT_NOT_FOUND = 6000;
     }
 }

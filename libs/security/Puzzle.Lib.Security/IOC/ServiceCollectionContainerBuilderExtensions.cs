@@ -1,114 +1,113 @@
-﻿namespace Puzzle.Lib.Security.IOC
+﻿namespace Puzzle.Lib.Security.IOC;
+
+/// <summary>
+/// Provides extension methods for <see cref="IServiceCollection"/> to add request detection functionality.
+/// </summary>
+public static class ServiceCollectionContainerBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods for <see cref="IServiceCollection"/> to add request detection functionality.
+    /// Adds request detection functionality to the specified <see cref="IServiceCollection"/>.
     /// </summary>
-    public static class ServiceCollectionContainerBuilderExtensions
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the request detection functionality to.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+    public static IServiceCollection AddRequestDetection(this IServiceCollection services)
     {
-        /// <summary>
-        /// Adds request detection functionality to the specified <see cref="IServiceCollection"/>.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add the request detection functionality to.</param>
-        /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-        public static IServiceCollection AddRequestDetection(this IServiceCollection services)
-        {
-            services.AddDetection();
+        services.AddDetection();
 
+        return services;
+    }
+
+    /// <summary>
+    /// Adds protocol service functionality to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the protocol service functionality to.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+    public static IServiceCollection AddProtocolService(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        services.Configure<HostingSetting>(configuration.GetRequiredSection(nameof(HostingSetting)));
+
+        services.TryAddSingleton<IProtocolService, ProtocolManager>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// An IServiceCollection extension that enables the HTTP Strict Transport Security (HSTS) feature.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+
+    public static IServiceCollection AddStrictTransportSecurity(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+        if (!webHostEnvironment.IsProduction())
             return services;
-        }
 
-        /// <summary>
-        /// Adds protocol service functionality to the specified <see cref="IServiceCollection"/>.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add the protocol service functionality to.</param>
-        /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-        public static IServiceCollection AddProtocolService(this IServiceCollection services)
+        services.AddHsts(options =>
         {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
+            options.IncludeSubDomains = true;
+            options.MaxAge = TimeSpan.MaxValue;
+        });
 
-            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            services.Configure<HostingSetting>(configuration.GetRequiredSection(nameof(HostingSetting)));
+        return services;
+    }
 
-            services.TryAddSingleton<IProtocolService, ProtocolManager>();
+    /// <summary>
+    /// An IServiceCollection extension that adds a data protection service for the application and registers an implementation of IProtectorService.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+    public static IServiceCollection AddProtectorService(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            return services;
-        }
+        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-        /// <summary>
-        /// An IServiceCollection extension that enables the HTTP Strict Transport Security (HSTS) feature.
-        /// </summary>
-        /// <param name="services">The IServiceCollection instance.</param>
-        /// <returns>The IServiceCollection instance.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+        string applicationName = $"{webHostEnvironment.ApplicationName}.{webHostEnvironment.EnvironmentName}.dataprotection.key".ToLowerInvariant();
 
-        public static IServiceCollection AddStrictTransportSecurity(this IServiceCollection services)
+        services.AddDataProtection()
+            .SetApplicationName(applicationName);
+
+        services.TryAddSingleton<IProtectorService, ProtectorManager>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Configures a CORS policy for an ASP.NET Core application using the IServiceCollection interface. 
+    /// This allows cross-origin requests from any origin, with any HTTP method and header.
+    /// </summary>
+    /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
+    /// <returns>The IServiceCollection instance.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
+    public static IServiceCollection AddCustomCors(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        CorsSetting corsSetting = configuration.GetRequiredSection(nameof(CorsSetting)).Get<CorsSetting>();
+
+        services.AddCors(options =>
         {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
+            options.AddPolicy(Assembly.GetEntryAssembly().GetName().Name, builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins(corsSetting.Origins));
+        });
 
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-            if (!webHostEnvironment.IsProduction())
-                return services;
-
-            services.AddHsts(options =>
-            {
-                options.IncludeSubDomains = true;
-                options.MaxAge = TimeSpan.MaxValue;
-            });
-
-            return services;
-        }
-
-        /// <summary>
-        /// An IServiceCollection extension that adds a data protection service for the application and registers an implementation of IProtectorService.
-        /// </summary>
-        /// <param name="services">The IServiceCollection instance.</param>
-        /// <returns>The IServiceCollection instance.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-        public static IServiceCollection AddProtectorService(this IServiceCollection services)
-        {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
-
-            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-
-            string applicationName = $"{webHostEnvironment.ApplicationName}.{webHostEnvironment.EnvironmentName}.dataprotection.key".ToLowerInvariant();
-
-            services.AddDataProtection()
-                .SetApplicationName(applicationName);
-
-            services.TryAddSingleton<IProtectorService, ProtectorManager>();
-
-            return services;
-        }
-
-        /// <summary>
-        /// Configures a CORS policy for an ASP.NET Core application using the IServiceCollection interface. 
-        /// This allows cross-origin requests from any origin, with any HTTP method and header.
-        /// </summary>
-        /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
-        /// <returns>The IServiceCollection instance.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-        public static IServiceCollection AddCustomCors(this IServiceCollection services)
-        {
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ArgumentNullException.ThrowIfNull(serviceProvider);
-
-            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            CorsSetting corsSetting = configuration.GetRequiredSection(nameof(CorsSetting)).Get<CorsSetting>();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(Assembly.GetEntryAssembly().GetName().Name, builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials()
-                .WithOrigins(corsSetting.Origins));
-            });
-
-            return services;
-        }
+        return services;
     }
 }

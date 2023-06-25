@@ -1,43 +1,42 @@
-﻿namespace Puzzle.Lib.Database.Concrete
+﻿namespace Puzzle.Lib.Database.Concrete;
+
+public class BaseUnitOfWork : IBaseUnitOfWork
 {
-    public class BaseUnitOfWork : IBaseUnitOfWork
+    protected readonly DbContext _context;
+
+    public BaseUnitOfWork(DbContext context)
     {
-        protected readonly DbContext _context;
+        _context = context;
+    }
 
-        public BaseUnitOfWork(DbContext context)
+    public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();
+
+        foreach (var baseHistoricalEntity in baseHistoricalEntities)
         {
-            _context = context;
+            switch (baseHistoricalEntity.State)
+            {
+                case EntityState.Added:
+                    baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
+                    baseHistoricalEntity.Entity.CreatedDate = DateTime.Now;
+                    break;
+
+                case EntityState.Modified:
+                    baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
+                    baseHistoricalEntity.Entity.UpdatedDate = DateTime.Now;
+                    break;
+            }
         }
 
-        public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        var baseSoftDeleteEntities = _context.ChangeTracker.Entries<BaseSoftDeleteEntity>();
+
+        foreach (var baseSoftDeleteEntity in baseSoftDeleteEntities)
         {
-            var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();
-
-            foreach (var baseHistoricalEntity in baseHistoricalEntities)
-            {
-                switch (baseHistoricalEntity.State)
-                {
-                    case EntityState.Added:
-                        baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
-                        baseHistoricalEntity.Entity.CreatedDate = DateTime.Now;
-                        break;
-
-                    case EntityState.Modified:
-                        baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
-                        baseHistoricalEntity.Entity.UpdatedDate = DateTime.Now;
-                        break;
-                }
-            }
-
-            var baseSoftDeleteEntities = _context.ChangeTracker.Entries<BaseSoftDeleteEntity>();
-
-            foreach (var baseSoftDeleteEntity in baseSoftDeleteEntities)
-            {
-                baseSoftDeleteEntity.State = EntityState.Modified;
-                baseSoftDeleteEntity.Property(p => p.IsDeleted).CurrentValue = true;
-            }
-
-            return await _context.SaveChangesAsync(cancellationToken);
+            baseSoftDeleteEntity.State = EntityState.Modified;
+            baseSoftDeleteEntity.Property(p => p.IsDeleted).CurrentValue = true;
         }
+
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 }

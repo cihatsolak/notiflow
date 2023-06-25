@@ -1,74 +1,73 @@
-﻿namespace Puzzle.Lib.HealthCheck.Middlewares
+﻿namespace Puzzle.Lib.HealthCheck.Middlewares;
+
+/// <summary>
+/// Provides extension methods to configure the health check middleware and UI for an application.
+/// </summary>
+public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods to configure the health check middleware and UI for an application.
+    /// Adds the Health Check middleware to the application pipeline, using the specified response path and health check options.
     /// </summary>
-    public static class ApplicationBuilderExtensions
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseHealth(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the Health Check middleware to the application pipeline, using the specified response path and health check options.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseHealth(this IApplicationBuilder app)
-        {
-            IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-            if (webHostEnvironment.EnvironmentName.Equals("Localhost"))
-                return app;
-
-            HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
-
-            app.UseHealthChecks(healthUISetting.ResponsePath, new HealthCheckOptions
-            {
-                Predicate = _ => true,
-                AllowCachingResponses = false,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-                ResultStatusCodes =
-                {
-                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
-                    [HealthStatus.Degraded] = StatusCodes.Status200OK,
-                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-                }
-            });
-
+        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
+        if (webHostEnvironment.EnvironmentName.Equals("Localhost"))
             return app;
-        }
 
-        /// <summary>
-        /// Adds the Health Check UI middleware to the application pipeline, using the specified UI path and custom CSS file (if applicable).
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseHealthUI(this IApplicationBuilder app)
+        HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
+
+        app.UseHealthChecks(healthUISetting.ResponsePath, new HealthCheckOptions
         {
-            IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-            bool isLocalhost = webHostEnvironment.EnvironmentName.Equals("Localhost");
-            if (isLocalhost)
-                return app;
-
-            HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
-
-            app.UseHealthChecksUI(setup =>
+            Predicate = _ => true,
+            AllowCachingResponses = false,
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+            ResultStatusCodes =
             {
-                setup.UIPath = healthUISetting.UIPath;
+                [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+            }
+        });
 
-                if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath) && !isLocalhost)
-                {
-                    setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), healthUISetting.CustomCssPath));
-                }
-            });
+        return app;
+    }
 
+    /// <summary>
+    /// Adds the Health Check UI middleware to the application pipeline, using the specified UI path and custom CSS file (if applicable).
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseHealthUI(this IApplicationBuilder app)
+    {
+        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
+        bool isLocalhost = webHostEnvironment.EnvironmentName.Equals("Localhost");
+        if (isLocalhost)
             return app;
-        }
 
-        /// <summary>
-        /// Adds both the Health Check and Health Check UI middleware to the application pipeline.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseHealthAndHealthUI(this IApplicationBuilder app)
+        HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
+
+        app.UseHealthChecksUI(setup =>
         {
-            return app.UseHealth().UseHealthUI();
-        }
+            setup.UIPath = healthUISetting.UIPath;
+
+            if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath) && !isLocalhost)
+            {
+                setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), healthUISetting.CustomCssPath));
+            }
+        });
+
+        return app;
+    }
+
+    /// <summary>
+    /// Adds both the Health Check and Health Check UI middleware to the application pipeline.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseHealthAndHealthUI(this IApplicationBuilder app)
+    {
+        return app.UseHealth().UseHealthUI();
     }
 }

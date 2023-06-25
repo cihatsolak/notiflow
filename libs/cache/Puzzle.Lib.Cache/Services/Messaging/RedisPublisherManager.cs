@@ -1,22 +1,21 @@
-﻿namespace Puzzle.Lib.Cache.Services.Messaging
+﻿namespace Puzzle.Lib.Cache.Services.Messaging;
+
+public sealed class RedisPublisherManager : IRedisPublisherService
 {
-    public sealed class RedisPublisherManager : IRedisPublisherService
+    private readonly ISubscriber _subscriber;
+
+    public RedisPublisherManager(ISubscriber subscriber)
     {
-        private readonly ISubscriber _subscriber;
+        _subscriber = subscriber;
+    }
 
-        public RedisPublisherManager(ISubscriber subscriber)
+    public async Task<long> PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent
+    {
+        ArgumentException.ThrowIfNullOrEmpty(channelName);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            _subscriber = subscriber;
-        }
-
-        public async Task<long> PublishAsync<TEvent>(string channelName, TEvent @event) where TEvent : RedisIntegrationBaseEvent
-        {
-            ArgumentException.ThrowIfNullOrEmpty(channelName);
-
-            return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-            {
-                return await _subscriber.PublishAsync(channelName, JsonSerializer.Serialize(@event), CommandFlags.FireAndForget);
-            });
-        }
+            return await _subscriber.PublishAsync(channelName, JsonSerializer.Serialize(@event), CommandFlags.FireAndForget);
+        });
     }
 }

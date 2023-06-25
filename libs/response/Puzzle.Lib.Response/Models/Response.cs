@@ -1,144 +1,143 @@
-﻿namespace Puzzle.Lib.Response.Models
+﻿namespace Puzzle.Lib.Response.Models;
+
+/// <summary>
+/// Represents a response model that can hold data, status code, success flag, status message and errors.
+/// </summary>
+/// <typeparam name="TData">The type of the data that the response model holds.</typeparam>
+public sealed record Response<TData>
 {
     /// <summary>
-    /// Represents a response model that can hold data, status code, success flag, status message and errors.
+    /// Gets or sets a value indicating whether the request was successful or not.
     /// </summary>
-    /// <typeparam name="TData">The type of the data that the response model holds.</typeparam>
-    public sealed record Response<TData>
+    [JsonIgnore]
+    public bool Succeeded { get; init; }
+
+    /// <summary>
+    /// Gets or sets the data that the response model holds.
+    /// </summary>
+    public TData Data { get; init; }
+
+    /// <summary>
+    /// Gets or sets the status code of the response.
+    /// </summary>
+    [JsonRequired]
+    public int Code { get; init; }
+
+    /// <summary>
+    /// Gets or sets the status message of the response.
+    /// </summary>
+    [JsonRequired]
+    public string Message { get; set; }
+
+    /// <summary>
+    /// Gets or sets the errors that occurred during the request.
+    /// </summary>
+    public IEnumerable<string> Errors { get; init; }
+
+
+    /// <summary>
+    /// Creates a success response with the specified status code.
+    /// </summary>
+    /// <param name="code">The status code of the response.</param>
+    /// <returns>A success response with the specified status code.</returns>
+    public static Response<TData> Success(int code)
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the request was successful or not.
-        /// </summary>
-        [JsonIgnore]
-        public bool Succeeded { get; init; }
-
-        /// <summary>
-        /// Gets or sets the data that the response model holds.
-        /// </summary>
-        public TData Data { get; init; }
-
-        /// <summary>
-        /// Gets or sets the status code of the response.
-        /// </summary>
-        [JsonRequired]
-        public int Code { get; init; }
-
-        /// <summary>
-        /// Gets or sets the status message of the response.
-        /// </summary>
-        [JsonRequired]
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets the errors that occurred during the request.
-        /// </summary>
-        public IEnumerable<string> Errors { get; init; }
-
-
-        /// <summary>
-        /// Creates a success response with the specified status code.
-        /// </summary>
-        /// <param name="code">The status code of the response.</param>
-        /// <returns>A success response with the specified status code.</returns>
-        public static Response<TData> Success(int code)
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Code = code,
-                Succeeded = true
-            };
-        }
+            Code = code,
+            Succeeded = true
+        };
+    }
 
-        /// <summary>
-        /// Creates a success response with the specified data.
-        /// </summary>
-        /// <param name="data">The data that the response model holds.</param>
-        /// <returns>A success response with the specified data.</returns>
-        public static Response<TData> Success(TData data)
+    /// <summary>
+    /// Creates a success response with the specified data.
+    /// </summary>
+    /// <param name="data">The data that the response model holds.</param>
+    /// <returns>A success response with the specified data.</returns>
+    public static Response<TData> Success(TData data)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Data = data,
-                Code = 9001,
-                Succeeded = true
-            };
-        }
+            Data = data,
+            Code = 9001,
+            Succeeded = true
+        };
+    }
 
-        /// <summary>
-        /// Creates a success response with the specified status code and data.
-        /// </summary>
-        /// <param name="code">The status code of the response.</param>
-        /// <param name="data">The data that the response model holds.</param>
-        /// <returns>A success response with the specified status code and data.</returns>
-        public static Response<TData> Success(int code, TData data)
+    /// <summary>
+    /// Creates a success response with the specified status code and data.
+    /// </summary>
+    /// <param name="code">The status code of the response.</param>
+    /// <param name="data">The data that the response model holds.</param>
+    /// <returns>A success response with the specified status code and data.</returns>
+    public static Response<TData> Success(int code, TData data)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Data = data,
-                Code = code,
-                Succeeded = true
-            };
-        }
+            Data = data,
+            Code = code,
+            Succeeded = true
+        };
+    }
 
-        /// <summary>
-        /// Creates a success response with the specified status code, status message and data.
-        /// </summary>
-        /// <param name="code">The status code of the response.</param>
-        /// <param name="message">The status message of the response.</param>
-        /// <param name="data">The data that the response model holds.</param>
-        /// <returns>A success response with the specified status code, status message and data.</returns>
-        public static Response<TData> Success(int code, string message, TData data)
+    /// <summary>
+    /// Creates a success response with the specified status code, status message and data.
+    /// </summary>
+    /// <param name="code">The status code of the response.</param>
+    /// <param name="message">The status message of the response.</param>
+    /// <param name="data">The data that the response model holds.</param>
+    /// <returns>A success response with the specified status code, status message and data.</returns>
+    public static Response<TData> Success(int code, string message, TData data)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Data = data,
-                Code = code,
-                Succeeded = true,
-                Message = message
-            };
-        }
+            Data = data,
+            Code = code,
+            Succeeded = true,
+            Message = message
+        };
+    }
 
-        /// <summary>
-        /// Creates a failed response with the specified status code.
-        /// </summary>
-        /// <param name="code">The HTTP status code.</param>
-        /// <returns>A failed response with the specified status code.</returns>
-        public static Response<TData> Fail(int code)
+    /// <summary>
+    /// Creates a failed response with the specified status code.
+    /// </summary>
+    /// <param name="code">The HTTP status code.</param>
+    /// <returns>A failed response with the specified status code.</returns>
+    public static Response<TData> Fail(int code)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Code = code
-            };
-        }
+            Code = code
+        };
+    }
 
-        /// <summary>
-        /// Returns a failure response model with a single error message.
-        /// </summary>
-        /// <param name="code">The HTTP status code for the response.</param>
-        /// <param name="error">The error message for the response.</param>
-        /// <returns>A response model indicating failure with the specified status code and error message.</returns>
-        public static Response<TData> Fail(int code, string error)
+    /// <summary>
+    /// Returns a failure response model with a single error message.
+    /// </summary>
+    /// <param name="code">The HTTP status code for the response.</param>
+    /// <param name="error">The error message for the response.</param>
+    /// <returns>A response model indicating failure with the specified status code and error message.</returns>
+    public static Response<TData> Fail(int code, string error)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Errors = new List<string>() { error },
-                Code = code
-            };
-        }
+            Errors = new List<string>() { error },
+            Code = code
+        };
+    }
 
-        /// <summary>
-        /// Returns a failure response model with a list of error messages.
-        /// </summary>
-        /// <param name="code">The HTTP status code for the response.</param>
-        /// <param name="errors">The list of error messages for the response.</param>
-        /// <returns>A response model indicating failure with the specified status code and error messages.</returns>
-        public static Response<TData> Fail(int code, IEnumerable<string> errors)
+    /// <summary>
+    /// Returns a failure response model with a list of error messages.
+    /// </summary>
+    /// <param name="code">The HTTP status code for the response.</param>
+    /// <param name="errors">The list of error messages for the response.</param>
+    /// <returns>A response model indicating failure with the specified status code and error messages.</returns>
+    public static Response<TData> Fail(int code, IEnumerable<string> errors)
+    {
+        return new Response<TData>
         {
-            return new Response<TData>
-            {
-                Errors = errors,
-                Code = code
-            };
-        }
+            Errors = errors,
+            Code = code
+        };
     }
 }

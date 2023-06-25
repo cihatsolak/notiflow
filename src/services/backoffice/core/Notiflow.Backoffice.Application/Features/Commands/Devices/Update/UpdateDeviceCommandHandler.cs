@@ -13,22 +13,19 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
     public async Task<Response<Unit>> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
-        var device = await _uow.DeviceRead.GetByIdAsync(1, cancellationToken);
+        var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
             _logger.LogWarning("The device with id {@id} was not found.", request.Id);
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_FOUND);
         }
 
-        device.OSVersion = request.OSVersion;
-        device.Code = request.Code;
-        device.Token = request.Token;
-        device.CloudMessagePlatform = request.CloudMessagePlatform;
+        ObjectMapper.Mapper.Map(request, device);
 
         await _uow.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Updated device information with {@id} id.", request.Id);
 
-        return Response<Unit>.Success(1);
+        return Response<Unit>.Success(Unit.Value);
     }
 }

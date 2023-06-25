@@ -135,4 +135,13 @@
   <data name="1005" xml:space="preserve">
     <value>The customer's phone number must be different from the phone number to be updated.</value>
   </data>
+  <data name="2000" xml:space="preserve">
+    <value>There is an existing device belonging to the customer.</value>
+  </data>
+  <data name="2001" xml:space="preserve">
+    <value>The customer's device could not be deleted.</value>
+  </data>
+  <data name="2002" xml:space="preserve">
+    <value>Device not found.</value>
+  </data>
 </root>

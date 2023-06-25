@@ -1,22 +1,21 @@
-﻿namespace Puzzle.Lib.Logging.Middlewares
+﻿namespace Puzzle.Lib.Logging.Middlewares;
+
+public sealed class HttpRequestPropertyMiddleware
 {
-    public sealed class HttpRequestPropertyMiddleware
+    private readonly RequestDelegate _next;
+
+    public HttpRequestPropertyMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public HttpRequestPropertyMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        using (LogContext.PushProperty(LogPushProperties.TraceIdentifier, httpContext?.TraceIdentifier))
         {
-            _next = next;
-        }
-
-        public async Task InvokeAsync(HttpContext httpContext)
-        {
-            using (LogContext.PushProperty(LogPushProperties.TraceIdentifier, httpContext?.TraceIdentifier))
+            using (LogContext.PushProperty(LogPushProperties.RequestMethod, httpContext?.Request.Method))
             {
-                using (LogContext.PushProperty(LogPushProperties.RequestMethod, httpContext?.Request.Method))
-                {
-                    await _next(httpContext);
-                }
+                await _next(httpContext);
             }
         }
     }

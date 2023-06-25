@@ -1,11 +1,10 @@
-﻿namespace Puzzle.Lib.Security.Services.Protocols
+﻿namespace Puzzle.Lib.Security.Services.Protocols;
+
+public interface IProtocolService
 {
-    public interface IProtocolService
-    {
-        /// <summary>
-        /// Get IP address from HTTP context
-        /// </summary>
-        /// <returns>String of IP address</returns>
-        string IpAddress { get; }
-    }
+    /// <summary>
+    /// Get IP address from HTTP context
+    /// </summary>
+    /// <returns>String of IP address</returns>
+    string IpAddress { get; }
 }

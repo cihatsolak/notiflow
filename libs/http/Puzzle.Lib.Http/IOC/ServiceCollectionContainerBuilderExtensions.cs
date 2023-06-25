@@ -1,21 +1,20 @@
-﻿namespace Puzzle.Lib.Http.IOC
+﻿namespace Puzzle.Lib.Http.IOC;
+
+/// <summary>
+/// Provides extension methods to register an HTTP REST API service to the dependency injection container.
+/// </summary>
+public static class ServiceCollectionContainerBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods to register an HTTP REST API service to the dependency injection container.
+    /// Adds an HTTP REST API service to the dependency injection container.
     /// </summary>
-    public static class ServiceCollectionContainerBuilderExtensions
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+    public static IServiceCollection AddRestApiService(this IServiceCollection services)
     {
-        /// <summary>
-        /// Adds an HTTP REST API service to the dependency injection container.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
-        /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-        public static IServiceCollection AddRestApiService(this IServiceCollection services)
-        {
-            services.AddHttpClient();
-            services.TryAddSingleton<IRestService, RestManager>();
+        services.AddHttpClient();
+        services.TryAddSingleton<IRestService, RestManager>();
 
-            return services;
-        }
+        return services;
     }
 }
