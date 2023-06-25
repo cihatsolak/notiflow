@@ -11,7 +11,7 @@ internal static class AuthArgumentException
     /// </summary>
     /// <param name="argument">The string argument to validate.</param>
     /// <param name="paramName">The name of the parameter being validated (automatically detected by the compiler).</param>
-    internal static void ThrowIfNullOrEmpty([NotNull] string argument, [CallerArgumentExpression("argument")] string paramName = null)
+    internal static void ThrowIfNullOrEmpty([NotNull] string argument, [CallerArgumentExpression(nameof(argument))] string paramName = null)
     {
         if (string.IsNullOrWhiteSpace(argument))
         {
@@ -24,7 +24,7 @@ internal static class AuthArgumentException
     /// </summary>
     /// <param name="argument">The collection argument to validate.</param>
     /// <param name="paramName">The name of the parameter being validated (automatically detected by the compiler).</param>
-    internal static void ThrowIfNullOrEmpty([NotNull] IEnumerable<string> argument, [CallerArgumentExpression("argument")] string paramName = null)
+    internal static void ThrowIfNullOrEmpty([NotNull] IEnumerable<string> argument, [CallerArgumentExpression(nameof(argument))] string paramName = null)
     {
         if (argument is null || !argument.Any())
         {
