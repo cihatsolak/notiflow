@@ -1,18 +1,17 @@
-﻿namespace Puzzle.Lib.Performance.Middlewares
+﻿namespace Puzzle.Lib.Performance.Middlewares;
+
+/// <summary>
+/// Provides extension methods for the <see cref="IApplicationBuilder"/> interface related to response compression middleware.
+/// </summary>
+public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="IApplicationBuilder"/> interface related to response compression middleware.
+    /// Adds response compression middleware to the pipeline.
     /// </summary>
-    public static class ApplicationBuilderExtensions
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseResponseCompress(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds response compression middleware to the pipeline.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
-        /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-        public static IApplicationBuilder UseResponseCompress(this IApplicationBuilder app)
-        {
-            return app.UseResponseCompression();
-        }
+        return app.UseResponseCompression();
     }
 }

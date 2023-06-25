@@ -1,55 +1,54 @@
-﻿namespace Puzzle.Lib.Performance.IOC
+﻿namespace Puzzle.Lib.Performance.IOC;
+
+/// <summary>
+/// Extension methods for adding Gzip compression to HTTP response for fastest compression.
+/// </summary>
+public static class ServiceCollectionContainerBuilderExtensions
 {
     /// <summary>
-    /// Extension methods for adding Gzip compression to HTTP response for fastest compression.
+    /// Adds Gzip compression to HTTP response for fastest compression.
     /// </summary>
-    public static class ServiceCollectionContainerBuilderExtensions
+    /// <param name="services">The collection of services to add the compression to.</param>
+    /// <returns>The collection of services with added compression.</returns>
+    public static IServiceCollection AddGzipResponseFastestCompress(this IServiceCollection services)
     {
-        /// <summary>
-        /// Adds Gzip compression to HTTP response for fastest compression.
-        /// </summary>
-        /// <param name="services">The collection of services to add the compression to.</param>
-        /// <returns>The collection of services with added compression.</returns>
-        public static IServiceCollection AddGzipResponseFastestCompress(this IServiceCollection services)
+        services.AddResponseCompression();
+
+        services.Configure<GzipCompressionProviderOptions>(options =>
         {
-            services.AddResponseCompression();
+            options.Level = CompressionLevel.Fastest;
+        });
 
-            services.Configure<GzipCompressionProviderOptions>(options =>
-            {
-                options.Level = CompressionLevel.Fastest;
-            });
-
-            services.AddResponseCompression(options =>
-            {
-                options.Providers.Add<GzipCompressionProvider>();
-                options.EnableForHttps = true;
-            });
-
-            return services;
-        }
-
-        /// <summary>
-        /// Adds Gzip compression to HTTP response with a specified compression level.
-        /// </summary>
-        /// <param name="services">The collection of services to add the compression to.</param>
-        /// <param name="compressionLevel">The compression level to use.</param>
-        /// <returns>The collection of services with added compression.</returns>
-        public static IServiceCollection AddGzipResponseCompress(this IServiceCollection services, CompressionLevel compressionLevel)
+        services.AddResponseCompression(options =>
         {
-            services.AddResponseCompression();
+            options.Providers.Add<GzipCompressionProvider>();
+            options.EnableForHttps = true;
+        });
 
-            services.Configure<GzipCompressionProviderOptions>(options =>
-            {
-                options.Level = compressionLevel;
-            });
+        return services;
+    }
 
-            services.AddResponseCompression(options =>
-            {
-                options.Providers.Add<GzipCompressionProvider>();
-                options.EnableForHttps = true;
-            });
+    /// <summary>
+    /// Adds Gzip compression to HTTP response with a specified compression level.
+    /// </summary>
+    /// <param name="services">The collection of services to add the compression to.</param>
+    /// <param name="compressionLevel">The compression level to use.</param>
+    /// <returns>The collection of services with added compression.</returns>
+    public static IServiceCollection AddGzipResponseCompress(this IServiceCollection services, CompressionLevel compressionLevel)
+    {
+        services.AddResponseCompression();
 
-            return services;
-        }
+        services.Configure<GzipCompressionProviderOptions>(options =>
+        {
+            options.Level = compressionLevel;
+        });
+
+        services.AddResponseCompression(options =>
+        {
+            options.Providers.Add<GzipCompressionProvider>();
+            options.EnableForHttps = true;
+        });
+
+        return services;
     }
 }

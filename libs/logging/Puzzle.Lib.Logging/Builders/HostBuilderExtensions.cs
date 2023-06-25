@@ -1,31 +1,30 @@
-﻿namespace Puzzle.Lib.Logging.Builders
+﻿namespace Puzzle.Lib.Logging.Builders;
+
+/// <summary>
+/// Provides extension methods for configuring logging in a web application.
+/// </summary>
+public static class HostBuilderExtensions
 {
     /// <summary>
-    /// Provides extension methods for configuring logging in a web application.
+    /// Adds Serilog logging to the web application.
     /// </summary>
-    public static class HostBuilderExtensions
+    /// <param name="builder">The web application builder.</param>
+    public static void AddSeriLog(this WebApplicationBuilder builder)
     {
-        /// <summary>
-        /// Adds Serilog logging to the web application.
-        /// </summary>
-        /// <param name="builder">The web application builder.</param>
-        public static void AddSeriLog(this WebApplicationBuilder builder)
-        {
-            var logger = new LoggerConfiguration()
-               .Filter.ByExcluding(Matching.FromSource("Microsoft"))
-               .Filter.ByExcluding(Matching.FromSource("System"))
-               .Enrich.FromLogContext()
-               .Enrich.WithMachineName()
-               .Enrich.WithEnvironmentUserName()
-               .Enrich.WithProperty("ApplicationName", builder.Environment.ApplicationName)
-               .WriteTo.Debug(LogEventLevel.Verbose)
-               .WriteTo.Console()
-               .WriteToMsSqlServer("db connectionstring")
-               .WriteToMicrosoftTeams()
-               .WriteToElasticsearch(builder.Environment)
-               .CreateLogger();
+        var logger = new LoggerConfiguration()
+           .Filter.ByExcluding(Matching.FromSource("Microsoft"))
+           .Filter.ByExcluding(Matching.FromSource("System"))
+           .Enrich.FromLogContext()
+           .Enrich.WithMachineName()
+           .Enrich.WithEnvironmentUserName()
+           .Enrich.WithProperty("ApplicationName", builder.Environment.ApplicationName)
+           .WriteTo.Debug(LogEventLevel.Verbose)
+           .WriteTo.Console()
+           .WriteToMsSqlServer("db connectionstring")
+           .WriteToMicrosoftTeams()
+           .WriteToElasticsearch(builder.Environment)
+           .CreateLogger();
 
-            builder.Host.UseSerilog(logger);
-        }
+        builder.Host.UseSerilog(logger);
     }
 }

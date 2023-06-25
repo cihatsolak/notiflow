@@ -1,45 +1,44 @@
-﻿namespace Puzzle.Lib.Response.Controllers
+﻿namespace Puzzle.Lib.Response.Controllers;
+
+public class ResultController : MainController
 {
-    public class ResultController : MainController
+    protected virtual IActionResult CreateGetResultInstance<T>(Response<T> response)
     {
-        protected virtual IActionResult CreateGetResultInstance<T>(Response<T> response)
+        if (!response.Succeeded)
         {
-            if (!response.Succeeded)
-            {
-                return NotFound(response);
-            }
-
-            return Ok(response);
+            return NotFound(response);
         }
 
-        protected virtual IActionResult CreateOkResultInstance<T>(Response<T> response)
-        {
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
+        return Ok(response);
+    }
 
-            return Ok(response);
+    protected virtual IActionResult CreateOkResultInstance<T>(Response<T> response)
+    {
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
         }
 
-        protected virtual IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
-        {
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
+        return Ok(response);
+    }
 
-            return CreatedAtAction(actionName, new { id = response.Data }, null);
+    protected virtual IActionResult CreateCreatedResultInstance<T>(Response<T> response, string actionName)
+    {
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
         }
 
-        protected virtual IActionResult CreateNoContentResultInstance<T>(Response<T> response)
-        {
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
+        return CreatedAtAction(actionName, new { id = response.Data }, null);
+    }
 
-            return NoContent();
+    protected virtual IActionResult CreateNoContentResultInstance<T>(Response<T> response)
+    {
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
         }
+
+        return NoContent();
     }
 }
