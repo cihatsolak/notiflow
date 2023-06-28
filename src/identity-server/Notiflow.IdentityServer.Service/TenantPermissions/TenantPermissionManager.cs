@@ -15,7 +15,9 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
     public async Task<Response<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
     {
-        var tenantPermission = await _context.TenantPermissions.AsNoTracking().ProjectToType<TenantPermissionResponse>().SingleAsync(cancellationToken);
+        var tenantPermission = await _context.TenantPermissions.AsNoTracking()
+                                                               .ProjectToType<TenantPermissionResponse>()
+                                                               .SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");

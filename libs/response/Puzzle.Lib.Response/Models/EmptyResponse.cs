@@ -1,5 +1,3 @@
 ﻿namespace Puzzle.Lib.Response.Models;
 
-public sealed record EmptyResponse
-{
-}
+public sealed record EmptyResponse();

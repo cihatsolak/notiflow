@@ -11,11 +11,11 @@ public sealed class TenantPermissionsController : BaseApiController
     }
 
     /// <summary>
-    /// Endpoint for retrieving permissions for a Tenant user
+    /// Endpoint for retrieving permissions for a tenant user
     /// </summary>
-    /// <response code="200">Operation successful</response>
-    /// <response code="401">Unauthorized user</response>
-    /// <response code="404">Permissions not found</response>
+    /// <response code="200">operation successful</response>
+    /// <response code="401">unauthorized user</response>
+    /// <response code="404">permissions not found</response>
     [HttpGet("detail")]
     [ProducesResponseType(typeof(Response<TenantPermissionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
@@ -26,11 +26,11 @@ public sealed class TenantPermissionsController : BaseApiController
     }
 
     /// <summary>
-    /// Endpoint for updating the preferences of a Tenant user.
+    /// Endpoint for updating the preferences of a tenant user.
     /// </summary>
-    /// <response code="200">Operation successful</response>
-    /// <response code="400">Invalid request</response>
-    /// <response code="401">Unauthorized user</response>
+    /// <response code="204">operation successful</response>
+    /// <response code="400">invalid request</response>
+    /// <response code="401">unauthorized user</response>
     [HttpPut("update-preferences")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
