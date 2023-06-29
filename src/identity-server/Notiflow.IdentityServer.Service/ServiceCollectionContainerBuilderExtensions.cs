@@ -29,5 +29,6 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddClaimService();
         services.AddFluentDesignValidation();
         services.AddApiBehaviorOptions();
+        services.AddRedisService();
     }
 }

@@ -1,28 +1,45 @@
-﻿using Notiflow.Common.MessageBroker.Events.TextMessage;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
 
 public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSingleTextMessageCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IRedisService _redisService;
+    private readonly IClaimService _claimService;
     private readonly ILogger<SendSingleTextMessageCommandHandler> _logger;
 
     public SendSingleTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
         IPublishEndpoint publishEndpoint,
+        IRedisService redisService,
+        IClaimService claimService,
         ILogger<SendSingleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _publishEndpoint = publishEndpoint;
+        _redisService = redisService;
+        _claimService = claimService;
         _logger = logger;
     }
 
     public async Task<Response<Unit>> Handle(SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
+        var tenantCacheModel = await _redisService.GetAsync<TenantCacheModel>(KeyGenerator.CacheGenerate(_claimService.System, RedisCacheKeys.TENANT_INFORMATION));
+        if (tenantCacheModel is null)
+        {
+            _logger.LogWarning("No tenant information found in the cache. Customer ID: {@customerId}", request.CustomerId);
+            return Response<Unit>.Fail(-1);
+        }
+
+        if (!tenantCacheModel.IsSendMessagePermission)
+        {
+            _logger.LogInformation("The tenant is not authorized to send messages. Customer ID: {@customerId}", request.CustomerId);
+            return Response<Unit>.Fail(-1);
+        }
+
         string phoneNumber = await _uow.CustomerRead.GetPhoneNumberByIdAsync(request.CustomerId, cancellationToken);
         if (string.IsNullOrWhiteSpace(phoneNumber))
         {

@@ -5,23 +5,29 @@ internal class AuthManager : IAuthService
     private readonly ApplicationDbContext _appDbContext;
     private readonly ITokenService _tokenService;
     private readonly IClaimService _claimService;
+    private readonly IRedisService _redisService;
     private readonly ILogger<AuthManager> _logger;
 
     public AuthManager(
         ApplicationDbContext appDbContext,
         ITokenService tokenService,
         IClaimService claimService,
+        IRedisService redisService,
         ILogger<AuthManager> logger)
     {
         _appDbContext = appDbContext;
         _tokenService = tokenService;
         _claimService = claimService;
+        _redisService = redisService;
         _logger = logger;
     }
 
     public async Task<Response<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
-        var user = await _appDbContext.Users.AsNoTracking().SingleOrDefaultAsync(p => p.Username == request.Username, cancellationToken);
+        var user = await _appDbContext.Users
+            .AsNoTracking()
+            .Include(p => p.Tenant)
+            .SingleOrDefaultAsync(p => p.Username == request.Username, cancellationToken);
         if (user is null)
         {
             _logger.LogInformation("No user found with username {@username}.", request.Username);
@@ -35,12 +41,17 @@ internal class AuthManager : IAuthService
             return Response<TokenResponse>.Fail(-1);
         }
 
+        await CheckCachedTenantInfoAsync(user);
+
         return tokenResponse;
     }
 
     public async Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
+        var userRefreshToken = await _appDbContext.UserRefreshTokens
+            .Include(p => p.User)
+            .ThenInclude(p => p.Tenant)
+            .SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
         if (userRefreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
@@ -58,6 +69,8 @@ internal class AuthManager : IAuthService
         userRefreshToken.ExpirationDate = tokenResponse.Data.RefreshTokenExpiration;
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
+
+        await CheckCachedTenantInfoAsync(userRefreshToken.User);
 
         return tokenResponse;
     }
@@ -91,5 +104,21 @@ internal class AuthManager : IAuthService
         }
 
         return Response<UserResponse>.Success(user.Adapt<UserResponse>());
+    }
+
+    private async Task CheckCachedTenantInfoAsync(User user)
+    {
+        bool isExistsTenantInfo = await _redisService.ExistsAsync(RedisCacheKeys.TENANT_INFORMATION(user.Tenant.Token));
+        if (isExistsTenantInfo)
+        {
+            await Task.CompletedTask;
+            return;
+        }
+
+        bool succeeded = await _redisService.SetAsync(RedisCacheKeys.TENANT_INFORMATION(user.Tenant.Token), new TenantCacheModel());
+        if (!succeeded)
+        {
+            throw new TenantException("Failed to cache tenant information.");
+        }
     }
 }
