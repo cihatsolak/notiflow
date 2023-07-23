@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 namespace Notiflow.Backoffice.Infrastructure;
