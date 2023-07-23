@@ -19,7 +19,7 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
                     DisplayName = culture.DisplayName
                 });
 
-        if (supportedCultures.IsNullOrEmpty())
+        if (supportedCultures.IsNullOrNotAny())
         {
             return Task.FromResult(Response<IEnumerable<SupportedCulturesQueryResponse>>.Fail(-1));
         }

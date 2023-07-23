@@ -72,4 +72,14 @@ public interface IClaimService
     /// </summary>
     /// <exception cref="ClaimException">If there is no birtdate value in the claims, it is thrown</exception>
     DateTime BirthDate { get; }
+
+    /// <summary>
+    /// Gets the primary group security identifier (SID) of the subject.
+    /// </summary>
+    public string PrimaryGroupSid { get; }
+
+    /// <summary>
+    /// Gets the system identifier of the subject.
+    /// </summary>
+    public string System { get; }
 }

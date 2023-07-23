@@ -26,19 +26,6 @@ public static class EnumExtensions
     }
 
     /// <summary>
-    /// Converts an <see cref="Enum"/> value to its equivalent integer value.
-    /// </summary>
-    /// <param name="value">The <see cref="Enum"/> value to convert to an integer.</param>
-    /// <returns>The integer equivalent of the <see cref="Enum"/> value.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
-    public static int ToInt(this Enum value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-
-        return Convert.ToInt32(value);
-    }
-
-    /// <summary>
     /// Converts an integer value to its equivalent <see cref="Enum"/> value.
     /// </summary>
     /// <typeparam name="TEnum">The type of the <see cref="Enum"/> to convert to.</typeparam>

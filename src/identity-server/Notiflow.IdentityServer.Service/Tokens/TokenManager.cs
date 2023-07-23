@@ -52,6 +52,9 @@ internal sealed class TokenManager : ITokenService
         claims.AddEmail(user.Email);
         claims.AddAudiences(audiences);
 
+        claims.AddPrimaryGroupSid(user.Tenant.Id);
+        claims.AddSystem(user.Tenant.Token.ToString());
+
         return claims;
     }
 }

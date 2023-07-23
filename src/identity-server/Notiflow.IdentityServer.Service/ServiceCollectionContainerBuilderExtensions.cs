@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service;
+﻿using Notiflow.Common;
+
+namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -7,7 +9,11 @@ public static class ServiceCollectionContainerBuilderExtensions
         AddLibraries(services);
         AddSingletionServices(services);
         AddScopedServices(services);
-        
+
+        AddObservers(services);
+
+        TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+
         return services;
     }
     
@@ -29,5 +35,18 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddClaimService();
         services.AddFluentDesignValidation();
         services.AddApiBehaviorOptions();
+        services.AddRedisService();
+        services.AddTenantCacheKeyGenerator();
+    }
+
+    private static void AddObservers(IServiceCollection services)
+    {
+        services.TryAddScoped<ITenantObserverSubject>(provider => //maybe singleton
+        {
+            TenantObserverSubject tenantObserverSubject = new();
+            tenantObserverSubject.RegisterObserver(new TenantObserverTransferTenantInfoToCache(provider));
+
+            return tenantObserverSubject;
+        });
     }
 }

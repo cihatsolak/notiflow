@@ -203,4 +203,30 @@ public static class ClaimExtensions
 
         claims.Add(new Claim(JwtRegisteredClaimNames.Birthdate, birthDate.ToString(), ClaimValueTypes.DateTime));
     }
+
+    /// <summary>
+    /// Adds a new "PrimaryGroupSid" claim to the collection of claims. The "PrimaryGroupSid" claim identifies the primary group security identifier (SID) of the subject of the JWT.
+    /// </summary>
+    /// <param name="claims">The collection of claims to which the new claim will be added.</param>
+    /// <param name="primaryGroupSid">The primary group security identifier (SID) to be added as a new claim.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the 'claims' parameter is null.</exception>
+    public static void AddPrimaryGroupSid(this ICollection<Claim> claims, int primaryGroupSid)
+    {
+        ArgumentNullException.ThrowIfNull(claims);
+
+        claims.Add(new Claim(ClaimTypes.PrimaryGroupSid, primaryGroupSid.ToString(), ClaimValueTypes.Integer));
+    }
+
+    /// <summary>
+    /// Adds a new "System" claim to the collection of claims. The "System" claim identifies the system identifier of the subject of the JWT.
+    /// </summary>
+    /// <param name="claims">The collection of claims to which the new claim will be added.</param>
+    /// <param name="system">The system identifier to be added as a new claim.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the 'claims' parameter is null.</exception>
+    public static void AddSystem(this ICollection<Claim> claims, string system)
+    {
+        ArgumentNullException.ThrowIfNull(claims);
+
+        claims.Add(new Claim(ClaimTypes.System, system, ClaimValueTypes.String));
+    }
 }

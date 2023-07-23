@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
+    <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj" />
   </ItemGroup>
 

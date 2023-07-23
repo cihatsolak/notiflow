@@ -21,7 +21,10 @@ internal class AuthManager : IAuthService
 
     public async Task<Response<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
-        var user = await _appDbContext.Users.AsNoTracking().SingleOrDefaultAsync(p => p.Username == request.Username, cancellationToken);
+        var user = await _appDbContext.Users
+            .AsNoTracking()
+            .Include(p => p.Tenant)
+            .SingleOrDefaultAsync(p => p.Username == request.Username, cancellationToken);
         if (user is null)
         {
             _logger.LogInformation("No user found with username {@username}.", request.Username);
@@ -40,7 +43,10 @@ internal class AuthManager : IAuthService
 
     public async Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _appDbContext.UserRefreshTokens.Include(p => p.User).SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
+        var userRefreshToken = await _appDbContext.UserRefreshTokens
+            .Include(p => p.User)
+            .ThenInclude(p => p.Tenant)
+            .SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
         if (userRefreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");

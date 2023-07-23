@@ -14,9 +14,9 @@ public sealed class CreateAccessTokenRequestValidator : AbstractValidator<Create
             .NotNullAndNotEmpty("-1")
             .Length(5, 100);
 
-        RuleFor(p => p.Password)
-            .NotNullAndNotEmpty("-1")
-            .StrongPassword("-1")
-            .MaximumLength(100).WithMessage("-1");
+        //RuleFor(p => p.Password)
+        //    .NotNullAndNotEmpty("-1")
+        //    .StrongPassword("-1")
+        //    .MaximumLength(100).WithMessage("-1");
     }
 }
