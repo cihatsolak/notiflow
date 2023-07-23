@@ -80,7 +80,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<TResponse> HashGetAsync<TResponse>(string cacheKey, string hashField)
+    public async Task<TData> HashGetAsync<TData>(string cacheKey, string hashField)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
@@ -94,19 +94,19 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 return default;
             }
 
-            return (TResponse)Convert.ChangeType(hashEntry, typeof(TResponse));
+            return JsonSerializer.Deserialize<TData>(hashEntry);
         });
     }
 
-    public async Task<bool> HashSetAsync(string cacheKey, string hashField, string value)
+    public async Task<bool> HashSetAsync<TValue>(string cacheKey, string hashField, TValue value)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
-        ArgumentException.ThrowIfNullOrEmpty(value);
+        ArgumentNullException.ThrowIfNull(value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.HashSetAsync(cacheKey, hashField, value, When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.HashSetAsync(cacheKey, hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);

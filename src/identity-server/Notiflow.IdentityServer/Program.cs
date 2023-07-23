@@ -23,4 +23,6 @@ app.UseMigrations();
 
 app.MapControllers();
 
+app.UseApplicationLifetimes();
+
 app.Run();

@@ -27,16 +27,10 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
 
     public async Task<Response<Unit>> Handle(SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
-        var tenantCacheModel = await _redisService.GetAsync<TenantCacheModel>(KeyGenerator.CacheGenerate(_claimService.System, RedisCacheKeys.TENANT_INFORMATION));
-        if (tenantCacheModel is null)
+        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(_claimService.System, RedisCacheKeys.TENANT_MESSAGE_PERMISSION);
+        if (!isSentMessageAllowed)
         {
             _logger.LogWarning("No tenant information found in the cache. Customer ID: {@customerId}", request.CustomerId);
-            return Response<Unit>.Fail(-1);
-        }
-
-        if (!tenantCacheModel.IsSendMessagePermission)
-        {
-            _logger.LogInformation("The tenant is not authorized to send messages. Customer ID: {@customerId}", request.CustomerId);
             return Response<Unit>.Fail(-1);
         }
 

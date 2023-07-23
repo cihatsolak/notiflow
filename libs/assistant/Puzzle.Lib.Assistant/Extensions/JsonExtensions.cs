@@ -10,7 +10,7 @@ public static class JsonExtensions
     /// </summary>
     /// <param name="value">The object to be serialized.</param>
     /// <returns>A JSON string representation of the object.</returns>
-    public static string ToJsonString(this object value)
+    public static string ToJson(this object value)
     {
         if (value is null)
             return default;

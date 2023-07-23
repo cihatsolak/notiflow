@@ -108,17 +108,6 @@ internal class AuthManager : IAuthService
 
     private async Task CheckCachedTenantInfoAsync(User user)
     {
-        bool isExistsTenantInfo = await _redisService.ExistsAsync(RedisCacheKeys.TENANT_INFORMATION(user.Tenant.Token));
-        if (isExistsTenantInfo)
-        {
-            await Task.CompletedTask;
-            return;
-        }
-
-        bool succeeded = await _redisService.SetAsync(RedisCacheKeys.TENANT_INFORMATION(user.Tenant.Token), new TenantCacheModel());
-        if (!succeeded)
-        {
-            throw new TenantException("Failed to cache tenant information.");
-        }
+        
     }
 }

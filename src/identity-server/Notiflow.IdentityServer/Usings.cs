@@ -1,8 +1,10 @@
 ﻿global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Notiflow.IdentityServer.Data;
+global using Notiflow.IdentityServer.Middlewares;
 global using Notiflow.IdentityServer.Service;
 global using Notiflow.IdentityServer.Service.Auth;
+global using Notiflow.IdentityServer.Service.Lifetimes;
 global using Notiflow.IdentityServer.Service.Models.Auths;
 global using Notiflow.IdentityServer.Service.Models.TenantPermissions;
 global using Notiflow.IdentityServer.Service.Models.Users;

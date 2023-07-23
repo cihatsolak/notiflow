@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Service.Lifetimes;
 
-internal static class TenantInformationCAcheApplicationLifetime
+public static class TenantInformationCAcheApplicationLifetime
 {
     private static ILogger Logger { get; set; }
     private static IRedisService RedisService { get; set; }
@@ -8,7 +8,7 @@ internal static class TenantInformationCAcheApplicationLifetime
     private static IHostApplicationLifetime HostApplicationLifetime { get; set; }
     private static IServiceProvider ServiceProvider { get; set; }
 
-    internal static IApplicationBuilder CacheTenantInformation(this IApplicationBuilder applicationBuilder)
+    public static IApplicationBuilder CacheTenantInformation(this IApplicationBuilder applicationBuilder)
     {
         SetUpServices(applicationBuilder);
         HostApplicationLifetime.ApplicationStarted.Register(OnStarted);
@@ -39,13 +39,15 @@ internal static class TenantInformationCAcheApplicationLifetime
 
         try
         {
+            var asd = await RedisService.HashGetAsync<bool>("0A3D33A2-7F29-43AB-A33E-5DED8E759BD8", "tenant.message.permission");
+
             var tenantCacheModels = await context.Tenants
+                            .IgnoreQueryFilters()
                             .AsNoTracking()
                             .Include(p => p.TenantApplication)
                             .Include(p => p.TenantPermission)
                             .ProjectToType<TenantCacheModel>()
                             .ToListAsync(CancellationToken.None);
-
 
             if (tenantCacheModels.IsNullOrEmpty())
             {
@@ -57,7 +59,9 @@ internal static class TenantInformationCAcheApplicationLifetime
 
             foreach (var tenant in tenantCacheModels.OrEmptyIfNull())
             {
-                tenantCachingTasks.Add(RedisService.HashSetAsync(RedisCacheKeys.TENANT_APPS_INFORMATION, tenant.Token, tenant.ToJsonString()));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(tenant.Token, RedisCacheKeys.TENANT_MESSAGE_PERMISSION, $"{tenant.IsSendMessagePermission}"));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(tenant.Token, RedisCacheKeys.TENANT_EMAIL_PERMISSION, $"{tenant.IsSendEmailPermission}"));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(tenant.Token, RedisCacheKeys.TENANT_NOTIFICATION_PERMISSION, $"{tenant.IsSendNotificationPermission}"));
             }
 
             await Task.WhenAll(tenantCachingTasks);

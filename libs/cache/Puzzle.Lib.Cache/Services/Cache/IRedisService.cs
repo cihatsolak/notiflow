@@ -41,11 +41,11 @@ public interface IRedisService
     /// <summary>
     /// Retrieves the value associated with the specified hash field from the hash stored at the specified cache key and deserializes it to the specified type.
     /// </summary>
-    /// <typeparam name="TResponse">The type to deserialize the value to.</typeparam>
+    /// <typeparam name="TData">The type to deserialize the value to.</typeparam>
     /// <param name="cacheKey">The cache key.</param>
     /// <param name="hashField">The field to retrieve the value for.</param>
     /// <returns>A task containing the deserialized value associated with the specified hash field.</returns>
-    Task<TResponse> HashGetAsync<TResponse>(string cacheKey, string hashField);
+    Task<TData> HashGetAsync<TData>(string cacheKey, string hashField);
 
     /// <summary>
     /// Sets the value of a hash field to the specified value in the hash stored at the specified cache key.
@@ -54,7 +54,7 @@ public interface IRedisService
     /// <param name="hashField">The hash field to set the value for.</param>
     /// <param name="value">The value to set.</param>
     /// <returns>A task containing a boolean value indicating whether the hash field was updated.</returns>
-    Task<bool> HashSetAsync(string cacheKey, string hashField, string value);
+    Task<bool> HashSetAsync<TValue>(string cacheKey, string hashField, TValue value);
 
     /// <summary>
     /// Removes the specified hash field from the hash stored at the specified cache key.

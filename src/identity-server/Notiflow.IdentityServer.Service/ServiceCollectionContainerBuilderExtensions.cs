@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service;
+﻿using System.Reflection;
+
+namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -7,7 +9,9 @@ public static class ServiceCollectionContainerBuilderExtensions
         AddLibraries(services);
         AddSingletionServices(services);
         AddScopedServices(services);
-        
+
+        TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+
         return services;
     }
     
