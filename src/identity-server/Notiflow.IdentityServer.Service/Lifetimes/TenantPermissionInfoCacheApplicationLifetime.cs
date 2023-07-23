@@ -41,18 +41,18 @@ public static class TenantPermissionInfoCacheApplicationLifetime
                 return;
             }
 
-            List<Task<bool>> tenantCachingTasks = new();
+            List<Task<bool>> tenantPermissionCachingTasks = new();
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
                 string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_PERMISSION, tenant.Token);
 
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_MESSAGE, tenant.TenantPermission.IsSendMessagePermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_EMAIL, tenant.TenantPermission.IsSendEmailPermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_NOTIFICATION, tenant.TenantPermission.IsSendNotificationPermission));
+                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_MESSAGE, tenant.TenantPermission.IsSendMessagePermission));
+                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_EMAIL, tenant.TenantPermission.IsSendEmailPermission));
+                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_NOTIFICATION, tenant.TenantPermission.IsSendNotificationPermission));
             }
 
-            await Task.WhenAll(tenantCachingTasks);
+            await Task.WhenAll(tenantPermissionCachingTasks);
 
             Logger.LogInformation("Tenant information has been added to the cache.");
 
