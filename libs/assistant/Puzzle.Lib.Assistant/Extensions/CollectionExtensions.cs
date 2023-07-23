@@ -11,7 +11,7 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type of the enumerable.</typeparam>
     /// <param name="source">The enumerable to check.</param>
     /// <returns>True if the enumerable is null or does not contain any elements, otherwise false.</returns>
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
+    public static bool IsNullOrNotAny<T>(this IEnumerable<T> source)
     {
         return !(source?.Any() ?? false);
     }

@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.TenantPermissions;
-
-namespace Notiflow.IdentityServer.Service.TenantPermissions;
+﻿namespace Notiflow.IdentityServer.Service.TenantPermissions;
 
 public interface ITenantPermissionService
 {

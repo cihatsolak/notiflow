@@ -5,20 +5,17 @@ internal class AuthManager : IAuthService
     private readonly ApplicationDbContext _appDbContext;
     private readonly ITokenService _tokenService;
     private readonly IClaimService _claimService;
-    private readonly IRedisService _redisService;
     private readonly ILogger<AuthManager> _logger;
 
     public AuthManager(
         ApplicationDbContext appDbContext,
         ITokenService tokenService,
         IClaimService claimService,
-        IRedisService redisService,
         ILogger<AuthManager> logger)
     {
         _appDbContext = appDbContext;
         _tokenService = tokenService;
         _claimService = claimService;
-        _redisService = redisService;
         _logger = logger;
     }
 
@@ -40,8 +37,6 @@ internal class AuthManager : IAuthService
             _logger.LogWarning("Failed to generate access token for {@username} user.", request.Username);
             return Response<TokenResponse>.Fail(-1);
         }
-
-        await CheckCachedTenantInfoAsync(user);
 
         return tokenResponse;
     }
@@ -69,8 +64,6 @@ internal class AuthManager : IAuthService
         userRefreshToken.ExpirationDate = tokenResponse.Data.RefreshTokenExpiration;
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
-
-        await CheckCachedTenantInfoAsync(userRefreshToken.User);
 
         return tokenResponse;
     }
@@ -104,10 +97,5 @@ internal class AuthManager : IAuthService
         }
 
         return Response<UserResponse>.Success(user.Adapt<UserResponse>());
-    }
-
-    private async Task CheckCachedTenantInfoAsync(User user)
-    {
-        
     }
 }

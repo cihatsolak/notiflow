@@ -3,7 +3,8 @@
 public static class RedisCacheKeys
 {
     public const string TENANT_APPS_INFORMATION = "tenant.apps.information";
-    public const string TENANT_MESSAGE_PERMISSION = "tenant.message.permission";
-    public const string TENANT_EMAIL_PERMISSION = "tenant.email.permission";
-    public const string TENANT_NOTIFICATION_PERMISSION = "tenant.notification.permission";
+    public const string TENANT_MESSAGE = "tenant.message";
+    public const string TENANT_EMAIL = "tenant.email";
+    public const string TENANT_NOTIFICATION = "tenant.notification";
+    public const string TENANT_PERMISSION = "tenant.permission";
 }

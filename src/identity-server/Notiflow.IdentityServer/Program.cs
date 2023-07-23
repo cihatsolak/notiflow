@@ -9,10 +9,6 @@ builder.Services.AddData();
 builder.Services.AddSwagger();
 builder.Services.AddService();
 
-
-
-
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -21,8 +17,8 @@ app.UseAuth();
 app.UseSwaggerWithRedoclyDoc();
 app.UseMigrations();
 
-app.MapControllers();
-
 app.UseApplicationLifetimes();
+
+app.MapControllers();
 
 app.Run();

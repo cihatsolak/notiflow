@@ -10,6 +10,6 @@ internal static class ApplicationBuilderExtensions
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
     internal static IApplicationBuilder UseApplicationLifetimes(this IApplicationBuilder app)
     {
-        return app.CacheTenantInformation();
+        return app.CacheTenatPermissionInformation();
     }
 }

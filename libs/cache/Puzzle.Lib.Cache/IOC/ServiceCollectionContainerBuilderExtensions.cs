@@ -31,7 +31,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             DefaultDatabase = redisServerSetting.DefaultDatabase,
             AllowAdmin = redisServerSetting.AllowAdmin
         }));
-
+        
         services.TryAddSingleton(provider =>
         {
             IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
