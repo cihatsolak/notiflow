@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Auth.IOC;
+﻿namespace Puzzle.Lib.Auth;
 
 /// <summary>
 /// Provides extension methods to add JWT authentication and claim services to the <see cref="IServiceCollection"/> container.
