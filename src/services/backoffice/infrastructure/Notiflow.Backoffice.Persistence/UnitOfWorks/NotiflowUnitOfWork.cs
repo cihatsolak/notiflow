@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
-
-namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
+﻿namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
 
 internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 {

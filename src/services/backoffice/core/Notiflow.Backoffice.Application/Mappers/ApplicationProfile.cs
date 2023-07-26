@@ -1,25 +1,12 @@
-﻿using Notiflow.Common.MessageBroker.Events.Notifications;
-using Notiflow.Common.MessageBroker.Events.TextMessage;
-
-namespace Notiflow.Backoffice.Application.Mappers;
+﻿namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {
     public ApplicationProfile()
     {
-        TenantMaps();
         DeviceMaps();
         TextMessageHistoryMaps();
         NotificationMaps();
-    }
-    
-    private void TenantMaps()
-    {
-        ////Commands
-        //CreateMap<AddTenantRequest, Tenant>();
-
-        ////Queries
-        //CreateMap<Tenant, GetDetailByIdQueryResponse>();
     }
 
     private void DeviceMaps()
