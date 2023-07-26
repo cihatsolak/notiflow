@@ -1,16 +1,12 @@
 ﻿namespace Notiflow.Common.Caching.Models;
 
-public sealed record TenantCacheModel
+public sealed record TenantApplicationCacheModel
 {
-    public string Token { get; init; }
-    public bool IsSendMessagePermission { get; init; }
-    public bool IsSendNotificationPermission { get; init; }
-    public bool IsSendEmailPermission { get; init; }
-    public string FirebaseServerKey { get; init; }
-    public string FirebaseSenderId { get; init; }
-    public string HuaweiServerKey { get; init; }
-    public string HuaweiSenderId { get; init; }
-    public string MailFromAddress { get; init; }
-    public string MailFromName { get; init; }
-    public string MailReplyAddress { get; init; }
+    public string FirebaseServerKey { get; set; }
+    public string FirebaseSenderId { get; set; }
+    public string HuaweiServerKey { get; set; }
+    public string HuaweiSenderId { get; set; }
+    public string MailFromAddress { get; set; }
+    public string MailFromName { get; set; }
+    public string MailReplyAddress { get; set; }
 }

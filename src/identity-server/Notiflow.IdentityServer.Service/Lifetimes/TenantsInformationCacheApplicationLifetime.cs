@@ -1,14 +1,14 @@
 ﻿namespace Notiflow.IdentityServer.Service.Lifetimes;
 
-public static class TenantPermissionInfoCacheApplicationLifetime
+public static class TenantsInformationCacheApplicationLifetime
 {
     private static IServiceProvider ServiceProvider { get; set; }
-    private static ILogger Logger => ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(TenantPermissionInfoCacheApplicationLifetime));
+    private static ILogger Logger => ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(TenantsInformationCacheApplicationLifetime));
     private static IRedisService RedisService => ServiceProvider.GetRequiredService<IRedisService>();
     private static IHostApplicationLifetime HostApplicationLifetime => ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
     private static ITenantCacheKeyGenerator TenantCacheKeyGenerator => ServiceProvider.GetRequiredService<ITenantCacheKeyGenerator>();
 
-    public static IApplicationBuilder CacheTenatPermissionInformation(this IApplicationBuilder applicationBuilder)
+    public static IApplicationBuilder CacheTenantsInformation(this IApplicationBuilder applicationBuilder)
     {
         ServiceProvider = applicationBuilder.ApplicationServices;
        
@@ -19,10 +19,10 @@ public static class TenantPermissionInfoCacheApplicationLifetime
 
     private static void OnStarted()
     {
-        Task.Run(TenantPermissionInfoCache);
+        Task.Run(TenantsInformationCache);
     }
 
-    private static async Task TenantPermissionInfoCache()
+    private static async Task TenantsInformationCache()
     {
         await using AsyncServiceScope asyncServiceScope = ServiceProvider.CreateAsyncScope();
         ApplicationDbContext context = asyncServiceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -32,27 +32,35 @@ public static class TenantPermissionInfoCacheApplicationLifetime
             var tenants = await context.Tenants
                             .IgnoreQueryFilters()
                             .AsNoTracking()
+                            .Include(p => p.TenantApplication)
                             .Include(p => p.TenantPermission)
                             .ToListAsync(CancellationToken.None);
 
             if (tenants.IsNullOrNotAny())
             {
-                Logger.LogError("No tenant information found in the database.");
+                Logger.LogError("The tenants information could not be found in the database.");
                 return;
             }
 
-            List<Task<bool>> tenantPermissionCachingTasks = new();
+            List<Task<bool>> tenantCachingTasks = new();
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
                 string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_PERMISSION, tenant.Token);
 
-                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_MESSAGE, tenant.TenantPermission.IsSendMessagePermission));
-                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_EMAIL, tenant.TenantPermission.IsSendEmailPermission));
-                tenantPermissionCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_NOTIFICATION, tenant.TenantPermission.IsSendNotificationPermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.NOTIFICATION_PERMISSION, tenant.TenantPermission.IsSendNotificationPermission));
             }
 
-            await Task.WhenAll(tenantPermissionCachingTasks);
+            foreach (var tenant in tenants.OrEmptyIfNull())
+            {
+                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
+
+                tenantCachingTasks.Add(RedisService.SetAsync(cacheKey, tenant.Adapt<TenantApplicationCacheModel>()));
+            }
+
+            await Task.WhenAll(tenantCachingTasks);
 
             Logger.LogInformation("Tenant information has been added to the cache.");
 

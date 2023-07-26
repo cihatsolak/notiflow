@@ -4,7 +4,6 @@ global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Customers;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Devices;
-global using Notiflow.Backoffice.Application.Interfaces.Repositories.Tenants;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
 global using Notiflow.Backoffice.Application.Interfaces.UnitOfWorks;
 global using Notiflow.Backoffice.Domain.Entities.Customers;

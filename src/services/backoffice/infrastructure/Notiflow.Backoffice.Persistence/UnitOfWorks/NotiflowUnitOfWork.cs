@@ -15,10 +15,6 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 
     public ICustomerWriteRepository CustomerWrite => _serviceProvider.GetRequiredService<ICustomerWriteRepository>();
 
-    public ITenantReadRepository TenantRead => _serviceProvider.GetRequiredService<ITenantReadRepository>();
-
-    public ITenantWriteRepository TenantWrite => _serviceProvider.GetRequiredService<ITenantWriteRepository>();
-
     public IDeviceReadRepository DeviceRead => _serviceProvider.GetRequiredService<IDeviceReadRepository>();
 
     public IDeviceWriteRepository DeviceWrite => _serviceProvider.GetRequiredService<IDeviceWriteRepository>();

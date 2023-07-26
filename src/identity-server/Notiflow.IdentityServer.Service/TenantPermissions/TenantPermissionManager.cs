@@ -47,18 +47,18 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
         if (tenantPermission.IsSendMessagePermission != request.IsSendMessagePermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_MESSAGE, request.IsSendMessagePermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.MESSAGE_PERMISSION, request.IsSendMessagePermission));
         }
 
         if (tenantPermission.IsSendNotificationPermission != request.IsSendNotificationPermission)
         {
             
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_EMAIL, request.IsSendEmailPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.EMAIL_PERMISSION, request.IsSendEmailPermission));
         }
 
         if (tenantPermission.IsSendEmailPermission != request.IsSendEmailPermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_NOTIFICATION, request.IsSendNotificationPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.NOTIFICATION_PERMISSION, request.IsSendNotificationPermission));
         }
 
         tenantPermission.IsSendMessagePermission = request.IsSendMessagePermission;

@@ -9,7 +9,7 @@ global using Notiflow.IdentityServer.Service.Models.TenantPermissions;
 global using Notiflow.IdentityServer.Service.Models.Users;
 global using Notiflow.IdentityServer.Service.TenantPermissions;
 global using Notiflow.IdentityServer.Service.Users;
-global using Puzzle.Lib.Auth.IOC;
+global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Auth.Middlewares;
 global using Puzzle.Lib.Auth.Models;
 global using Puzzle.Lib.Database.Middlewares;
