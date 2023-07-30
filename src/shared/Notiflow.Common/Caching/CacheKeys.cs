@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Common.Caching;
 
-public static class RedisCacheKeys
+public static class CacheKeys
 {
     public const string TENANT_APPS_INFORMATION = "tenant.apps.information";
     public const string TENANT_INFORMATION = "tenant.information";

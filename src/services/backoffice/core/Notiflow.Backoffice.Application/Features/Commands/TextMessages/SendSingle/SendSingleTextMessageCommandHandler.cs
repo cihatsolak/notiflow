@@ -6,7 +6,6 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
     private readonly ITextMessageService _textMessageService;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IRedisService _redisService;
-    private readonly ITenantCacheKeyGenerator _tenantCacheKeyGenerator;
     private readonly ILogger<SendSingleTextMessageCommandHandler> _logger;
 
     public SendSingleTextMessageCommandHandler(
@@ -14,24 +13,22 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
         ITextMessageService textMessageService,
         IPublishEndpoint publishEndpoint,
         IRedisService redisService,
-        ITenantCacheKeyGenerator tenantCacheKeyGenerator,
+        
         ILogger<SendSingleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _publishEndpoint = publishEndpoint;
         _redisService = redisService;
-        _tenantCacheKeyGenerator = tenantCacheKeyGenerator;
         _logger = logger;
     }
 
     public async Task<Response<Unit>> Handle(SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
-        string tenantPermissionCacheKey = _tenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_PERMISSION);
-        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(tenantPermissionCacheKey, RedisCacheKeys.MESSAGE_PERMISSION);
+        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.MESSAGE_PERMISSION);
         if (!isSentMessageAllowed)
         {
-            _logger.LogWarning("No tenant information found in the cache. Customer ID: {@customerId}", request.CustomerId);
+            _logger.LogWarning("The tenant is not authorized to send messages.");
             return Response<Unit>.Fail(-1);
         }
 

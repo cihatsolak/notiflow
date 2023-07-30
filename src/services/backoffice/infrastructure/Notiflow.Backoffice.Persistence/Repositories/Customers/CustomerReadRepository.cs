@@ -22,7 +22,7 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
                .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<List<Customer>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
+    public async Task<List<string>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
     {
         return await TableNoTracking
                     .TagWith("Queries the phone numbers of the customer IDs")

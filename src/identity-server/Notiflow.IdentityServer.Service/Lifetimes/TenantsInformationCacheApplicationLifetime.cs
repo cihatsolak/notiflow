@@ -46,16 +46,16 @@ public static class TenantsInformationCacheApplicationLifetime
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
-                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_PERMISSION, tenant.Token);
+                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(CacheKeys.TENANT_PERMISSION, tenant.Token);
 
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, RedisCacheKeys.NOTIFICATION_PERMISSION, tenant.TenantPermission.IsSendNotificationPermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
+                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.NOTIFICATION_PERMISSION, tenant.TenantPermission.IsSendNotificationPermission));
             }
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
-                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
+                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(CacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
 
                 tenantCachingTasks.Add(RedisService.SetAsync(cacheKey, tenant.Adapt<TenantApplicationCacheModel>()));
             }

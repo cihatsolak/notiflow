@@ -1,3 +1,5 @@
+using Notiflow.Common.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +12,7 @@ builder.Services.AddInfrastructure();
 builder.Services.AddPersistence();
 
 var app = builder.Build();
-
+TenantCacheKeyGeneratorCihat.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
