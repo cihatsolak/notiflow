@@ -15,7 +15,7 @@
     public class FirebaseMultipleNotificationRequest
     {
         [JsonPropertyName("registration_ids")]
-        public List<string> Tokens { get; set; }
+        public List<string> DeviceTokens { get; set; }
 
         [JsonPropertyName("data")]
         public object Data { get; set; }

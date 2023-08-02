@@ -16,7 +16,7 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
     public Task<Device> GetCloudMessagePlatformByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
     {
         return TableNoTracking
-               .TagWith("Returns the user's notification platform and the platform's token information.")
+               .TagWith("Returns the customer's notification platform and the platform's token information.")
                .Where(device => device.CustomerId == customerId)
                .Select(device => new Device
                {
@@ -24,5 +24,18 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
                    Token = device.Token
                })
                .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public Task<List<Device>> GetCloudMessagePlatformByCustomerIdsAsync(List<int> customerIds, CancellationToken cancellationToken)
+    {
+        return TableNoTracking
+               .TagWith("Returns the customer's notification platform and the platform's token information.")
+               .Where(device => customerIds.Any(customerId => customerId == device.CustomerId))
+               .Select(device => new Device
+               {
+                   CloudMessagePlatform = device.CloudMessagePlatform,
+                   Token = device.Token
+               })
+              .ToListAsync(cancellationToken);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
-public sealed class HuaweiManager : IHuaweiService
+internal sealed class HuaweiManager : IHuaweiService
 {
     private readonly IRestService _restService;
     private readonly IRedisService _redisService;
@@ -16,42 +16,36 @@ public sealed class HuaweiManager : IHuaweiService
         _logger = logger;
     }
 
-    public async Task<bool> SendNotificationsAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<HuaweiNotificationResponse> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken)
     {
-        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION));
-        if (tenantApplication is null)
+        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
+        if (!isSentNotificationAllowed)
         {
-            _logger.LogWarning("The tenant's application information could not be found.");
-            return false;
+            throw new TenantException("The tenant is not authorized to send notification.");
         }
+
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
+            ?? throw new TenantException("The tenant's application information could not be found.");
 
         List<KeyValuePair<string, string>> credentials = new()
         {
-            new KeyValuePair<string, string>("grant_type", "xxxx"),
-            new KeyValuePair<string, string>("client_secret", "xxxx"),
-            new KeyValuePair<string, string>("client_id", "xxxx")
+            new KeyValuePair<string, string>("grant_type", tenantApplication.HuaweiGrandType),
+            new KeyValuePair<string, string>("client_secret", tenantApplication.HuaweiClientSecret),
+            new KeyValuePair<string, string>("client_id", tenantApplication.HuaweiClientId)
         };
 
         var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>("Huawei", "routeUrl", credentials, cancellationToken);
         if (authenticationResponse is null)
         {
-            _logger.LogWarning("Failed to connect with huawei store. Failed to authenticate.");
+            _logger.LogError("Failed to connect with huawei store. Failed to authenticate.");
             return default;
         }
 
-        var auhorizationCollection = HttpClientHeaderExtensions.Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
+        var auhorizationCollection = HttpClientHeaderExtensions
+                                      .Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
 
-        var notificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
-        if (notificationResponse is null)
-        {
-            return default;
-        }
+        //sendUrl = sendUrl.Replace("{ClientId}", clientId); //Todo:
 
-        if (!notificationResponse.Succeeded)
-        {
-            return default;
-        }
-
-        return true;
+        return await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
     }
 }

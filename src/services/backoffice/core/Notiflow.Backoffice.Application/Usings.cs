@@ -38,5 +38,6 @@ global using Puzzle.Lib.Validation.IOC;
 global using Puzzle.Lib.Validation.RuleBuilders;
 global using System.Diagnostics;
 global using System.Reflection;
+global using System.Runtime.Serialization;
 global using System.Text.Json.Serialization;
 global using IPublishEndpoint = MassTransit.IPublishEndpoint;

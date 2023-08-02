@@ -17,6 +17,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
         _firebaseService = firebaseService;
+        _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
         _logger = logger;
     }
@@ -24,18 +25,23 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     public async Task<Response<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
+        if (device is null)
+        {
+            _logger.LogWarning("The customer's device information could not be found.");
+            return Response<Unit>.Fail(1);
+        }
 
-        var result = device.CloudMessagePlatform switch
+        var notificationResult = device.CloudMessagePlatform switch
         {
             CloudMessagePlatform.Firesabe => await SendNotifyWithFirebase(request, device.Token, cancellationToken),
             CloudMessagePlatform.Huawei => await SendNotifyWithHuawei(request, device.Token, cancellationToken),
             _ => throw new Exception(""),
         };
 
-        if (!result.Succeeded)
+        if (!notificationResult.Succeeded)
         {
             var notificationNotDeliveredEvent = ObjectMapper.Mapper.Map<NotificationNotDeliveredEvent>(request);
-            notificationNotDeliveredEvent.ErrorMessage = result.ErrorMessage;
+            ObjectMapper.Mapper.Map(notificationResult, notificationNotDeliveredEvent);
 
             await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
             
@@ -44,7 +50,10 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             return Response<Unit>.Fail(-1);
         }
 
-        await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request), cancellationToken);
+        var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
+        ObjectMapper.Mapper.Map(notificationResult, notificationDeliveredEvent);
+
+        await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
 
         _logger.LogInformation("A notification has been sent to the customer with id: {customerId}", request.CustomerId);
 
@@ -55,7 +64,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     {
         Guid secretIdentity = Guid.NewGuid();
 
-        FirebaseSingleNotificationRequest firebaseSingleNotificationRequest = new FirebaseSingleNotificationRequest()
+        FirebaseSingleNotificationRequest firebaseSingleNotificationRequest = new()
         {
             DeviceToken = deviceToken,
             FirebaseMessage = new FirebaseMessage
@@ -78,7 +87,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             _logger.LogInformation("");
             return new NotificationResult();
         }
-
+        
         return new NotificationResult
         {
             Succeeded = firebaseResponse.Succeeded,
@@ -89,6 +98,8 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     private async Task<NotificationResult> SendNotifyWithHuawei(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
     {
+        Guid secretIdentity = Guid.NewGuid();
+
         HuaweiNotificationRequest huaweiNotificationRequest = new()
         {
             Message = new HuaweiMessage
@@ -96,10 +107,32 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
                 DeviceTokens = new List<string>
                 {
                     deviceToken
+                },
+                Data = new
+                {
+                    request.ImageUrl,
+                    request.Message,
+                    request.Title,
+                    SecretIdentity = secretIdentity,
+                    Type = 1,
+                    Source = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\"}"
+
                 }
             }
         };
 
-        return Response<Unit>.Success(1);
+        var huaweiResponse = await _huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
+        if (huaweiResponse is null)
+        {
+            _logger.LogInformation("");
+            return new NotificationResult();
+        }
+
+        return new NotificationResult
+        {
+            Succeeded = huaweiResponse.Succeeded,
+            ErrorMessage = huaweiResponse.ErrorMessage,
+            SecretIdentity = secretIdentity
+        };
     }
 }

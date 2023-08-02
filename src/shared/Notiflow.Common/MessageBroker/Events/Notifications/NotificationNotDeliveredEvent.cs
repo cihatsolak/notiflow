@@ -13,4 +13,5 @@ public sealed record NotificationNotDeliveredEvent
     public required string Message { get; init; }
     public required DateTime SentDate { get; init; }
     public required string ErrorMessage { get; set; }
+    public required Guid SenderIdentity { get; set; }
 }
