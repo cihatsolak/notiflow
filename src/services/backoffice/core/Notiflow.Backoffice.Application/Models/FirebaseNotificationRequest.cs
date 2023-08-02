@@ -1,9 +1,9 @@
 ﻿namespace Notiflow.Backoffice.Application.Models
 {
-    public class FirebaseSingleRequest
+    public class FirebaseSingleNotificationRequest
     {
         [JsonPropertyName("to")]
-        public string Token { get; set; }
+        public string DeviceToken { get; set; }
 
         [JsonPropertyName("data")]
         public object Data { get; set; }
@@ -12,7 +12,7 @@
         public FirebaseMessage FirebaseMessage { get; set; }
     }
 
-    public class FirebaseMultipleRequest
+    public class FirebaseMultipleNotificationRequest
     {
         [JsonPropertyName("registration_ids")]
         public List<string> Tokens { get; set; }
@@ -30,7 +30,7 @@
         public string Title { get; set; }
 
         [JsonPropertyName("body")]
-        public string Text { get; set; }
+        public string Message { get; set; }
 
         [JsonPropertyName("image")]
         public string ImageUrl { get; set; }

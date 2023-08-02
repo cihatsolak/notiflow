@@ -19,6 +19,7 @@ global using Notiflow.Backoffice.Application.Interfaces.Services;
 global using Notiflow.Backoffice.Application.Interfaces.UnitOfWorks;
 global using Notiflow.Backoffice.Application.Mappers;
 global using Notiflow.Backoffice.Application.Models;
+global using Notiflow.Backoffice.Application.Models.Huawei;
 global using Notiflow.Backoffice.Application.Pipelines;
 global using Notiflow.Backoffice.Domain.Entities.Customers;
 global using Notiflow.Backoffice.Domain.Entities.Devices;

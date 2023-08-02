@@ -3,4 +3,5 @@
 public interface IDeviceReadRepository : IReadRepository<Device>
 {
     Task<Device> GetByCustomerIdAsync(int customerId, CancellationToken cancellationToken);
+    Task<Device> GetCloudMessagePlatformByCustomerIdAsync(int customerId, CancellationToken cancellationToken);
 }

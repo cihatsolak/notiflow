@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Models.Huawei
 {
-    public sealed record HuaweiPushRequest
+    public sealed record HuaweiNotificationRequest
     {
         [JsonPropertyName("validate_only")]
         public bool ValidateOnly { get; set; }

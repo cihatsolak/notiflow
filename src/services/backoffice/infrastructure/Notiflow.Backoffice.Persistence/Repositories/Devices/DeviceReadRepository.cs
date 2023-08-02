@@ -8,6 +8,21 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
 
     public Task<Device> GetByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
     {
-        return Table.SingleOrDefaultAsync(device => device.CustomerId == customerId, cancellationToken);
+        return Table
+               .TagWith("Queries the customer's device information.")
+               .SingleOrDefaultAsync(device => device.CustomerId == customerId, cancellationToken);
+    }
+
+    public Task<Device> GetCloudMessagePlatformByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
+    {
+        return TableNoTracking
+               .TagWith("Returns the user's notification platform and the platform's token information.")
+               .Where(device => device.CustomerId == customerId)
+               .Select(device => new Device
+               {
+                   CloudMessagePlatform = device.CloudMessagePlatform,
+                   Token = device.Token
+               })
+               .SingleOrDefaultAsync(cancellationToken);
     }
 }

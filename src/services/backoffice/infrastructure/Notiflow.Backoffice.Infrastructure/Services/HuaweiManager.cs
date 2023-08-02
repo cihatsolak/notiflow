@@ -3,51 +3,51 @@
 public sealed class HuaweiManager : IHuaweiService
 {
     private readonly IRestService _restService;
+    private readonly IRedisService _redisService;
     private readonly ILogger<HuaweiManager> _logger;
 
-    public HuaweiManager(IRestService restService, ILogger<HuaweiManager> logger)
+    public HuaweiManager(
+        IRestService restService,
+        IRedisService redisService,
+        ILogger<HuaweiManager> logger)
     {
         _restService = restService;
+        _redisService = redisService;
         _logger = logger;
     }
 
-    public async Task<bool> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<bool> SendNotificationsAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken)
     {
-        var credentials = new List<KeyValuePair<string, string>>
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION));
+        if (tenantApplication is null)
+        {
+            _logger.LogWarning("The tenant's application information could not be found.");
+            return false;
+        }
+
+        List<KeyValuePair<string, string>> credentials = new()
         {
             new KeyValuePair<string, string>("grant_type", "xxxx"),
             new KeyValuePair<string, string>("client_secret", "xxxx"),
             new KeyValuePair<string, string>("client_id", "xxxx")
         };
 
-        var huaweiAuthenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>("Huawei", "routeUrl", credentials, cancellationToken);
-        if (huaweiAuthenticationResponse is null)
+        var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>("Huawei", "routeUrl", credentials, cancellationToken);
+        if (authenticationResponse is null)
         {
             _logger.LogWarning("Failed to connect with huawei store. Failed to authenticate.");
             return default;
         }
 
-        HuaweiPushRequest huaweiPushRequest = new()
-        {
-            Message = new()
-            {
-                DeviceTokens = new()
-                {
-                    "devicetoken"
-                },
-                Data = new()
-            }
-        };
+        var auhorizationCollection = HttpClientHeaderExtensions.Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
 
-        var auhorization = HttpClientExtensions.GenerateHeader(HeaderNames.Authorization, $"{huaweiAuthenticationResponse.TokenType} {huaweiAuthenticationResponse.AccessToken}");
-
-        var huaweiPushResponse = await _restService.PostResponseAsync<HuaweiPushResponse>("Huawei", "routeurl", huaweiPushRequest, auhorization, cancellationToken);
-        if (huaweiPushResponse is null)
+        var notificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
+        if (notificationResponse is null)
         {
             return default;
         }
 
-        if (huaweiPushResponse.Code.Equals("") || !huaweiPushResponse.ErrorMessage.Equals("", StringComparison.OrdinalIgnoreCase))
+        if (!notificationResponse.Succeeded)
         {
             return default;
         }

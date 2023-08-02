@@ -3,13 +3,16 @@
 public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<SendMultipleNotificationCommand, Response<Unit>>
 {
     private readonly IFirebaseService _firebaseService;
+    private readonly IRedisService _redisService;
     private readonly ILogger<SendMultipleNotificationCommandHandler> _logger;
 
     public SendMultipleNotificationCommandHandler(
         IFirebaseService firebaseService, 
+        IRedisService redisService,
         ILogger<SendMultipleNotificationCommandHandler> logger)
     {
         _firebaseService = firebaseService;
+        _redisService = redisService;
         _logger = logger;
     }
 
