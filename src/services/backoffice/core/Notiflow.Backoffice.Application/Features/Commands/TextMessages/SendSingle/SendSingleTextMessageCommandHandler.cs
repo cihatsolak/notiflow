@@ -39,7 +39,7 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
             return Response<Unit>.Fail(-1);
         }
 
-        bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumber, request.Message);
+        bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumber, request.Message, cancellationToken);
         if (!succeeded)
         {
             await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);

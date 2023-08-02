@@ -6,7 +6,6 @@ public static class TenantsInformationCacheApplicationLifetime
     private static ILogger Logger => ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(TenantsInformationCacheApplicationLifetime));
     private static IRedisService RedisService => ServiceProvider.GetRequiredService<IRedisService>();
     private static IHostApplicationLifetime HostApplicationLifetime => ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
-    private static ITenantCacheKeyGenerator TenantCacheKeyGenerator => ServiceProvider.GetRequiredService<ITenantCacheKeyGenerator>();
 
     public static IApplicationBuilder CacheTenantsInformation(this IApplicationBuilder applicationBuilder)
     {
@@ -46,7 +45,7 @@ public static class TenantsInformationCacheApplicationLifetime
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
-                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(CacheKeys.TENANT_PERMISSION, tenant.Token);
+                string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION, tenant.Token);
 
                 tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
                 tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
@@ -55,7 +54,7 @@ public static class TenantsInformationCacheApplicationLifetime
 
             foreach (var tenant in tenants.OrEmptyIfNull())
             {
-                string cacheKey = TenantCacheKeyGenerator.GenerateCacheKey(CacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
+                string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
 
                 tenantCachingTasks.Add(RedisService.SetAsync(cacheKey, tenant.Adapt<TenantApplicationCacheModel>()));
             }

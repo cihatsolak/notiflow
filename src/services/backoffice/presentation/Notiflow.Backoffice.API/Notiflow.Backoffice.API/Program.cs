@@ -11,9 +11,11 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddPersistence();
 
-var app = builder.Build();
-TenantCacheKeyGeneratorCihat.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
+
 // Configure the HTTP request pipeline.
+var app = builder.Build();
+
+TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpsRedirection();
 app.UseSwaggerWithRedoclyDoc();

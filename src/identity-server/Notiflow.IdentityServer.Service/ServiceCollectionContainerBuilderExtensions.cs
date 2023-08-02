@@ -37,7 +37,6 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddFluentDesignValidation();
         services.AddApiBehaviorOptions();
         services.AddRedisService();
-        services.AddTenantCacheKeyGenerator();
     }
 
     private static void AddObservers(IServiceCollection services)
