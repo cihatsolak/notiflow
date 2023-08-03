@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+﻿using Notiflow.Backoffice.Application.Models.Notifications;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {

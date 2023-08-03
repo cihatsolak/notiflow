@@ -1,4 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Models;
+﻿using Notiflow.Backoffice.Application.Models.Notifications;
 
 namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
 

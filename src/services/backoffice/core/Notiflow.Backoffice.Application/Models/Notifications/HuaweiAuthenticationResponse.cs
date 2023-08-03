@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Models.Huawei
+﻿namespace Notiflow.Backoffice.Application.Models.Notifications
 {
     public sealed record HuaweiAuthenticationResponse
     {

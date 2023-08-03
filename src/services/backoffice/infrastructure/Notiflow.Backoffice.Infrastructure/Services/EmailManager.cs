@@ -2,61 +2,77 @@
 
 internal sealed class EmailManager : IEmailService
 {
+    private readonly IRedisService _redisService;
     private readonly ILogger<EmailManager> _logger;
 
-    public EmailManager(ILogger<EmailManager> logger)
+    public EmailManager(
+        IRedisService redisService,
+        ILogger<EmailManager> logger)
     {
+        _redisService = redisService;
         _logger = logger;
     }
 
-    public async Task<bool> SendAsync()
+    public async Task<bool> SendAsync(EmailRequest request)
     {
+        bool isSentEmailAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.EMAIL_PERMISSION);
+        if (!isSentEmailAllowed)
+        {
+            throw new TenantException("The tenant is not authorized to send email.");
+        }
+
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION))
+            ?? throw new TenantException("The tenant's application information could not be found.");
+
         using SmtpClient smtpClient = new();
-        smtpClient.Host = "";
-        smtpClient.Port = 25;
-        smtpClient.Timeout = (int)TimeSpan.FromMinutes(2).TotalMilliseconds;
+        smtpClient.Host = tenantApplication.MailSmtpHost;
+        smtpClient.Port = tenantApplication.MailSmtpPort;
+        smtpClient.Timeout = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
+        smtpClient.EnableSsl = false;
 
         using MailMessage mailMessage = new();
-        mailMessage.From = new MailAddress("");
-        mailMessage.Subject = "";
+        mailMessage.From = new MailAddress(tenantApplication.MailFromAddress, tenantApplication.MailFromName, Encoding.UTF8);
+        mailMessage.Subject = request.Subject;
         mailMessage.SubjectEncoding = Encoding.UTF8;
         mailMessage.IsBodyHtml = true;
-        mailMessage.Body = "";
+        mailMessage.Body = request.Body;
         mailMessage.BodyEncoding = Encoding.UTF8;
         mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.None;
 
-       
-        foreach (var emailAddress in Enumerable.Empty<string>())
+
+        foreach (var emailAddress in request.ToAddresses.OrEmptyIfNull())
         {
             mailMessage.To.Add(emailAddress);
         }
 
-        foreach (var emailAddress in Enumerable.Empty<string>())
+        foreach (var emailAddress in request.CcAddresses.OrEmptyIfNull())
         {
             mailMessage.CC.Add(emailAddress);
         }
 
-        foreach (var emailAddress in Enumerable.Empty<string>())
+        foreach (var emailAddress in request.BccAddresses.OrEmptyIfNull())
         {
             mailMessage.Bcc.Add(emailAddress);
         }
+
+        bool succeeded = default;
 
         try
         {
             await smtpClient.SendMailAsync(mailMessage);
 
-            return true;
+            succeeded = true;
         }
         catch (Exception exception)
         {
             _logger.LogError(exception, "Email sending failed.");
-
-            return default;
         }
         finally
         {
             smtpClient.Dispose();
             mailMessage.Dispose();
         }
+
+        return succeeded;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Models;
+﻿namespace Notiflow.Backoffice.Application.Models.Notifications;
 
 public sealed record FirebaseNotificationResponse
 {
@@ -18,4 +18,13 @@ public sealed record FirebaseNotificationResponse
     public List<FirebaseResult> Results { get; init; }
 
     public bool Succeeded => Success > 0 && Failure <= 0;
+}
+
+public sealed record FirebaseResult
+{
+    [JsonPropertyName("message_id")]
+    public string MessageId { get; init; }
+
+    [JsonPropertyName("error")]
+    public string ErrorMessage { get; init; }
 }

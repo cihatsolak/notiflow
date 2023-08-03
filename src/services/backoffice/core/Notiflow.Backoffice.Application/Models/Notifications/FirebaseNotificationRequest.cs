@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Models
+﻿namespace Notiflow.Backoffice.Application.Models.Notifications
 {
     public class FirebaseSingleNotificationRequest
     {

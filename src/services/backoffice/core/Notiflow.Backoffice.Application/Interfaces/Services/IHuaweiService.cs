@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Interfaces.Services;
+﻿using Notiflow.Backoffice.Application.Models.Notifications;
+
+namespace Notiflow.Backoffice.Application.Interfaces.Services;
 
 public interface IHuaweiService
 {

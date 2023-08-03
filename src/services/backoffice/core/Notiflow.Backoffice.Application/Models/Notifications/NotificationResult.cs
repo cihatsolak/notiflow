@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Models;
+﻿namespace Notiflow.Backoffice.Application.Models.Notifications;
 
 internal class NotificationResult
 {
