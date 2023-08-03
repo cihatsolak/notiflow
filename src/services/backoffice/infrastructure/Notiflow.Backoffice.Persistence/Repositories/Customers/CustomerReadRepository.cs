@@ -34,4 +34,13 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
                     })
                     .ToListAsync(cancellationToken);
     }
+
+    public async Task<List<string>> GetEmailAddressesByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
+    {
+        return await TableNoTracking
+                    .TagWith("Queries the phone numbers of the customer IDs")
+                    .Where(customer => ids.Any(id => id == customer.Id))
+                    .Select(customer => customer.Email)
+                    .ToListAsync(cancellationToken);
+    }
 }

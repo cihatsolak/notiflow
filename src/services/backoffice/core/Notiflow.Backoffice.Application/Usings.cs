@@ -25,6 +25,7 @@ global using Notiflow.Backoffice.Domain.Entities.Devices;
 global using Notiflow.Backoffice.Domain.Entities.Histories;
 global using Notiflow.Backoffice.Domain.Enums;
 global using Notiflow.Common.Caching;
+global using Notiflow.Common.MessageBroker.Events.Emails;
 global using Notiflow.Common.MessageBroker.Events.Notifications;
 global using Notiflow.Common.MessageBroker.Events.TextMessage;
 global using Notiflow.Common.Services;

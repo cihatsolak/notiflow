@@ -15,7 +15,6 @@ internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailH
             table.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
         });
 
-        builder.Property(p => p.Recipients).IsUnicode(false).IsRequired();
         builder.Property(p => p.Cc).IsUnicode(false).IsRequired(false);
         builder.Property(p => p.Bcc).IsUnicode(false).IsRequired(false);
         builder.Property(p => p.Subject).HasMaxLength(300).IsUnicode(false).IsRequired();

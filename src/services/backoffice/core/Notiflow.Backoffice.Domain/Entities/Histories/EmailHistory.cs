@@ -2,7 +2,6 @@
 
 public sealed class EmailHistory : BaseEntity
 {
-    public string Recipients { get; set; }
     public string Cc { get; set; }
     public string Bcc { get; set; }
     public string Subject { get; set; }

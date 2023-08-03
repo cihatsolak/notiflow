@@ -68,7 +68,6 @@ internal static class SeedData
     private static List<EmailHistory> GenerateEmailHistories()
     {
         return new Faker<EmailHistory>("tr")
-            .RuleFor(emailHistory => emailHistory.Recipients, faker => faker.Internet.Email())
             .RuleFor(emailHistory => emailHistory.Cc, faker => string.Join(";", Enumerable.Range(1, 5).Select(index => faker.Internet.Email())))
             .RuleFor(emailHistory => emailHistory.Bcc, faker => string.Join(";", Enumerable.Range(1, 2).Select(index => faker.Internet.Email())))
             .RuleFor(emailHistory => emailHistory.Subject, faker => faker.Lorem.Sentence(4))
