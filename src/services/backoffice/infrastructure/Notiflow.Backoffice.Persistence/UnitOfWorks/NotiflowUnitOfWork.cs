@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
-
-namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
+﻿namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
 
 internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 {
@@ -16,10 +14,6 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
     public ICustomerReadRepository CustomerRead => _serviceProvider.GetRequiredService<ICustomerReadRepository>();
 
     public ICustomerWriteRepository CustomerWrite => _serviceProvider.GetRequiredService<ICustomerWriteRepository>();
-
-    public ITenantReadRepository TenantRead => _serviceProvider.GetRequiredService<ITenantReadRepository>();
-
-    public ITenantWriteRepository TenantWrite => _serviceProvider.GetRequiredService<ITenantWriteRepository>();
 
     public IDeviceReadRepository DeviceRead => _serviceProvider.GetRequiredService<IDeviceReadRepository>();
 

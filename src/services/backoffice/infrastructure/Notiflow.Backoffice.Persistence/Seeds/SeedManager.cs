@@ -21,7 +21,7 @@ internal static class SeedManager
             return;
         }
 
-        await notiflowDbContext.Customers.AddRangeAsync(TenantSeedData.GenerateCustomers());
+        await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
         await  notiflowDbContext.SaveChangesAsync();
     }
 }

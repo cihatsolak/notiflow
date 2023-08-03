@@ -9,7 +9,7 @@ namespace Puzzle.Lib.Http.Tests
             var token = "abc123";
 
             // Act
-            var result = HttpClientExtensions.CreateCollectionForBearerToken(token);
+            var result = HttpClientHeaderExtensions.CreateCollectionForBearerToken(token);
 
             // Assert
             Assert.NotNull(result);
@@ -19,13 +19,13 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void CreateCollectionForBearerToken_ShouldThrowArgumentNullException_WhenTokenIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientExtensions.CreateCollectionForBearerToken(null));
+            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.CreateCollectionForBearerToken(null));
         }
 
         [Fact]
         public void CreateCollectionForBearerToken_ShouldThrowArgumentException_WhenTokenIsEmpty()
         {
-            Assert.Throws<ArgumentException>(() => HttpClientExtensions.CreateCollectionForBearerToken(""));
+            Assert.Throws<ArgumentException>(() => HttpClientHeaderExtensions.CreateCollectionForBearerToken(""));
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Puzzle.Lib.Http.Tests
             var token = "abc123";
 
             // Act
-            var result = nameValueCollection.AddBearerTokenToHeader(token);
+            var result = nameValueCollection.AddBearerToken(token);
 
             // Assert
             Assert.NotNull(result);
@@ -46,14 +46,14 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void AddBearerTokenToHeader_ShouldThrowArgumentNullException_WhenNameValueCollectionIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientExtensions.AddBearerTokenToHeader(null, "token"));
+            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.AddBearerToken(null, "token"));
         }
 
         [Fact]
         public void AddBearerTokenToHeader_ShouldThrowArgumentException_WhenTokenIsEmpty()
         {
             var collection = new NameValueCollection();
-            Assert.Throws<ArgumentException>(() => collection.AddBearerTokenToHeader(""));
+            Assert.Throws<ArgumentException>(() => collection.AddBearerToken(""));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Puzzle.Lib.Http.Tests
             var value = "application/json";
 
             // Act
-            var result = HttpClientExtensions.GenerateHeader(name, value);
+            var result = HttpClientHeaderExtensions.Generate(name, value);
 
             // Assert
             Assert.NotNull(result);
@@ -74,13 +74,13 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void GenerateHeader_ShouldThrowArgumentNullException_WhenNameIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientExtensions.GenerateHeader(null, "value"));
+            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.Generate(null, "value"));
         }
 
         [Fact]
         public void GenerateHeader_ShouldThrowArgumentNullException_WhenValueIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientExtensions.GenerateHeader("name", null));
+            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.Generate("name", null));
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace Puzzle.Lib.Http.Tests
             var value = "custom value";
 
             // Act
-            nameValueCollection.AddHeaderItem(name, value);
+            nameValueCollection.AddItem(name, value);
 
             // Assert
             Assert.NotNull(nameValueCollection);
@@ -102,21 +102,21 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void AddHeaderItem_ShouldThrowArgumentNullException_WhenNameValueCollectionIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientExtensions.AddHeaderItem(null, "name", "value"));
+            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.AddItem(null, "name", "value"));
         }
 
         [Fact]
         public void AddHeaderItem_ShouldThrowArgumentException_WhenNameIsEmpty()
         {
             var collection = new NameValueCollection();
-            Assert.Throws<ArgumentException>(() => collection.AddHeaderItem(string.Empty, "value"));
+            Assert.Throws<ArgumentException>(() => collection.AddItem(string.Empty, "value"));
         }
 
         [Fact]
         public void AddHeaderItem_ShouldThrowArgumentException_WhenValueIsEmpty()
         {
             var collection = new NameValueCollection();
-            Assert.Throws<ArgumentException>(() => collection.AddHeaderItem("name", string.Empty));
+            Assert.Throws<ArgumentException>(() => collection.AddItem("name", string.Empty));
         }
     }
 }

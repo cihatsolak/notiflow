@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides extension methods for HttpClient objects.
 /// </summary>
-public static class HttpClientExtensions
+public static class HttpClientHeaderExtensions
 {
     /// <summary>
     /// Add authentication and authorization token to http request
@@ -28,7 +28,7 @@ public static class HttpClientExtensions
     /// <param name="token">authentication and authorization token</param>
     /// <returns>type of name value collection</returns>
     /// <exception cref="ArgumentNullException">thrown when name value collection is null or token empty|null</exception>
-    public static NameValueCollection AddBearerTokenToHeader(this NameValueCollection nameValueCollection, string token)
+    public static NameValueCollection AddBearerToken(this NameValueCollection nameValueCollection, string token)
     {
         ArgumentNullException.ThrowIfNull(nameValueCollection);
         ArgumentException.ThrowIfNullOrEmpty(token);
@@ -44,7 +44,7 @@ public static class HttpClientExtensions
     /// <param name="value">collection item value</param>
     /// <returns>type of name value collection</returns>
     /// <exception cref="ArgumentNullException">thrown when name is empty|null or value empty|null</exception>
-    public static NameValueCollection GenerateHeader(string name, string value)
+    public static NameValueCollection Generate(string name, string value)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentException.ThrowIfNullOrEmpty(value);
@@ -63,7 +63,7 @@ public static class HttpClientExtensions
     /// <param name="value">collection item value</param>
     /// <returns>type of name value collection</returns>
     /// <exception cref="ArgumentNullException">thrown when name is empty|null or value empty|null or name value collection null</exception>
-    public static NameValueCollection AddHeaderItem(this NameValueCollection nameValueCollection, string name, string value)
+    public static NameValueCollection AddItem(this NameValueCollection nameValueCollection, string name, string value)
     {
         ArgumentNullException.ThrowIfNull(nameValueCollection);
         ArgumentException.ThrowIfNullOrEmpty(name);

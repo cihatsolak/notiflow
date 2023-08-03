@@ -6,7 +6,6 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
     private readonly ITextMessageService _textMessageService;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IRedisService _redisService;
-    private readonly IClaimService _claimService;
     private readonly ILogger<SendSingleTextMessageCommandHandler> _logger;
 
     public SendSingleTextMessageCommandHandler(
@@ -14,23 +13,22 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
         ITextMessageService textMessageService,
         IPublishEndpoint publishEndpoint,
         IRedisService redisService,
-        IClaimService claimService,
+        
         ILogger<SendSingleTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _publishEndpoint = publishEndpoint;
         _redisService = redisService;
-        _claimService = claimService;
         _logger = logger;
     }
 
     public async Task<Response<Unit>> Handle(SendSingleTextMessageCommand request, CancellationToken cancellationToken)
     {
-        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(_claimService.System, RedisCacheKeys.TENANT_MESSAGE_PERMISSION);
+        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.MESSAGE_PERMISSION);
         if (!isSentMessageAllowed)
         {
-            _logger.LogWarning("No tenant information found in the cache. Customer ID: {@customerId}", request.CustomerId);
+            _logger.LogWarning("The tenant is not authorized to send messages.");
             return Response<Unit>.Fail(-1);
         }
 
@@ -41,7 +39,7 @@ public sealed class SendSingleTextMessageCommandHandler : IRequestHandler<SendSi
             return Response<Unit>.Fail(-1);
         }
 
-        bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumber, request.Message);
+        bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumber, request.Message, cancellationToken);
         if (!succeeded)
         {
             await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);

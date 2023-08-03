@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Seeds;
 
-internal static class TenantSeedData
+internal static class SeedData
 {
     internal static List<Customer> GenerateCustomers()
     {

@@ -1,3 +1,5 @@
+using Notiflow.Common.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,9 +11,11 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddPersistence();
 
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+var app = builder.Build();
+
+TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpsRedirection();
 app.UseSwaggerWithRedoclyDoc();

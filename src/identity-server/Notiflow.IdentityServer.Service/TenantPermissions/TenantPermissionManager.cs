@@ -3,18 +3,15 @@
 internal sealed class TenantPermissionManager : ITenantPermissionService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ITenantCacheKeyGenerator _tenantCacheKeyGenerator;
     private readonly IRedisService _redisService;
     private readonly ILogger<TenantPermissionManager> _logger;
 
     public TenantPermissionManager(
         ApplicationDbContext context,
-        ITenantCacheKeyGenerator tenantCacheKeyGenerator,
         IRedisService redisService,
         ILogger<TenantPermissionManager> logger)
     {
         _context = context;
-        _tenantCacheKeyGenerator = tenantCacheKeyGenerator;
         _redisService = redisService;
         _logger = logger;
     }
@@ -43,22 +40,21 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         }
 
         List<Task<bool>> tenantPermissionCachingTasks = new();
-        string cacheKey = _tenantCacheKeyGenerator.GenerateCacheKey(RedisCacheKeys.TENANT_PERMISSION);
+        string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION);
 
         if (tenantPermission.IsSendMessagePermission != request.IsSendMessagePermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_MESSAGE, request.IsSendMessagePermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.MESSAGE_PERMISSION, request.IsSendMessagePermission));
         }
 
         if (tenantPermission.IsSendNotificationPermission != request.IsSendNotificationPermission)
         {
-            
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_EMAIL, request.IsSendEmailPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.EMAIL_PERMISSION, request.IsSendEmailPermission));
         }
 
         if (tenantPermission.IsSendEmailPermission != request.IsSendEmailPermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, RedisCacheKeys.TENANT_NOTIFICATION, request.IsSendNotificationPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.NOTIFICATION_PERMISSION, request.IsSendNotificationPermission));
         }
 
         tenantPermission.IsSendMessagePermission = request.IsSendMessagePermission;

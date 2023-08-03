@@ -3,35 +3,50 @@
 internal sealed class FirebaseManager : IFirebaseService
 {
     private readonly IRestService _restService;
-    private readonly ILogger<FirebaseManager> _logger;
+    private readonly IRedisService _redisService;
 
-    public FirebaseManager(IRestService restService, ILogger<FirebaseManager> logger)
+    public FirebaseManager(
+        IRestService restService, 
+        IRedisService redisService)
     {
         _restService = restService;
-        _logger = logger;
+        _redisService = redisService;
     }
 
-    public async Task<FirebasePushResponse> SendNotificationAsync(FirebaseSingleRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<FirebaseNotificationResponse> SendNotificationAsync(FirebaseSingleNotificationRequest firebaseRequest, CancellationToken cancellationToken)
     {
-        var credentials = HttpClientExtensions
-                            .GenerateHeader(HeaderNames.Authorization, $"key=xxx")
-                            .AddHeaderItem("Sender", $"id=xxx");
+        await TenantAuthorizationCheckAsync();
+
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
+            ?? throw new TenantException("The tenant's application information could not be found.");
+
+        var credentials = HttpClientHeaderExtensions
+                           .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
+                           .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
     
-        return await _restService.PostResponseAsync<FirebasePushResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+        return await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
     }
 
-    public async Task<bool> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<FirebaseNotificationResponse> SendNotificationsAsync(FirebaseMultipleNotificationRequest firebaseRequest, CancellationToken cancellationToken)
     {
-        var credentials = HttpClientExtensions
-                           .GenerateHeader(HeaderNames.Authorization, $"key=xxx")
-                           .AddHeaderItem("Sender", $"id=xxx");
+        await TenantAuthorizationCheckAsync();
 
-        var firebasePushResponse = await _restService.PostResponseAsync<FirebasePushResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
-        if (!firebasePushResponse.Succeeded)
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
+            ?? throw new TenantException("The tenant's application information could not be found.");
+        
+        var credentials = HttpClientHeaderExtensions
+                           .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
+                           .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
+
+        return await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+    }
+
+    private async Task TenantAuthorizationCheckAsync()
+    {
+        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
+        if (!isSentNotificationAllowed)
         {
-            _logger.LogWarning("firebase notification sending failed.");
+            throw new TenantException("The tenant is not authorized to send notification.");
         }
-
-        return firebasePushResponse.Succeeded;
     }
 }

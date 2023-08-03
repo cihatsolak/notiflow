@@ -1,9 +1,6 @@
-﻿using Notiflow.Backoffice.Application.Models.Huawei;
+﻿namespace Notiflow.Backoffice.Application.Interfaces.Services;
 
-namespace Notiflow.Backoffice.Application.Interfaces.Services
+public interface IHuaweiService
 {
-    public interface IHuaweiService
-    {
-        Task<bool> SendNotificationsAsync(FirebaseMultipleRequest firebaseRequest, CancellationToken cancellationToken);
-    }
+    Task<HuaweiNotificationResponse> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken);
 }

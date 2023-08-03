@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Puzzle.Lib.Cache;
 
 namespace Notiflow.Backoffice.Application;
 
@@ -20,7 +21,10 @@ public static class ServiceCollectionContainerBuilderExtensions
 
     private static IServiceCollection AddLibraries(this IServiceCollection services)
     {
-        return services.AddFluentDesignValidation();
+        services.AddFluentDesignValidation();
+        services.AddRedisService();
+
+        return services;
     }
 
     private static IServiceCollection AddMassTransit(this IServiceCollection services)

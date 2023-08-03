@@ -1,16 +1,11 @@
-﻿using Notiflow.IdentityServer.Core.Entities.Tenants;
-
-namespace Notiflow.IdentityServer.Service.Infrastructure.Mapster.AdapterConfig;
+﻿namespace Notiflow.IdentityServer.Service.Infrastructure.Mapster;
 
 internal class TypeConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
         config
-          .NewConfig<Tenant, TenantCacheModel>()
-          .Map(dest => dest.IsSendEmailPermission, src => src.TenantPermission.IsSendEmailPermission)
-          .Map(dest => dest.IsSendMessagePermission, src => src.TenantPermission.IsSendMessagePermission)
-          .Map(dest => dest.IsSendNotificationPermission, src => src.TenantPermission.IsSendNotificationPermission)
+          .NewConfig<Tenant, TenantApplicationCacheModel>()
           .Map(dest => dest.FirebaseServerKey, src => src.TenantApplication.FirebaseServerKey)
           .Map(dest => dest.FirebaseSenderId, src => src.TenantApplication.FirebaseSenderId)
           .Map(dest => dest.FirebaseSenderId, src => src.TenantApplication.FirebaseSenderId)

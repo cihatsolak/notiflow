@@ -8,8 +8,8 @@
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.111" />
+    <PackageReference Include="Polly" Version="7.2.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
   </ItemGroup>
 
 </Project>
