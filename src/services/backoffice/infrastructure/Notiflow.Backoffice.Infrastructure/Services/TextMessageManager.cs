@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
-public sealed class TextMessageManager : ITextMessageService
+internal sealed class TextMessageManager : ITextMessageService
 {
     private static readonly Random Random = new();
 

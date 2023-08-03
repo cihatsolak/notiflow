@@ -4,7 +4,12 @@
     {
         private readonly bool _useLowerTableName;
 
-        public BaseSoftDeleteEntityConfiguration(bool useLowerTableName = false)
+        public BaseSoftDeleteEntityConfiguration()
+        {
+            _useLowerTableName = false;
+        }
+
+        public BaseSoftDeleteEntityConfiguration(bool useLowerTableName)
         {
             _useLowerTableName = useLowerTableName;
         }

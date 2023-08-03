@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using System.Globalization;
-
-namespace Notiflow.Backoffice.Infrastructure;
+﻿namespace Notiflow.Backoffice.Infrastructure;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {

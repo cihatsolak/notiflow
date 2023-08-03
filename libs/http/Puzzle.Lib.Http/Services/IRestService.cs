@@ -156,7 +156,7 @@ public interface IRestService
         CancellationToken cancellationToken = default) where TResponse : class, new();
 
     /// <summary>
-    /// Sends an asynchronous HTTP POST request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
     /// A cancellation token can be provided to cancel the request.
     /// </summary>
     /// <typeparam name="TResponse">The expected response type</typeparam>
@@ -168,7 +168,7 @@ public interface IRestService
     Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
 
     /// <summary>
-    /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters,
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters,
     /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
     /// </summary>
     /// <typeparam name="TResponse">The expected response type</typeparam>
@@ -185,7 +185,7 @@ public interface IRestService
         CancellationToken cancellationToken = default) where TResponse : class, new();
 
     /// <summary>
-    /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters and query parameters,
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters and query parameters,
     /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
     /// </summary>
     /// <typeparam name="TResponse">The expected response type</typeparam>

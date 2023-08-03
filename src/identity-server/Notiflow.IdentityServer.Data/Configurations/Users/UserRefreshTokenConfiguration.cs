@@ -11,6 +11,11 @@ internal sealed class UserRefreshTokenConfiguration : BaseEntityConfiguration<Us
     {
         base.Configure(builder);
 
+        builder.ToTable(nameof(UserRefreshToken), table =>
+        {
+            table.HasCheckConstraint("CK_UserRefreshToken_MailSmtpPort", "[UserId] > 0");
+
+        });
         builder.Property(p => p.UserId).IsRequired(true);
         builder.Property(p => p.Token).HasMaxLength(50).IsRequired(true);
         builder.Property(p => p.ExpirationDate).HasDefaultValueSql("getdate()").IsRequired(true);

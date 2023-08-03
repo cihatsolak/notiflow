@@ -5,7 +5,15 @@
         private readonly string _defaultDateValueSql;
         private readonly bool _useLowerTableName;
 
-        public BaseHistoricalEntityConfiguration(string defaultDateValueSql, bool useLowerTableName = false)
+        public BaseHistoricalEntityConfiguration(string defaultDateValueSql)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(defaultDateValueSql);
+
+            _defaultDateValueSql = defaultDateValueSql;
+            _useLowerTableName = false;
+        }
+
+        public BaseHistoricalEntityConfiguration(string defaultDateValueSql, bool useLowerTableName)
         {
             ArgumentException.ThrowIfNullOrEmpty(defaultDateValueSql);
 
