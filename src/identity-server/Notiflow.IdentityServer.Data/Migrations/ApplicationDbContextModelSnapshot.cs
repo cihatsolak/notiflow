@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Notiflow.IdentityServer.Data;
 
 #nullable disable
 
@@ -16,59 +17,10 @@ namespace Notiflow.IdentityServer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("User", (string)null);
-                });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", b =>
                 {
@@ -170,6 +122,15 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(200)");
 
+                    b.Property<string>("MailSmtpHost")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("MailSmtpPort")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
@@ -183,7 +144,10 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.HasIndex("TenantId")
                         .IsUnique();
 
-                    b.ToTable("TenantApplication", (string)null);
+                    b.ToTable("TenantApplication", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_TenantApplication_MailSmtpPort", "[MailSmtpPort] > 0");
+                        });
                 });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.TenantPermission", b =>
@@ -224,6 +188,67 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.ToTable("TenantPermission", (string)null);
                 });
 
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("User", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_User_Email_Format", "Email LIKE '%_@__%.__%'");
+                        });
+                });
+
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -250,18 +275,10 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserRefreshToken", (string)null);
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
-                {
-                    b.HasOne("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", "Tenant")
-                        .WithMany("Users")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
+                    b.ToTable("UserRefreshToken", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_UserRefreshToken_MailSmtpPort", "[UserId] > 0");
+                        });
                 });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.TenantApplication", b =>
@@ -286,20 +303,26 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
+                {
+                    b.HasOne("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", "Tenant")
+                        .WithMany("Users")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
                 {
-                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Users.User", "User")
+                    b.HasOne("Notiflow.IdentityServer.Core.Entities.Users.User", "User")
                         .WithOne("UserRefreshToken")
                         .HasForeignKey("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
-                {
-                    b.Navigation("UserRefreshToken");
                 });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", b =>
@@ -309,6 +332,11 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.Navigation("TenantPermission");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
+                {
+                    b.Navigation("UserRefreshToken");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
         try
         {
             await npgSqlConnection
-                    .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) VALUES (@message, @is_sent, @error_message, @sent_date, @customer_id)",
+                    .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) values (@message, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {
                         message = context.Message.Message,

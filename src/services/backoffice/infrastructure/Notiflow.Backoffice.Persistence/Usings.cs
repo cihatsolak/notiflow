@@ -1,7 +1,9 @@
 ﻿global using Bogus;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Primitives;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Customers;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Devices;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;

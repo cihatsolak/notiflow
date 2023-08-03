@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Data.Seeds;
 
-internal static class TenantSeedData
+internal static class SeedData
 {
     internal static List<Tenant> GenerateFakeTenants()
     {
@@ -23,7 +23,9 @@ internal static class TenantSeedData
                   .RuleFor(tenantApplication => tenantApplication.HuaweiSenderId, faker => faker.Random.AlphaNumeric(12))
                   .RuleFor(tenantApplication => tenantApplication.MailFromAddress, faker => faker.Internet.Email())
                   .RuleFor(tenantApplication => tenantApplication.MailFromName, faker => faker.Internet.UserName())
-                  .RuleFor(tenantApplication => tenantApplication.MailReplyAddress, faker => faker.Internet.Email());
+                  .RuleFor(tenantApplication => tenantApplication.MailReplyAddress, faker => faker.Internet.Email())
+                  .RuleFor(tenantApplication => tenantApplication.MailSmtpHost, faker => faker.Internet.DomainName())
+                  .RuleFor(tenantApplication => tenantApplication.MailSmtpPort, faker => faker.Random.Int(1024, 65535));
     }
 
     private static TenantPermission GenerateTenantPermission()

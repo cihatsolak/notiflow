@@ -41,6 +41,8 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     MailFromAddress = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
                     MailFromName = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
                     MailReplyAddress = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
+                    MailSmtpHost = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
+                    MailSmtpPort = table.Column<int>(type: "int", nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
@@ -48,6 +50,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TenantApplication", x => x.Id);
+                    table.CheckConstraint("CK_TenantApplication_MailSmtpPort", "[MailSmtpPort] > 0");
                     table.ForeignKey(
                         name: "FK_TenantApplication_Tenant_TenantId",
                         column: x => x.TenantId,
@@ -86,9 +89,9 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    Surname = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Username = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),
@@ -98,6 +101,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                    table.CheckConstraint("CK_User_Email_Format", "Email LIKE '%_@__%.__%'");
                     table.ForeignKey(
                         name: "FK_User_Tenant_TenantId",
                         column: x => x.TenantId,
@@ -119,6 +123,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRefreshToken", x => x.Id);
+                    table.CheckConstraint("CK_UserRefreshToken_MailSmtpPort", "[UserId] > 0");
                     table.ForeignKey(
                         name: "FK_UserRefreshToken_User_UserId",
                         column: x => x.UserId,
