@@ -2,11 +2,13 @@
 
 public sealed class EmailHistory : BaseEntity
 {
+    public string Recipients { get; set; }
     public string Cc { get; set; }
     public string Bcc { get; set; }
     public string Subject { get; set; }
     public string Body { get; set; }
     public bool IsSent { get; set; }
+    public bool IsBodyHtml { get; set; }
     public string ErrorMessage { get; set; }
     public DateTime SentDate { get; set; }
 

@@ -2,15 +2,9 @@
 
 internal static class SeedData
 {
-    private static readonly Guid[] ExistingTenantTokens = new Guid[] 
+    private static readonly int[] ExistingTenantIds = new int[]
     {
-        new Guid("C7804183-349A-46B4-98F8-F0BF64D900B2"),
-        new Guid("2E9DE9EC-18AF-4B62-BC94-65AD326C0769"),
-        new Guid("F8964EF2-0AF0-43CE-BF76-3B86158A4D2B"),
-        new Guid("DCA5789C-1555-4AAE-AD2B-CB90791D22C2"),
-        new Guid("B03A8674-C64F-4BA8-89BC-A71C18E93865"),
-        new Guid("B1CF9735-9A02-43BD-A81A-D195F51EBC77"),
-        new Guid("64D5E2A4-361F-4139-AE93-E9B225B02131")
+        1,2,3,4,5,6,7
     };
 
     internal static List<Customer> GenerateCustomers()
@@ -29,7 +23,7 @@ internal static class SeedData
             .RuleFor(customer => customer.TextMessageHistories, faker => GenerarateTextMessageHistories())
             .RuleFor(customer => customer.NotificationHistories, faker => GetNotificationHistories())
             .RuleFor(customer => customer.EmailHistories, faker => GenerateEmailHistories())
-            .RuleFor(customer => customer.TenantToken, f => f.Random.ArrayElement(ExistingTenantTokens))
+            .RuleFor(customer => customer.TenantId, f => f.Random.ArrayElement(ExistingTenantIds))
             .Generate(120);
     }
 
@@ -73,6 +67,7 @@ internal static class SeedData
             .RuleFor(emailHistory => emailHistory.Subject, faker => faker.Lorem.Sentence(4))
             .RuleFor(emailHistory => emailHistory.Body, faker => faker.Lorem.Sentence(50))
             .RuleFor(emailHistory => emailHistory.IsSent, faker => faker.Random.Bool())
+            .RuleFor(emailHistory => emailHistory.IsBodyHtml, faker => faker.Random.Bool())
             .RuleFor(emailHistory => emailHistory.ErrorMessage, (faker, emailHistory) =>
             {
                 if (emailHistory.IsSent)

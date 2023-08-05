@@ -40,7 +40,7 @@ internal sealed class EmailManager : IEmailService
         mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.None;
 
 
-        foreach (var emailAddress in request.ToAddresses.OrEmptyIfNull())
+        foreach (var emailAddress in request.Recipients.OrEmptyIfNull())
         {
             mailMessage.To.Add(emailAddress);
         }
@@ -66,6 +66,7 @@ internal sealed class EmailManager : IEmailService
         catch (Exception exception)
         {
             _logger.LogError(exception, "Email sending failed.");
+            throw;
         }
         finally
         {

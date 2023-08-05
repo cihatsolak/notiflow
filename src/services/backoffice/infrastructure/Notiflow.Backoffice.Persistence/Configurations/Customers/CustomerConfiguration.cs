@@ -13,6 +13,7 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
 
         builder.ToTable(nameof(Customer).ToLowerInvariant(), table =>
         {
+            table.HasCheckConstraint("chk_tenant_id_restriction", "[UserId] > 0");
             table.HasCheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
             table.HasCheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
             table.HasCheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
@@ -26,8 +27,9 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
         builder.Property(p => p.MarriageStatus).HasConversion<int>().IsRequired();
         builder.Property(p => p.BirthDate).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("now()").IsRequired();
         builder.Property(p => p.IsBlocked).IsRequired();
+        builder.Property(p => p.TenantId).IsRequired();
 
-        builder.HasIndex(p => new { p.Email, p.CreatedDate }).IsDescending(false, true);
-        builder.HasIndex(p => new { p.PhoneNumber, p.CreatedDate }).IsDescending(false, true);
+        builder.HasIndex(p => new { p.Email, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
+        builder.HasIndex(p => new { p.PhoneNumber, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
     }
 }

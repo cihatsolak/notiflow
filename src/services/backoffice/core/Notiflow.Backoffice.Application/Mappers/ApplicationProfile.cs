@@ -7,6 +7,7 @@ internal sealed class ApplicationProfile : Profile
         DeviceMaps();
         TextMessageHistoryMaps();
         NotificationMaps();
+        EmailMaps();
     }
 
     private void DeviceMaps()
@@ -27,5 +28,12 @@ internal sealed class ApplicationProfile : Profile
     {
         CreateMap<SendSingleNotificationCommand, NotificationDeliveredEvent>();
         CreateMap<SendSingleNotificationCommand, NotificationNotDeliveredEvent>();
+    }
+
+    private void EmailMaps()
+    {
+        CreateMap<SendEmailCommand, EmailDeliveredEvent>();
+        CreateMap<SendEmailCommand, EmailNotDeliveredEvent>();
+        CreateMap<SendEmailCommand, EmailRequest>();
     }
 }

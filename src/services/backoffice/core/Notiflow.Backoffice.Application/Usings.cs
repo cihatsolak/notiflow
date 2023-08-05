@@ -8,6 +8,7 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Notiflow.Backoffice.Application.Constants;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+global using Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.SendSingle;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;

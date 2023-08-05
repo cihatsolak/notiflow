@@ -8,9 +8,9 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
     private readonly ILogger<SendEmailCommandHandler> _logger;
 
     public SendEmailCommandHandler(
-        INotiflowUnitOfWork uow, 
-        IEmailService emailService, 
-        IPublishEndpoint publishEndpoint, 
+        INotiflowUnitOfWork uow,
+        IEmailService emailService,
+        IPublishEndpoint publishEndpoint,
         ILogger<SendEmailCommandHandler> logger)
     {
         _uow = uow;
@@ -25,7 +25,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         if (emailAddresses.IsNullOrNotAny())
         {
             _logger.LogWarning("Customers' e-mail addresses could not be found for sending e-mails. customer ids: {@customerid}", request.CustomerIds);
-            
+
             return Response<Unit>.Fail(-1);
         }
 
@@ -37,24 +37,33 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
-        emailRequest.ToAddresses = emailAddresses;
+        emailRequest.Recipients = emailAddresses;
 
         bool succeeded = await _emailService.SendAsync(emailRequest);
         if (!succeeded)
         {
-            var emailNotDeliveredEvent = ObjectMapper.Mapper.Map<EmailNotDeliveredEvent>(request);
-            ObjectMapper.Mapper.Map(request, emailNotDeliveredEvent);
-
-            await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
-
-            _logger.LogWarning("Email sending failed. {@CustomerIds}", request.CustomerIds);
-
-            return Response<Unit>.Fail(1);
-            
+            return await ReportFailedStatusAsync(request, emailAddresses, cancellationToken);
         }
 
+        return await ReportSuccessfulStatusAsync(request, emailAddresses, cancellationToken);
+    }
+
+    private async Task<Response<Unit>> ReportFailedStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
+    {
+        var emailNotDeliveredEvent = ObjectMapper.Mapper.Map<EmailNotDeliveredEvent>(request);
+        emailNotDeliveredEvent.Recipients = emailAddresses;
+
+        await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
+
+        _logger.LogWarning("Email sending failed. {@CustomerIds}", request.CustomerIds);
+
+        return Response<Unit>.Fail(1);
+    }
+  
+    private async Task<Response<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
+    {
         var emailDeliveredEvent = ObjectMapper.Mapper.Map<EmailDeliveredEvent>(request);
-        ObjectMapper.Mapper.Map(request, emailDeliveredEvent);
+        emailDeliveredEvent.Recipients = emailAddresses;
 
         await _publishEndpoint.Publish(emailDeliveredEvent, cancellationToken);
 

@@ -25,7 +25,7 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
     public async Task<List<Customer>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
     {
         return await TableNoTracking
-                    .TagWith("Queries the phone numbers of the customer IDs")
+                    .TagWith("Queries the phone numbers of the customer IDs.")
                     .Where(customer => ids.Any(id => id == customer.Id))
                     .Select(customer => new Customer
                     {
@@ -38,7 +38,7 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
     public async Task<List<string>> GetEmailAddressesByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
     {
         return await TableNoTracking
-                    .TagWith("Queries the phone numbers of the customer IDs")
+                    .TagWith("Queries the phone numbers of the customer IDs.")
                     .Where(customer => ids.Any(id => id == customer.Id))
                     .Select(customer => customer.Email)
                     .ToListAsync(cancellationToken);
