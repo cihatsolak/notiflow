@@ -15,43 +15,49 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
 
     public async Task Consume(ConsumeContext<EmailNotDeliveredEvent> context)
     {
-        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
-        using NpgsqlTransaction transaction = await npgSqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
+        using NpgsqlTransaction npgsqlTransaction = await npgsqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
         try
         {
-            foreach (var customerId in context.Message.CustomerIds)
+            var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
-                await npgSqlConnection
-                   .ExecuteAsync("insert into emailhistory (cc, bcc, subject, body, is_sent, error_message, sent_date, customer_id) values (@cc, @bcc, @subject, @body, @is_sent, @error_message, @sent_date, @customer_id)",
-                   new
-                   {
-                       cc = context.Message.CcAddresses,
-                       bcc = context.Message.BccAddresses,
-                       body = context.Message.Body,
-                       is_sent = false,
-                       error_message = context.Message.ErrorMessage,
-                       sent_date = context.Message.SentDate,
-                       customer_id = customerId
-                   }, transaction);
-            }
+                recipients = CombineWithComma(context.Message.Recipients),
+                cc = CombineWithComma(context.Message.CcAddresses),
+                bcc = CombineWithComma(context.Message.BccAddresses),
+                subject = context.Message.Subject,
+                body = context.Message.Body,
+                is_sent = false,
+                is_body_html = context.Message.IsBodyHtml,
+                error_message = context.Message.ErrorMessage,
+                sent_date = context.Message.SentDate,
+                customer_id = customerId
+            });
 
-            await transaction.CommitAsync();
+            await npgsqlConnection
+                  .ExecuteAsync(
+                   "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
+                   emailHistories,
+                   npgsqlTransaction);
 
-            _logger.LogInformation("The sent notification has been saved in the database.");
+            await npgsqlTransaction.CommitAsync();
+
+            _logger.LogInformation("Failed e-mail sending information is saved in the database.");
 
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "The sent notification could not be saved to the database.");
+            _logger.LogError(exception, "Failed to save failed e-mail sending information to database.");
 
-            await transaction.RollbackAsync();
+            await npgsqlTransaction.RollbackAsync();
         }
         finally
         {
-            await transaction.DisposeAsync();
-            await npgSqlConnection.CloseAsync();
-            await npgSqlConnection.DisposeAsync();
+            await npgsqlTransaction.DisposeAsync();
+            await npgsqlConnection.CloseAsync();
+            await npgsqlConnection.DisposeAsync();
         }
     }
+
+    private static string CombineWithComma(List<string> list) => string.Join(";", list);
 }
