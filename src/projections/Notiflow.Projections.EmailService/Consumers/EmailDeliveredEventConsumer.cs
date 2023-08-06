@@ -6,10 +6,10 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
     private readonly ILogger<EmailDeliveredEvent> _logger;
 
     public EmailDeliveredEventConsumer(
-        NotiflowDbSetting notiflowDbSetting, 
+        IOptions<NotiflowDbSetting> notiflowDbSetting, 
         ILogger<EmailDeliveredEvent> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting;
+        _notiflowDbSetting = notiflowDbSetting.Value;
         _logger = logger;
     }
 

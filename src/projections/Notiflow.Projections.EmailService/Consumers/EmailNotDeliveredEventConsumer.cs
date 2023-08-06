@@ -6,20 +6,22 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
     private readonly ILogger<EmailNotDeliveredEventConsumer> _logger;
 
     public EmailNotDeliveredEventConsumer(
-        NotiflowDbSetting notiflowDbSetting, 
+        IOptions<NotiflowDbSetting> notiflowDbSetting, 
         ILogger<EmailNotDeliveredEventConsumer> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting;
+        _notiflowDbSetting = notiflowDbSetting.Value;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<EmailNotDeliveredEvent> context)
     {
         using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
+        await npgsqlConnection.OpenAsync();
         using NpgsqlTransaction npgsqlTransaction = await npgsqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
         try
         {
+            
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
                 recipients = CombineWithComma(context.Message.Recipients),

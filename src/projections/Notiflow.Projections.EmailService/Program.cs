@@ -4,6 +4,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         services
         .AddNotiflowDbSetting()
         .AddCustomMassTransit();
+
+        services.AddHostedService<EmailServiceWorker>();
     })
     .Build();
 
