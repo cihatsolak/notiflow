@@ -258,7 +258,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         {
                             t.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
 
-                            t.HasCheckConstraint("chk_sent_date", "sent_date >= NOW() - INTERVAL '30 minutes'");
+                            t.HasCheckConstraint("chk_sent_date", "sent_date <= (now() + interval '30 minutes')");
                         });
                 });
 

@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Persistence.Seeds;
+﻿using System.Text;
+
+namespace Notiflow.Backoffice.Persistence.Seeds;
 
 internal static class SeedData
 {
@@ -12,7 +14,7 @@ internal static class SeedData
         return new Faker<Customer>("tr")
             .RuleFor(customer => customer.Name, faker => faker.Person.FirstName)
             .RuleFor(customer => customer.Surname, faker => faker.Person.LastName)
-            .RuleFor(customer => customer.PhoneNumber, faker => faker.Phone.PhoneNumber("5#########"))
+            .RuleFor(customer => customer.PhoneNumber, faker => faker.Phone.PhoneNumber("53########"))
             .RuleFor(customer => customer.Email, faker => faker.Person.Email)
             .RuleFor(customer => customer.BirthDate, faker => faker.Person.DateOfBirth)
             .RuleFor(customer => customer.Gender, faker => faker.PickRandom<Gender>())
@@ -62,12 +64,23 @@ internal static class SeedData
     private static List<EmailHistory> GenerateEmailHistories()
     {
         return new Faker<EmailHistory>("tr")
-            .RuleFor(emailHistory => emailHistory.Cc, faker => string.Join(";", Enumerable.Range(1, 5).Select(index => faker.Internet.Email())))
+            .RuleFor(emailHistory => emailHistory.Recipients, faker => string.Join(";", Enumerable.Range(1, 3).Select(index => faker.Internet.Email())))
+            .RuleFor(emailHistory => emailHistory.Cc, faker => string.Join(";", Enumerable.Range(1, 3).Select(index => faker.Internet.Email())))
             .RuleFor(emailHistory => emailHistory.Bcc, faker => string.Join(";", Enumerable.Range(1, 2).Select(index => faker.Internet.Email())))
             .RuleFor(emailHistory => emailHistory.Subject, faker => faker.Lorem.Sentence(4))
-            .RuleFor(emailHistory => emailHistory.Body, faker => faker.Lorem.Sentence(50))
-            .RuleFor(emailHistory => emailHistory.IsSent, faker => faker.Random.Bool())
             .RuleFor(emailHistory => emailHistory.IsBodyHtml, faker => faker.Random.Bool())
+            .RuleFor(emailHistory => emailHistory.Body, (faker, emailHistory) =>
+            {
+                if (emailHistory.IsBodyHtml)
+                {
+                    return RandomHtml(faker);
+                }
+                else
+                {
+                    return faker.Lorem.Sentence(250);
+                }
+            })
+            .RuleFor(emailHistory => emailHistory.IsSent, faker => faker.Random.Bool())
             .RuleFor(emailHistory => emailHistory.ErrorMessage, (faker, emailHistory) =>
             {
                 if (emailHistory.IsSent)
@@ -79,7 +92,7 @@ internal static class SeedData
                     return faker.Lorem.Sentence();
                 }
             })
-           .RuleFor(emailHistory => emailHistory.SentDate, faker => faker.Date.Between(DateTime.Now.AddDays(-90), DateTime.Now.AddMinutes(-15)))
+           .RuleFor(emailHistory => emailHistory.SentDate, faker => faker.Date.Between(DateTime.Now.AddDays(-90), DateTime.Now.AddDays(-5)))
            .Generate(50);
     }
 
@@ -101,5 +114,33 @@ internal static class SeedData
             })
            .RuleFor(textMessageHistory => textMessageHistory.SentDate, faker => faker.Date.Between(DateTime.Now.AddDays(-90), DateTime.Now.AddMinutes(-15)))
            .Generate(380);
+    }
+
+    private static string RandomHtml(Faker faker)
+    {
+        string title = faker.Lorem.Sentence();
+        string paragraph1 = faker.Lorem.Paragraph();
+        string paragraph2 = faker.Lorem.Paragraph();
+        string listItem1 = faker.Lorem.Word();
+        string listItem2 = faker.Lorem.Word();
+
+        StringBuilder htmlBuilder = new();
+        htmlBuilder.AppendLine("<!DOCTYPE html>");
+        htmlBuilder.AppendLine("<html>");
+        htmlBuilder.AppendLine("<head>");
+        htmlBuilder.AppendLine("<title>" + title + "</title>");
+        htmlBuilder.AppendLine("</head>");
+        htmlBuilder.AppendLine("<body>");
+        htmlBuilder.AppendLine("<h1>" + title + "</h1>");
+        htmlBuilder.AppendLine("<p>" + paragraph1 + "</p>");
+        htmlBuilder.AppendLine("<p>" + paragraph2 + "</p>");
+        htmlBuilder.AppendLine("<ul>");
+        htmlBuilder.AppendLine("<li>" + listItem1 + "</li>");
+        htmlBuilder.AppendLine("<li>" + listItem2 + "</li>");
+        htmlBuilder.AppendLine("</ul>");
+        htmlBuilder.AppendLine("</body>");
+        htmlBuilder.AppendLine("</html>");
+
+        return htmlBuilder.ToString();
     }
 }

@@ -90,7 +90,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     table.PrimaryKey("pk_emailhistory", x => x.id);
                     table.CheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
-                    table.CheckConstraint("chk_sent_date", "sent_date >= NOW() - INTERVAL '30 minutes'");
+                    table.CheckConstraint("chk_sent_date", "sent_date <= (now() + interval '30 minutes')");
                     table.ForeignKey(
                         name: "fk_emailhistory_customer_customer_id",
                         column: x => x.customer_id,
