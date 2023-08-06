@@ -26,7 +26,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     gender = table.Column<int>(type: "integer", nullable: false),
                     marriage_status = table.Column<int>(type: "integer", nullable: false),
                     is_blocked = table.Column<bool>(type: "boolean", nullable: false),
-                    tenant_token = table.Column<Guid>(type: "uuid", nullable: false),
+                    tenant_id = table.Column<int>(type: "integer", nullable: false),
                     created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     updated_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -34,9 +34,12 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_customer", x => x.id);
+                    table.CheckConstraint("chk_email_format", "email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'");
                     table.CheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
                     table.CheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
                     table.CheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
+                    table.CheckConstraint("chk_phone_number_turkey", "phone_number ~ '^50|53|54|55|56\\d{8}$'");
+                    table.CheckConstraint("chk_tenant_id_restriction", "tenant_id > 0");
                 });
 
             migrationBuilder.CreateTable(
@@ -78,6 +81,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     subject = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
                     body = table.Column<string>(type: "text", nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
+                    is_body_html = table.Column<bool>(type: "boolean", nullable: false),
                     error_message = table.Column<string>(type: "text", unicode: false, nullable: true),
                     sent_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     customer_id = table.Column<int>(type: "integer", nullable: false)
@@ -86,6 +90,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     table.PrimaryKey("pk_emailhistory", x => x.id);
                     table.CheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+                    table.CheckConstraint("chk_sent_date", "sent_date >= NOW() - INTERVAL '30 minutes'");
                     table.ForeignKey(
                         name: "fk_emailhistory_customer_customer_id",
                         column: x => x.customer_id,
@@ -145,16 +150,16 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_customer_email_created_date",
+                name: "ix_customer_email_created_date_tenant_id",
                 table: "customer",
-                columns: new[] { "email", "created_date" },
-                descending: new[] { false, true });
+                columns: new[] { "email", "created_date", "tenant_id" },
+                descending: new[] { false, true, false });
 
             migrationBuilder.CreateIndex(
-                name: "ix_customer_phone_number_created_date",
+                name: "ix_customer_phone_number_created_date_tenant_id",
                 table: "customer",
-                columns: new[] { "phone_number", "created_date" },
-                descending: new[] { false, true });
+                columns: new[] { "phone_number", "created_date", "tenant_id" },
+                descending: new[] { false, true, false });
 
             migrationBuilder.CreateIndex(
                 name: "ix_device_customer_id",

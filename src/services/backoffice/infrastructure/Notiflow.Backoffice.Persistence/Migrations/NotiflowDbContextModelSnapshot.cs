@@ -88,9 +88,9 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasColumnType("character varying(75)")
                         .HasColumnName("surname");
 
-                    b.Property<Guid>("TenantToken")
-                        .HasColumnType("uuid")
-                        .HasColumnName("tenant_token");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tenant_id");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
@@ -101,21 +101,27 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_customer");
 
-                    b.HasIndex("Email", "CreatedDate")
-                        .IsDescending(false, true)
-                        .HasDatabaseName("ix_customer_email_created_date");
+                    b.HasIndex("Email", "CreatedDate", "TenantId")
+                        .IsDescending(false, true, false)
+                        .HasDatabaseName("ix_customer_email_created_date_tenant_id");
 
-                    b.HasIndex("PhoneNumber", "CreatedDate")
-                        .IsDescending(false, true)
-                        .HasDatabaseName("ix_customer_phone_number_created_date");
+                    b.HasIndex("PhoneNumber", "CreatedDate", "TenantId")
+                        .IsDescending(false, true, false)
+                        .HasDatabaseName("ix_customer_phone_number_created_date_tenant_id");
 
                     b.ToTable("customer", null, t =>
                         {
+                            t.HasCheckConstraint("chk_email_format", "email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'");
+
                             t.HasCheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
 
                             t.HasCheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
 
                             t.HasCheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
+
+                            t.HasCheckConstraint("chk_phone_number_turkey", "phone_number ~ '^50|53|54|55|56\\d{8}$'");
+
+                            t.HasCheckConstraint("chk_tenant_id_restriction", "tenant_id > 0");
                         });
                 });
 
@@ -215,6 +221,10 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("error_message");
 
+                    b.Property<bool>("IsBodyHtml")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_body_html");
+
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")
                         .HasColumnName("is_sent");
@@ -247,6 +257,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.ToTable("emailhistory", null, t =>
                         {
                             t.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+
+                            t.HasCheckConstraint("chk_sent_date", "sent_date >= NOW() - INTERVAL '30 minutes'");
                         });
                 });
 

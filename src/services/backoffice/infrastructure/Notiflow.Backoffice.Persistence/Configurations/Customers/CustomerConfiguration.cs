@@ -13,7 +13,9 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
 
         builder.ToTable(nameof(Customer).ToLowerInvariant(), table =>
         {
-            table.HasCheckConstraint("chk_tenant_id_restriction", "[UserId] > 0");
+            table.HasCheckConstraint("chk_email_format", "email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'");
+            table.HasCheckConstraint("chk_phone_number_turkey", "phone_number ~ '^50|53|54|55|56\\d{8}$'");
+            table.HasCheckConstraint("chk_tenant_id_restriction", "tenant_id > 0");
             table.HasCheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
             table.HasCheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
             table.HasCheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
@@ -28,7 +30,7 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
         builder.Property(p => p.BirthDate).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("now()").IsRequired();
         builder.Property(p => p.IsBlocked).IsRequired();
         builder.Property(p => p.TenantId).IsRequired();
-
+                         
         builder.HasIndex(p => new { p.Email, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
         builder.HasIndex(p => new { p.PhoneNumber, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
     }

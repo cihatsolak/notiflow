@@ -10,7 +10,7 @@
             ArgumentException.ThrowIfNullOrEmpty(defaultDateValueSql);
 
             _defaultDateValueSql = defaultDateValueSql;
-            _useLowerTableName = false; ;
+            _useLowerTableName = false;
         }
 
         public BaseHistoricalSoftDeleteEntityConfiguration(string defaultDateValueSql, bool useLowerTableName)
