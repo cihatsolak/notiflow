@@ -4,19 +4,20 @@ internal sealed class FirebaseManager : IFirebaseService
 {
     private readonly IRestService _restService;
     private readonly IRedisService _redisService;
+    private readonly ILogger<FirebaseManager> _logger;
 
     public FirebaseManager(
         IRestService restService, 
-        IRedisService redisService)
+        IRedisService redisService,
+        ILogger<FirebaseManager> logger)
     {
         _restService = restService;
         _redisService = redisService;
+        _logger = logger;
     }
 
-    public async Task<FirebaseNotificationResponse> SendNotificationAsync(FirebaseSingleNotificationRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<NotificationResult> SendNotificationAsync(FirebaseSingleNotificationRequest request, CancellationToken cancellationToken)
     {
-        await TenantAuthorizationCheckAsync();
-
         var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
             ?? throw new TenantException("The tenant's application information could not be found.");
 
@@ -24,13 +25,22 @@ internal sealed class FirebaseManager : IFirebaseService
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
     
-        return await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", request, credentials, cancellationToken);
+        if (firebaseNotificationResponse is null)
+        {
+            _logger.LogInformation("Can't get response from firebase services.");
+            return new NotificationResult();
+        }
+
+        return new NotificationResult
+        {
+            ErrorMessage = firebaseNotificationResponse.ErrorMessage,
+            Succeeded = firebaseNotificationResponse.Succeeded
+        };
     }
 
-    public async Task<FirebaseNotificationResponse> SendNotificationsAsync(FirebaseMultipleNotificationRequest firebaseRequest, CancellationToken cancellationToken)
+    public async Task<NotificationResult> SendNotificationsAsync(FirebaseMultipleNotificationRequest request, CancellationToken cancellationToken)
     {
-        await TenantAuthorizationCheckAsync();
-
         var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
             ?? throw new TenantException("The tenant's application information could not be found.");
         
@@ -38,15 +48,13 @@ internal sealed class FirebaseManager : IFirebaseService
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 
-        return await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", firebaseRequest, credentials, cancellationToken);
-    }
-
-    private async Task TenantAuthorizationCheckAsync()
-    {
-        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
-        if (!isSentNotificationAllowed)
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", request, credentials, cancellationToken);
+        if (firebaseNotificationResponse is null)
         {
-            throw new TenantException("The tenant is not authorized to send notification.");
+            _logger.LogInformation("Can't get response from firebase services.");
+            return new NotificationResult();
         }
+
+        return new NotificationResult(firebaseNotificationResponse.Succeeded, firebaseNotificationResponse.ErrorMessage);
     }
 }

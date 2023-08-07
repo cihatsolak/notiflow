@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Models.Notifications;
 
-internal class NotificationResult
+public class NotificationResult
 {
     public bool Succeeded { get; set; }
     public string ErrorMessage { get; set; }
@@ -9,5 +9,11 @@ internal class NotificationResult
     public NotificationResult()
     {
         SecretIdentity = Guid.Empty;
+    }
+
+    public NotificationResult(bool succeeded, string errorMessage) : this()
+    {
+        ErrorMessage = errorMessage;
+        Succeeded = succeeded;
     }
 }

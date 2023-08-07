@@ -16,15 +16,9 @@ internal sealed class HuaweiManager : IHuaweiService
         _logger = logger;
     }
 
-    public async Task<HuaweiNotificationResponse> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<NotificationResult> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken)
     {
-        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
-        if (!isSentNotificationAllowed)
-        {
-            throw new TenantException("The tenant is not authorized to send notification.");
-        }
-
-        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION)) 
+        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION))
             ?? throw new TenantException("The tenant's application information could not be found.");
 
         List<KeyValuePair<string, string>> credentials = new()
@@ -38,7 +32,7 @@ internal sealed class HuaweiManager : IHuaweiService
         if (authenticationResponse is null)
         {
             _logger.LogError("Failed to connect with huawei store. Failed to authenticate.");
-            return default;
+            return new NotificationResult();
         }
 
         var auhorizationCollection = HttpClientHeaderExtensions
@@ -46,6 +40,13 @@ internal sealed class HuaweiManager : IHuaweiService
 
         //sendUrl = sendUrl.Replace("{ClientId}", clientId); //Todo:
 
-        return await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
+        var huaweiNotificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
+        if (huaweiNotificationResponse is null)
+        {
+            _logger.LogInformation("Can't get response from huawei services.");
+            return new NotificationResult();
+        }
+
+        return new NotificationResult(huaweiNotificationResponse.Succeeded, huaweiNotificationResponse.ErrorMessage);
     }
 }

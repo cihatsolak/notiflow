@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Models.Notifications;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
 
 public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<SendMultipleNotificationCommand, Response<Unit>>
 {
@@ -113,19 +111,10 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
             }
         };
 
-        var firebaseResponse = await _firebaseService.SendNotificationsAsync(firebaseMultipleNotificationRequest, cancellationToken);
-        if (firebaseResponse is null)
-        {
-            _logger.LogInformation("");
-            return new NotificationResult();
-        }
+        var notificationResult = await _firebaseService.SendNotificationsAsync(firebaseMultipleNotificationRequest, cancellationToken);
+        notificationResult.SecretIdentity = secretIdentity;
 
-        return new NotificationResult
-        {
-            Succeeded = firebaseResponse.Succeeded,
-            ErrorMessage = firebaseResponse.Succeeded ? null : firebaseResponse.Results[0].ErrorMessage,
-            SecretIdentity = secretIdentity
-        };
+        return notificationResult;
     }
 
     private async Task<NotificationResult> SendNotifyWithHuawei(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
@@ -149,18 +138,9 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
             }
         };
 
-        var huaweiResponse = await _huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
-        if (huaweiResponse is null)
-        {
-            _logger.LogInformation("");
-            return new NotificationResult();
-        }
+        var notificationResult = await _huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
+        notificationResult.SecretIdentity = secretIdentity;
 
-        return new NotificationResult
-        {
-            Succeeded = huaweiResponse.Succeeded,
-            ErrorMessage = huaweiResponse.ErrorMessage,
-            SecretIdentity = secretIdentity
-        };
+        return notificationResult;
     }
 }

@@ -2,5 +2,5 @@
 
 internal sealed record FirebaseSetting
 {
-    public Uri BaseAddress { get; init; }
+    public required Uri BaseAddress { get; init; }
 }

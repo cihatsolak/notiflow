@@ -1,9 +1,7 @@
-﻿using Notiflow.Backoffice.Application.Models.Notifications;
-
-namespace Notiflow.Backoffice.Application.Interfaces.Services;
+﻿namespace Notiflow.Backoffice.Application.Interfaces.Services;
 
 public interface IFirebaseService
 {
-    Task<FirebaseNotificationResponse> SendNotificationAsync(FirebaseSingleNotificationRequest firebaseRequest, CancellationToken cancellationToken);
-    Task<FirebaseNotificationResponse> SendNotificationsAsync(FirebaseMultipleNotificationRequest firebaseRequest, CancellationToken cancellationToken);
+    Task<NotificationResult> SendNotificationAsync(FirebaseSingleNotificationRequest request, CancellationToken cancellationToken);
+    Task<NotificationResult> SendNotificationsAsync(FirebaseMultipleNotificationRequest request, CancellationToken cancellationToken);
 }

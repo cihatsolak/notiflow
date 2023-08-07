@@ -13,7 +13,6 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         ITextMessageService textMessageService,
         IPublishEndpoint publishEndpoint,
         IRedisService redisService,
-
         ILogger<SendTextMessageCommandHandler> logger)
     {
         _uow = uow;
