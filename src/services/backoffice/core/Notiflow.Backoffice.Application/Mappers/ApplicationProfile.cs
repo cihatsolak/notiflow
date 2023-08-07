@@ -8,6 +8,13 @@ internal sealed class ApplicationProfile : Profile
         TextMessageHistoryMaps();
         NotificationMaps();
         EmailMaps();
+        CustomerMaps();
+    }
+
+    private void CustomerMaps()
+    {
+        CreateMap<Customer, CustomerDataTableResponse>()
+             .ForMember(dest => dest.CloudMessagePlatform, opt => opt.MapFrom(src => src.Device.CloudMessagePlatform));
     }
 
     private void DeviceMaps()

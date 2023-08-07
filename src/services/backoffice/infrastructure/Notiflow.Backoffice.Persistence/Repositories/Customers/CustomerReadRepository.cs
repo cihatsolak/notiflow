@@ -6,6 +6,44 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
     {
     }
 
+    public async Task<(int recordsTotal, List<Customer> customers)> GetPageAsync(string sortKey, string searchKey, int pageIndex, int pageSize, CancellationToken cancellationToken)
+    {
+        var customerTable = TableNoTrackingWithIdentityResolution.IgnoreQueryFilters();
+
+        if (string.IsNullOrWhiteSpace(sortKey))
+            customerTable = customerTable.OrderBy(sortKey);
+        else
+            customerTable = customerTable.OrderByDescending(customer => customer.CreatedDate);
+
+        if (string.IsNullOrWhiteSpace(searchKey))
+        {
+            customerTable = customerTable.Where(customer => string.Concat(customer.Name, customer.Surname, customer.PhoneNumber, customer.Email).IndexOf(searchKey) > -1);
+        }
+
+        int recordsTotal = await customerTable.CountAsync(cancellationToken);
+
+        var customers = await customerTable.Include(customer => customer.Device)
+            .Skip(pageIndex)
+            .Take(pageSize)
+            .Select(customer => new Customer
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Surname = customer.Surname,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                IsBlocked = customer.IsBlocked,
+                IsDeleted = customer.IsDeleted,
+                Device = new Device
+                {
+                    CloudMessagePlatform = customer.Device.CloudMessagePlatform
+                }
+            })
+            .ToListAsync(cancellationToken);
+
+        return (recordsTotal, customers);
+    }
+
     public async Task<bool> IsExistsByPhoneNumberOrEmailAsync(string phoneNumber, string email, CancellationToken cancellationToken = default)
     {
         return await TableNoTracking

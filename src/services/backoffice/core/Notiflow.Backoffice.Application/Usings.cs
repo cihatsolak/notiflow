@@ -8,6 +8,7 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Notiflow.Backoffice.Application.Constants;
 global using Notiflow.Backoffice.Application.Exceptions;
+global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
@@ -20,6 +21,7 @@ global using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessage
 global using Notiflow.Backoffice.Application.Interfaces.Services;
 global using Notiflow.Backoffice.Application.Interfaces.UnitOfWorks;
 global using Notiflow.Backoffice.Application.Mappers;
+global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Application.Models.Emails;
 global using Notiflow.Backoffice.Application.Models.Notifications;
 global using Notiflow.Backoffice.Application.Pipelines;

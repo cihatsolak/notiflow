@@ -4,6 +4,7 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Localization;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
+global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
@@ -21,6 +22,7 @@ global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCusto
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
 global using Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetTextMessageHistoryById;
+global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Localize;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;

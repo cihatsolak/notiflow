@@ -25,4 +25,5 @@ global using Puzzle.Lib.Entities.Entities.Historical;
 global using Puzzle.Lib.Entities.Entities.HistoricalSoftDelete;
 global using Puzzle.Lib.Entities.Entities.SoftDelete;
 global using System.Diagnostics;
+global using System.Linq.Dynamic.Core;
 global using System.Reflection;
