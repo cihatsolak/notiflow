@@ -4,15 +4,18 @@ internal sealed class HuaweiManager : IHuaweiService
 {
     private readonly IRestService _restService;
     private readonly IRedisService _redisService;
+    private readonly HuaweiSetting _huaweiSetting;
     private readonly ILogger<HuaweiManager> _logger;
 
     public HuaweiManager(
         IRestService restService,
         IRedisService redisService,
+        IOptions<HuaweiSetting> huaweiSetting,
         ILogger<HuaweiManager> logger)
     {
         _restService = restService;
         _redisService = redisService;
+        _huaweiSetting = huaweiSetting.Value;
         _logger = logger;
     }
 
@@ -28,7 +31,7 @@ internal sealed class HuaweiManager : IHuaweiService
             new KeyValuePair<string, string>("client_id", tenantApplication.HuaweiClientId)
         };
 
-        var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>("Huawei", "routeUrl", credentials, cancellationToken);
+        var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>("Huawei", _huaweiSetting.AuthenticationRoute, credentials, cancellationToken);
         if (authenticationResponse is null)
         {
             _logger.LogError("Failed to connect with huawei store. Failed to authenticate.");
@@ -40,7 +43,7 @@ internal sealed class HuaweiManager : IHuaweiService
 
         //sendUrl = sendUrl.Replace("{ClientId}", clientId); //Todo:
 
-        var huaweiNotificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", "routeurl", request, auhorizationCollection, cancellationToken);
+        var huaweiNotificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>("Huawei", _huaweiSetting.NotificationRoute, request, auhorizationCollection, cancellationToken);
         if (huaweiNotificationResponse is null)
         {
             _logger.LogInformation("Can't get response from huawei services.");

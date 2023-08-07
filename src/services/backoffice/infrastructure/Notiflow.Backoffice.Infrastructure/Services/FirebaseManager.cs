@@ -4,15 +4,18 @@ internal sealed class FirebaseManager : IFirebaseService
 {
     private readonly IRestService _restService;
     private readonly IRedisService _redisService;
+    private readonly FirebaseSetting _firebaseSetting;
     private readonly ILogger<FirebaseManager> _logger;
 
     public FirebaseManager(
         IRestService restService, 
         IRedisService redisService,
+        IOptions<FirebaseSetting> firebaseSetting,
         ILogger<FirebaseManager> logger)
     {
         _restService = restService;
         _redisService = redisService;
+        _firebaseSetting = firebaseSetting.Value;
         _logger = logger;
     }
 
@@ -25,7 +28,7 @@ internal sealed class FirebaseManager : IFirebaseService
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
     
-        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", request, credentials, cancellationToken);
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
             _logger.LogInformation("Can't get response from firebase services.");
@@ -48,7 +51,7 @@ internal sealed class FirebaseManager : IFirebaseService
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 
-        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", "fcm/send", request, credentials, cancellationToken);
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
             _logger.LogInformation("Can't get response from firebase services.");
