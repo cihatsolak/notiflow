@@ -2,5 +2,5 @@
 
 public interface ITextMessageService
 {
-    Task<bool> SendTextMessageAsync(string phoneNumber, string message, CancellationToken cancellationToken);
+    Task<List<TextMessageResult>> SendTextMessageAsync(TextMessageRequest request, CancellationToken cancellationToken);
 }

@@ -9,6 +9,7 @@ global using Notiflow.Backoffice.Application.Exceptions;
 global using Notiflow.Backoffice.Application.Interfaces.Services;
 global using Notiflow.Backoffice.Application.Models.Emails;
 global using Notiflow.Backoffice.Application.Models.Notifications;
+global using Notiflow.Backoffice.Application.Models.TextMessages;
 global using Notiflow.Backoffice.Infrastructure.Services;
 global using Notiflow.Backoffice.Infrastructure.Settings;
 global using Notiflow.Common.Caching;

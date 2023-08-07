@@ -16,6 +16,7 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
         using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
+        await npgsqlConnection.OpenAsync();
         using NpgsqlTransaction npgsqlTransaction = await npgsqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
         try

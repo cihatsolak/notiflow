@@ -26,7 +26,7 @@ public sealed class TextMessagesController : BaseApiController
     [HttpPost("send-single")]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SendSingle([FromBody] SendSingleTextMessageCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> SendSingle([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return CreateOkResultInstance(response);

@@ -15,12 +15,6 @@ internal sealed class EmailManager : IEmailService
 
     public async Task<bool> SendAsync(EmailRequest request)
     {
-        bool isSentEmailAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.EMAIL_PERMISSION);
-        if (!isSentEmailAllowed)
-        {
-            throw new TenantException("The tenant is not authorized to send email.");
-        }
-
         var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION))
             ?? throw new TenantException("The tenant's application information could not be found.");
 
@@ -34,7 +28,7 @@ internal sealed class EmailManager : IEmailService
         mailMessage.From = new MailAddress(tenantApplication.MailFromAddress, tenantApplication.MailFromName, Encoding.UTF8);
         mailMessage.Subject = request.Subject;
         mailMessage.SubjectEncoding = Encoding.UTF8;
-        mailMessage.IsBodyHtml = true;
+        mailMessage.IsBodyHtml = request.IsBodyHtml;
         mailMessage.Body = request.Body;
         mailMessage.BodyEncoding = Encoding.UTF8;
         mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.None;
@@ -66,7 +60,6 @@ internal sealed class EmailManager : IEmailService
         catch (Exception exception)
         {
             _logger.LogError(exception, "Email sending failed.");
-            throw;
         }
         finally
         {

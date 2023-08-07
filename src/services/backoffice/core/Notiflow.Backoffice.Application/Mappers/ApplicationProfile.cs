@@ -20,8 +20,8 @@ internal sealed class ApplicationProfile : Profile
     {
         CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
 
-        CreateMap<SendSingleTextMessageCommand, TextMessageDeliveredEvent>();
-        CreateMap<SendSingleTextMessageCommand, TextMessageNotDeliveredEvent>();
+        CreateMap<SendTextMessageCommand, TextMessageDeliveredEvent>();
+        CreateMap<SendTextMessageCommand, TextMessageNotDeliveredEvent>();
     }
 
     private void NotificationMaps()

@@ -4,8 +4,14 @@ internal sealed class TextMessageManager : ITextMessageService
 {
     private static readonly Random Random = new();
 
-    public Task<bool> SendTextMessageAsync(string phoneNumber, string message, CancellationToken cancellationToken)
+    public Task<List<TextMessageResult>> SendTextMessageAsync(TextMessageRequest request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Random.NextDouble() < 0.5);
+        var textMessageResult = request.PhoneNumbers.Select(phoneNumber => new TextMessageResult
+        {
+            PhoneNumber = phoneNumber,
+            IsSent = Random.NextDouble() < 0.5
+        }).ToList();
+
+        return Task.FromResult(textMessageResult);
     }
 }
