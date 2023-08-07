@@ -1,13 +1,13 @@
 ﻿namespace Notiflow.Common.MessageBroker.Events.TextMessage;
 
-public class TextMessageDeliveredEvent
+public sealed record TextMessageDeliveredEvent
 {
     public TextMessageDeliveredEvent()
     {
         SentDate = DateTime.Now;
     }
 
-    public int CustomerId { get; set; }
-    public string Message { get; set; }
-    public DateTime SentDate { get; set; }
+    public List<int> CustomerIds { get; init; }
+    public string Message { get; init; }
+    public DateTime SentDate { get; init; }
 }

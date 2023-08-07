@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Common.MessageBroker.Events.TextMessage;
 
-public class TextMessageNotDeliveredEvent
+public sealed record TextMessageNotDeliveredEvent
 {
     public TextMessageNotDeliveredEvent()
     {
@@ -8,8 +8,8 @@ public class TextMessageNotDeliveredEvent
         ErrorMessage = "The message could not be sent for an unknown reason.";
     }
 
-    public int CustomerId { get; set; }
-    public string Message { get; set; }
-    public string ErrorMessage { get; set; }
-    public DateTime SentDate { get; set; }
+    public List<int> CustomerIds { get; init; }
+    public string Message { get; init; }
+    public string ErrorMessage { get; init; }
+    public DateTime SentDate { get; init; }
 }

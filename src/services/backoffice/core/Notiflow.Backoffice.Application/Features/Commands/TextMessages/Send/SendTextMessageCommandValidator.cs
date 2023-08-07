@@ -4,7 +4,7 @@ public sealed class SendTextMessageCommandValidator : AbstractValidator<SendText
 {
     public SendTextMessageCommandValidator()
     {
-        RuleFor(p => p.CustomerId).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
+        RuleForEach(p => p.CustomerIds).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
         RuleFor(p => p.Message).NotNullAndNotEmpty("-1");
     }
 }

@@ -1,36 +1,39 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace Notiflow.Backoffice.Persistence.Contexts;
 
 public sealed class NotiflowDbContext : DbContext
 {
-    private readonly Guid _tenantToken;
+    private readonly int _tenantId;
 
-    public NotiflowDbContext(DbContextOptions<NotiflowDbContext> options) : base(options)
+    public NotiflowDbContext(DbContextOptions<NotiflowDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+        if (httpContextAccessor?.HttpContext is null)
+            return;
+
+        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue(ClaimTypes.PrimaryGroupSid, out StringValues tenantToken);
+        if (isExists)
+        {
+            _tenantId = int.Parse(tenantToken.Single());
+        }
     }
-
-    //public NotiflowDbContext(DbContextOptions<NotiflowDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
-    //{
-    //    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-    //    if (httpContextAccessor?.HttpContext is null)
-    //        return;
-
-    //    bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
-    //    if (isExists)
-    //    {
-    //        _tenantToken = Guid.Parse(tenantToken.Single());
-    //    }
-    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-       // modelBuilder.Entity<Customer>().HasQueryFilter(customer => customer.TenantToken == _tenantToken);
+        modelBuilder.Entity<Customer>()
+           .HasQueryFilter(customer => !customer.IsBlocked &&
+                                       !customer.IsDeleted);
+
+        //modelBuilder.Entity<Customer>()
+        //     .HasQueryFilter(customer => !customer.IsBlocked &&
+        //                                 !customer.IsDeleted &&
+        //                                  customer.TenantId == _tenantId);
     }
 
     public DbSet<Customer> Customers { get; set; }
@@ -57,6 +60,6 @@ public class NotiflowDbContextFactory : IDesignTimeDbContextFactory<NotiflowDbCo
         optionsBuilder.UseNpgsql(configurationRoot.GetSection(nameof(NotiflowDbContext))["ConnectionString"]);
         optionsBuilder.UseSnakeCaseNamingConvention();
 
-        return new NotiflowDbContext(optionsBuilder.Options);
+        return new NotiflowDbContext(optionsBuilder.Options, null);
     }
 }

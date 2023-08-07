@@ -33,5 +33,6 @@ internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConf
                          
         builder.HasIndex(p => new { p.Email, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
         builder.HasIndex(p => new { p.PhoneNumber, p.CreatedDate, p.TenantId }).IsDescending(false, true, false);
+        builder.HasIndex(p => new { p.IsBlocked, p.IsDeleted, p.TenantId });
     }
 }

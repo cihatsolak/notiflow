@@ -32,65 +32,33 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
             return Response<Unit>.Fail(-1);
         }
 
-        List<Customer> customers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
-        if (customers.IsNullOrNotAny())
+        List<string> phoneNumbers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
+        if (phoneNumbers.IsNullOrNotAny())
         {
             _logger.LogWarning("No customers of customer IDs were found. {@customerIds}", request.CustomerIds);
             return Response<Unit>.Fail(-1);
         }
 
-        if (customers.Count != request.CustomerIds.Count)
+        if (phoneNumbers.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match.", request.CustomerIds);
             return Response<Unit>.Fail(-1);
         }
 
-        TextMessageRequest textMessageRequest = new()
+        bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumbers, request.Message, cancellationToken);
+        if (!succeeded)
         {
-            Message = request.Message,
-            PhoneNumbers = customers.Select(p => p.PhoneNumber)
-        };
+            await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
 
-        List<TextMessageResult> textMessageResults = await _textMessageService.SendTextMessageAsync(textMessageRequest, cancellationToken);
+            _logger.LogWarning("Sending messages to customers {@CustomerIds} failed.", request.CustomerIds);
 
-        await ReportFailedStatusAsync(textMessageResults, customers, request, cancellationToken);
+            return Response<Unit>.Fail(-1);
+        }
 
-        await ReportSuccessfulStatusAsync(textMessageResults, customers, request, cancellationToken);
-
-        return Response<Unit>.Success(-1);
-    }
-
-    private async Task ReportFailedStatusAsync(IEnumerable<TextMessageResult> textMessageResults, List<Customer> customers, SendTextMessageCommand request, CancellationToken cancellationToken)
-    {
-        var failedTextMessageResults = textMessageResults.Where(result => !result.IsSent);
-        if (!failedTextMessageResults.Any())
-            return;
-
-        var textMessageNotDeliveredEvents = failedTextMessageResults.Select(failedResult => new TextMessageNotDeliveredEvent
-        {
-            CustomerId = customers.Single(customer => customer.PhoneNumber == failedResult.PhoneNumber).Id,
-            Message = request.Message
-        });
-
-        await _publishEndpoint.Publish(textMessageNotDeliveredEvents, cancellationToken);
-
-        _logger.LogWarning("Sending messages to users {@CustomerIds} failed.", request.CustomerIds);
-    }
-
-    private async Task ReportSuccessfulStatusAsync(IEnumerable<TextMessageResult> textMessageResults, List<Customer> customers, SendTextMessageCommand request, CancellationToken cancellationToken)
-    {
-        var successfulTextMessageResults = textMessageResults.Where(result => result.IsSent);
-        if (!successfulTextMessageResults.Any())
-            return;
-
-        var textMessageDeliveredEvents = successfulTextMessageResults.Select(successfulResult => new TextMessageDeliveredEvent
-        {
-            CustomerId = customers.Single(customer => customer.PhoneNumber == successfulResult.PhoneNumber).Id,
-            Message = request.Message
-        });
-
-        await _publishEndpoint.Publish(textMessageDeliveredEvents, cancellationToken);
+        await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
 
         _logger.LogWarning("Message to customers {@CustomerIds} has been sent successfully.", request.CustomerIds);
+
+        return Response<Unit>.Success(-1);
     }
 }
