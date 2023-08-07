@@ -7,28 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notiflow.Backoffice.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCommit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "tenant",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
-                    definition = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
-                    app_id = table.Column<Guid>(type: "uuid", unicode: false, fixedLength: true, maxLength: 36, nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
-                    updated_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_tenant", x => x.id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "customer",
                 columns: table => new
@@ -51,90 +34,12 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_customer", x => x.id);
+                    table.CheckConstraint("chk_email_format", "email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'");
                     table.CheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
                     table.CheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
                     table.CheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
-                    table.ForeignKey(
-                        name: "fk_customer_tenants_tenant_id",
-                        column: x => x.tenant_id,
-                        principalTable: "tenant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tenantapplication",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    firebase_server_key = table.Column<string>(type: "character(152)", unicode: false, fixedLength: true, maxLength: 152, nullable: false),
-                    firebase_sender_id = table.Column<string>(type: "character(11)", unicode: false, fixedLength: true, maxLength: 11, nullable: false),
-                    huawei_server_key = table.Column<string>(type: "character(44)", unicode: false, fixedLength: true, maxLength: 44, nullable: false),
-                    huawei_sender_id = table.Column<string>(type: "character(12)", unicode: false, fixedLength: true, maxLength: 12, nullable: false),
-                    mail_from_address = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: false),
-                    mail_from_name = table.Column<string>(type: "character varying(150)", unicode: false, maxLength: 150, nullable: false),
-                    mail_reply_address = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: false),
-                    tenant_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
-                    updated_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_tenantapplication", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_tenantapplication_tenants_tenant_id",
-                        column: x => x.tenant_id,
-                        principalTable: "tenant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tenantpermission",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    is_send_message_permission = table.Column<bool>(type: "boolean", nullable: false),
-                    is_send_notification_permission = table.Column<bool>(type: "boolean", nullable: false),
-                    is_send_email_permission = table.Column<bool>(type: "boolean", nullable: false),
-                    tenant_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
-                    updated_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_tenantpermission", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_tenantpermission_tenant_tenant_id",
-                        column: x => x.tenant_id,
-                        principalTable: "tenant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "user",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    username = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
-                    password = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    tenant_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
-                    updated_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_user", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_user_tenant_tenant_id",
-                        column: x => x.tenant_id,
-                        principalTable: "tenant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.CheckConstraint("chk_phone_number_turkey", "phone_number ~ '^50|53|54|55|56\\d{8}$'");
+                    table.CheckConstraint("chk_tenant_id_restriction", "tenant_id > 0");
                 });
 
             migrationBuilder.CreateTable(
@@ -176,6 +81,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     subject = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
                     body = table.Column<string>(type: "text", nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
+                    is_body_html = table.Column<bool>(type: "boolean", nullable: false),
                     error_message = table.Column<string>(type: "text", unicode: false, nullable: true),
                     sent_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     customer_id = table.Column<int>(type: "integer", nullable: false)
@@ -184,6 +90,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 {
                     table.PrimaryKey("pk_emailhistory", x => x.id);
                     table.CheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+                    table.CheckConstraint("chk_sent_date", "sent_date <= (now() + interval '30 minutes')");
                     table.ForeignKey(
                         name: "fk_emailhistory_customer_customer_id",
                         column: x => x.customer_id,
@@ -200,6 +107,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     message = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    sender_identity = table.Column<Guid>(type: "uuid", unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
                     error_message = table.Column<string>(type: "text", unicode: false, nullable: true),
                     sent_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
@@ -242,9 +150,16 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_customer_tenant_id",
+                name: "ix_customer_email_created_date_tenant_id",
                 table: "customer",
-                column: "tenant_id");
+                columns: new[] { "email", "created_date", "tenant_id" },
+                descending: new[] { false, true, false });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_customer_phone_number_created_date_tenant_id",
+                table: "customer",
+                columns: new[] { "phone_number", "created_date", "tenant_id" },
+                descending: new[] { false, true, false });
 
             migrationBuilder.CreateIndex(
                 name: "ix_device_customer_id",
@@ -263,26 +178,9 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 column: "customer_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_tenantapplication_tenant_id",
-                table: "tenantapplication",
-                column: "tenant_id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_tenantpermission_tenant_id",
-                table: "tenantpermission",
-                column: "tenant_id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "ix_textmessagehistory_customer_id",
                 table: "textmessagehistory",
                 column: "customer_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_user_tenant_id",
-                table: "user",
-                column: "tenant_id");
         }
 
         /// <inheritdoc />
@@ -298,22 +196,10 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 name: "notificationhistory");
 
             migrationBuilder.DropTable(
-                name: "tenantapplication");
-
-            migrationBuilder.DropTable(
-                name: "tenantpermission");
-
-            migrationBuilder.DropTable(
                 name: "textmessagehistory");
 
             migrationBuilder.DropTable(
-                name: "user");
-
-            migrationBuilder.DropTable(
                 name: "customer");
-
-            migrationBuilder.DropTable(
-                name: "tenant");
         }
     }
 }

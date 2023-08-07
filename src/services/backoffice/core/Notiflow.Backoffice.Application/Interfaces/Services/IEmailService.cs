@@ -1,7 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Interfaces.Services
+﻿namespace Notiflow.Backoffice.Application.Interfaces.Services;
+
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task<bool> SendAsync();
-    }
+    Task<bool> SendAsync(EmailRequest request);
 }

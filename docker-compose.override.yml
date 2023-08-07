@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  identityserver.mssql:
+    container_name: identityserver-mssql
+    restart: always
+    ports:
+      - 1433:1433
+    volumes:
+      - identityserver.mssql_volume:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
+
+  backoffice.postgresql:
+    container_name: backoffice-postgresql
+    restart: on-failure:2
+    ports:
+      - 5432:5432
+    volumes:
+      - backoffice.postgresql_volume:/var/lib/postgresql/data
+    environment:
+      - TZ=Europe/Istanbul
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Password123
+      - POSTGRES_DB=notiflow
+
+  rabbitmq:
+    container_name: backoffice-rabbitmq-1
+    hostname: backoffice-rabbitmq-1
+    restart: on-failure
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - TZ=Europe/Istanbul
+
+  redis-master:
+    container_name: redis-master
+    hostname: redis-master
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_volume:/data
+    environment:
+      - TZ=Europe/Istanbul
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=DMu4JbQ2ZnxyWFW
+
+  redis-slave:
+    container_name: redis-slave
+    hostname: redis-slave
+    restart: unless-stopped
+    ports:
+      - 6380:6379
+    depends_on:
+      - redis-master
+    volumes:
+      - redis_volume:/data
+    environment:
+      - TZ=Europe/Istanbul
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=DMu4JbQ2ZnxyWFW
+      - REDIS_PASSWORD=DMu4JbQ2ZnxyWFW

@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notiflow.Backoffice.Persistence.Migrations
 {
     [DbContext(typeof(NotiflowDbContext))]
-    [Migration("20230416134208_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230806202108_InitialCommit")]
+    partial class InitialCommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -104,16 +104,27 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_customer");
 
-                    b.HasIndex("TenantId")
-                        .HasDatabaseName("ix_customer_tenant_id");
+                    b.HasIndex("Email", "CreatedDate", "TenantId")
+                        .IsDescending(false, true, false)
+                        .HasDatabaseName("ix_customer_email_created_date_tenant_id");
+
+                    b.HasIndex("PhoneNumber", "CreatedDate", "TenantId")
+                        .IsDescending(false, true, false)
+                        .HasDatabaseName("ix_customer_phone_number_created_date_tenant_id");
 
                     b.ToTable("customer", null, t =>
                         {
+                            t.HasCheckConstraint("chk_email_format", "email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'");
+
                             t.HasCheckConstraint("chk_gender_value_limitation", "gender IN (1,2)");
 
                             t.HasCheckConstraint("chk_marriage_status_value_limitation", "marriage_status IN (1,2)");
 
                             t.HasCheckConstraint("chk_minimum_age_restriction", "birth_date >= '1950-01-01'");
+
+                            t.HasCheckConstraint("chk_phone_number_turkey", "phone_number ~ '^50|53|54|55|56\\d{8}$'");
+
+                            t.HasCheckConstraint("chk_tenant_id_restriction", "tenant_id > 0");
                         });
                 });
 
@@ -213,6 +224,10 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("error_message");
 
+                    b.Property<bool>("IsBodyHtml")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_body_html");
+
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")
                         .HasColumnName("is_sent");
@@ -245,6 +260,8 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.ToTable("emailhistory", null, t =>
                         {
                             t.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
+
+                            t.HasCheckConstraint("chk_sent_date", "sent_date <= (now() + interval '30 minutes')");
                         });
                 });
 
@@ -276,6 +293,13 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .IsUnicode(true)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("message");
+
+                    b.Property<Guid>("SenderIdentity")
+                        .HasMaxLength(36)
+                        .IsUnicode(false)
+                        .HasColumnType("uuid")
+                        .HasColumnName("sender_identity")
+                        .IsFixedLength();
 
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
@@ -348,249 +372,6 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid>("AppId")
-                        .HasMaxLength(36)
-                        .IsUnicode(false)
-                        .HasColumnType("uuid")
-                        .HasColumnName("app_id")
-                        .IsFixedLength();
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Definition")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(300)")
-                        .HasColumnName("definition");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.HasKey("Id")
-                        .HasName("pk_tenant");
-
-                    b.ToTable("tenant", (string)null);
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.TenantApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("FirebaseSenderId")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .IsUnicode(false)
-                        .HasColumnType("character(11)")
-                        .HasColumnName("firebase_sender_id")
-                        .IsFixedLength();
-
-                    b.Property<string>("FirebaseServerKey")
-                        .IsRequired()
-                        .HasMaxLength(152)
-                        .IsUnicode(false)
-                        .HasColumnType("character(152)")
-                        .HasColumnName("firebase_server_key")
-                        .IsFixedLength();
-
-                    b.Property<string>("HuaweiSenderId")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .IsUnicode(false)
-                        .HasColumnType("character(12)")
-                        .HasColumnName("huawei_sender_id")
-                        .IsFixedLength();
-
-                    b.Property<string>("HuaweiServerKey")
-                        .IsRequired()
-                        .HasMaxLength(44)
-                        .IsUnicode(false)
-                        .HasColumnType("character(44)")
-                        .HasColumnName("huawei_server_key")
-                        .IsFixedLength();
-
-                    b.Property<string>("MailFromAddress")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("mail_from_address");
-
-                    b.Property<string>("MailFromName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("mail_from_name");
-
-                    b.Property<string>("MailReplyAddress")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("mail_reply_address");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tenant_id");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.HasKey("Id")
-                        .HasName("pk_tenantapplication");
-
-                    b.HasIndex("TenantId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_tenantapplication_tenant_id");
-
-                    b.ToTable("tenantapplication", (string)null);
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.TenantPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<bool>("IsSendEmailPermission")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_send_email_permission");
-
-                    b.Property<bool>("IsSendMessagePermission")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_send_message_permission");
-
-                    b.Property<bool>("IsSendNotificationPermission")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_send_notification_permission");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tenant_id");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.HasKey("Id")
-                        .HasName("pk_tenantpermission");
-
-                    b.HasIndex("TenantId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_tenantpermission_tenant_id");
-
-                    b.ToTable("tenantpermission", (string)null);
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(true)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("password");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tenant_id");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("username");
-
-                    b.HasKey("Id")
-                        .HasName("pk_user");
-
-                    b.HasIndex("TenantId")
-                        .HasDatabaseName("ix_user_tenant_id");
-
-                    b.ToTable("user", (string)null);
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Customers.Customer", b =>
-                {
-                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", "Tenant")
-                        .WithMany("Customers")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_customer_tenants_tenant_id");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Devices.Device", b =>
                 {
                     b.HasOne("Notiflow.Backoffice.Domain.Entities.Customers.Customer", "Customer")
@@ -639,42 +420,6 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.TenantApplication", b =>
-                {
-                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", "Tenant")
-                        .WithOne("TenantApplication")
-                        .HasForeignKey("Notiflow.Backoffice.Domain.Entities.Tenants.TenantApplication", "TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_tenantapplication_tenants_tenant_id");
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.TenantPermission", b =>
-                {
-                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", "Tenant")
-                        .WithOne("TenantPermission")
-                        .HasForeignKey("Notiflow.Backoffice.Domain.Entities.Tenants.TenantPermission", "TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_tenantpermission_tenant_tenant_id");
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Users.User", b =>
-                {
-                    b.HasOne("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", "Tenant")
-                        .WithMany("Users")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_tenant_tenant_id");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Navigation("Device");
@@ -684,17 +429,6 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.Navigation("NotificationHistories");
 
                     b.Navigation("TextMessageHistories");
-                });
-
-            modelBuilder.Entity("Notiflow.Backoffice.Domain.Entities.Tenants.Tenant", b =>
-                {
-                    b.Navigation("Customers");
-
-                    b.Navigation("TenantApplication");
-
-                    b.Navigation("TenantPermission");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

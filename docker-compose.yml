@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  identityserver.mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+  backoffice.postgresql:
+    image: postgres
+  rabbitmq:
+    image: rabbitmq:3.11.20-management
+  redis-master:
+    image: redis:latest
+  redis-slave:
+    image: redis:latest
+
+volumes:
+  identityserver.mssql_volume:
+  backoffice.postgresql_volume:
+  rabbitmq_volume:
+  redis_volume:

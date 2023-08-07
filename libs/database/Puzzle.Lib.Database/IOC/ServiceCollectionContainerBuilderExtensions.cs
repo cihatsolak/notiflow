@@ -23,7 +23,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
         SqlSetting sqlSetting = configuration.GetRequiredSection(configKey).Get<SqlSetting>();
 
-        services.AddDbContextPool<TDbContext>(contextOptions =>
+        services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
             contextOptions.ConfigureCustomLogs(isProductionEnvironment);

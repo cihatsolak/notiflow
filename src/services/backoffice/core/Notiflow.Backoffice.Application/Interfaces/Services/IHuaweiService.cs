@@ -2,5 +2,5 @@
 
 public interface IHuaweiService
 {
-    Task<HuaweiNotificationResponse> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken);
+    Task<NotificationResult> SendNotificationAsync(HuaweiNotificationRequest request, CancellationToken cancellationToken);
 }

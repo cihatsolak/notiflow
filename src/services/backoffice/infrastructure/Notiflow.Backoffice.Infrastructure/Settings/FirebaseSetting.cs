@@ -2,5 +2,9 @@
 
 internal sealed record FirebaseSetting
 {
-    public Uri BaseAddress { get; init; }
+    [JsonRequired]
+    public required Uri BaseAddress { get; init; }
+
+    [JsonRequired]
+    public required string Route { get; set; }
 }

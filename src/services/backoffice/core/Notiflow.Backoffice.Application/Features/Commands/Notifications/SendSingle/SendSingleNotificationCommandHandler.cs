@@ -3,6 +3,7 @@
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
+    private readonly IRedisService _redisService;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
@@ -10,12 +11,14 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     public SendSingleNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
+        IRedisService redisService,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
         IPublishEndpoint publishEndpoint,
         ILogger<SendSingleNotificationCommandHandler> logger)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
+        _redisService = redisService;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
@@ -24,6 +27,13 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     public async Task<Response<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
+        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
+        if (!isSentNotificationAllowed)
+        {
+            _logger.LogWarning("The tenant is not authorized to send notification.");
+            return Response<Unit>.Fail(-1);
+        }
+
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is null)
         {
@@ -35,7 +45,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         {
             CloudMessagePlatform.Firesabe => await SendNotifyWithFirebase(request, device.Token, cancellationToken),
             CloudMessagePlatform.Huawei => await SendNotifyWithHuawei(request, device.Token, cancellationToken),
-            _ => throw new Exception(""),
+            _ => throw new DeviceException("The cloud messaging platform could not be determined."),
         };
 
         if (!notificationResult.Succeeded)
@@ -64,7 +74,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     {
         Guid secretIdentity = Guid.NewGuid();
 
-        FirebaseSingleNotificationRequest firebaseSingleNotificationRequest = new()
+        FirebaseSingleNotificationRequest singleNotificationRequest = new()
         {
             DeviceToken = deviceToken,
             FirebaseMessage = new FirebaseMessage
@@ -81,26 +91,17 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             }
         };
 
-        var firebaseResponse = await _firebaseService.SendNotificationAsync(firebaseSingleNotificationRequest, cancellationToken);
-        if (firebaseResponse is null)
-        {
-            _logger.LogInformation("");
-            return new NotificationResult();
-        }
-        
-        return new NotificationResult
-        {
-            Succeeded = firebaseResponse.Succeeded,
-            ErrorMessage = firebaseResponse.Succeeded ? null : firebaseResponse.Results[0].ErrorMessage,
-            SecretIdentity = secretIdentity
-        };
+        var notificationResult = await _firebaseService.SendNotificationAsync(singleNotificationRequest, cancellationToken);
+        notificationResult.SecretIdentity = secretIdentity;
+
+        return notificationResult;
     }
 
     private async Task<NotificationResult> SendNotifyWithHuawei(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 
-        HuaweiNotificationRequest huaweiNotificationRequest = new()
+        HuaweiNotificationRequest notificationRequest = new()
         {
             Message = new HuaweiMessage
             {
@@ -121,18 +122,9 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             }
         };
 
-        var huaweiResponse = await _huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
-        if (huaweiResponse is null)
-        {
-            _logger.LogInformation("");
-            return new NotificationResult();
-        }
+        var notificationResult = await _huaweiService.SendNotificationAsync(notificationRequest, cancellationToken);
+        notificationResult.SecretIdentity = secretIdentity;
 
-        return new NotificationResult
-        {
-            Succeeded = huaweiResponse.Succeeded,
-            ErrorMessage = huaweiResponse.ErrorMessage,
-            SecretIdentity = secretIdentity
-        };
+        return notificationResult;
     }
 }

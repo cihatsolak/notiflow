@@ -3,6 +3,21 @@
 public sealed class CustomersController : BaseApiController
 {
     /// <summary>
+    /// Lists customers in datatable format by pagination
+    /// </summary>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Customers not found</response>
+    [HttpPost("datatable")]
+    [ProducesResponseType(typeof(Response<DtResult<CustomerDataTableResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DataTable([FromBody] CustomerDataTableCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        return CreateGetResultInstance(response);
+    }
+
+    /// <summary>
     /// Lists the customer's detail information
     /// </summary>
     /// <response code="200">Operation successful</response>

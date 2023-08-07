@@ -11,7 +11,8 @@ internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailH
         base.Configure(builder);
 
         builder.ToTable(nameof(EmailHistory).ToLowerInvariant(), table =>
-        {
+        {                                           
+            table.HasCheckConstraint("chk_sent_date", "sent_date <= (now() + interval '30 minutes')");
             table.HasCheckConstraint("chk_emailhistory_transaction_check", "is_sent = false AND error_message IS NOT NULL OR is_sent = true AND error_message IS NULL");
         });
 
@@ -21,6 +22,7 @@ internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailH
         builder.Property(p => p.Subject).HasMaxLength(300).IsUnicode(false).IsRequired();
         builder.Property(p => p.Body).IsUnicode(true).IsRequired();
         builder.Property(p => p.IsSent).IsRequired();
+        builder.Property(p => p.IsBodyHtml).IsRequired();
         builder.Property(p => p.ErrorMessage).IsUnicode(false).IsRequired(false);
         builder.Property(p => p.SentDate).ValueGeneratedOnAdd().HasDefaultValueSql("now()").IsRequired();
 

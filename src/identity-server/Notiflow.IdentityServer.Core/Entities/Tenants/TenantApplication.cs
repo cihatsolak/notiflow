@@ -9,6 +9,8 @@ public class TenantApplication : BaseHistoricalEntity
     public string MailFromAddress { get; set; }
     public string MailFromName { get; set; }
     public string MailReplyAddress { get; set; }
+    public string MailSmtpHost { get; set; }
+    public int MailSmtpPort { get; set; }
 
     public int TenantId { get; set; }
     public Tenant Tenant { get; set; }

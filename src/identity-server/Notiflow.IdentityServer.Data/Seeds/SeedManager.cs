@@ -21,7 +21,7 @@ internal static class SeedManager
             return;
         }
 
-        await applicationDbContext.Tenants.AddRangeAsync(TenantSeedData.GenerateFakeTenants());
+        await applicationDbContext.Tenants.AddRangeAsync(SeedData.GenerateFakeTenants());
         await applicationDbContext.SaveChangesAsync();
     }
 }

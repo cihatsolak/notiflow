@@ -4,6 +4,7 @@ public sealed class NotificationHistory : BaseEntity
 {
     public string Title { get; set; }
     public string Message { get; set; }
+    public Guid SenderIdentity { get; set; }
     public bool IsSent { get; set; }
     public string ErrorMessage { get; set; }
     public DateTime SentDate { get; set; }

@@ -156,6 +156,54 @@ public interface IRestService
         CancellationToken cancellationToken = default) where TResponse : class, new();
 
     /// <summary>
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
+    /// A cancellation token can be provided to cancel the request.
+    /// </summary>
+    /// <typeparam name="TResponse">The expected response type</typeparam>
+    /// <param name="clientName">The name of the client to use for the request</param>
+    /// <param name="routeUrl">The URL of the route to request</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+    /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
+    /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
+    Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
+
+    /// <summary>
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters,
+    /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
+    /// </summary>
+    /// <typeparam name="TResponse">The expected response type</typeparam>
+    /// <param name="clientName">The name of the client to use for the request</param>
+    /// <param name="routeUrl">The URL of the route to request</param>
+    /// <param name="parameters">The object representing the parameters to include in the request</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+    /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
+    /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
+    Task<TResponse> PatchResponseAsync<TResponse>(
+        string clientName,
+        string routeUrl,
+        object parameters,
+        CancellationToken cancellationToken = default) where TResponse : class, new();
+
+    /// <summary>
+    /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters and query parameters,
+    /// and returns the expected response type as Task<TResponse>. A cancellation token can be provided to cancel the request.
+    /// </summary>
+    /// <typeparam name="TResponse">The expected response type</typeparam>
+    /// <param name="clientName">The name of the client to use for the request</param>
+    /// <param name="routeUrl">The URL of the route to request</param>
+    /// <param name="parameters">The object representing the parameters to include in the request body</param>
+    /// <param name="nameValueCollection">A collection of query parameters to include in the request URL</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
+    /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
+    /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
+    Task<TResponse> PatchResponseAsync<TResponse>(
+        string clientName,
+        string routeUrl,
+        object parameters,
+        NameValueCollection nameValueCollection,
+        CancellationToken cancellationToken = default) where TResponse : class, new();
+   
+    /// <summary>
     /// Sends a PUT request to the specified API endpoint with the specified parameters and returns the response as the specified type. 
     /// </summary>
     /// <typeparam name="TResponse">The type of response expected from the API endpoint. This must be a class type that has a parameterless constructor.</typeparam>
@@ -164,7 +212,6 @@ public interface IRestService
     /// <param name="parameters">The parameters to include in the request body.</param>
     /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
-
     Task<TResponse> PutApiResponseAsync<TResponse>(
         string clientName, 
         string routeUrl, 
@@ -181,7 +228,6 @@ public interface IRestService
     /// <param name="nameValueCollection">The collection of headers to include in the request.</param>
     /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
-
     Task<TResponse> PutApiResponseAsync<TResponse>(
         string clientName, 
         string routeUrl, 
@@ -197,7 +243,6 @@ public interface IRestService
     /// <param name="routeUrl">The URL of the API endpoint to send the request to.</param>
     /// <param name="cancellationToken">The cancellation token that can be used to cancel the request.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized response object.</returns>
-
     Task<TResponse> DeleteApiResponseAsync<TResponse>(
         string clientName, 
         string routeUrl, 
