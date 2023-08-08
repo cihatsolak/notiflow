@@ -9,5 +9,5 @@ public sealed record CustomerDataTableResponse
     public string Email { get; init; }
     public bool IsBlocked { get; init; }
     public bool IsDeleted { get; init; }
-    public CloudMessagePlatform CloudMessagePlatform { get; set; }
+    public CloudMessagePlatform CloudMessagePlatform { get; init; }
 }

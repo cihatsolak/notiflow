@@ -22,6 +22,6 @@ internal static class SeedManager
         }
 
         await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
-        await  notiflowDbContext.SaveChangesAsync();
+        await notiflowDbContext.SaveChangesAsync();
     }
 }

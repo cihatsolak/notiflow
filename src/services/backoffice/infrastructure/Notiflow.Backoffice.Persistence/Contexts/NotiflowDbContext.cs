@@ -15,10 +15,10 @@ public sealed class NotiflowDbContext : DbContext
         if (httpContextAccessor?.HttpContext is null)
             return;
 
-        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue(ClaimTypes.PrimaryGroupSid, out StringValues tenantToken);
-        if (isExists)
+        Claim claim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid);
+        if (claim is null)
         {
-            _tenantId = int.Parse(tenantToken.Single());
+            _tenantId = int.Parse(claim.Value);
         }
     }
 
@@ -27,13 +27,9 @@ public sealed class NotiflowDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<Customer>()
-           .HasQueryFilter(customer => !customer.IsBlocked &&
-                                       !customer.IsDeleted);
-
-        //modelBuilder.Entity<Customer>()
-        //     .HasQueryFilter(customer => !customer.IsBlocked &&
-        //                                 !customer.IsDeleted &&
-        //                                  customer.TenantId == _tenantId);
+             .HasQueryFilter(customer => !customer.IsBlocked &&
+                                         !customer.IsDeleted &&
+                                          customer.TenantId == _tenantId);
     }
 
     public DbSet<Customer> Customers { get; set; }

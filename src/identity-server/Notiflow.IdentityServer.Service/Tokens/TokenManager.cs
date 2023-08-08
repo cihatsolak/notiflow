@@ -32,7 +32,7 @@ internal sealed class TokenManager : ITokenService
         {
             AccessToken = accessToken,
             AccessTokenExpiration = accessTokenExpiration,
-            ExpiresIn = (int)(accessTokenExpiration - DateTime.Now.AddMinutes(1)).TotalSeconds,
+            ExpiresIn = (int)(accessTokenExpiration - DateTime.Now.AddSeconds(30)).TotalSeconds,
             RefreshToken = JwtTokenExtensions.CreateRefreshToken(),
             RefreshTokenExpiration = refreshTokenExpiration
         };
