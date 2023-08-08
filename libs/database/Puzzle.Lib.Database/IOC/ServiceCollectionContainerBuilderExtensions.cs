@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.IOC;
+﻿using Puzzle.Lib.Database.Interceptors;
+
+namespace Puzzle.Lib.Database.IOC;
 
 /// <summary>
 /// Provides extension methods for configuring SQL database in IServiceCollection.
@@ -42,6 +44,8 @@ public static class ServiceCollectionContainerBuilderExtensions
 
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+
+            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
         });
 
         if (!isProductionEnvironment)
@@ -88,6 +92,8 @@ public static class ServiceCollectionContainerBuilderExtensions
 
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+
+            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
         });
 
         if (!isProductionEnvironment)

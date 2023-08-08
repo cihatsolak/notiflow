@@ -16,6 +16,7 @@ global using Puzzle.Lib.Entities.Entities.Base;
 global using Puzzle.Lib.Entities.Entities.Historical;
 global using Puzzle.Lib.Entities.Entities.SoftDelete;
 global using Puzzle.Lib.Entities.Interfaces;
+global using System.Data.Common;
 global using System.Linq.Expressions;
 global using System.Reflection;
 global using System.Text.Json.Serialization;
