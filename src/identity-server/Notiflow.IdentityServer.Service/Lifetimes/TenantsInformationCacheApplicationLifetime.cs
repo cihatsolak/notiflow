@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Lifetimes;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.IdentityServer.Service.Lifetimes;
 
 public static class TenantsInformationCacheApplicationLifetime
 {

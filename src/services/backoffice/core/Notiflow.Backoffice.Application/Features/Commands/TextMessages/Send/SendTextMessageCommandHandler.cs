@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 
 public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMessageCommand, Response<Unit>>
 {

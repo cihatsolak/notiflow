@@ -1,8 +1,10 @@
-﻿namespace Notiflow.IdentityServer.Data;
+﻿using Puzzle.Lib.Database;
+
+namespace Notiflow.IdentityServer.Data;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddData(this IServiceCollection services)
+    public static IServiceCollection AddDataDependencies(this IServiceCollection services)
     {
         services.AddMicrosoftSql<ApplicationDbContext>(nameof(ApplicationDbContext));
         services.SeedAsync().Wait();

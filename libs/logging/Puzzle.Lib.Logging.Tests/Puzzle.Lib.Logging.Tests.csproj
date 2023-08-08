@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\" />
+  </ItemGroup>
+
 </Project>

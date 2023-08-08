@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
 public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Response<Unit>>
 {

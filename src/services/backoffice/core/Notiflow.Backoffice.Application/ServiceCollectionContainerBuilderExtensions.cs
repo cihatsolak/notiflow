@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Puzzle.Lib.Cache;
+using Puzzle.Lib.Validation;
 
 namespace Notiflow.Backoffice.Application;
 

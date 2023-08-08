@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Common.Services;
+﻿namespace Notiflow.Common.Extensions;
 
 public static class TenantCacheKeyFactory
 {
@@ -38,7 +38,7 @@ public static class TenantCacheKeyFactory
 
         return string.Concat(key, ".", tenantToken);
     }
-           
+
     public static string Generate(string key, int tenantId)
     {
         ArgumentException.ThrowIfNullOrEmpty(key);

@@ -12,3 +12,4 @@ global using Puzzle.Lib.Host.TagHelpers;
 global using Serilog;
 global using System.Net.Mime;
 global using System.Text.Json;
+global using System.Text.Json.Serialization;
