@@ -5,20 +5,19 @@ builder.Host
     .AddServiceValidateScope()
     .AddShutdownTimeOut();
 
-builder.Services.AddDataDependencies();
-builder.Services.AddServiceDependencies();
 builder.Services.AddWebDependencies();
+builder.Services.AddServiceDependencies();
+builder.Services.AddDataDependencies();
+
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
+app.UseHttpSecurityPrecautions();
 app.UseAuth();
 app.UseSwaggerWithRedoclyDoc();
 app.UseMigrations();
 app.UseApiExceptionHandler();
 app.UseResponseCompress();
-app.UseHttpSecurity();
 
 app.UseApplicationLifetimes();
 

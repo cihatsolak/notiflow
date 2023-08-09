@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Validation;
-
-namespace Notiflow.IdentityServer.Service;
+﻿namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -13,6 +11,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         services
             .AddFluentDesignValidation()
             .AddApiBehaviorOptions();
+
+        services.AddHttpContextAccessor();
 
         services.TryAddSingleton<ITenantService, TenantManager>();
         services.TryAddSingleton<ITokenService, TokenManager>();

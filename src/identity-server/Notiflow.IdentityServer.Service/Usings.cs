@@ -33,6 +33,7 @@ global using Puzzle.Lib.Auth.Services;
 global using Puzzle.Lib.Cache;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Response.Models;
+global using Puzzle.Lib.Validation;
 global using Puzzle.Lib.Validation.RuleBuilders;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Reflection;
