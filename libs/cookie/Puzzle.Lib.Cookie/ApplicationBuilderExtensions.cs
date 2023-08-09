@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cookie.Middlewares;
+﻿namespace Puzzle.Lib.Cookie;
 
 /// <summary>
 /// Provides extension methods for configuring the cookie policy for an IApplicationBuilder instance.

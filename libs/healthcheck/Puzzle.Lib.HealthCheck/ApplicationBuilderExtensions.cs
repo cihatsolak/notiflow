@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.HealthCheck.Middlewares;
+﻿namespace Puzzle.Lib.HealthCheck;
 
 /// <summary>
 /// Provides extension methods to configure the health check middleware and UI for an application.
@@ -12,10 +12,6 @@ public static class ApplicationBuilderExtensions
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
     public static IApplicationBuilder UseHealth(this IApplicationBuilder app)
     {
-        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-        if (webHostEnvironment.EnvironmentName.Equals("Localhost"))
-            return app;
-
         HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
 
         app.UseHealthChecks(healthUISetting.ResponsePath, new HealthCheckOptions
@@ -41,18 +37,13 @@ public static class ApplicationBuilderExtensions
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
     public static IApplicationBuilder UseHealthUI(this IApplicationBuilder app)
     {
-        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-        bool isLocalhost = webHostEnvironment.EnvironmentName.Equals("Localhost");
-        if (isLocalhost)
-            return app;
-
         HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
 
         app.UseHealthChecksUI(setup =>
         {
             setup.UIPath = healthUISetting.UIPath;
 
-            if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath) && !isLocalhost)
+            if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath))
             {
                 setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), healthUISetting.CustomCssPath));
             }

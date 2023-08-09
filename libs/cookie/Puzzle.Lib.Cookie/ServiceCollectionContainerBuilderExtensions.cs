@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Cookie;
+﻿using Puzzle.Lib.Cookie.Settings;
+
+namespace Puzzle.Lib.Cookie;
 
 /// <summary>
 /// Provides extension methods for configuring cookie authentication and cookie policy for an IServiceCollection.

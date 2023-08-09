@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cookie.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.Cookie.Settings;
 
 /// <summary>
 /// Represents a collection of CookieAuthentication settings.

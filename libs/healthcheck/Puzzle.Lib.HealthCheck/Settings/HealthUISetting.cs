@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.HealthCheck.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.HealthCheck.Settings;
 
 /// <summary>
 /// Represents the settings for a health check UI, such as the path to the UI and any custom styles to apply.

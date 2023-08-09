@@ -41,7 +41,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Email);
+            Assert.Throws<JwtClaimException>(() => claimManager.Email);
         }
 
         [Theory]
@@ -76,7 +76,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Name);
+            Assert.Throws<JwtClaimException>(() => claimManager.Name);
         }
 
         [Theory]
@@ -110,7 +110,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.FamilyName);
+            Assert.Throws<JwtClaimException>(() => claimManager.FamilyName);
         }
 
         [Theory]
@@ -145,7 +145,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.NameIdentifier);
+            Assert.Throws<JwtClaimException>(() => claimManager.NameIdentifier);
         }
 
         [Fact]
@@ -161,7 +161,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.NameIdentifier);
+            Assert.Throws<JwtClaimException>(() => claimManager.NameIdentifier);
         }
 
         [Theory]
@@ -195,7 +195,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Role);
+            Assert.Throws<JwtClaimException>(() => claimManager.Role);
         }
 
         [Theory]
@@ -229,7 +229,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Roles);
+            Assert.Throws<JwtClaimException>(() => claimManager.Roles);
         }
 
         [Theory]
@@ -263,7 +263,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Jti);
+            Assert.Throws<JwtClaimException>(() => claimManager.Jti);
         }
 
         [Theory]
@@ -297,7 +297,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Audience);
+            Assert.Throws<JwtClaimException>(() => claimManager.Audience);
         }
 
         [Theory]
@@ -331,7 +331,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Audiences);
+            Assert.Throws<JwtClaimException>(() => claimManager.Audiences);
         }
 
         [Theory]
@@ -365,7 +365,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.GivenName);
+            Assert.Throws<JwtClaimException>(() => claimManager.GivenName);
         }
 
         [Theory]
@@ -401,7 +401,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Iat);
+            Assert.Throws<JwtClaimException>(() => claimManager.Iat);
         }
 
 
@@ -418,7 +418,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.Iat);
+            Assert.Throws<JwtClaimException>(() => claimManager.Iat);
         }
 
         //cihat
@@ -456,7 +456,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.BirthDate);
+            Assert.Throws<JwtClaimException>(() => claimManager.BirthDate);
         }
 
 
@@ -473,7 +473,7 @@
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<ClaimException>(() => claimManager.BirthDate);
+            Assert.Throws<JwtClaimException>(() => claimManager.BirthDate);
         }
     }
 }

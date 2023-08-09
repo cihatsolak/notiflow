@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.HealthCheck.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.HealthCheck.Settings;
 
 /// <summary>
 /// Represents a health check setting for a specific endpoint.

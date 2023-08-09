@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Cache;
+﻿using Puzzle.Lib.Cache.Services.Cache;
+
+namespace Puzzle.Lib.Cache;
 
 /// <summary>
 /// Contains extension methods to register Redis related services to the <see cref="IServiceCollection"/>.
@@ -37,6 +39,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
             return connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
         });
+
+        RedisRetryPolicies.Logger = serviceProvider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
         services.TryAddSingleton<IRedisService>(provider =>
         {

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.File.IOC;
+﻿namespace Puzzle.Lib.File;
 
 /// <summary>
 /// Extension methods for registering FTP settings to the service collection.

@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.HealthCheck.IOC;
+﻿using Puzzle.Lib.HealthCheck.Settings;
+
+namespace Puzzle.Lib.HealthCheck;
 
 /// <summary>
 /// Contains extension methods for adding custom health checks to a service collection.

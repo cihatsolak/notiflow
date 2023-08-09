@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Session.IOC;
+﻿namespace Puzzle.Lib.Session;
 
 /// <summary>
 /// Provides extension methods for <see cref="IServiceCollection"/> to add session service functionality.

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Session.Middlewares;
+﻿namespace Puzzle.Lib.Session;
 
 /// <summary>
 /// Provides extension methods to configure and use custom session options in an application pipeline.

@@ -10,7 +10,6 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the tag helper initializers to.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
-
     public static IServiceCollection AddTagHelperInitializers(this IServiceCollection services)
     {
         services.AddSingleton<ITagHelperInitializer<ScriptTagHelper>, ScriptVersionTagHelperInitializer>();
