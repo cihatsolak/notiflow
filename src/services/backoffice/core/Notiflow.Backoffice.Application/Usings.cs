@@ -2,10 +2,13 @@
 global using FluentValidation;
 global using MediatR;
 global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
+global using Microsoft.Extensions.Primitives;
 global using Notiflow.Backoffice.Application.Constants;
 global using Notiflow.Backoffice.Application.Exceptions;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;

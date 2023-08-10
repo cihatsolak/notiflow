@@ -42,21 +42,21 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         }
 
         List<Task<bool>> tenantPermissionCachingTasks = new();
-        string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION);
+        string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO);
 
         if (tenantPermission.IsSendMessagePermission != request.IsSendMessagePermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.MESSAGE_PERMISSION, request.IsSendMessagePermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.TENANT_MESSAGE_PERMISSION, request.IsSendMessagePermission));
         }
 
         if (tenantPermission.IsSendNotificationPermission != request.IsSendNotificationPermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.EMAIL_PERMISSION, request.IsSendEmailPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.TENANT_EMAIL_PERMISSION, request.IsSendEmailPermission));
         }
 
         if (tenantPermission.IsSendEmailPermission != request.IsSendEmailPermission)
         {
-            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.NOTIFICATION_PERMISSION, request.IsSendNotificationPermission));
+            tenantPermissionCachingTasks.Add(_redisService.HashSetAsync(cacheKey, CacheKeys.TENANT_NOTIFICATION_PERMISSION, request.IsSendNotificationPermission));
         }
 
         tenantPermission.IsSendMessagePermission = request.IsSendMessagePermission;

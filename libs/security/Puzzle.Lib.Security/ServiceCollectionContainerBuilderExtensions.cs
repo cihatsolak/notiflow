@@ -12,9 +12,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
     public static IServiceCollection AddRequestDetection(this IServiceCollection services)
     {
-        services.AddDetection();
-
-        return services;
+        return services.AddDetection().Services;
     }
 
     /// <summary>
@@ -42,8 +40,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-
-    public static IServiceCollection AddStrictTransportSecurity(this IServiceCollection services)
+    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -51,6 +48,11 @@ public static class ServiceCollectionContainerBuilderExtensions
         IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
         if (!webHostEnvironment.IsProduction())
             return services;
+
+        services.AddHttpsRedirection(options =>
+        {
+            options.HttpsPort = 443;
+        });
 
         services.AddHsts(options =>
         {

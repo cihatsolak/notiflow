@@ -2,5 +2,5 @@
 
 public interface ITenantService
 {
-    Guid Token { get; }
+    Task<Response<List<Tenant>>> GetTenantsAsync(CancellationToken cancellationToken);
 }

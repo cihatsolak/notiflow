@@ -1,5 +1,5 @@
+using Notiflow.Backoffice.Application.Filters;
 using Notiflow.Common.Extensions;
-using Puzzle.Lib.Documentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
+    options.Filters.Add<TenantTokenAuthenticationFilter>();
 });
 
 builder.Services.AddSwagger();

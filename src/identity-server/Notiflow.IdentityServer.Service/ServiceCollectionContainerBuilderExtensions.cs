@@ -13,11 +13,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddApiBehaviorOptions();
 
         services.AddHttpContextAccessor();
-
-        services.TryAddSingleton<ITenantService, TenantManager>();
         services.TryAddSingleton<ITokenService, TokenManager>();
 
         services.TryAddScoped<IAuthService, AuthManager>();
+        services.TryAddScoped<ITenantService, TenantManager>();
         services.TryAddScoped<ITenantPermissionService, TenantPermissionManager>();
         services.TryAddScoped<IUserService, UserManager>();
 

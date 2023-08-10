@@ -15,7 +15,7 @@ internal static class SeedManager
             return;
         }
 
-        if (notiflowDbContext.Customers.Any())
+        if (notiflowDbContext.Customers.IgnoreQueryFilters().Any())
         {
             Debug.WriteLine("There is no need for migration as there is tenant information in the database.");
             return;

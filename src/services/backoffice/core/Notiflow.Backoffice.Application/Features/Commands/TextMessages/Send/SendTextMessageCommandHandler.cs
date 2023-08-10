@@ -26,7 +26,7 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
 
     public async Task<Response<Unit>> Handle(SendTextMessageCommand request, CancellationToken cancellationToken)
     {
-        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.MESSAGE_PERMISSION);
+        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_MESSAGE_PERMISSION);
         if (!isSentMessageAllowed)
         {
             _logger.LogWarning("The tenant is not authorized to send messages.");

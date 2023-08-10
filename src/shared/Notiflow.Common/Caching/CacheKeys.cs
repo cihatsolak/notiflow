@@ -2,10 +2,12 @@
 
 public static class CacheKeys
 {
-    public const string TENANT_APPS_INFORMATION = "tenant.apps.information";
-    public const string TENANT_INFORMATION = "tenant.information";
-    public const string MESSAGE_PERMISSION = "message";
-    public const string EMAIL_PERMISSION = "email";
-    public const string NOTIFICATION_PERMISSION = "notification";
-    public const string TENANT_PERMISSION = "tenant.permission";
+    public const string TENANT_INFO = "tenant.info";
+    public const string TENANT_MESSAGE_PERMISSION = "message.permission";
+    public const string TENANT_EMAIL_PERMISSION = "email.permission";
+    public const string TENANT_NOTIFICATION_PERMISSION = "notification.permission";
+    public const string TENANT_APPS_CONFIG = "apps.config";
+    public const string TENANT_TOKEN = "token";
+    public const string TENANT_ID = "id";
+    public const string TENANT_TOKENS = "tenant.tokens";
 }

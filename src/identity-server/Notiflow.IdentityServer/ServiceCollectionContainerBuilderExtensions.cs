@@ -13,7 +13,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         services.AddRouteSettings();
         services.AddSwagger();
         services.AddGzipResponseFastestCompress();
-        services.AddStrictTransportSecurity();
+        services.AddHttpSecurityPrecautions();
         services.AddApiVersion();
 
         return services;
