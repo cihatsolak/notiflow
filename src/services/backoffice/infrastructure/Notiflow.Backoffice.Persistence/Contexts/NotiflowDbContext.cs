@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
-
-namespace Notiflow.Backoffice.Persistence.Contexts;
+﻿namespace Notiflow.Backoffice.Persistence.Contexts;
 
 public sealed class NotiflowDbContext : DbContext
 {
@@ -15,10 +11,10 @@ public sealed class NotiflowDbContext : DbContext
         if (httpContextAccessor?.HttpContext is null)
             return;
 
-        Claim claim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid);
-        if (claim is null)
+        string tenantId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid)?.Value;
+        if (!string.IsNullOrWhiteSpace(tenantId))
         {
-            _tenantId = int.Parse(claim.Value);
+            _tenantId = int.Parse(tenantId);
         }
     }
 

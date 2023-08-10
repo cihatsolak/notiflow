@@ -1,7 +1,9 @@
 ﻿global using Bogus;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Customers;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Devices;
@@ -26,3 +28,4 @@ global using Puzzle.Lib.Entities.Entities.SoftDelete;
 global using System.Diagnostics;
 global using System.Linq.Dynamic.Core;
 global using System.Reflection;
+global using System.Security.Claims;

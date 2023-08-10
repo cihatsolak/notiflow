@@ -1,9 +1,12 @@
 using Notiflow.Backoffice.Application.Filters;
 using Notiflow.Common.Extensions;
+using Puzzle.Lib.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddJwtAuthentication();
 
 builder.Services.AddControllers(options =>
 {

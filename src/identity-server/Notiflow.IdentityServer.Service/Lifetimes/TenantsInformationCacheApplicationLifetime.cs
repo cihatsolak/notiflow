@@ -58,7 +58,7 @@ public static class TenantsInformationCacheApplicationLifetime
 
         foreach (var tenant in tenants)
         {
-            string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO, tenant.Id);
+            string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO, tenant.Token);
 
             bool isExists = await RedisService.ExistsAsync(cacheKey);
             if (isExists)

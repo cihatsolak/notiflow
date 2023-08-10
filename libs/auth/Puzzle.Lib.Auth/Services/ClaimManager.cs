@@ -22,8 +22,6 @@ public sealed class ClaimManager : IClaimService
     public string GivenName => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
     public DateTime Iat => GetIat();
     public DateTime BirthDate => GetBirthDate();
-    public string PrimaryGroupSid => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.PrimaryGroupSid))?.Value;
-    public string System => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.System))?.Value;
 
     private int GetNameIdentifier()
     {

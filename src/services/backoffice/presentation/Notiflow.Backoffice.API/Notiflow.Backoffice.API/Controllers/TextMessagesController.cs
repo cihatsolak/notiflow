@@ -1,5 +1,6 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
+[Authorize]
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>
