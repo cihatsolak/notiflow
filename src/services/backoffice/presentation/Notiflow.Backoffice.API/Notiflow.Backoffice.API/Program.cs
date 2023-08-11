@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddJwtAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers(options =>
 {
@@ -28,8 +29,7 @@ TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpsRedirection();
 app.UseSwaggerWithRedoclyDoc();
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuth();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseRequestLocalization();

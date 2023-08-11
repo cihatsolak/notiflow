@@ -24,7 +24,7 @@ public static class TenantCacheKeyFactory
             throw new Exception(); //TODOs
         }
 
-        return string.Concat(key, ".", tenantToken.Single());
+        return string.Concat(key, ".", tenantToken.Single().ToLowerInvariant());
     }
 
     public static string Generate(string key, Guid tenantToken)
@@ -36,7 +36,7 @@ public static class TenantCacheKeyFactory
             throw new ArgumentException(nameof(tenantToken));
         }
 
-        return string.Concat(key, ".", tenantToken);
+        return string.Concat(key, ".", tenantToken.ToString().ToLowerInvariant());
     }
 
     public static string Generate(string key, int tenantId)

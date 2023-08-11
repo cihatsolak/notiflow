@@ -16,7 +16,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddMassTransit();
 
-        services.TryAddScoped<IClaimsTransformation, TenantIdClaimProvider>();
+        services.AddTransient<IClaimsTransformation, TenantIdClaimsTransformation>();
 
         return services;
     }
