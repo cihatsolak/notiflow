@@ -1,12 +1,18 @@
-using Notiflow.Common.Services;
+using Notiflow.Backoffice.Application.Filters;
+using Notiflow.Common.Extensions;
+using Puzzle.Lib.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddJwtAuthentication();
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
+    options.Filters.Add<TenantTokenAuthenticationFilter>();
 });
 
 builder.Services.AddSwagger();
@@ -23,8 +29,7 @@ TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpsRedirection();
 app.UseSwaggerWithRedoclyDoc();
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuth();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseRequestLocalization();

@@ -5,7 +5,6 @@ global using Microsoft.IdentityModel.Tokens;
 global using Moq;
 global using Puzzle.Lib.Auth.Infrastructure.Exceptions;
 global using Puzzle.Lib.Auth.Infrastructure.Extensions;
-global using Puzzle.Lib.Auth.Middlewares;
 global using Puzzle.Lib.Auth.Services;
 global using Puzzle.Lib.Auth.Tests.Data;
 global using System.Collections;

@@ -51,7 +51,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
                     return Task.CompletedTask;
                 },
-                OnForbidden = _ => throw new Exception("You are not authorized to access this resource."), //Todo
+                OnForbidden = _ => throw new JwtForbiddenException("You are not authorized to access this resource."),
                 OnMessageReceived = context =>
                 {
                     string token = context.Request.Query["access_token"];

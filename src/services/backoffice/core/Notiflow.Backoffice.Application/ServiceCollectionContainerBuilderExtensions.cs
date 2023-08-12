@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using Puzzle.Lib.Cache;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Notiflow.Backoffice.Application;
 
@@ -15,6 +15,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddLibraries();
 
         services.AddMassTransit();
+
+        services.AddTransient<IClaimsTransformation, TenantIdClaimsTransformation>();
 
         return services;
     }

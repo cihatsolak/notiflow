@@ -32,7 +32,7 @@ internal sealed class TokenManager : ITokenService
         {
             AccessToken = accessToken,
             AccessTokenExpiration = accessTokenExpiration,
-            ExpiresIn = (int)(accessTokenExpiration - DateTime.Now.AddMinutes(1)).TotalSeconds,
+            ExpiresIn = (int)(accessTokenExpiration - DateTime.Now.AddSeconds(30)).TotalSeconds,
             RefreshToken = JwtTokenExtensions.CreateRefreshToken(),
             RefreshTokenExpiration = refreshTokenExpiration
         };
@@ -51,9 +51,6 @@ internal sealed class TokenManager : ITokenService
         claims.AddFamilyName(user.Surname);
         claims.AddEmail(user.Email);
         claims.AddAudiences(audiences);
-
-        claims.AddPrimaryGroupSid(user.Tenant.Id);
-        claims.AddSystem(user.Tenant.Token.ToString());
 
         return claims;
     }

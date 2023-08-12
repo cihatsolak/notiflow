@@ -1,27 +1,26 @@
-using Puzzle.Lib.Host.IOC;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host
+    .AddAppConfiguration()
+    .AddServiceValidateScope()
+    .AddShutdownTimeOut();
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddJwtAuthentication();
-builder.Services.AddControllers();
-builder.Services.AddRouteSettings();
-builder.Services.AddData();
-builder.Services.AddSwagger();
-builder.Services.AddService();
+builder.Services.AddWebDependencies();
+builder.Services.AddServiceDependencies();
+builder.Services.AddDataDependencies();
+
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
+app.UseHttpSecurityPrecautions();
 app.UseAuth();
 app.UseSwaggerWithRedoclyDoc();
 app.UseMigrations();
+app.UseApiExceptionHandler();
+app.UseResponseCompress();
 
 app.UseApplicationLifetimes();
 
 app.MapControllers();
 
-app.Run();
+await app.StartProjectAsync();

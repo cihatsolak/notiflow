@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -18,6 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
     <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
+    <ProjectReference Include="..\..\..\libs\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj" />
+    <ProjectReference Include="..\..\..\libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj" />
   </ItemGroup>
 

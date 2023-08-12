@@ -7,7 +7,7 @@
 internal static class AuthArgumentException
 {
     /// <summary>
-    /// Throws a <see cref="ClaimException"/> if the specified string argument is null, empty, or only contains whitespace.
+    /// Throws a <see cref="JwtClaimException"/> if the specified string argument is null, empty, or only contains whitespace.
     /// </summary>
     /// <param name="argument">The string argument to validate.</param>
     /// <param name="paramName">The name of the parameter being validated (automatically detected by the compiler).</param>
@@ -15,12 +15,12 @@ internal static class AuthArgumentException
     {
         if (string.IsNullOrWhiteSpace(argument))
         {
-            throw new ClaimException(paramName);
+            throw new JwtClaimException(paramName);
         }
     }
 
     /// <summary>
-    /// Throws a <see cref="ClaimException"/> if the specified collection argument is null or empty.
+    /// Throws a <see cref="JwtClaimException"/> if the specified collection argument is null or empty.
     /// </summary>
     /// <param name="argument">The collection argument to validate.</param>
     /// <param name="paramName">The name of the parameter being validated (automatically detected by the compiler).</param>
@@ -28,7 +28,7 @@ internal static class AuthArgumentException
     {
         if (argument is null || !argument.Any())
         {
-            throw new ClaimException(paramName);
+            throw new JwtClaimException(paramName);
         }
     }
 }

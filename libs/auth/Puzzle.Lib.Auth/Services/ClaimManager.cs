@@ -22,8 +22,6 @@ public sealed class ClaimManager : IClaimService
     public string GivenName => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
     public DateTime Iat => GetIat();
     public DateTime BirthDate => GetBirthDate();
-    public string PrimaryGroupSid => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.PrimaryGroupSid))?.Value;
-    public string System => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.System))?.Value;
 
     private int GetNameIdentifier()
     {
@@ -32,7 +30,7 @@ public sealed class ClaimManager : IClaimService
 
         bool succeeded = int.TryParse(nameIdentifier, out int identifier);
         if (!succeeded || 0 >= identifier)
-            throw new ClaimException(nameof(nameIdentifier));
+            throw new JwtClaimException(nameof(nameIdentifier));
 
         return identifier;
     }
@@ -41,7 +39,7 @@ public sealed class ClaimManager : IClaimService
     {
         string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
         if (!DateTime.TryParse(issuedAtValue, out DateTime issuedAt))
-            throw new ClaimException(nameof(issuedAtValue));
+            throw new JwtClaimException(nameof(issuedAtValue));
 
         return issuedAt;
     }
@@ -50,7 +48,7 @@ public sealed class ClaimManager : IClaimService
     {
         string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
         if (!DateTime.TryParse(birthDateValue, out DateTime birthDate))
-            throw new ClaimException(nameof(birthDate));
+            throw new JwtClaimException(nameof(birthDate));
 
         return birthDate;
     }

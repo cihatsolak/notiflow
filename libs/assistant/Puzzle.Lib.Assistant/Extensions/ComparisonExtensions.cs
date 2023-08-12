@@ -17,7 +17,7 @@ public static class ComparisonExtensions
             return true;
 
         if (string.IsNullOrWhiteSpace(value))
-            return false;
+            return default;
 
         return value.Equals(valueToCompare, StringComparison.OrdinalIgnoreCase);
     }
@@ -34,7 +34,7 @@ public static class ComparisonExtensions
             return true;
 
         if (string.IsNullOrWhiteSpace(value))
-            return false;
+            return default;
 
         return value.Equals(valueToCompare, StringComparison.Ordinal);
     }
@@ -51,7 +51,7 @@ public static class ComparisonExtensions
             return true;
 
         if (string.IsNullOrWhiteSpace(value))
-            return false;
+            return default;
 
         return value.Equals(valueToCompare, StringComparison.CurrentCultureIgnoreCase);
     }

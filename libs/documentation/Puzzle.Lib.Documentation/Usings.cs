@@ -10,7 +10,7 @@ global using Microsoft.OpenApi.Any;
 global using Microsoft.OpenApi.Interfaces;
 global using Microsoft.OpenApi.Models;
 global using Puzzle.Lib.Documentation.Filters;
-global using Puzzle.Lib.Documentation.Infrastructure.Settings;
+global using Puzzle.Lib.Documentation.Settings;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using System.Reflection;
 global using System.Text.Json.Serialization;

@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Cache.Services.Cache;
+﻿using StackExchange.Redis;
+
+namespace Puzzle.Lib.Cache.Services.Cache;
 
 internal sealed class StackExchangeRedisManager : IRedisService
 {
@@ -60,6 +62,17 @@ internal sealed class StackExchangeRedisManager : IRedisService
             }
 
             return result;
+        });
+    }
+
+    public async Task<bool> HashExistsAsync(string cacheKey, string hashField)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentException.ThrowIfNullOrEmpty(hashField);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        {
+            return await _database.HashExistsAsync(cacheKey, hashField, CommandFlags.PreferReplica);
         });
     }
 
@@ -204,7 +217,68 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<TResponse> GetAsync<TResponse>(string cacheKey) where TResponse : class, new()
+    public async Task<bool> SetExistsAsync<TValue>(string cacheKey, TValue value)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentNullException.ThrowIfNull(value);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        {
+            return await _database.SetContainsAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.PreferReplica);
+        });
+    }
+
+    public async Task<IEnumerable<TData>> SetMembersAsync<TData>(string cacheKey)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        {
+            var redisValues = await _database.SetMembersAsync(cacheKey, CommandFlags.PreferReplica);
+            if (!redisValues.Any())
+            {
+                _logger.LogWarning("The list of {@cacheKey} key could not be found.", cacheKey);
+            }
+
+            return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
+        });
+    }
+
+    public async Task<bool> SetAddAsync<TValue>(string cacheKey, TValue value)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentNullException.ThrowIfNull(value);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        {
+            bool succeeded = await _database.SetAddAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
+            if (!succeeded)
+            {
+                _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+            }
+
+            return succeeded;
+        });
+    }
+
+    public async Task<bool> SetRemoveAsync<TValue>(string cacheKey, TValue value)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentNullException.ThrowIfNull(value);
+
+        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        {
+            bool succeeded = await _database.SetRemoveAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
+            if (!succeeded)
+            {
+                _logger.LogWarning("Unable to delete element in unique list belonging to {@cacheKey} key.", cacheKey);
+            }
+
+            return succeeded;
+        });
+    }
+
+    public async Task<TResponse> StringGetAsync<TResponse>(string cacheKey) where TResponse : class, new()
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
@@ -218,7 +292,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SetAsync<TValue>(string cacheKey, TValue value)
+    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentNullException.ThrowIfNull(value);
@@ -235,7 +309,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
+    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentNullException.ThrowIfNull(value);
@@ -252,7 +326,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value)
+    public async Task<bool> ChangeStringAsync<TValue>(string cacheKey, TValue value)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentNullException.ThrowIfNull(value);

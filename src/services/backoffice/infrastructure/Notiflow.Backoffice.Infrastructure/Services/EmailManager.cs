@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class EmailManager : IEmailService
 {
@@ -15,7 +17,7 @@ internal sealed class EmailManager : IEmailService
 
     public async Task<bool> SendAsync(EmailRequest request)
     {
-        var tenantApplication = await _redisService.GetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION))
+        var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
         using SmtpClient smtpClient = new();

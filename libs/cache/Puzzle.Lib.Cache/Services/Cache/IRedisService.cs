@@ -32,6 +32,14 @@ public interface IRedisService
     Task<long> DecrementAsync(string cacheKey, int decrement);
 
     /// <summary>
+    /// Checks whether a field exists in a hash structure identified by the cache key.
+    /// </summary>
+    /// <param name="cacheKey">The key identifying the hash structure in the cache.</param>
+    /// <param name="hashField">The field within the hash structure to check for existence.</param>
+    /// <returns>True if the field exists; otherwise, false.</returns>
+    Task<bool> HashExistsAsync(string cacheKey, string hashField);
+
+    /// <summary>
     /// Retrieves all fields and values from the hash stored at the specified cache key.
     /// </summary>
     /// <param name="cacheKey">The cache key.</param>
@@ -114,13 +122,48 @@ public interface IRedisService
     Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey);
 
     /// <summary>
+    /// Checks whether a set identified by the cache key contains a specific value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value to check for existence.</typeparam>
+    /// <param name="cacheKey">The key identifying the set in the cache.</param>
+    /// <param name="value">The value to check for existence in the set.</param>
+    /// <returns>True if the value exists in the set; otherwise, false.</returns>
+    Task<bool> SetExistsAsync<TValue>(string cacheKey, TValue value);
+
+    /// <summary>
+    /// Retrieves all members of a set identified by the cache key.
+    /// </summary>
+    /// <typeparam name="TData">The type of data stored in the set.</typeparam>
+    /// <param name="cacheKey">The key identifying the set in the cache.</param>
+    /// <returns>An asynchronous operation that yields a collection of set members.</returns>
+    Task<IEnumerable<TData>> SetMembersAsync<TData>(string cacheKey);
+
+    /// <summary>
+    /// Adds a value to a set identified by the cache key.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value to add.</typeparam>
+    /// <param name="cacheKey">The key identifying the set in the cache.</param>
+    /// <param name="value">The value to add to the set.</param>
+    /// <returns>True if the value was added to the set; otherwise, false.</returns>
+    Task<bool> SetAddAsync<TValue>(string cacheKey, TValue value);
+
+    /// <summary>
+    /// Removes a value from a set identified by the cache key.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value to remove.</typeparam>
+    /// <param name="cacheKey">The key identifying the set in the cache.</param>
+    /// <param name="value">The value to remove from the set.</param>
+    /// <returns>True if the value was removed from the set; otherwise, false.</returns>
+    Task<bool> SetRemoveAsync<TValue>(string cacheKey, TValue value);
+
+    /// <summary>
     /// Gets the value of the specified key from cache as deserialized object of type TResponse.
     /// </summary>
     /// <typeparam name="TResponse">Type of the deserialized object</typeparam>
     /// <param name="cacheKey">Key of the cached item</param>
     /// <returns>Deserialized object of type TResponse</returns>
     /// <exception cref="ArgumentNullException">Thrown when cacheKey is null or empty.</exception>
-    Task<TResponse> GetAsync<TResponse>(string cacheKey) where TResponse : class, new();
+    Task<TResponse> StringGetAsync<TResponse>(string cacheKey) where TResponse : class, new();
 
     /// <summary>
     /// Set the specified key-value pair in the cache asynchronously. If the key already exists, it will be overwritten.
@@ -130,7 +173,7 @@ public interface IRedisService
     /// <param name="value">The value to store in the cache.</param>
     /// <returns>A boolean indicating whether the operation succeeded.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the provided cache key is null or empty.</exception>
-    Task<bool> SetAsync<TValue>(string cacheKey, TValue value);
+    Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value);
 
     /// <summary>
     /// Sets a cache entry for the specified key and value, with the specified cache duration.
@@ -144,7 +187,7 @@ public interface IRedisService
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="cacheKey"/> or <paramref name="value"/> is null.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="cacheKey"/> is an empty string.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the cache service is not available.</exception>
-    Task<bool> SetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration);
+    Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration);
 
     /// <summary>
     /// Updates an existing value in the cache with the provided key. If the key does not exist, this method returns false.
@@ -158,7 +201,7 @@ public interface IRedisService
     /// <exception cref="RedisException">Thrown when there is an error communicating with the Redis server.</exception>
     /// <remarks>The existing TTL (time to live) of the cache key is preserved.</remarks>
     ///</summary>
-    Task<bool> ChangeAsync<TValue>(string cacheKey, TValue value);
+    Task<bool> ChangeStringAsync<TValue>(string cacheKey, TValue value);
 
     /// <summary>
     /// Extends the expiration time of a cache key by the specified extend time.

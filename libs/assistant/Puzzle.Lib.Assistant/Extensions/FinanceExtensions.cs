@@ -11,7 +11,7 @@ public static class FinanceExtensions
     /// <param name="price">The original price to calculate the new price from.</param>
     /// <param name="vatRate">The VAT rate to apply to the price.</param>
     /// <returns>The new price with VAT included, rounded up to the nearest integer.</returns>
-    public static int ToCalculateVATPrice(this decimal price, int vatRate)
+    public static int ToCalculateVatPrice(this decimal price, int vatRate)
     {
         if (Math.Sign(price) != 1 || Math.Sign(vatRate) != 1)
             return default;

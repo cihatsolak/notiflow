@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
 public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Response<Unit>>
 {
@@ -24,7 +26,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
     public async Task<Response<Unit>> Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {
-        bool isSentEmailAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.EMAIL_PERMISSION);
+        bool isSentEmailAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_EMAIL_PERMISSION);
         if (!isSentEmailAllowed)
         {
             _logger.LogWarning("The tenant is not authorized to send email.");

@@ -9,14 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\libs\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
     <ProjectReference Include="..\..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
     <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj" />

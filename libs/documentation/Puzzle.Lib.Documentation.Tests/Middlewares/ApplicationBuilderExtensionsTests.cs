@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Documentation.Tests.Middlewares
+﻿using Puzzle.Lib.Documentation.Settings;
+
+namespace Puzzle.Lib.Documentation.Tests.Middlewares
 {
     public class ApplicationBuilderExtensionsTests
     {

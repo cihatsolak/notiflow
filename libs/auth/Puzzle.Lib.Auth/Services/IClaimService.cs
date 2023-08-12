@@ -28,7 +28,7 @@ public interface IClaimService
     /// <summary>
     /// Gets the name identifier claim value of the user.
     /// </summary>
-    /// <exception cref="ClaimException">If there is no name identifier value in claims or less than one, it is thrown.</exception>
+    /// <exception cref="JwtClaimException">If there is no name identifier value in claims or less than one, it is thrown.</exception>
     int NameIdentifier { get; }
 
     /// <summary>
@@ -64,22 +64,12 @@ public interface IClaimService
     /// <summary>
     /// Gets the issued-at (IAT) claim value of the user.
     /// </summary>
-    /// <exception cref="ClaimException">If there is no issued at value in the claims, it is thrown</exception>
+    /// <exception cref="JwtClaimException">If there is no issued at value in the claims, it is thrown</exception>
     DateTime Iat { get; }
 
     /// <summary>
     /// Gets the birth date claim value of the user.
     /// </summary>
-    /// <exception cref="ClaimException">If there is no birtdate value in the claims, it is thrown</exception>
+    /// <exception cref="JwtClaimException">If there is no birtdate value in the claims, it is thrown</exception>
     DateTime BirthDate { get; }
-
-    /// <summary>
-    /// Gets the primary group security identifier (SID) of the subject.
-    /// </summary>
-    public string PrimaryGroupSid { get; }
-
-    /// <summary>
-    /// Gets the system identifier of the subject.
-    /// </summary>
-    public string System { get; }
 }

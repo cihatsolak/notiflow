@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+﻿using Notiflow.Common.Extensions;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {
@@ -27,7 +29,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     public async Task<Response<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
-        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION), CacheKeys.NOTIFICATION_PERMISSION);
+        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_NOTIFICATION_PERMISSION);
         if (!isSentNotificationAllowed)
         {
             _logger.LogWarning("The tenant is not authorized to send notification.");

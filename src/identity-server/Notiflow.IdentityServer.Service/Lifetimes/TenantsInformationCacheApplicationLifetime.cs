@@ -10,7 +10,7 @@ public static class TenantsInformationCacheApplicationLifetime
     public static IApplicationBuilder CacheTenantsInformation(this IApplicationBuilder applicationBuilder)
     {
         ServiceProvider = applicationBuilder.ApplicationServices;
-       
+
         HostApplicationLifetime.ApplicationStarted.Register(OnStarted);
 
         return applicationBuilder;
@@ -24,45 +24,22 @@ public static class TenantsInformationCacheApplicationLifetime
     private static async Task TenantsInformationCache()
     {
         await using AsyncServiceScope asyncServiceScope = ServiceProvider.CreateAsyncScope();
-        ApplicationDbContext context = asyncServiceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        ITenantService tenantService = asyncServiceScope.ServiceProvider.GetRequiredService<ITenantService>();
 
         try
         {
-            var tenants = await context.Tenants
-                            .IgnoreQueryFilters()
-                            .AsNoTracking()
-                            .Include(p => p.TenantApplication)
-                            .Include(p => p.TenantPermission)
-                            .ToListAsync(CancellationToken.None);
+            var response = await tenantService.GetTenantsAsync(CancellationToken.None);
+            if (!response.Succeeded)
+                return;
 
-            if (tenants.IsNullOrNotAny())
+            var transactionResults = await AddCacheAsync(response.Data);
+            if (transactionResults.Any(transaction => transaction))
             {
-                Logger.LogError("The tenants information could not be found in the database.");
+                Logger.LogInformation("Tenant information has been added to the cache.");
                 return;
             }
 
-            List<Task<bool>> tenantCachingTasks = new();
-
-            foreach (var tenant in tenants.OrEmptyIfNull())
-            {
-                string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_PERMISSION, tenant.Token);
-
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
-                tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.NOTIFICATION_PERMISSION, tenant.TenantPermission.IsSendNotificationPermission));
-            }
-
-            foreach (var tenant in tenants.OrEmptyIfNull())
-            {
-                string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_APPS_INFORMATION, tenant.Token);
-
-                tenantCachingTasks.Add(RedisService.SetAsync(cacheKey, tenant.Adapt<TenantApplicationCacheModel>()));
-            }
-
-            await Task.WhenAll(tenantCachingTasks);
-
-            Logger.LogInformation("Tenant information has been added to the cache.");
-
+            await RedisService.RemoveKeysBySearchKeyAsync(CacheKeys.TENANT_INFO, SearchKeyType.StartsWith);
         }
         catch (Exception ex)
         {
@@ -71,7 +48,38 @@ public static class TenantsInformationCacheApplicationLifetime
         finally
         {
             await asyncServiceScope.DisposeAsync();
-            await context.DisposeAsync();
         }
+    }
+
+
+    private static async Task<bool[]> AddCacheAsync(List<Tenant> tenants)
+    {
+        List<Task<bool>> tenantCachingTasks = new();
+
+        foreach (var tenant in tenants)
+        {
+            string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO, tenant.Token);
+
+            bool isExists = await RedisService.ExistsAsync(cacheKey);
+            if (isExists)
+            {
+                continue;
+            }
+
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_MESSAGE_PERMISSION, tenant.TenantPermission.IsSendMessagePermission));
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_EMAIL_PERMISSION, tenant.TenantPermission.IsSendEmailPermission));
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_NOTIFICATION_PERMISSION, tenant.TenantPermission.IsSendNotificationPermission));
+
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_APPS_CONFIG, tenant.Adapt<TenantApplicationCacheModel>()));
+
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_TOKEN, tenant.Token));
+            tenantCachingTasks.Add(RedisService.HashSetAsync(cacheKey, CacheKeys.TENANT_ID, tenant.Id));
+
+            tenantCachingTasks.Add(RedisService.SetAddAsync(CacheKeys.TENANT_TOKENS, tenant.Token));
+        }
+
+        
+
+        return await Task.WhenAll(tenantCachingTasks);
     }
 }
