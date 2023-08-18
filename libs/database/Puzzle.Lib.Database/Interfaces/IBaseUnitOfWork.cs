@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Puzzle.Lib.Database.Interfaces;
 
 /// <summary>
 /// Represents a base interface for a unit of work that manages transactions and saves changes to the database.
@@ -8,6 +10,8 @@
 /// </remarks>
 public interface IBaseUnitOfWork
 {
+    Task<IDbContextTransaction> BeginTransactionAsync();
+
     /// <summary>
     /// Asynchronously saves changes to a shadow database for auditing purposes.
     /// </summary>

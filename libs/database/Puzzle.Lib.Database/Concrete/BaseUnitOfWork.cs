@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database.Concrete;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Puzzle.Lib.Database.Concrete;
 
 public class BaseUnitOfWork : IBaseUnitOfWork
 {
@@ -8,6 +10,8 @@ public class BaseUnitOfWork : IBaseUnitOfWork
     {
         _context = context;
     }
+
+    public virtual async Task<IDbContextTransaction> BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
 
     public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
