@@ -1,7 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
-using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
-
-namespace Notiflow.Backoffice.Application.Mappers;
+﻿namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {

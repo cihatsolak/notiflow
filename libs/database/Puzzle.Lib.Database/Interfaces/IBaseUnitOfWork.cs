@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
-namespace Puzzle.Lib.Database.Interfaces;
+﻿namespace Puzzle.Lib.Database.Interfaces;
 
 /// <summary>
 /// Represents a base interface for a unit of work that manages transactions and saves changes to the database.

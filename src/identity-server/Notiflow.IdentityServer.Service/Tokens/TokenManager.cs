@@ -11,8 +11,8 @@ internal sealed class TokenManager : ITokenService
 
     public Response<TokenResponse> CreateToken(User user)
     {
-        DateTime accessTokenExpiration = DateTime.Now.AddYears(1);
-        DateTime refreshTokenExpiration = DateTime.Now.AddYears(1);
+        DateTime accessTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.AccessTokenExpirationMinute);
+        DateTime refreshTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.RefreshTokenExpirationMinute);
 
         SecurityKey securityKey = JwtTokenExtensions.CreateSecurityKey(_jwtTokenSetting.SecurityKey);
         SigningCredentials signingCredentials = JwtTokenExtensions.CreateSigningCredentials(securityKey);
