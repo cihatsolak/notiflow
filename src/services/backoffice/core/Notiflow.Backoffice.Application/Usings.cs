@@ -12,6 +12,7 @@ global using Microsoft.Extensions.Localization;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.Extensions.Primitives;
+global using Notiflow.Backoffice.Application.AuthorizationRequirements;
 global using Notiflow.Backoffice.Application.ClaimsTransformations;
 global using Notiflow.Backoffice.Application.Constants;
 global using Notiflow.Backoffice.Application.Exceptions;

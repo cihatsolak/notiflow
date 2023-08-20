@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Notiflow.Backoffice.Application.AuthorizationRequirements;
 
 namespace Notiflow.Backoffice.Application;
 

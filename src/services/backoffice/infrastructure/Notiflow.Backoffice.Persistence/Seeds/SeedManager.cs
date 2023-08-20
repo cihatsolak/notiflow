@@ -23,7 +23,14 @@ internal static class SeedManager
             return;
         }
 
-        await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
-        await notiflowDbContext.SaveChangesAsync(CancellationToken.None);
+        try
+        {
+            await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
+            await notiflowDbContext.SaveChangesAsync(CancellationToken.None);
+        }
+        finally
+        {
+            await notiflowDbContext.DisposeAsync();
+        }
     }
 }

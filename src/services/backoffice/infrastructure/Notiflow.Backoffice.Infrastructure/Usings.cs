@@ -13,6 +13,7 @@ global using Notiflow.Backoffice.Infrastructure.Services;
 global using Notiflow.Backoffice.Infrastructure.Settings;
 global using Notiflow.Common.Caching;
 global using Notiflow.Common.Caching.Models;
+global using Notiflow.Common.Extensions;
 global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Host;
