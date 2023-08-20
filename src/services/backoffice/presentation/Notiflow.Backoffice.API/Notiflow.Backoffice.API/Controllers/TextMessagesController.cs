@@ -15,7 +15,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> GetDetailById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return CreateGetResultInstance(response);
+        return HttpResult.Get(response);
     }
 
     /// <summary>
@@ -27,9 +27,9 @@ public sealed class TextMessagesController : BaseApiController
     [HttpPost("send")]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SendSingle([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return CreateOkResultInstance(response);
+        return HttpResult.Ok(response);
     }
 }

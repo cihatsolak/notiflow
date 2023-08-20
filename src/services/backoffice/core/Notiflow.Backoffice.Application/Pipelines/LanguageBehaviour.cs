@@ -30,7 +30,7 @@ public sealed class LanguageBehaviour<TRequest, TResponse> : IPipelineBehavior<T
         }
         else
         {
-            source.GetProperty("Message").SetValue(response, _localizer["1000"].Value, null);
+            source.GetProperty("Message").SetValue(response, _localizer[$"{code}"].Value, null);
         }
 
         return response;

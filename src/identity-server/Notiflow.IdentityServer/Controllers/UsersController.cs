@@ -21,7 +21,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.GetDetailAsync(id, cancellationToken);
-        return CreateGetResultInstance(response);
+        return HttpResult.Get(response);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);
-        return CreateCreatedResultInstance(response, nameof(GetDetail));
+        return HttpResult.Created(response, nameof(GetDetail));
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateAsync(id, request, cancellationToken);
-        return CreateNoContentResultInstance(response);
+        return HttpResult.NoContent(response);
     }
 
     /// <summary>
@@ -66,6 +66,6 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.DeleteAsync(id, cancellationToken);
-        return CreateNoContentResultInstance(response);
+        return HttpResult.NoContent(response);
     }
 }

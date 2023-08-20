@@ -27,5 +27,6 @@ global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;
 global using Puzzle.Lib.Documentation;
+global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;

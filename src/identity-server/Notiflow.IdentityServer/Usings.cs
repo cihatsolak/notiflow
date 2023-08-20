@@ -17,6 +17,7 @@ global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Documentation;
 global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Performance;
+global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Security;

@@ -14,6 +14,6 @@ public sealed class EmailsController : BaseApiController
     public async Task<IActionResult> Send([FromBody] SendEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return CreateOkResultInstance(response);
+        return HttpResult.Ok(response);
     }
 }
