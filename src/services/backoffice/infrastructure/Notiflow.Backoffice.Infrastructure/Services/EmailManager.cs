@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Extensions;
-
-namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class EmailManager : IEmailService
 {
@@ -56,7 +54,6 @@ internal sealed class EmailManager : IEmailService
         try
         {
             await smtpClient.SendMailAsync(mailMessage);
-
             succeeded = true;
         }
         catch (Exception exception)

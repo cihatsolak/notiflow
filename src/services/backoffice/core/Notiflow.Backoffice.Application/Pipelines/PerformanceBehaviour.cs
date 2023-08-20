@@ -1,30 +1,31 @@
-﻿namespace Notiflow.Backoffice.Application.Pipelines
+﻿namespace Notiflow.Backoffice.Application.Pipelines;
+
+public sealed class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+    where TRequest : notnull, IRequest<TResponse>
+    where TResponse : notnull
 {
-    public sealed class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+    private readonly Stopwatch _stopwatch;
+    private readonly ILogger<TRequest> _logger;
+
+    public PerformanceBehaviour(ILogger<TRequest> logger)
     {
-        private readonly Stopwatch _stopwatch;
-        private readonly ILogger<TRequest> _logger;
+        _stopwatch = new Stopwatch();
+        _logger = logger;
+    }
 
-        public PerformanceBehaviour(ILogger<TRequest> logger)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        _stopwatch.Start();
+        TResponse response = await next();
+        _stopwatch.Stop();
+
+        var elapsedSeconds = _stopwatch.Elapsed.TotalSeconds;
+        if (elapsedSeconds >= 40)
         {
-            _stopwatch = new Stopwatch();
-            _logger = logger;
+            var requestName = typeof(TRequest).Name;
+            _logger.LogWarning("Long Running Request: {Name} ({elapsedSeconds} seconds) {@Request}", requestName, elapsedSeconds, request);
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-        {
-            _stopwatch.Start();
-            TResponse response = await next();
-            _stopwatch.Stop();
-
-            var elapsedSeconds = _stopwatch.Elapsed.TotalSeconds;
-            if (elapsedSeconds >= 40)
-            {
-                var requestName = typeof(TRequest).Name;
-                _logger.LogWarning("Long Running Request: {Name} ({elapsedSeconds} seconds) {@Request}", requestName, elapsedSeconds, request);
-            }
-
-            return response;
-        }
+        return response;
     }
 }

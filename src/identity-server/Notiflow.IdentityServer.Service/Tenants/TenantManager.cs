@@ -13,7 +13,7 @@ internal class TenantManager : ITenantService
         _logger = logger;
     }
 
-    public async Task<Response<List<Tenant>>> GetTenantsAsync(CancellationToken cancellationToken)
+    public async Task<Response<List<Tenant>>> GetTenantsWithoutFilter(CancellationToken cancellationToken)
     {
         var tenants = await  _context.Tenants
                                 .TagWith("Lists existing tenants unfiltered.")

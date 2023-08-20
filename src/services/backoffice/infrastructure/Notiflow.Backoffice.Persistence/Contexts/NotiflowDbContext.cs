@@ -11,7 +11,7 @@ public sealed class NotiflowDbContext : DbContext
         if (httpContextAccessor?.HttpContext is null)
             return;
 
-        string tenantId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid)?.Value;
+        string tenantId = httpContextAccessor.HttpContext.User.Claims.Single(claim => claim.Type == ClaimTypes.PrimaryGroupSid).Value;
         if (!string.IsNullOrWhiteSpace(tenantId))
         {
             _tenantId = int.Parse(tenantId);
@@ -33,25 +33,4 @@ public sealed class NotiflowDbContext : DbContext
     public DbSet<NotificationHistory> NotificationHistories { get; set; }
     public DbSet<EmailHistory> EmailHistories { get; set; }
     public DbSet<TextMessageHistory> TextMessageHistories { get; set; }
-}
-
-public class NotiflowDbContextFactory : IDesignTimeDbContextFactory<NotiflowDbContext>
-{
-    public NotiflowDbContext CreateDbContext(string[] args)
-    {
-        string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-        IConfigurationRoot configurationRoot = new ConfigurationBuilder()
-                           .SetBasePath(Directory.GetCurrentDirectory())
-                           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                           .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
-                           .AddJsonFile($"appsettings.Localhost.json", optional: true, reloadOnChange: true)
-                           .Build();
-
-        var optionsBuilder = new DbContextOptionsBuilder<NotiflowDbContext>();
-        optionsBuilder.UseNpgsql(configurationRoot.GetSection(nameof(NotiflowDbContext))["ConnectionString"]);
-        optionsBuilder.UseSnakeCaseNamingConvention();
-
-        return new NotiflowDbContext(optionsBuilder.Options, null);
-    }
 }

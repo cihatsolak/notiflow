@@ -23,4 +23,13 @@
     <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Languages\MultiLanguage.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Languages\MultiLanguage.tr-TR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

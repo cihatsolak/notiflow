@@ -15,12 +15,17 @@ internal sealed class ApplicationProfile : Profile
     {
         CreateMap<Customer, CustomerDataTableResponse>()
              .ForMember(dest => dest.CloudMessagePlatform, opt => opt.MapFrom(src => src.Device.CloudMessagePlatform));
+
+        CreateMap<Customer, GetCustomerByIdQueryResponse>();
     }
 
     private void DeviceMaps()
     {
         CreateMap<AddDeviceCommand, Device>();
         CreateMap<Device, GetDeviceByIdQueryResponse>();
+
+        CreateMap<Device, DeviceDataTableResponse>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.Customer.Name} {src.Customer.Surname}"));
     }
 
     private void TextMessageHistoryMaps()

@@ -2,5 +2,5 @@
 
 public interface ITenantService
 {
-    Task<Response<List<Tenant>>> GetTenantsAsync(CancellationToken cancellationToken);
+    Task<Response<List<Tenant>>> GetTenantsWithoutFilter(CancellationToken cancellationToken);
 }

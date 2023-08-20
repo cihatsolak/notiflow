@@ -8,6 +8,8 @@
 /// </remarks>
 public interface IBaseUnitOfWork
 {
+    Task<IDbContextTransaction> BeginTransactionAsync();
+
     /// <summary>
     /// Asynchronously saves changes to a shadow database for auditing purposes.
     /// </summary>

@@ -4,7 +4,7 @@
 /// Represents a response model that can hold data, status code, success flag, status message and errors.
 /// </summary>
 /// <typeparam name="TData">The type of the data that the response model holds.</typeparam>
-public sealed record Response<TData>
+public record Response<TData>
 {
     /// <summary>
     /// Gets or sets a value indicating whether the request was successful or not.

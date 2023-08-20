@@ -4,9 +4,7 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public NotiflowUnitOfWork(
-        NotiflowDbContext context,
-        IServiceProvider serviceProvider) : base(context)
+    public NotiflowUnitOfWork(IServiceProvider serviceProvider) : base(serviceProvider.GetRequiredService<NotiflowDbContext>())
     {
         _serviceProvider = serviceProvider;
     }

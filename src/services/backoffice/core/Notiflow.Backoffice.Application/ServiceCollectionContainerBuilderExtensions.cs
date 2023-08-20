@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Notiflow.Backoffice.Application;
 
@@ -11,20 +10,17 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddMediatR(configure => configure.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
-        services.AddLibraries();
-
-        services.AddMassTransit();
-
-        services.AddTransient<IClaimsTransformation, TenantIdClaimsTransformation>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddLibraries(this IServiceCollection services)
-    {
         services.AddFluentDesignValidation();
         services.AddRedisService();
+
+        services.AddMassTransit();
+        services.AddMultiLanguage();
+
+        services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
+        services.AddScoped<IAuthorizationHandler, MessagePermissionAuthorizationHandler>();
 
         return services;
     }
@@ -45,6 +41,28 @@ public static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
             });
+        });
+
+        return services;
+    }
+
+    private static IServiceCollection AddMultiLanguage(this IServiceCollection services)
+    {
+        services.AddLocalization();
+
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("tr-TR")
+            };
+
+            options.DefaultRequestCulture = new("tr-TR");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+
+            options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
         return services;

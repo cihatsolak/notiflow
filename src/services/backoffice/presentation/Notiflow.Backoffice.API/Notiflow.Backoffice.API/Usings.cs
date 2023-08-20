@@ -1,7 +1,6 @@
 ﻿global using MediatR;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
-global using Microsoft.Extensions.Localization;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
@@ -11,6 +10,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateB
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+global using Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateToken;
@@ -24,9 +24,9 @@ global using Notiflow.Backoffice.Application.Features.Queries.Languages.Supporte
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetTextMessageHistoryById;
 global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Infrastructure;
-global using Notiflow.Backoffice.Infrastructure.Localize;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;
 global using Puzzle.Lib.Documentation;
+global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;

@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Notiflow.Backoffice.Persistence.Seeds;
+﻿namespace Notiflow.Backoffice.Persistence.Seeds;
 
 internal static class SeedData
 {

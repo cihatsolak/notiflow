@@ -9,6 +9,8 @@ public class BaseUnitOfWork : IBaseUnitOfWork
         _context = context;
     }
 
+    public virtual async Task<IDbContextTransaction> BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
+
     public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();

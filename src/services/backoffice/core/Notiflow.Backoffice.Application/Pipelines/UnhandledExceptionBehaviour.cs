@@ -1,6 +1,8 @@
 ﻿namespace Notiflow.Backoffice.Application.Pipelines
 {
-    public sealed class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+    public sealed class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : notnull, IRequest<TResponse>
+        where TResponse : notnull
     {
         private readonly ILogger<TRequest> _logger;
 

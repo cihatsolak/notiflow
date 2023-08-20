@@ -29,3 +29,4 @@ global using System.Diagnostics;
 global using System.Linq.Dynamic.Core;
 global using System.Reflection;
 global using System.Security.Claims;
+global using System.Text;

@@ -9,19 +9,28 @@ internal static class SeedManager
 
         var notiflowDbContext = serviceProvider.GetRequiredService<NotiflowDbContext>();
 
-        if (!notiflowDbContext.Database.CanConnect())
+        bool isConnected = await notiflowDbContext.Database.CanConnectAsync(CancellationToken.None);
+        if (!isConnected)
         {
             Debug.WriteLine("Could not connect to database. The database may not be available.");
             return;
         }
 
-        if (notiflowDbContext.Customers.IgnoreQueryFilters().Any())
+        bool isExists = await notiflowDbContext.Customers.IgnoreQueryFilters().AnyAsync();
+        if (isExists)
         {
             Debug.WriteLine("There is no need for migration as there is tenant information in the database.");
             return;
         }
 
-        await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
-        await notiflowDbContext.SaveChangesAsync();
+        try
+        {
+            await notiflowDbContext.Customers.AddRangeAsync(SeedData.GenerateCustomers());
+            await notiflowDbContext.SaveChangesAsync(CancellationToken.None);
+        }
+        finally
+        {
+            await notiflowDbContext.DisposeAsync();
+        }
     }
 }

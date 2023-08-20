@@ -21,7 +21,7 @@ public sealed class AuthController : BaseApiController
     public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await _authService.CreateAccessTokenAsync(request, cancellationToken);
-        return CreateOkResultInstance(response);
+        return HttpResult.Ok(response);
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class AuthController : BaseApiController
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await _authService.CreateAccessTokenAsync(request, cancellationToken);
-        return CreateOkResultInstance(response);
+        return HttpResult.Ok(response);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public sealed class AuthController : BaseApiController
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
     {
         var response = await _authService.RevokeRefreshTokenAsync(refreshToken, cancellationToken);
-        return CreateNoContentResultInstance(response);
+        return HttpResult.NoContent(response);
     }
 
     /// <summary>
@@ -66,6 +66,6 @@ public sealed class AuthController : BaseApiController
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)
     {
         var response = await _authService.GetAuthenticatedUserAsync(cancellationToken);
-        return CreateGetResultInstance(response);
+        return HttpResult.Get(response);
     }
 }

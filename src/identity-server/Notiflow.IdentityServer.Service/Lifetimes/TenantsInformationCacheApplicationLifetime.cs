@@ -28,12 +28,12 @@ public static class TenantsInformationCacheApplicationLifetime
 
         try
         {
-            var response = await tenantService.GetTenantsAsync(CancellationToken.None);
+            var response = await tenantService.GetTenantsWithoutFilter(CancellationToken.None);
             if (!response.Succeeded)
                 return;
 
             var transactionResults = await AddCacheAsync(response.Data);
-            if (transactionResults.Any(transaction => transaction))
+            if (transactionResults.All(transaction => transaction))
             {
                 Logger.LogInformation("Tenant information has been added to the cache.");
                 return;
@@ -41,9 +41,9 @@ public static class TenantsInformationCacheApplicationLifetime
 
             await RedisService.RemoveKeysBySearchKeyAsync(CacheKeys.TENANT_INFO, SearchKeyType.StartsWith);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            Logger.LogError(ex, "An error occurred while adding tenant information to the cache.");
+            Logger.LogError(exception, "An error occurred while adding tenant information to the cache.");
         }
         finally
         {
