@@ -1,5 +1,4 @@
-﻿global using Microsoft.AspNetCore.Builder;
-global using Microsoft.AspNetCore.Http;
+﻿global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,9 +16,9 @@ global using Notiflow.Common.Caching.Models;
 global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Host;
+global using Puzzle.Lib.Http;
 global using Puzzle.Lib.Http.Infrastructure.Extensions;
 global using Puzzle.Lib.Http.Services;
-global using System.Globalization;
 global using System.Net.Mail;
 global using System.Text;
 global using System.Text.Json.Serialization;

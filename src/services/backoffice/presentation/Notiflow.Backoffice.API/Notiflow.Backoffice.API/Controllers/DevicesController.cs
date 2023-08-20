@@ -3,6 +3,21 @@
 public sealed class DevicesController : BaseApiController
 {
     /// <summary>
+    /// Lists devices in datatable format by pagination
+    /// </summary>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Devices not found</response>
+    [HttpPost("datatable")]
+    [ProducesResponseType(typeof(Response<DtResult<DeviceDataTableResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DataTable([FromBody] DeviceDataTableCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        return CreateGetResultInstance(response);
+    }
+
+    /// <summary>
     /// Lists the device detail of the credential
     /// </summary>
     /// <response code="200">Operation successful</response>

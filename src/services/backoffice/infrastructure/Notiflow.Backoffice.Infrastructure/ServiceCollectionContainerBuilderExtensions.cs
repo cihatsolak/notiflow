@@ -1,4 +1,4 @@
-﻿using Puzzle.Lib.Http;
+﻿
 
 namespace Notiflow.Backoffice.Infrastructure;
 
@@ -6,23 +6,16 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.TryAddSingleton<IEmailService, EmailManager>();
+        services.TryAddSingleton<ITextMessageService, TextMessageManager>();
+
         services
             .AddFirebase()
             .AddHuawei();
 
-        services.TryAddSingleton<IEmailService, EmailManager>();
-        services.TryAddSingleton<ITextMessageService, TextMessageManager>();
-
-        services.AddMultiLanguage();
-
-        return services.AddLibraries();
-    }
-
-    private static IServiceCollection AddLibraries(this IServiceCollection services)
-    {
         services
-            .AddRouteSettings()
-            .AddRestApiService();
+             .AddRouteSettings()
+             .AddRestApiService();
 
         return services;
     }
@@ -61,30 +54,5 @@ public static class ServiceCollectionContainerBuilderExtensions
         });
 
         return services.AddSingleton<IHuaweiService, HuaweiManager>();
-    }
-
-    private static IServiceCollection AddMultiLanguage(this IServiceCollection services)
-    {
-        services.AddLocalization(options =>
-        {
-            options.ResourcesPath = "Resources";
-        });
-
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
-
-            options.DefaultRequestCulture = new("tr-TR");
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-
-            options.ApplyCurrentCultureToResponseHeaders = true;
-        });
-
-        return services;
     }
 }
