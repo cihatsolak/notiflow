@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Notiflow.Backoffice.Application.AuthorizationRequirements;
 
 namespace Notiflow.Backoffice.Application;
 
@@ -17,10 +18,10 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddRedisService();
 
         services.AddMassTransit();
-
-        services.AddTransient<IClaimsTransformation, TenantIdClaimsTransformation>();
-
         services.AddMultiLanguage();
+
+        services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
+        services.AddScoped<IAuthorizationHandler, MessagePermissionAuthorizationHandler>();
 
         return services;
     }

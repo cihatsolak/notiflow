@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Filters;
 
-public class TenantTokenAuthenticationFilter : IAuthorizationFilter
+public class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
 {
     private readonly IRedisService _redisService;
 
@@ -9,7 +9,7 @@ public class TenantTokenAuthenticationFilter : IAuthorizationFilter
         _redisService = redisService;
     }
 
-    public void OnAuthorization(AuthorizationFilterContext context)
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         bool isValidHeader = context.HttpContext.Request.Headers.TryGetValue("X-Tenant-Token", out StringValues headerTenantToken);
         if (!isValidHeader)
@@ -25,7 +25,7 @@ public class TenantTokenAuthenticationFilter : IAuthorizationFilter
             return;
         }
 
-        bool isExists = _redisService.SetExistsAsync(CacheKeys.TENANT_TOKENS, tenantToken).Result;
+        bool isExists = await _redisService.SetExistsAsync(CacheKeys.TENANT_TOKENS, tenantToken);
         if (!isExists)
         {
             context.Result = new UnauthorizedObjectResult(ErrorResponse);

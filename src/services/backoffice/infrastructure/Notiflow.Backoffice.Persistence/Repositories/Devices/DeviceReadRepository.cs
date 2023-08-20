@@ -23,6 +23,7 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
         int recordsTotal = await deviceTable.CountAsync(cancellationToken);
 
         var customers = await deviceTable
+            .TagWith("Lists devices records by paging.")
             .Skip(pageIndex)
             .Take(pageSize)
             .Select(device => new Device

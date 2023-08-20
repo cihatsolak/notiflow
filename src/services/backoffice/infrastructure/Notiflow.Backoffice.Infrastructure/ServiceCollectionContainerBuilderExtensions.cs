@@ -1,6 +1,4 @@
-﻿
-
-namespace Notiflow.Backoffice.Infrastructure;
+﻿namespace Notiflow.Backoffice.Infrastructure;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -44,13 +42,13 @@ public static class ServiceCollectionContainerBuilderExtensions
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(FirebaseSetting));
-        services.Configure<FirebaseSetting>(configurationSection);
-        FirebaseSetting firebaseSetting = configurationSection.Get<FirebaseSetting>();
+        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HuaweiSetting));
+        services.Configure<HuaweiSetting>(configurationSection);
+        HuaweiSetting huaweiSetting = configurationSection.Get<HuaweiSetting>();
 
         services.AddHttpClient("huawei", configure =>
         {
-            configure.BaseAddress = firebaseSetting.BaseAddress;
+            configure.BaseAddress = huaweiSetting.BaseAddress;
         });
 
         return services.AddSingleton<IHuaweiService, HuaweiManager>();

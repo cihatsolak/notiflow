@@ -11,7 +11,7 @@ public sealed class NotiflowDbContext : DbContext
         if (httpContextAccessor?.HttpContext is null)
             return;
 
-        string tenantId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid)?.Value;
+        string tenantId = httpContextAccessor.HttpContext.User.Claims.Single(claim => claim.Type == ClaimTypes.PrimaryGroupSid).Value;
         if (!string.IsNullOrWhiteSpace(tenantId))
         {
             _tenantId = int.Parse(tenantId);

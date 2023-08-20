@@ -22,7 +22,9 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
 
         int recordsTotal = await customerTable.CountAsync(cancellationToken);
 
-        var customers = await customerTable.Include(customer => customer.Device)
+        var customers = await customerTable
+            .TagWith("Lists customer records by paging.")
+            .Include(customer => customer.Device)
             .Skip(pageIndex)
             .Take(pageSize)
             .Select(customer => new Customer
