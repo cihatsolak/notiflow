@@ -8,10 +8,16 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(configure => configure.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        services.AddMediatR(opt =>
+        {
+            opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            opt.BehaviorsToRegister.AddRange(new List<ServiceDescriptor>
+            {
+                new(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>), ServiceLifetime.Transient),
+                new(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>), ServiceLifetime.Singleton),
+                new(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>), ServiceLifetime.Transient),
+            });
+        });
 
         services.AddFluentDesignValidation();
         services.AddRedisService();
