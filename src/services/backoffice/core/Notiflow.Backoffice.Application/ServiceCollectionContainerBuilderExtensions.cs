@@ -23,7 +23,22 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddRedisService();
 
         services.AddMassTransit();
-        services.AddMultiLanguage();
+        services.AddLocalization();
+
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("tr-TR")
+            };
+
+            options.DefaultRequestCulture = new("tr-TR");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+
+            options.ApplyCurrentCultureToResponseHeaders = true;
+        });
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, MessagePermissionAuthorizationHandler>();
@@ -47,28 +62,6 @@ public static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
             });
-        });
-
-        return services;
-    }
-
-    private static IServiceCollection AddMultiLanguage(this IServiceCollection services)
-    {
-        services.AddLocalization();
-
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
-
-            options.DefaultRequestCulture = new("tr-TR");
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-
-            options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
         return services;

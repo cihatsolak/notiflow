@@ -26,7 +26,7 @@ public sealed class CustomersController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDetailById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.Get(response);
@@ -44,7 +44,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Created(response, nameof(GetDetailById));
+        return HttpResult.Created(response, nameof(GetById));
     }
 
     /// <summary>

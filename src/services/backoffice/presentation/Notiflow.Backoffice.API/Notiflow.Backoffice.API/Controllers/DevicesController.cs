@@ -26,7 +26,7 @@ public sealed class DevicesController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Response<GetDeviceByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDeviceById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.Get(response);
@@ -45,7 +45,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Created(response, nameof(GetDeviceById));
+        return HttpResult.Created(response, nameof(GetById));
     }
 
     /// <summary>

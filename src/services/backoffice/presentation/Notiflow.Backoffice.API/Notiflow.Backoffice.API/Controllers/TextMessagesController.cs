@@ -12,7 +12,7 @@ public sealed class TextMessagesController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDetailById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.Get(response);

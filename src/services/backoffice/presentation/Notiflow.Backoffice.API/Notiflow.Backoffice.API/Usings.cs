@@ -1,6 +1,8 @@
 ﻿global using MediatR;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using Notiflow.Backoffice.API;
+global using Puzzle.Lib.Database;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
@@ -22,11 +24,18 @@ global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetCusto
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetDeviceById;
 global using Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetTextMessageHistoryById;
+global using Notiflow.Backoffice.Application.Filters;
 global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;
+global using Notiflow.Common.Extensions;
+global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Documentation;
+global using Puzzle.Lib.Host;
+global using Puzzle.Lib.Performance;
 global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
+global using Puzzle.Lib.Security;
+global using Puzzle.Lib.Version;
