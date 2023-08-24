@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Extensions;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 
 public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMessageCommand, Response<Unit>>
 {
@@ -37,13 +35,13 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         if (phoneNumbers.IsNullOrNotAny())
         {
             _logger.LogWarning("No customers of customer IDs were found. {@customerIds}", request.CustomerIds);
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND);
         }
 
         if (phoneNumbers.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match.", request.CustomerIds);
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL);
         }
 
         bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumbers, request.Message, cancellationToken);
@@ -53,13 +51,13 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
 
             _logger.LogWarning("Sending messages to customers {@CustomerIds} failed.", request.CustomerIds);
 
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.TEXT_MESSAGE_SENDING_FAILED);
         }
 
         await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
 
         _logger.LogWarning("Message to customers {@CustomerIds} has been sent successfully.", request.CustomerIds);
 
-        return Response<Unit>.Success(-1);
+        return Response<Unit>.Success(ResponseCodes.Success.TEXT_MESSAGES_SENDING_SUCCESSFUL);
     }
 }

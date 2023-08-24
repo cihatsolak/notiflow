@@ -21,6 +21,14 @@ internal record class ResponseCodes
         internal const int DEVICE_NOT_FOUND = 1008;
 
         internal const int TENANT_NOT_FOUND = 1009;
+
+        internal const int CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND = 1009;
+        internal const int THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL = 1010;
+        internal const int EMAIL_SENDING_FAILED = 1011;
+        internal const int NOTIFICATION_SENDING_FAILED = 1012;
+        internal const int CUSTOMERS_PHONE_NUMBERS_NOT_FOUND = 1013;
+        internal const int THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL = 1014;
+        internal const int TEXT_MESSAGE_SENDING_FAILED = 1015;
     }
 
     /// <summary>
@@ -35,6 +43,14 @@ internal record class ResponseCodes
         internal const int CUSTOMER_BLOCK_STATUS_UPDATED = 8004;
         internal const int CUSTOMER_EMAIL_UPDATED = 8005;
         internal const int CUSTOMER_PHONE_NUMBER_UPDATED = 8006;
+
         internal const int DEVICE_ASSOCIATED_CUSTOMER_ADDED = 8007;
+        internal const int DEVICE_DELETED = 8008;
+        internal const int DEVICE_UPDATED = 8009;
+        internal const int DEVICE_TOKEN_UPDATED = 8010;
+
+        internal const int EMAIL_SENDING_SUCCESSFUL = 8011;
+        internal const int NOTIFICATION_SENDING_SUCCESSFUL = 8012;
+        internal const int TEXT_MESSAGES_SENDING_SUCCESSFUL = 8013;
     }
 }

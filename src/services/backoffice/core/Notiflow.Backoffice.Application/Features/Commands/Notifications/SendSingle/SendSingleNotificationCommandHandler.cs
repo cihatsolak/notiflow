@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Extensions;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {
@@ -40,7 +38,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         if (device is null)
         {
             _logger.LogWarning("The customer's device information could not be found.");
-            return Response<Unit>.Fail(1);
+            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var notificationResult = device.CloudMessagePlatform switch
@@ -59,7 +57,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             
             _logger.LogWarning("Notification could not be sent to customer with id: {customerId}.", request.CustomerId);
 
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
         }
 
         var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
@@ -69,7 +67,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
         _logger.LogInformation("A notification has been sent to the customer with id: {customerId}", request.CustomerId);
 
-        return Response<Unit>.Success(1);
+        return Response<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendNotifyWithFirebase(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)

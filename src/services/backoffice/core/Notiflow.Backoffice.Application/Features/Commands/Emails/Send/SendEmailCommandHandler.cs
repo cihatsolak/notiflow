@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Extensions;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
 public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Response<Unit>>
 {
@@ -39,14 +37,14 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         {
             _logger.LogWarning("Customers' e-mail addresses could not be found for sending e-mails. customer ids: {@customerid}", request.CustomerIds);
 
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
         }
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to be sent does not match the number of registered mails.");
 
-            return Response<Unit>.Fail(-1);
+            return Response<Unit>.Fail(ResponseCodes.Error.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
@@ -70,7 +68,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         _logger.LogWarning("Email sending failed. {@CustomerIds}", request.CustomerIds);
 
-        return Response<Unit>.Fail(1);
+        return Response<Unit>.Fail(ResponseCodes.Error.EMAIL_SENDING_FAILED);
     }
   
     private async Task<Response<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
@@ -82,6 +80,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         _logger.LogInformation("Email sending completed successfully. {@CustomerIds}", request.CustomerIds);
 
-        return Response<Unit>.Success(1);
+        return Response<Unit>.Success(ResponseCodes.Success.EMAIL_SENDING_SUCCESSFUL);
     }
 }

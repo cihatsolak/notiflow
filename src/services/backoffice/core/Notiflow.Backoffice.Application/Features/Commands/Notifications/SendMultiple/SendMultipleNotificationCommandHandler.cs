@@ -28,7 +28,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         if (devices.IsNullOrNotAny())
         {
             _logger.LogWarning("Customers device information could not be found.");
-            return Response<Unit>.Fail(1);
+            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices
@@ -86,8 +86,8 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
                 _logger.LogInformation("Sending multiple notifications with huawei is successful.");
             }
         }
-        
-        return Response<Unit>.Success(1);
+
+        return Response<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendNotifyWithFirebase(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

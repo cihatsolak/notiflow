@@ -135,14 +135,35 @@
   <data name="1005" xml:space="preserve">
     <value>Müşterinin telefon numarası, güncellenmek istenen telefon numarasından farklı olmalıdır.</value>
   </data>
-  <data name="2000" xml:space="preserve">
+  <data name="1006" xml:space="preserve">
     <value>Müşteriye ait mevcutta cihaz bulunmaktadır.</value>
   </data>
-  <data name="2001" xml:space="preserve">
+  <data name="1007" xml:space="preserve">
     <value>Müşteriye ait cihaz silinemedi.</value>
   </data>
-  <data name="2002" xml:space="preserve">
+  <data name="1008" xml:space="preserve">
     <value>Cihaz bulunamadı.</value>
+  </data>
+  <data name="1009" xml:space="preserve">
+    <value>Müşterilere ait e-posta adresleri bulunamadı.</value>
+  </data>
+  <data name="1010" xml:space="preserve">
+    <value>Kayıtlı e-posta adres sayısı ile istenilen e-posta adres sayısı eşit değildir.</value>
+  </data>
+  <data name="1011" xml:space="preserve">
+    <value>E-posta gönderimi başarısız olarak gerçekleşmiştir.</value>
+  </data>
+  <data name="1012" xml:space="preserve">
+    <value>Bildirim gönderimi başarısız olarak gerçekleşmiştir.</value>
+  </data>
+  <data name="1013" xml:space="preserve">
+    <value>Müşterilere ait telefon numaraları bulunamadı.</value>
+  </data>
+  <data name="1014" xml:space="preserve">
+    <value>Kayıtlı telefon numara sayısı ile istenilen telefon numara sayısı eşit değildir.</value>
+  </data>
+  <data name="1015" xml:space="preserve">
+    <value>Kısa mesaj gönderimi başarısız olarak gerçekleşmiştir.</value>
   </data>
   <data name="8000" xml:space="preserve">
     <value>İşlem başarılı.</value>
@@ -155,5 +176,35 @@
   </data>
   <data name="8003" xml:space="preserve">
     <value>Müşteri başarıyla güncellendi.</value>
+  </data>
+  <data name="8004" xml:space="preserve">
+    <value>Müşteri engel durumu güncellenmiştir.</value>
+  </data>
+  <data name="8005" xml:space="preserve">
+    <value>Müşteri e-posta adresi güncellenmiştir.</value>
+  </data>
+  <data name="8006" xml:space="preserve">
+    <value>Müşteri telefon numarası güncellenmiştir.</value>
+  </data>
+  <data name="8007" xml:space="preserve">
+    <value>Müşteriyle ilişkili cihaz eklenmiştir.</value>
+  </data>
+  <data name="8008" xml:space="preserve">
+    <value>Cihaz silinmiştir.</value>
+  </data>
+  <data name="8009" xml:space="preserve">
+    <value>Cihaz güncellenmiştir.</value>
+  </data>
+  <data name="8010" xml:space="preserve">
+    <value>Cihaz tokenı güncellenmiştir.</value>
+  </data>
+  <data name="8011" xml:space="preserve">
+    <value>E-posta gönderimi başarıyla gerçekleşmiştir.</value>
+  </data>
+  <data name="8012" xml:space="preserve">
+    <value>Bildirim başarıyla gönderilmiştir.</value>
+  </data>
+  <data name="8013" xml:space="preserve">
+    <value>Kısa mesaj başarıyla gönderilmiştir.</value>
   </data>
 </root>
