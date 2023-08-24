@@ -144,4 +144,16 @@
   <data name="2002" xml:space="preserve">
     <value>Cihaz bulunamadı.</value>
   </data>
+  <data name="8000" xml:space="preserve">
+    <value>İşlem başarılı.</value>
+  </data>
+  <data name="8001" xml:space="preserve">
+    <value>Yeni müşteri eklendi.</value>
+  </data>
+  <data name="8002" xml:space="preserve">
+    <value>Müşteri başarıyla silinmiştir.</value>
+  </data>
+  <data name="8003" xml:space="preserve">
+    <value>Müşteri başarıyla güncellendi.</value>
+  </data>
 </root>

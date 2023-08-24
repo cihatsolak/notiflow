@@ -18,10 +18,10 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         int numberOfRowsDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (numberOfRowsDeleted != 1)
         {
-            _logger.LogInformation("Could not delete user of ID {@userId}.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_DELETED);
+            _logger.LogInformation("Could not delete customer of ID {@customerId}.", request.Id);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
         }
 
-        return Response<Unit>.Success(Unit.Value);
+        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_DELETED, Unit.Value);
     }
 }

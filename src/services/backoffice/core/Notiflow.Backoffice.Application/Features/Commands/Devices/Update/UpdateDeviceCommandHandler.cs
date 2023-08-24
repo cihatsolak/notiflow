@@ -17,7 +17,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         if (device is null)
         {
             _logger.LogWarning("The device with id {@id} was not found.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseErrorCodes.DEVICE_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, device);

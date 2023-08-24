@@ -17,7 +17,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         if (device is null)
         {
             _logger.LogWarning("The device with id {@deviceId} was not found.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseErrorCodes.DEVICE_NOT_FOUND);
         }
 
         device.Token = request.Token;

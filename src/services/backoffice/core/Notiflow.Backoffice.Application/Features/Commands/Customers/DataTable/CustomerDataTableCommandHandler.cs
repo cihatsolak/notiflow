@@ -20,7 +20,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return Response<DtResult<CustomerDataTableResponse>>.Fail(-1);
+            return Response<DtResult<CustomerDataTableResponse>>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         DtResult<CustomerDataTableResponse> customerDataTable = new()
@@ -31,6 +31,6 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
             Data = ObjectMapper.Mapper.Map<List<CustomerDataTableResponse>>(customers)
         };
 
-        return Response<DtResult<CustomerDataTableResponse>>.Success(customerDataTable);
+        return Response<DtResult<CustomerDataTableResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, customerDataTable);
     }
 }

@@ -17,13 +17,13 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
         if (customer is null)
         {
             _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.IsBlocked == request.IsBlocked)
         {
             _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_BLOCKING_STATUS_EXISTS);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 
         customer.IsBlocked = request.IsBlocked;
@@ -35,6 +35,6 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
             request.Id,
             request.IsBlocked ? "blocked" : "unblocked");
 
-        return Response<Unit>.Success(Unit.Value);
+        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_BLOCK_STATUS_UPDATED, Unit.Value);
     }
 }

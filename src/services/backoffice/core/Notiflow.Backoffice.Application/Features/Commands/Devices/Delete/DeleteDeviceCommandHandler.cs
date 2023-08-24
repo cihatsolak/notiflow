@@ -17,7 +17,7 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogWarning("Could not delete device of ID {@deviceId}.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_DELETED);
+            return Response<Unit>.Fail(ResponseErrorCodes.DEVICE_NOT_DELETED);
         }
 
         _logger.LogInformation("The device with ID {@deviceId} has been deleted.", request.Id);
