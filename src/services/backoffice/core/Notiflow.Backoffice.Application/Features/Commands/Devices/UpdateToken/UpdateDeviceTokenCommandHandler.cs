@@ -5,7 +5,9 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateDeviceTokenCommandHandler> _logger;
 
-    public UpdateDeviceTokenCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateDeviceTokenCommandHandler> logger)
+    public UpdateDeviceTokenCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<UpdateDeviceTokenCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;

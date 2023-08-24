@@ -5,7 +5,9 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
     private readonly ILogger<AddDeviceCommandHandler> _logger;
 
-    public AddDeviceCommandHandler(INotiflowUnitOfWork notiflowUnitOfWork, ILogger<AddDeviceCommandHandler> logger)
+    public AddDeviceCommandHandler(
+        INotiflowUnitOfWork notiflowUnitOfWork, 
+        ILogger<AddDeviceCommandHandler> logger)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
         _logger = logger;

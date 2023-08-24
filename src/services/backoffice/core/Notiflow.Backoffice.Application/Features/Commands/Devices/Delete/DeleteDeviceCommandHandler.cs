@@ -5,7 +5,9 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<DeleteDeviceCommandHandler> _logger;
 
-    public DeleteDeviceCommandHandler(INotiflowUnitOfWork uow, ILogger<DeleteDeviceCommandHandler> logger)
+    public DeleteDeviceCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<DeleteDeviceCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
