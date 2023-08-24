@@ -8,4 +8,6 @@ public interface INotiflowUnitOfWork : IBaseUnitOfWork
     IDeviceWriteRepository DeviceWrite { get; }
     ITextMessageHistoryReadRepository TextMessageHistoryRead { get; }
     ITextMessageHistoryWriteRepository TextMessageHistoryWrite { get; }
+    INotificationHistoryReadRepository NotificationHistoryRead { get; }
+    INotificationHistoryWriteRepository NotificationHistoryWrite { get; }
 }

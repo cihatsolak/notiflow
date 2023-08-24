@@ -15,13 +15,10 @@ internal record class ResponseCodes
         internal const int CUSTOMER_BLOCKING_STATUS_EXISTS = 1003;
         internal const int CUSTOMER_EMAIL_ADDRESS_SAME = 1004;
         internal const int CUSTOMER_PHONE_NUMBER_SAME = 1005;
-
         internal const int DEVICE_EXISTS = 1006;
         internal const int DEVICE_NOT_DELETED = 1007;
         internal const int DEVICE_NOT_FOUND = 1008;
-
         internal const int TENANT_NOT_FOUND = 1009;
-
         internal const int CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND = 1009;
         internal const int THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL = 1010;
         internal const int EMAIL_SENDING_FAILED = 1011;
@@ -31,6 +28,7 @@ internal record class ResponseCodes
         internal const int TEXT_MESSAGE_SENDING_FAILED = 1015;
         internal const int SUPPORTED_LANGUAGES_NOT_FOUND = 1016;
         internal const int TEXT_MESSAGE_NOT_FOUND = 1017;
+        internal const int NOTIFICATION_NOT_FOUND = 1018;
     }
 
     /// <summary>

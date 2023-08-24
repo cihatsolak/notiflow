@@ -171,6 +171,9 @@
   <data name="1017" xml:space="preserve">
     <value>Text message not found.</value>
   </data>
+  <data name="1018" xml:space="preserve">
+    <value>Notification not found.</value>
+  </data>
   <data name="8000" xml:space="preserve">
     <value>The operation is successful.</value>
   </data>

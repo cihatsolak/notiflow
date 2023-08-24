@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetCustomerById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 
 public sealed record GetCustomerByIdQueryResponse
 {

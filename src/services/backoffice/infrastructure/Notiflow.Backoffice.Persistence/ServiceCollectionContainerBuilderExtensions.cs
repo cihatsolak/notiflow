@@ -12,7 +12,9 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddScoped<IDeviceReadRepository, DeviceReadRepository>()
             .AddScoped<IDeviceWriteRepository, DeviceWriteRepository>()
             .AddScoped<ITextMessageHistoryReadRepository, TextMessageHistoryReadRepository>()
-            .AddScoped<ITextMessageHistoryWriteRepository, TextMessageHistoryWriteRepository>();
+            .AddScoped<ITextMessageHistoryWriteRepository, TextMessageHistoryWriteRepository>()
+            .AddScoped<INotificationHistoryReadRepository, NotificationHistoryReadRepository>()
+            .AddScoped<INotificationHistoryWriteRepository, NotificationHistoryWriteRepository>();
 
         services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
         
