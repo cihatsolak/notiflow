@@ -165,6 +165,12 @@
   <data name="1015" xml:space="preserve">
     <value>Kısa mesaj gönderimi başarısız olarak gerçekleşmiştir.</value>
   </data>
+  <data name="1016" xml:space="preserve">
+    <value>Desteklenen diller bulunamadı.</value>
+  </data>
+  <data name="1017" xml:space="preserve">
+    <value>Kısa mesaj bulunamadı.</value>
+  </data>
   <data name="8000" xml:space="preserve">
     <value>İşlem başarılı.</value>
   </data>

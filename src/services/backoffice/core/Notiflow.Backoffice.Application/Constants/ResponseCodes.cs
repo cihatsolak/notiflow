@@ -29,6 +29,8 @@ internal record class ResponseCodes
         internal const int CUSTOMERS_PHONE_NUMBERS_NOT_FOUND = 1013;
         internal const int THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL = 1014;
         internal const int TEXT_MESSAGE_SENDING_FAILED = 1015;
+        internal const int SUPPORTED_LANGUAGES_NOT_FOUND = 1016;
+        internal const int TEXT_MESSAGE_NOT_FOUND = 1017;
     }
 
     /// <summary>

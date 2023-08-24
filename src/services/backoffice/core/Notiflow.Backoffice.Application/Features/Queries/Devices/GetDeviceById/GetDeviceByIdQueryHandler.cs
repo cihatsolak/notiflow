@@ -2,23 +2,28 @@
 
 public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, Response<GetDeviceByIdQueryResponse>>
 {
-    private readonly INotiflowUnitOfWork _unitOfWork;
+    private readonly INotiflowUnitOfWork _uow;
+    private readonly ILogger<GetDeviceByIdQueryHandler> _logger;
 
-    public GetDeviceByIdQueryHandler(INotiflowUnitOfWork unitOfWork)
+    public GetDeviceByIdQueryHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<GetDeviceByIdQueryHandler> logger)
     {
-        _unitOfWork = unitOfWork;
+        _uow = uow;
+        _logger = logger;
     }
 
     public async Task<Response<GetDeviceByIdQueryResponse>> Handle(GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
-        var device = await _unitOfWork.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
+        var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Response<GetDeviceByIdQueryResponse>.Fail(-1);
+            _logger.LogInformation("Device with ID {@deviceId} was not found.", request.Id);
+            return Response<GetDeviceByIdQueryResponse>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
-        var deviceResponse = ObjectMapper.Mapper.Map<GetDeviceByIdQueryResponse>(device);
+        var deviceDto = ObjectMapper.Mapper.Map<GetDeviceByIdQueryResponse>(device);
 
-        return Response<GetDeviceByIdQueryResponse>.Success(deviceResponse);
+        return Response<GetDeviceByIdQueryResponse>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDto);
     }
 }

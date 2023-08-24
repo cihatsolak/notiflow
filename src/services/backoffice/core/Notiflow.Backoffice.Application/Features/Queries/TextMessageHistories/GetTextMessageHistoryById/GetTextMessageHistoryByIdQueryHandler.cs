@@ -5,7 +5,9 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<GetTextMessageHistoryByIdQueryHandler> _logger;
 
-    public GetTextMessageHistoryByIdQueryHandler(INotiflowUnitOfWork uow, ILogger<GetTextMessageHistoryByIdQueryHandler> logger)
+    public GetTextMessageHistoryByIdQueryHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<GetTextMessageHistoryByIdQueryHandler> logger)
     {
         _uow = uow;
         _logger = logger;
@@ -16,12 +18,12 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
-            _logger.LogWarning("{@textMessageHistoryId} ID message history not found.", request.Id);
-            return Response<GetTextMessageHistoryByIdQueryResponse>.Fail(1);
+            _logger.LogInformation("Text message history with ID {@textMessageHistoryId} was not found.", request.Id);
+            return Response<GetTextMessageHistoryByIdQueryResponse>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
-        var textMessageHistoryResponse = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResponse>(textMessageHistory);
+        var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResponse>(textMessageHistory);
 
-        return Response<GetTextMessageHistoryByIdQueryResponse>.Success(1, textMessageHistoryResponse);
+        return Response<GetTextMessageHistoryByIdQueryResponse>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDto);
     }
 }
