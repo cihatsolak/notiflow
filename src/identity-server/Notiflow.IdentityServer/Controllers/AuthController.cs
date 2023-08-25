@@ -11,8 +11,11 @@ public sealed class AuthController : BaseApiController
     }
 
     /// <summary>
-    /// Creates a new access token for the given user credentials.
+    /// Creates an access token based on the provided request.
     /// </summary>
+    /// <param name="request">The request containing information for access token creation.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the access token result.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
     [HttpPost("create-access-token")]
@@ -25,8 +28,11 @@ public sealed class AuthController : BaseApiController
     }
 
     /// <summary>
-    /// Creates a new access token from a refresh token.
+    /// Creates an access token using a refresh token based on the provided request.
     /// </summary>
+    /// <param name="request">The request containing the refresh token for access token creation.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the access token result.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
     [HttpPost("create-refresh-token")]
@@ -39,8 +45,11 @@ public sealed class AuthController : BaseApiController
     }
 
     /// <summary>
-    /// Revokes the specified refresh token.
+    /// Revokes a refresh token based on the provided refresh token.
     /// </summary>
+    /// <param name="refreshToken">The refresh token to revoke.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the refresh token revocation.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
     /// <response code="401">unauthorized user</response>
@@ -54,8 +63,10 @@ public sealed class AuthController : BaseApiController
     }
 
     /// <summary>
-    /// Gets the authenticated user's information.
+    /// Retrieves the authenticated user's details.
     /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the authenticated user's details.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="404">user not found</response>
