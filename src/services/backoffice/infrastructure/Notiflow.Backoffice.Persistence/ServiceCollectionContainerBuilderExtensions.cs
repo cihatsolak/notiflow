@@ -14,7 +14,9 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddScoped<ITextMessageHistoryReadRepository, TextMessageHistoryReadRepository>()
             .AddScoped<ITextMessageHistoryWriteRepository, TextMessageHistoryWriteRepository>()
             .AddScoped<INotificationHistoryReadRepository, NotificationHistoryReadRepository>()
-            .AddScoped<INotificationHistoryWriteRepository, NotificationHistoryWriteRepository>();
+            .AddScoped<INotificationHistoryWriteRepository, NotificationHistoryWriteRepository>()
+            .AddScoped<IEmailHistoryReadRepository, EmailHistoryReadRepository>()
+            .AddScoped<IEmailHistoryWriteRepository, EmailHistoryWriteRepository>();
 
         services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
         

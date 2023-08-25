@@ -24,9 +24,12 @@ global using Notiflow.Backoffice.Application.Features.Commands.Notifications.Sen
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
+global using Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
+global using Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Customers;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.Devices;
+global using Notiflow.Backoffice.Application.Interfaces.Repositories.EmailHistories;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.NotificationHistories;
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
 global using Notiflow.Backoffice.Application.Interfaces.Services;

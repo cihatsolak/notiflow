@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
-
-namespace Notiflow.Backoffice.Application.Mappers;
+﻿namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {
@@ -51,5 +49,7 @@ internal sealed class ApplicationProfile : Profile
         CreateMap<SendEmailCommand, EmailDeliveredEvent>();
         CreateMap<SendEmailCommand, EmailNotDeliveredEvent>();
         CreateMap<SendEmailCommand, EmailRequest>();
+
+        CreateMap<EmailHistory, GetEmailHistoryByIdQueryResponse>();
     }
 }

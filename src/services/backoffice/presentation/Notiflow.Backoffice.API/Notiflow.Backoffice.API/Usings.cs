@@ -21,6 +21,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.Notifications.Sen
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
+global using Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 global using Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;

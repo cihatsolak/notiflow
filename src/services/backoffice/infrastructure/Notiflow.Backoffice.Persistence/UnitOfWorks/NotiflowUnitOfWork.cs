@@ -25,6 +25,10 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 
     public INotificationHistoryWriteRepository NotificationHistoryWrite => _serviceProvider.GetRequiredService<INotificationHistoryWriteRepository>();
 
+    public IEmailHistoryReadRepository EmailHistoryRead => _serviceProvider.GetRequiredService<IEmailHistoryReadRepository>();
+
+    public IEmailHistoryWriteRepository EmailHistoryWrite => _serviceProvider.GetRequiredService<IEmailHistoryWriteRepository>();
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>()

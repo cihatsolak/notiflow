@@ -29,6 +29,7 @@ internal record class ResponseCodes
         internal const int SUPPORTED_LANGUAGES_NOT_FOUND = 1016;
         internal const int TEXT_MESSAGE_NOT_FOUND = 1017;
         internal const int NOTIFICATION_NOT_FOUND = 1018;
+        internal const int EMAIL_HISTORY_NOT_FOUND = 1019;
     }
 
     /// <summary>
