@@ -3,8 +3,11 @@
 public sealed class CustomersController : BaseApiController
 {
     /// <summary>
-    /// Lists customers in datatable format by pagination
+    /// Retrieves a DataTable of customer information based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing parameters for DataTable retrieval.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the DataTable result of customer information.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
@@ -18,8 +21,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Lists the customer's detail information
+    /// Retrieves detailed information about a customer based on its ID.
     /// </summary>
+    /// <param name="request">The request containing the customer ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the detailed customer information.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customer information not found</response>
@@ -33,8 +39,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Add a new customer
+    /// Adds a new customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing customer details to add.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the ID of the added customer.</returns>
     /// <response code="201">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -48,8 +57,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Update current customer
+    /// Updates an existing customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing customer details to update.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the customer update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -63,8 +75,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Delete current user
+    /// Deletes a customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing the customer ID to delete.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the customer deletion operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -78,8 +93,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Changes the customer's blocking status. blocked/unblocked.
+    /// Updates the blocking status of a customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing customer ID and blocking status.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the customer blocking status update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -93,8 +111,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Changes the customer's email address
+    /// Updates the email of a customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing customer ID and new email.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the customer email update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -108,8 +129,11 @@ public sealed class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Changes the customer's phone number
+    /// Updates the phone number of a customer based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing customer ID and new phone number.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the customer phone number update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
