@@ -2,4 +2,5 @@
 
 public interface ITextMessageHistoryReadRepository : IReadRepository<TextMessageHistory>
 {
+    Task<(int recordsTotal, List<TextMessageHistory> textMessageHistories)> GetPageAsync(string sortKey, string searchKey, int pageIndex, int pageSize, CancellationToken cancellationToken);
 }

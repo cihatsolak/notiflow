@@ -12,7 +12,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(Response<DtResult<CustomerDataTableResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<DtResult<CustomerDataTableCommandResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] CustomerDataTableCommand request, CancellationToken cancellationToken)
     {

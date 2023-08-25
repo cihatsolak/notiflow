@@ -3,6 +3,24 @@
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>
+    /// Retrieves a data table of text message records based on the provided command.
+    /// </summary>
+    /// <param name="request">The command containing filtering and pagination parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the data table of text message records.</returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Customers not found</response>
+    [HttpPost("datatable")]
+    [ProducesResponseType(typeof(Response<DtResult<TextMessageDataTableCommandResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        return HttpResult.Get(response);
+    }
+
+    /// <summary>
     /// Retrieves text message history based on the provided ID.
     /// </summary>
     /// <param name="request">The request containing the text message history ID.</param>

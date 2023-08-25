@@ -13,7 +13,7 @@ internal sealed class ApplicationProfile : Profile
 
     private void CustomerMaps()
     {
-        CreateMap<Customer, CustomerDataTableResponse>()
+        CreateMap<Customer, CustomerDataTableCommandResponse>()
              .ForMember(dest => dest.CloudMessagePlatform, opt => opt.MapFrom(src => src.Device.CloudMessagePlatform));
 
         CreateMap<Customer, GetCustomerByIdQueryResponse>();
@@ -31,6 +31,7 @@ internal sealed class ApplicationProfile : Profile
     private void TextMessageHistoryMaps()
     {
         CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
+        CreateMap<TextMessageHistory, TextMessageDataTableCommandResponse>();
 
         CreateMap<SendTextMessageCommand, TextMessageDeliveredEvent>();
         CreateMap<SendTextMessageCommand, TextMessageNotDeliveredEvent>();

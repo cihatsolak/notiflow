@@ -18,6 +18,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateTok
 global using Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
 global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
