@@ -2,7 +2,7 @@
 
 namespace Notiflow.IdentityServer.Core.Entities.Users;
 
-public class UserRefreshToken : BaseEntity
+public class RefreshToken : BaseEntity
 {
     public string Token { get; set; }
     public DateTime ExpirationDate { get; set; }

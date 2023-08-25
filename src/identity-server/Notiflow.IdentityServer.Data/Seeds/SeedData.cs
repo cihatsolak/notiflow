@@ -44,14 +44,14 @@ internal static class SeedData
             .RuleFor(user => user.Email, faker => faker.Internet.Email())
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
-            .RuleFor(user => user.UserRefreshToken, faker => GenerateUserRefreshToken())
+            .RuleFor(user => user.RefreshToken, faker => GenerateRefreshToken())
             .Generate(5);
     }
 
-    private static UserRefreshToken GenerateUserRefreshToken()
+    private static RefreshToken GenerateRefreshToken()
     {
-        return new Faker<UserRefreshToken>("tr")
-            .RuleFor(userRefreshToken => userRefreshToken.Token, faker => faker.Random.AlphaNumeric(50))
-            .RuleFor(userRefreshToken => userRefreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
+        return new Faker<RefreshToken>("tr")
+            .RuleFor(refreshToken => refreshToken.Token, faker => faker.Random.AlphaNumeric(50))
+            .RuleFor(refreshToken => refreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
     }
 }

@@ -43,41 +43,41 @@ internal class AuthManager : IAuthService
 
     public async Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _appDbContext.UserRefreshTokens
+        var refreshToken = await _appDbContext.RefreshTokens
             .Include(p => p.User)
             .ThenInclude(p => p.Tenant)
             .SingleOrDefaultAsync(p => p.Token == request.Token, cancellationToken);
-        if (userRefreshToken is null)
+        if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
             return Response<TokenResponse>.Fail(-1);
         }
 
-        var tokenResponse = _tokenService.CreateToken(userRefreshToken.User);
+        var tokenResponse = _tokenService.CreateToken(refreshToken.User);
         if (!tokenResponse.Succeeded)
         {
-            _logger.LogWarning("Failed to generate access token for {@username} user.", userRefreshToken.User.Username);
+            _logger.LogWarning("Failed to generate access token for {@username} user.", refreshToken.User.Username);
             return Response<TokenResponse>.Fail(-1);
         }
 
-        userRefreshToken.Token = tokenResponse.Data.RefreshToken;
-        userRefreshToken.ExpirationDate = tokenResponse.Data.RefreshTokenExpiration;
+        refreshToken.Token = tokenResponse.Data.RefreshToken;
+        refreshToken.ExpirationDate = tokenResponse.Data.RefreshTokenExpiration;
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
         return tokenResponse;
     }
 
-    public async Task<Response<EmptyResponse>> RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    public async Task<Response<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken)
     {
-        var userRefreshToken = await _appDbContext.UserRefreshTokens.AsNoTracking().SingleOrDefaultAsync(p => p.Token == refreshToken, cancellationToken);
-        if (userRefreshToken is null)
+        var refreshToken = await _appDbContext.RefreshTokens.AsNoTracking().SingleOrDefaultAsync(p => p.Token == token, cancellationToken);
+        if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
             return Response<EmptyResponse>.Fail(-1);
         }
 
-        int numberOfRowsDeleted = await _appDbContext.UserRefreshTokens.Where(p => p.Token == userRefreshToken.Token).ExecuteDeleteAsync(cancellationToken);
+        int numberOfRowsDeleted = await _appDbContext.RefreshTokens.Where(p => p.Token == refreshToken.Token).ExecuteDeleteAsync(cancellationToken);
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete refresh token.");
