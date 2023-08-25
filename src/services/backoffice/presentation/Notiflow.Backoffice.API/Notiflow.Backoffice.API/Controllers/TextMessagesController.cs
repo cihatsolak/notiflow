@@ -3,8 +3,11 @@
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>
-    /// Lists history message detail by related id
+    /// Retrieves text message history based on the provided ID.
     /// </summary>
+    /// <param name="request">The request containing the text message history ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the text message history details.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Text message history not found</response>
@@ -18,8 +21,11 @@ public sealed class TextMessagesController : BaseApiController
     }
 
     /// <summary>
-    /// Sends messages to customers
+    /// Sends a text message based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing text message details to send.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the text message sending operation.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="400">Message could not be sent</response>
     /// <response code="401">Unauthorized action</response>
