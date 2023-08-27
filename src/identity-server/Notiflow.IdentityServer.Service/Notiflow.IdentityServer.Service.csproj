@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
     <ProjectReference Include="..\..\..\libs\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
     <ProjectReference Include="..\..\..\libs\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj" />
+    <ProjectReference Include="..\..\..\libs\file\Puzzle.Lib.File\Puzzle.Lib.File.csproj" />
     <ProjectReference Include="..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
     <ProjectReference Include="..\..\..\libs\security\Puzzle.Lib.Security\Puzzle.Lib.Security.csproj" />
     <ProjectReference Include="..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />

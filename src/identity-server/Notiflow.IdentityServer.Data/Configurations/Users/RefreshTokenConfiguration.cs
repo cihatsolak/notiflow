@@ -13,7 +13,7 @@ internal sealed class RefreshTokenConfiguration : BaseEntityConfiguration<Refres
 
         builder.ToTable(nameof(RefreshToken), table =>
         {
-            table.HasCheckConstraint("CK_RefreshToken_MailSmtpPort", "[UserId] > 0");
+            table.HasCheckConstraint("CK_RefreshToken_UserId", "[UserId] > 0");
         });
 
         builder.Property(p => p.UserId).IsRequired(true);

@@ -81,4 +81,13 @@ public sealed class UsersController : BaseApiController
         var response = await _userService.DeleteAsync(id, cancellationToken);
         return HttpResult.NoContent(response);
     }
+
+    [HttpPatch("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateProfilePhoto(int id, [FromBody] IFormFile profilePhoto, CancellationToken cancellationToken)
+    {
+        var response = await _userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
+        return HttpResult.NoContent(response);
+    }
 }

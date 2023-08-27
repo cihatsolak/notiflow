@@ -3,11 +3,16 @@
 internal sealed class UserManager : IUserService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IFileService _fileService;
     private readonly ILogger<UserManager> _logger;
 
-    public UserManager(ApplicationDbContext context, ILogger<UserManager> logger)
+    public UserManager(
+        ApplicationDbContext context, 
+        IFileService fileService,
+        ILogger<UserManager> logger)
     {
         _context = context;
+        _fileService = fileService;
         _logger = logger;
     }
 
@@ -51,6 +56,12 @@ internal sealed class UserManager : IUserService
         }
 
         request.Adapt(user);
+
+        if (string.IsNullOrWhiteSpace(request.ProfilePhoto.ToString()))
+        {
+
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return Response<EmptyResponse>.Success(1);
@@ -66,5 +77,27 @@ internal sealed class UserManager : IUserService
         }
 
         return Response<EmptyResponse>.Success(1);
+    }
+
+    public async Task<Response<Uri>> UpdateProfilePhotoByIdAsync(int id, IFormFile profilePhoto, CancellationToken cancellationToken)
+    {
+        var user = await _context.Users.FindAsync(new object[] { id }, cancellationToken);
+        if (user is null)
+        {
+            _logger.LogInformation("User not found by ID {@userId}.", id);
+            return Response<Uri>.Fail(-1);
+        }
+
+        bool isFileUploadSucceeded = await _fileService.AddOrUpdateAsync(profilePhoto, FilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (!isFileUploadSucceeded)
+        {
+            _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
+            return Response<Uri>.Fail(-1);
+        }
+
+        user.ProfilePhoto = new Uri($"{FilePaths.PROFILE_PHOTOS}/{profilePhoto.Name}");
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Response<Uri>.Success(user.ProfilePhoto);
     }
 }

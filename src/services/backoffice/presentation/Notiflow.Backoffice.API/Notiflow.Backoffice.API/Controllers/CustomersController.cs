@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateProfilePhoto;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {
@@ -146,12 +144,5 @@ public sealed class CustomersController : BaseApiController
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.NoContent(response);
-    }
-
-    [HttpPatch("update-profile-photo")]
-    public async Task<IActionResult> UpdateProfilePhoto()
-    {
-        var asd = await Sender.Send(new UpdateProfilePhotoCommand());
-        return HttpResult.NoContent(asd);
     }
 }

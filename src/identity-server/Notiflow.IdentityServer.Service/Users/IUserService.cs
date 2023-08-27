@@ -6,4 +6,5 @@ public interface IUserService
     Task<Response<int>> AddAsync(CreateUserRequest request, CancellationToken cancellationToken);
     Task<Response<EmptyResponse>> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken);
     Task<Response<EmptyResponse>> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<Response<Uri>> UpdateProfilePhotoByIdAsync(int id, IFormFile profilePhoto, CancellationToken cancellationToken);
 }
