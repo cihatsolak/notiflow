@@ -14,7 +14,7 @@ public sealed record FtpSetting
     /// <summary>
     /// Gets or sets the port number of the FTP server.
     /// </summary>
-    public required string Port { get; init; }
+    public required int Port { get; init; }
 
     /// <summary>
     /// Gets or sets the username to authenticate with the FTP server.
