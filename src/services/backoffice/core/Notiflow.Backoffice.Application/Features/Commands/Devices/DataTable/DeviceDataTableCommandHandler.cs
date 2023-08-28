@@ -20,7 +20,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return Response<DtResult<DeviceDataTableResponse>>.Fail(-1);
+            return Response<DtResult<DeviceDataTableResponse>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         DtResult<DeviceDataTableResponse> deviceDataTable = new()
@@ -31,6 +31,6 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
             Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResponse>>(devices)
         };
 
-        return Response<DtResult<DeviceDataTableResponse>>.Success(deviceDataTable);
+        return Response<DtResult<DeviceDataTableResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
     }
 }

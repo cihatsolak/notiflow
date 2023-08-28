@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Documentation.Settings;
-
-namespace Puzzle.Lib.Documentation;
+﻿namespace Puzzle.Lib.Documentation;
 
 /// <summary>
 /// Extension methods for configuring Swagger in an IServiceCollection.

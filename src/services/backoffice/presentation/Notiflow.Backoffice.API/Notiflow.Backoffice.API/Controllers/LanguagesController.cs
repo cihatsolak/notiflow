@@ -4,8 +4,9 @@
 public class LanguagesController : BaseApiController
 {
     /// <summary>
-    /// Lists information about the languages supported by the application
+    /// Retrieves the list of supported cultures for languages.
     /// </summary>
+    /// <returns>The response containing the list of supported cultures.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">No supported language found.</response>

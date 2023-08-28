@@ -6,5 +6,6 @@
         public string Surname { get; init; }
         public string Email { get; init; }
         public string Username { get; init; }
+        public IFormFile Avatar { get; set; }
     }
 }

@@ -3,8 +3,11 @@
 public sealed class DevicesController : BaseApiController
 {
     /// <summary>
-    /// Lists devices in datatable format by pagination
+    /// Retrieves a DataTable of device information based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing parameters for DataTable retrieval.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the DataTable result of device information.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Devices not found</response>
@@ -18,24 +21,29 @@ public sealed class DevicesController : BaseApiController
     }
 
     /// <summary>
-    /// Lists the device detail of the credential
+    /// Retrieves detailed information about a device based on its ID.
     /// </summary>
+    /// <param name="request">The request containing the device ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the detailed device information.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Response<GetDeviceByIdQueryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDeviceById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.Get(response);
     }
 
-
     /// <summary>
-    /// Adds a new device of the customer
+    /// Adds a new device based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing device details to add.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the ID of the added device.</returns>
     /// <response code="201">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -45,12 +53,15 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Created(response, nameof(GetDeviceById));
+        return HttpResult.Created(response, nameof(GetById));
     }
 
     /// <summary>
-    /// Update device information
+    /// Updates an existing device based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing device details to update.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the device update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -64,8 +75,11 @@ public sealed class DevicesController : BaseApiController
     }
 
     /// <summary>
-    /// Delete current device
+    /// Deletes a device based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing the device ID to delete.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the device deletion operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>
@@ -79,8 +93,11 @@ public sealed class DevicesController : BaseApiController
     }
 
     /// <summary>
-    /// Update device token information
+    /// Updates the token of a device based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing the device ID and new token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the device token update operation.</returns>
     /// <response code="204">Operation successful</response>
     /// <response code="400">Operation failed</response>
     /// <response code="401">Unauthorized action</response>

@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
   </ItemGroup>
 
@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\..\..\libs\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
+    <ProjectReference Include="..\..\..\..\..\libs\security\Puzzle.Lib.Security\Puzzle.Lib.Security.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
     <ProjectReference Include="..\..\..\..\shared\Notiflow.Common\Notiflow.Common.csproj" />
     <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />

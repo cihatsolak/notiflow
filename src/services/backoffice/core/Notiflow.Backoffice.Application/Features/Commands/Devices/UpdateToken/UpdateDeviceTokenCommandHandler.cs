@@ -5,7 +5,9 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateDeviceTokenCommandHandler> _logger;
 
-    public UpdateDeviceTokenCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateDeviceTokenCommandHandler> logger)
+    public UpdateDeviceTokenCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<UpdateDeviceTokenCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
@@ -17,7 +19,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         if (device is null)
         {
             _logger.LogWarning("The device with id {@deviceId} was not found.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         device.Token = request.Token;
@@ -26,6 +28,6 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
 
         _logger.LogInformation("The token information of the device with {@deviceId} ids has been updated.", request.Id);
 
-        return Response<Unit>.Success(Unit.Value);
+        return Response<Unit>.Success(ResponseCodes.Success.DEVICE_TOKEN_UPDATED, Unit.Value);
     }
 }

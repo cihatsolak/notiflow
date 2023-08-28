@@ -3,11 +3,16 @@
 internal sealed class UserManager : IUserService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IFileService _fileService;
     private readonly ILogger<UserManager> _logger;
 
-    public UserManager(ApplicationDbContext context, ILogger<UserManager> logger)
+    public UserManager(
+        ApplicationDbContext context, 
+        IFileService fileService,
+        ILogger<UserManager> logger)
     {
         _context = context;
+        _fileService = fileService;
         _logger = logger;
     }
 
@@ -51,8 +56,24 @@ internal sealed class UserManager : IUserService
         }
 
         request.Adapt(user);
-        await _context.SaveChangesAsync(cancellationToken);
 
+        if (request.Avatar is null || 0 >= request.Avatar.Length)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+            return Response<EmptyResponse>.Success(1);
+        }
+
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, FilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (!fileProcessResult.Succeeded)
+        {
+            _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
+        }
+        else
+        {
+            user.Avatar = fileProcessResult.Url;
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
         return Response<EmptyResponse>.Success(1);
     }
 
@@ -66,5 +87,27 @@ internal sealed class UserManager : IUserService
         }
 
         return Response<EmptyResponse>.Success(1);
+    }
+
+    public async Task<Response<string>> UpdateProfilePhotoByIdAsync(int id, IFormFile profilePhoto, CancellationToken cancellationToken)
+    {
+        var user = await _context.Users.FindAsync(new object[] { id }, cancellationToken);
+        if (user is null)
+        {
+            _logger.LogInformation("User not found by ID {@userId}.", id);
+            return Response<string>.Fail(-1);
+        }
+        
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, FilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (!fileProcessResult.Succeeded)
+        {
+            _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
+            return Response<string>.Fail(-1);
+        }
+
+        user.Avatar = fileProcessResult.Url;
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Response<string>.Success(user.Avatar);
     }
 }

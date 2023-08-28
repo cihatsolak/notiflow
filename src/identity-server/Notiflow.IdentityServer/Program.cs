@@ -9,7 +9,7 @@ builder.Services.AddWebDependencies();
 builder.Services.AddServiceDependencies();
 builder.Services.AddDataDependencies();
 
-
+// Configure the HTTP request pipeline.
 var app = builder.Build();
 
 app.UseHttpSecurityPrecautions();

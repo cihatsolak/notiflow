@@ -5,7 +5,9 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateDeviceCommandHandler> _logger;
 
-    public UpdateDeviceCommandHandler(INotiflowUnitOfWork uow, ILogger<UpdateDeviceCommandHandler> logger)
+    public UpdateDeviceCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<UpdateDeviceCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
@@ -17,7 +19,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         if (device is null)
         {
             _logger.LogWarning("The device with id {@id} was not found.", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.DEVICE_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, device);
@@ -26,6 +28,6 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
         _logger.LogInformation("Updated device information with {@id} id.", request.Id);
 
-        return Response<Unit>.Success(Unit.Value);
+        return Response<Unit>.Success(ResponseCodes.Success.DEVICE_UPDATED, Unit.Value);
     }
 }

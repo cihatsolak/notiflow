@@ -1,26 +1,49 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
-[Authorize]
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>
-    /// Lists history message detail by related id
+    /// Retrieves a data table of text message records based on the provided command.
     /// </summary>
+    /// <param name="request">The command containing filtering and pagination parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the data table of text message records.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="401">Unauthorized action</response>
-    /// <response code="404">Text message history not found</response>
-    [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
+    /// <response code="404">Customers not found</response>
+    [HttpPost("datatable")]
+    [ProducesResponseType(typeof(Response<DtResult<TextMessageDataTableCommandResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDetailById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return HttpResult.Get(response);
     }
 
     /// <summary>
-    /// Sends messages to customers
+    /// Retrieves text message history based on the provided ID.
     /// </summary>
+    /// <param name="request">The request containing the text message history ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the text message history details.</returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Text message history not found</response>
+    [HttpGet("{id:int:min(1):max(2147483647)}")]
+    [ProducesResponseType(typeof(Response<GetTextMessageHistoryByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    {
+        var response = await Sender.Send(request, cancellationToken);
+        return HttpResult.Get(response);
+    }
+
+    /// <summary>
+    /// Sends a text message based on the provided command.
+    /// </summary>
+    /// <param name="request">The command containing text message details to send.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response indicating the result of the text message sending operation.</returns>
     /// <response code="200">Operation successful</response>
     /// <response code="400">Message could not be sent</response>
     /// <response code="401">Unauthorized action</response>

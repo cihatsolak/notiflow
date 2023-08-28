@@ -6,7 +6,8 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         services
             .AddClaimService()
-            .AddRedisService();
+            .AddRedisService()
+            .AddFtpService();
 
         services
             .AddFluentDesignValidation()

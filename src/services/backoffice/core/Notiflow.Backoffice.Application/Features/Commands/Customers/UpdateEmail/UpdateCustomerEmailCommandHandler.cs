@@ -17,13 +17,13 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
         if (customer is null)
         {
             _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_NOT_FOUND);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.Email == request.Email)
         {
             _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ErrorCodes.CUSTOMER_EMAIL_ADDRESS_SAME);
+            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_EMAIL_ADDRESS_SAME);
         }
 
         customer.Email = request.Email;
@@ -32,6 +32,6 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
 
         _logger.LogInformation("The customer's email address has been updated. Customer ID: {@id}", request.Id);
 
-        return Response<Unit>.Success(Unit.Value);
+        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_EMAIL_UPDATED, Unit.Value);
     }
 }

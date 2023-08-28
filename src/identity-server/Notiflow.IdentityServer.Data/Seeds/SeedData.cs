@@ -41,17 +41,18 @@ internal static class SeedData
         return new Faker<User>("tr")
             .RuleFor(user => user.Name, faker => faker.Person.FirstName)
             .RuleFor(user => user.Surname, faker => faker.Person.LastName)
-            .RuleFor(user => user.Email, faker => faker.Internet.Email())
-            .RuleFor(user => user.Username, faker => faker.Internet.UserName())
+            .RuleFor(user => user.Email, (faker, user) => faker.Internet.Email(user.Name, user.Surname))
+            .RuleFor(user => user.Username, (faker, user) => faker.Internet.UserName(user.Name, user.Surname))
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
-            .RuleFor(user => user.UserRefreshToken, faker => GenerateUserRefreshToken())
-            .Generate(5);
+            .RuleFor(user => user.Avatar, faker => faker.Internet.Avatar())
+            .RuleFor(user => user.RefreshToken, faker => GenerateRefreshToken())
+            .Generate(10);
     }
 
-    private static UserRefreshToken GenerateUserRefreshToken()
+    private static RefreshToken GenerateRefreshToken()
     {
-        return new Faker<UserRefreshToken>("tr")
-            .RuleFor(userRefreshToken => userRefreshToken.Token, faker => faker.Random.AlphaNumeric(50))
-            .RuleFor(userRefreshToken => userRefreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
+        return new Faker<RefreshToken>("tr")
+            .RuleFor(refreshToken => refreshToken.Token, faker => faker.Random.AlphaNumeric(50))
+            .RuleFor(refreshToken => refreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
     }
 }

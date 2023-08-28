@@ -5,7 +5,9 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<AddCustomerCommandHandler> _logger;
 
-    public AddCustomerCommandHandler(INotiflowUnitOfWork uow, ILogger<AddCustomerCommandHandler> logger)
+    public AddCustomerCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILogger<AddCustomerCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
@@ -17,7 +19,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         if (isExists)
         {
             _logger.LogInformation("Phone number or e-mail address is already registered.");
-            return Response<int>.Fail(ErrorCodes.CUSTOMER_EXISTS);
+            return Response<int>.Fail(ResponseCodes.Error.CUSTOMER_EXISTS);
         }
 
         var customer = ObjectMapper.Mapper.Map<Customer>(request);
@@ -25,8 +27,8 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         await _uow.CustomerWrite.InsertAsync(customer, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new customer with 3 id has been registered.");
+        _logger.LogInformation("A new customer with {@customerId} id has been registered.", customer.Id);
 
-        return Response<int>.Success(customer.Id);
+        return Response<int>.Success(ResponseCodes.Success.CUSTOMER_ADDED, customer.Id);
     }
 }

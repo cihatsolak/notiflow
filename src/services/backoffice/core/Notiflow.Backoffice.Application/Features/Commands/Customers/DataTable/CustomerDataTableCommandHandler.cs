@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 
-public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Response<DtResult<CustomerDataTableResponse>>>
+public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Response<DtResult<CustomerDataTableCommandResponse>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<CustomerDataTableResponse>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Response<DtResult<CustomerDataTableCommandResponse>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Customer> customers) = await _uow.CustomerRead.GetPageAsync(request.SortKey,
                                                                                             request.SearchKey,
@@ -20,17 +20,17 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return Response<DtResult<CustomerDataTableResponse>>.Fail(-1);
+            return Response<DtResult<CustomerDataTableCommandResponse>>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
-        DtResult<CustomerDataTableResponse> customerDataTable = new()
+        DtResult<CustomerDataTableCommandResponse> customerDataTable = new()
         {
             RecordsFiltered = recordsTotal,
             RecordsTotal = recordsTotal,
             Draw = request.Draw,
-            Data = ObjectMapper.Mapper.Map<List<CustomerDataTableResponse>>(customers)
+            Data = ObjectMapper.Mapper.Map<List<CustomerDataTableCommandResponse>>(customers)
         };
 
-        return Response<DtResult<CustomerDataTableResponse>>.Success(customerDataTable);
+        return Response<DtResult<CustomerDataTableCommandResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, customerDataTable);
     }
 }

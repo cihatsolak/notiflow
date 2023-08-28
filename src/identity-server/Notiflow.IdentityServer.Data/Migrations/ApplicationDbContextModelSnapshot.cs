@@ -17,7 +17,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -188,6 +188,38 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.ToTable("TenantPermission", (string)null);
                 });
 
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("RefreshToken", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_RefreshToken_UserId", "[UserId] > 0");
+                        });
+                });
+
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
                 {
                     b.Property<int>("Id")
@@ -195,6 +227,12 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -245,39 +283,9 @@ namespace Notiflow.IdentityServer.Data.Migrations
 
                     b.ToTable("User", null, t =>
                         {
+                            t.HasCheckConstraint("CK_User_Avatar_Format", "[Avatar] LIKE 'http%' OR [Avatar] LIKE 'https%'");
+
                             t.HasCheckConstraint("CK_User_Email_Format", "Email LIKE '%_@__%.__%'");
-                        });
-                });
-
-            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserRefreshToken", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_UserRefreshToken_MailSmtpPort", "[UserId] > 0");
                         });
                 });
 
@@ -303,6 +311,17 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.RefreshToken", b =>
+                {
+                    b.HasOne("Notiflow.IdentityServer.Core.Entities.Users.User", "User")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("Notiflow.IdentityServer.Core.Entities.Users.RefreshToken", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
                 {
                     b.HasOne("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", "Tenant")
@@ -312,17 +331,6 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", b =>
-                {
-                    b.HasOne("Notiflow.IdentityServer.Core.Entities.Users.User", "User")
-                        .WithOne("UserRefreshToken")
-                        .HasForeignKey("Notiflow.IdentityServer.Core.Entities.Users.UserRefreshToken", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Tenants.Tenant", b =>
@@ -336,7 +344,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
 
             modelBuilder.Entity("Notiflow.IdentityServer.Core.Entities.Users.User", b =>
                 {
-                    b.Navigation("UserRefreshToken");
+                    b.Navigation("RefreshToken");
                 });
 #pragma warning restore 612, 618
         }

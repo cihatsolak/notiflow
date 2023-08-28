@@ -46,7 +46,7 @@ public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRe
 
     public Task<Device> GetByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
     {
-        return Table
+        return TableNoTracking
                .TagWith("Queries the customer's device information.")
                .SingleOrDefaultAsync(device => device.CustomerId == customerId, cancellationToken);
     }

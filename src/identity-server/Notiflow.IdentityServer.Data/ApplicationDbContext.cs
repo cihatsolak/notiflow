@@ -22,7 +22,7 @@ public sealed class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<User>().HasQueryFilter(user => user.Tenant.Token == _tenantToken);
-        modelBuilder.Entity<UserRefreshToken>().HasQueryFilter(userRefreshToken => userRefreshToken.User.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<RefreshToken>().HasQueryFilter(refreshToken => refreshToken.User.Tenant.Token == _tenantToken);
         modelBuilder.Entity<TenantPermission>().HasQueryFilter(tenantPermission => tenantPermission.Tenant.Token == _tenantToken);
         modelBuilder.Entity<TenantApplication>().HasQueryFilter(tenantApplication => tenantApplication.Tenant.Token == _tenantToken);
     }
@@ -31,5 +31,5 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<TenantApplication> TenantApplications { get; set; }
     public DbSet<TenantPermission> TenantPermissions { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

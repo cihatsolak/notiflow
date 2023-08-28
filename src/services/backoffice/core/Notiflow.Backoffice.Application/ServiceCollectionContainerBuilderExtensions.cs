@@ -8,16 +8,37 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(configure => configure.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        services.AddMediatR(opt =>
+        {
+            opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            opt.BehaviorsToRegister.AddRange(new List<ServiceDescriptor>
+            {
+                new(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>), ServiceLifetime.Transient),
+                new(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>), ServiceLifetime.Singleton),
+                new(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>), ServiceLifetime.Transient),
+            });
+        });
 
         services.AddFluentDesignValidation();
         services.AddRedisService();
 
         services.AddMassTransit();
-        services.AddMultiLanguage();
+        services.AddLocalization();
+
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("tr-TR")
+            };
+
+            options.DefaultRequestCulture = new("tr-TR");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+
+            options.ApplyCurrentCultureToResponseHeaders = true;
+        });
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
         services.AddScoped<IAuthorizationHandler, MessagePermissionAuthorizationHandler>();
@@ -41,28 +62,6 @@ public static class ServiceCollectionContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqSetting.Password);
                 });
             });
-        });
-
-        return services;
-    }
-
-    private static IServiceCollection AddMultiLanguage(this IServiceCollection services)
-    {
-        services.AddLocalization();
-
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
-
-            options.DefaultRequestCulture = new("tr-TR");
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-
-            options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
         return services;
