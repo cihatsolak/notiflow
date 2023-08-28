@@ -10,13 +10,13 @@ public sealed class SlowQueryInterceptor : DbCommandInterceptor
         _logger = serviceProvider.GetRequiredService<ILogger<SlowQueryInterceptor>>();
     }
 
-    public override DbDataReader ReaderExecuted(DbCommand command, CommandExecutedEventData eventData, DbDataReader result)
+    public override ValueTask<DbDataReader> ReaderExecutedAsync(DbCommand command, CommandExecutedEventData eventData, DbDataReader result, CancellationToken cancellationToken = default)
     {
         if (eventData.Duration.Seconds > _slowQueryThreesholdInSeconds)
         {
             _logger.LogWarning("Slow database query ({@Seconds} second) : {@CommandText}", eventData.Duration.Seconds, command.CommandText);
         }
 
-        return base.ReaderExecuted(command, eventData, result);
+        return base.ReaderExecutedAsync(command, eventData, result, cancellationToken);
     }
 }
