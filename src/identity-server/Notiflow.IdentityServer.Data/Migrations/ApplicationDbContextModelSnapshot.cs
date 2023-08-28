@@ -216,7 +216,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
 
                     b.ToTable("RefreshToken", null, t =>
                         {
-                            t.HasCheckConstraint("CK_RefreshToken_MailSmtpPort", "[UserId] > 0");
+                            t.HasCheckConstraint("CK_RefreshToken_UserId", "[UserId] > 0");
                         });
                 });
 
@@ -227,6 +227,12 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -277,6 +283,8 @@ namespace Notiflow.IdentityServer.Data.Migrations
 
                     b.ToTable("User", null, t =>
                         {
+                            t.HasCheckConstraint("CK_User_Avatar_Format", "[Avatar] LIKE 'http%' OR [Avatar] LIKE 'https%'");
+
                             t.HasCheckConstraint("CK_User_Email_Format", "Email LIKE '%_@__%.__%'");
                         });
                 });

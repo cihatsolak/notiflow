@@ -6,6 +6,8 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.FileProviders;
 global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
 global using Puzzle.Lib.File.Infrastructure.Settings;
+global using Puzzle.Lib.File.Models;
 global using Puzzle.Lib.File.Services;
 global using System.Text.Json.Serialization;

@@ -82,10 +82,20 @@ public sealed class UsersController : BaseApiController
         return HttpResult.NoContent(response);
     }
 
-    [HttpPatch("{id:int:min(1):max(2147483647)}")]
+    /// <summary>
+    /// Updates the profile photo for a user by their ID.
+    /// </summary>
+    /// <param name="id">The ID of the user.</param>
+    /// <param name="profilePhoto">The new profile photo image to upload.</param>
+    /// <param name="cancellationToken">Cancellation token to cancel the operation if needed.</param>
+    /// <returns>Returns a response indicating the success of the operation.</returns>
+    /// <response code="204">Profile photo updated successfully.</response>
+    /// <response code="400">Bad request. If the request is not valid or the update fails.</response>
+    [HttpPatch("{id:int:min(1):max(2147483647)}/update-profile-photo")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProfilePhoto(int id, [FromBody] IFormFile profilePhoto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateProfilePhoto(int id, [FromForm] IFormFile profilePhoto, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
         return HttpResult.NoContent(response);

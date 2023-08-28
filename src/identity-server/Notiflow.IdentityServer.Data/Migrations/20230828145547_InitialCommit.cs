@@ -94,6 +94,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Username = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
@@ -101,6 +102,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                    table.CheckConstraint("CK_User_Avatar_Format", "[Avatar] LIKE 'http%' OR [Avatar] LIKE 'https%'");
                     table.CheckConstraint("CK_User_Email_Format", "Email LIKE '%_@__%.__%'");
                     table.ForeignKey(
                         name: "FK_User_Tenant_TenantId",
@@ -123,7 +125,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshToken", x => x.Id);
-                    table.CheckConstraint("CK_RefreshToken_MailSmtpPort", "[UserId] > 0");
+                    table.CheckConstraint("CK_RefreshToken_UserId", "[UserId] > 0");
                     table.ForeignKey(
                         name: "FK_RefreshToken_User_UserId",
                         column: x => x.UserId,

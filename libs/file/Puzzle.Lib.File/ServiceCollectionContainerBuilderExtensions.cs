@@ -1,4 +1,7 @@
-﻿namespace Puzzle.Lib.File;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
+namespace Puzzle.Lib.File;
 
 /// <summary>
 /// Extension methods for registering FTP settings to the service collection.
@@ -21,6 +24,8 @@ public static class ServiceCollectionContainerBuilderExtensions
 
     public static IServiceCollection AddFtpService(this IServiceCollection services)
     {
+        services.AddFtpSetting();
+
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
@@ -30,7 +35,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         FtpSetting ftpSetting = configurationSection.Get<FtpSetting>();
 
-        services.TryAddSingleton<IFileService>(provider =>
+        services.TryAddScoped<IFileService>(provider =>
         {
             AsyncFtpClient asyncFtpClient = new(
                 ftpSetting.Ip,
@@ -44,7 +49,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             if (!asyncFtpClient.IsAuthenticated || !asyncFtpClient.IsConnected)
                 throw new FtpException("Failed to connect via ftp. Check your credentials.");
 
-            return new FtpManager(asyncFtpClient, provider.GetRequiredService<ILogger<FtpManager>>());
+            return new FtpManager(
+                asyncFtpClient, 
+                provider.GetRequiredService<IOptions<FtpSetting>>(),
+                provider.GetRequiredService<ILogger<FtpManager>>());
         });
 
         return services;
