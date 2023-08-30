@@ -3,7 +3,6 @@
 public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
-    private readonly IRedisService _redisService;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
@@ -11,14 +10,12 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     public SendSingleNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
-        IRedisService redisService,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
         IPublishEndpoint publishEndpoint,
         ILogger<SendSingleNotificationCommandHandler> logger)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
-        _redisService = redisService;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
@@ -27,13 +24,6 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
     public async Task<Response<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
-        bool isSentNotificationAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_NOTIFICATION_PERMISSION);
-        if (!isSentNotificationAllowed)
-        {
-            _logger.LogWarning("The tenant is not authorized to send notification.");
-            return Response<Unit>.Fail(-1);
-        }
-
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is null)
         {

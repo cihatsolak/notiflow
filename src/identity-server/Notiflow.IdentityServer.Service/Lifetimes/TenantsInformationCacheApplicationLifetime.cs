@@ -28,7 +28,7 @@ public static class TenantsInformationCacheApplicationLifetime
 
         try
         {
-            var response = await tenantService.GetTenantsWithoutFilter(CancellationToken.None);
+            var response = await tenantService.GetTenantsWithoutFilterAsync(CancellationToken.None);
             if (!response.Succeeded)
                 return;
 

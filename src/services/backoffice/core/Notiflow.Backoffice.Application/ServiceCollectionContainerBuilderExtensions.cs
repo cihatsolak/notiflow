@@ -41,7 +41,10 @@ public static class ServiceCollectionContainerBuilderExtensions
         });
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
+
         services.AddScoped<IAuthorizationHandler, MessagePermissionAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, NotificationPermissionAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, EmailPermissionAuthorizationHandler>();
 
         return services;
     }
