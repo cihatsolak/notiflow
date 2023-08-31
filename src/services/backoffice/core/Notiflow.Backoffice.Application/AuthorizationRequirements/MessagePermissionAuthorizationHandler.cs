@@ -15,7 +15,7 @@ public sealed class MessagePermissionAuthorizationHandler : AuthorizationHandler
     {
         if (context?.User?.Identity == null)
         {
-            context.Fail();
+            context.Fail(new AuthorizationFailureReason(this, "selam"));
             return;
         }
 
