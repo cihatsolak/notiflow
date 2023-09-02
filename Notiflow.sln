@@ -171,7 +171,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.Persist
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{1EAA4228-9FE6-4F23-BE87-AD109AAB9B40}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API\Notiflow.Backoffice.API\Notiflow.Backoffice.API.csproj", "{88C617A9-D4FC-4B4A-A1CD-7662D495C440}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.API", "src\services\backoffice\presentation\Notiflow.Backoffice.API\Notiflow.Backoffice.API.csproj", "{88C617A9-D4FC-4B4A-A1CD-7662D495C440}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Entities", "libs\database\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj", "{EE705B25-E66C-48B0-BCA9-667478BA0A2B}"
 EndProject
