@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
-public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEntity> where TEntity : class, IEntity, new()
+public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEntity> where TEntity : class, new()
 {
     public ReadRepository(DbContext dbContext) : base(dbContext)
     {

@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TEntity">The type of entity for which the repository is defined.</typeparam>
 [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
-public interface IEf6EntityRepository<TEntity> where TEntity : class, IEntity, new()
+public interface IEf6EntityRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     /// Retrieves a paginated list of all the entities from the database, ordered by the given sorting function.

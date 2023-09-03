@@ -31,13 +31,22 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>()
-            .Where(p => p.State == EntityState.Added || p.State == EntityState.Modified);
+        var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();
 
         foreach (var baseHistoricalEntity in baseHistoricalEntities)
         {
-            //baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
-            //baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
+            switch (baseHistoricalEntity.State)
+            {
+                case EntityState.Added:
+                    baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
+                    baseHistoricalEntity.Entity.CreatedDate = DateTime.Now;
+                    break;
+
+                case EntityState.Modified:
+                    baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
+                    baseHistoricalEntity.Entity.UpdatedDate = DateTime.Now;
+                    break;
+            }
         }
 
         var baseSoftDeleteEntities = _context.ChangeTracker.Entries<BaseSoftDeleteEntity>();

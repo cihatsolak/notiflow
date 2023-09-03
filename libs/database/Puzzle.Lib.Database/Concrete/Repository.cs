@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
 {
     protected readonly DbContext _context;
     protected readonly DbSet<TEntity> _entities;

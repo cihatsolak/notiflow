@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
-public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TEntity> where TEntity : BaseEntity
+public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TEntity> where TEntity : class, new()
 {
     public WriteRepository(DbContext dbContext) : base(dbContext)
     {
@@ -62,18 +62,21 @@ public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TE
         _entities.RemoveRange(entities);
     }
 
-    public virtual async Task<int> ExecuteDeleteAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<bool> ExecuteDeleteAsync(CancellationToken cancellationToken = default)
     {
-        return await _entities.ExecuteDeleteAsync(cancellationToken);
+        int numberOfRowsDeleted = await _entities.ExecuteDeleteAsync(cancellationToken);
+        return numberOfRowsDeleted > 0;
     }
 
-    public virtual async Task<int> ExecuteDeleteAsync(int id, CancellationToken cancellationToken = default)
+    public virtual async Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken = default) where TProperty : struct
     {
-        return await _entities.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken);
+        int numberOfRowsDeleted = await _entities.Where(p => EF.Property<TProperty>(p, "Id").Equals(id)).ExecuteDeleteAsync(cancellationToken);
+        return numberOfRowsDeleted > 0;
     }
 
-    public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    public virtual async Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _entities.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+        int numberOfRowsDeleted = await _entities.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+        return numberOfRowsDeleted > 0;
     }
 }

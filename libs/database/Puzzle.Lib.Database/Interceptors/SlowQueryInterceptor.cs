@@ -1,8 +1,14 @@
 ﻿namespace Puzzle.Lib.Database.Interceptors;
 
+/// <summary>
+/// Interceptor for tracking slow database queries and logging them.
+/// </summary>
+/// <remarks>
+/// This class is used to intercept database commands and log those that exceed a specified time threshold as slow queries.
+/// </remarks>
 public sealed class SlowQueryInterceptor : DbCommandInterceptor
 {
-    public const int _slowQueryThreesholdInSeconds = 2;
+    public const int _slowQueryThreesholdInSeconds = 3;
     private readonly ILogger<SlowQueryInterceptor> _logger;
 
     public SlowQueryInterceptor(IServiceProvider serviceProvider)

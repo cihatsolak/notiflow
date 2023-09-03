@@ -14,7 +14,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async ValueTask<bool> ToAnyWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async ValueTask<bool> ToAnyWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         bool result;
         using (var transactionScope = new TransactionScope(TransactionScopeOption.Required,
@@ -38,7 +38,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async Task<TEntity[]> ToArrayWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async Task<TEntity[]> ToArrayWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         TEntity[] result = default;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -61,7 +61,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async Task<List<TEntity>> ToListWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async Task<List<TEntity>> ToListWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         List<TEntity> result = default;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -85,7 +85,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async Task<TEntity> ToFirstOrDefaultWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async Task<TEntity> ToFirstOrDefaultWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         TEntity result = default;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -108,7 +108,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async Task<TEntity> ToFirstWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async Task<TEntity> ToFirstWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         TEntity result = default;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -131,7 +131,7 @@ public static class NoLockExtensions
     /// <param name="query">entity queryable</param>
     /// <param name="cancellationToken">token to cancel asynchronous operation</param>
     /// <returns>query result</returns>
-    public static async Task<TEntity> ToSingleWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, IEntity, new()
+    public static async Task<TEntity> ToSingleWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
         TEntity result = default;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
