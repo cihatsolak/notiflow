@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
+﻿using Puzzle.Lib.Entities.Entities.Historical;
+
+namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
 
 internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 {
@@ -31,7 +33,7 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var baseHistoricalEntities = _context.ChangeTracker.Entries<BaseHistoricalEntity>();
+        var baseHistoricalEntities = _context.ChangeTracker.Entries<IBaseHistoricalEntity>();
 
         foreach (var baseHistoricalEntity in baseHistoricalEntities)
         {
@@ -49,7 +51,7 @@ internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
             }
         }
 
-        var baseSoftDeleteEntities = _context.ChangeTracker.Entries<BaseSoftDeleteEntity>();
+        var baseSoftDeleteEntities = _context.ChangeTracker.Entries<IBaseSoftDeleteEntity>();
 
         foreach (var baseSoftDeleteEntity in baseSoftDeleteEntities)
         {

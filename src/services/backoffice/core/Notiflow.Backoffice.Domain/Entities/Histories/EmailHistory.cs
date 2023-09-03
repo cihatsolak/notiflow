@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Histories;
 
-public sealed class EmailHistory : BaseEntity
+public sealed class EmailHistory : BaseEntity<int>
 {
     public string Recipients { get; set; }
     public string Cc { get; set; }

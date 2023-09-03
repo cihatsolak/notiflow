@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Core.Entities.Tenants;
 
-public class Tenant : BaseHistoricalEntity
+public class Tenant : BaseHistoricalEntity<int>
 {
     public string Name { get; set; }
     public string Definition { get; set; }

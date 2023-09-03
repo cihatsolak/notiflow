@@ -1,8 +1,6 @@
-﻿using Puzzle.Lib.Entities.Entities.Base;
+﻿namespace Notiflow.IdentityServer.Core.Entities.Users;
 
-namespace Notiflow.IdentityServer.Core.Entities.Users;
-
-public class RefreshToken : BaseEntity
+public class RefreshToken : BaseEntity<int>
 {
     public string Token { get; set; }
     public DateTime ExpirationDate { get; set; }

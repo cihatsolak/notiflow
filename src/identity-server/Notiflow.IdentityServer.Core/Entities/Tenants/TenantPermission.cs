@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Core.Entities.Tenants;
 
-public class TenantPermission : BaseHistoricalEntity
+public class TenantPermission : BaseHistoricalEntity<int>
 {
     public bool IsSendMessagePermission { get; set; }
     public bool IsSendNotificationPermission { get; set; }

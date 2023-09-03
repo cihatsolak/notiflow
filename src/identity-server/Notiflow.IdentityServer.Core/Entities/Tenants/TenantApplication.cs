@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Core.Entities.Tenants;
 
-public class TenantApplication : BaseHistoricalEntity
+public class TenantApplication : BaseHistoricalEntity<int>
 {
     public string FirebaseServerKey { get; set; }
     public string FirebaseSenderId { get; set; }

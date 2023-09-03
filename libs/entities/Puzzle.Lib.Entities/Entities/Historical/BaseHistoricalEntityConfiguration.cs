@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.Historical
 {
-    public class BaseHistoricalEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalEntity
+    public class BaseHistoricalEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalEntity<int>
     {
         private readonly string _defaultDateValueSql;
         private readonly bool _useLowerTableName;

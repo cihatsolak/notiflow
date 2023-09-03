@@ -1,6 +1,11 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.SoftDelete
 {
-    public abstract class BaseSoftDeleteEntity : BaseEntity
+    public interface IBaseSoftDeleteEntity : IEntity
+    {
+        bool IsDeleted { get; set; }
+    }
+
+    public abstract class BaseSoftDeleteEntity<TPrimaryKey> : BaseEntity<TPrimaryKey>, IBaseSoftDeleteEntity where TPrimaryKey : notnull
     {
         /// <summary>
         /// Gets or sets is deleted
