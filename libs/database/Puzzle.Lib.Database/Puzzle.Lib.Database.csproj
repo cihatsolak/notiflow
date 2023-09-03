@@ -20,8 +20,4 @@
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
-  </ItemGroup>
-
 </Project>

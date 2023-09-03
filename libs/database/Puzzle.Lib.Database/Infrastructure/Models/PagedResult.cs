@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Database.Infrastructure.Models;
 
-public class PagedResult<TEntity> where TEntity : class, IEntity, new()
+public class PagedResult<TEntity> where TEntity : class, new()
 {
     public int PageIndex { get; set; }
     public int PageSize { get; set; }

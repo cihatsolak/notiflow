@@ -1,7 +1,7 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
 [Obsolete("It is suitable for use in entity framework 6 and lower versions.")]
-public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where TEntity : class, IEntity, new()
+public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where TEntity : class, new()
 {
     protected readonly DbContext _context;
     protected readonly DbSet<TEntity> _entities;

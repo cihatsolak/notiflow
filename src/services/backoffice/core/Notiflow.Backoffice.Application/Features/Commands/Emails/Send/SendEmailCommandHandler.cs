@@ -4,34 +4,23 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly IEmailService _emailService;
-    private readonly IRedisService _redisService;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<SendEmailCommandHandler> _logger;
 
     public SendEmailCommandHandler(
         INotiflowUnitOfWork uow,
         IEmailService emailService,
-        IRedisService redisService,
         IPublishEndpoint publishEndpoint,
         ILogger<SendEmailCommandHandler> logger)
     {
         _uow = uow;
         _emailService = emailService;
-        _redisService = redisService;
         _publishEndpoint = publishEndpoint;
         _logger = logger;
     }
 
     public async Task<Response<Unit>> Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {
-        bool isSentEmailAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_EMAIL_PERMISSION);
-        if (!isSentEmailAllowed)
-        {
-            _logger.LogWarning("The tenant is not authorized to send email.");
-
-            return Response<Unit>.Fail(-1);
-        }
-
         var emailAddresses = await _uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {

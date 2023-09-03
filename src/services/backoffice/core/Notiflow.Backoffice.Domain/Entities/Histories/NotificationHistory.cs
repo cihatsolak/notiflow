@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Histories;
 
-public class NotificationHistory : BaseEntity
+public class NotificationHistory : BaseEntity<int>
 {
     public string Title { get; set; }
     public string Message { get; set; }

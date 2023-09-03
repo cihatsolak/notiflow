@@ -7,7 +7,7 @@
 /// <remarks>
 /// This interface extends the IRepository<TEntity> interface and adds methods for reading entities without modifying them.
 /// </remarks>
-public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
+public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     /// Retrieves a paginated list of all the entities from the database, ordered by the given sorting function.

@@ -8,7 +8,12 @@
 /// </remarks>
 public interface IBaseUnitOfWork
 {
-    Task<IDbContextTransaction> BeginTransactionAsync();
+    /// <summary>
+    /// Initiates a transaction in the database asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token (optional).</param>
+    /// <returns>A <see cref="Task{IDbContextTransaction}"/> representing the database transaction object.</returns>
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously saves changes to a shadow database for auditing purposes.

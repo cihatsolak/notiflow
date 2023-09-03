@@ -15,8 +15,8 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
 
     public async Task<Response<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
-        int numberOfRowsDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
-        if (numberOfRowsDeleted != 1)
+        bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
+        if (!isDeleted)
         {
             _logger.LogInformation("Could not delete customer of ID {@customerId}.", request.Id);
             return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);

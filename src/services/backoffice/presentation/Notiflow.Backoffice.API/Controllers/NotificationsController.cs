@@ -29,6 +29,7 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="200">notification sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
+    [Authorize(Policy = "NotificationPermissionRestriction")]
     [HttpPost("send-single")]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
@@ -47,6 +48,7 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="200">notification sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
+    [Authorize(Policy = "NotificationPermissionRestriction")]
     [HttpPost("send-multiple")]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]

@@ -10,7 +10,7 @@ public static class QueryExtensions
     /// <returns>associates the query with the related entities and returns the query</returns>
     /// <exception cref="ArgumentNullException">throw when query is null</exception>
     /// <exception cref="ArgumentNullException">throw when include properties is null</exception>
-    public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> query, params string[] includeProperties) where TEntity : class, IEntity, new()
+    public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> query, params string[] includeProperties) where TEntity : class, new()
     {
         ArgumentNullException.ThrowIfNull(query);
         ArgumentNullException.ThrowIfNull(includeProperties);

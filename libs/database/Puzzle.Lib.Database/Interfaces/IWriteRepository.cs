@@ -8,7 +8,7 @@
 /// This interface extends the IRepository<TEntity> interface and adds methods for creating, updating, and deleting entities.
 /// The TEntity type parameter must be a class that derives from the BaseEntity class.
 /// </remarks>
-public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     /// Asynchronously inserts the entity into the database.
@@ -80,7 +80,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// Deletes all entities in the database of the current type.
     /// <param name="cancellationToken">The cancellation token.</param>
     /// </summary>
-    Task<int> ExecuteDeleteAsync(CancellationToken cancellationToken = default);
+    Task<bool> ExecuteDeleteAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes the entity with the specified ID.
@@ -88,7 +88,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="id">The ID of the entity to delete.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentException">Thrown when the ID is less than or equal to zero.</exception>
-    Task<int> ExecuteDeleteAsync(int id, CancellationToken cancellationToken = default);
+    Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken = default) where TProperty : struct;
 
     /// <summary>
     /// Deletes all entities that match the specified predicate from the database.
@@ -96,5 +96,5 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="predicate">The predicate to filter entities to be deleted.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the input predicate is null.</exception>
-    Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Entities.Customers;
 
-public class Customer : BaseHistoricalSoftDeleteEntity
+public class Customer : BaseHistoricalSoftDeleteEntity<int>
 {
     public string Name { get; set; }
     public string Surname { get; set; }

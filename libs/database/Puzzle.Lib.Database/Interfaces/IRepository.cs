@@ -8,7 +8,7 @@
 /// This interface defines methods for working with entities, such as adding, updating, and deleting them.
 /// The 'out' modifier on the TEntity type parameter indicates that this is a covariant interface, meaning that it can be safely used as a read-only interface for TEntity objects.
 /// </remarks>
-public interface IRepository<out TEntity> where TEntity : class, IEntity
+public interface IRepository<out TEntity> where TEntity : class, new()
 {
     /// <summary>
     /// Gets the queryable representation of the entity set with change tracking enabled.

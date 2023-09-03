@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.SoftDelete
 {
-    public class BaseSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseSoftDeleteEntity
+    public class BaseSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseSoftDeleteEntity<int>
     {
         private readonly bool _useLowerTableName;
 

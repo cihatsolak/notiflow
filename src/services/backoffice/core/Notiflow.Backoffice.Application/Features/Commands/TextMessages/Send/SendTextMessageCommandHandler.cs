@@ -5,32 +5,22 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly IRedisService _redisService;
     private readonly ILogger<SendTextMessageCommandHandler> _logger;
 
     public SendTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
         IPublishEndpoint publishEndpoint,
-        IRedisService redisService,
         ILogger<SendTextMessageCommandHandler> logger)
     {
         _uow = uow;
         _textMessageService = textMessageService;
         _publishEndpoint = publishEndpoint;
-        _redisService = redisService;
         _logger = logger;
     }
 
     public async Task<Response<Unit>> Handle(SendTextMessageCommand request, CancellationToken cancellationToken)
     {
-        bool isSentMessageAllowed = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_MESSAGE_PERMISSION);
-        if (!isSentMessageAllowed)
-        {
-            _logger.LogWarning("The tenant is not authorized to send messages.");
-            return Response<Unit>.Fail(-1);
-        }
-
         List<string> phoneNumbers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
         if (phoneNumbers.IsNullOrNotAny())
         {
