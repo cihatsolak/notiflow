@@ -61,6 +61,22 @@ public static class ServiceCollectionContainerBuilderExtensions
     }
 
     /// <summary>
+    /// Configures Swagger security settings and adds them to the service collection.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
+    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        services.Configure<SwaggerSetting>(configuration.GetRequiredSection(nameof(SwaggerSetting)));
+
+        return services;
+    }
+
+    /// <summary>
     /// Adds operation filters to Swagger
     /// </summary>
     /// <param name="options">The SwaggerGenOptions instance to configure.</param>
