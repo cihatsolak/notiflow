@@ -1,6 +1,4 @@
-﻿using Azure;
-
-namespace Notiflow.Backoffice.Application.Constants;
+﻿namespace Notiflow.Backoffice.Application.Constants;
 
 internal record class ResponseCodes
 {

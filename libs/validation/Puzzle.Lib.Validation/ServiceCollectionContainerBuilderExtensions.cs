@@ -34,6 +34,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
             options.InvalidModelStateResponseFactory = context =>
             {
+                var asd = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors);
                 IEnumerable<string> errors = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
 
                 Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));

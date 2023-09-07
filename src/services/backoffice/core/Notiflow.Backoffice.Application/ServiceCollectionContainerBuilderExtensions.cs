@@ -22,6 +22,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddFluentDesignValidation();
         services.AddRedisService();
 
+        services.AddApiBehaviorOptions();
+
         services.AddMassTransit();
         services.AddLocalization();
 

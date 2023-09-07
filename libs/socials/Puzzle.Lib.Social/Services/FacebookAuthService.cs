@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Social.Services;
+﻿using Microsoft.Extensions.Logging;
+
+namespace Puzzle.Lib.Social.Services;
 
 /// <summary>
 ///   Interface for Facebook authentication service.
