@@ -17,4 +17,10 @@ internal static class FluentValidationErrorCodes
     internal const string DEVICE_CODE = "1010";
     internal const string DEVICE_TOKEN = "1011";
     internal const string CLOUD_MESSAGE_PLATFORM = "1012";
+    internal const string EMAIL_BODY = "1013";
+    internal const string EMAIL_SUBJECT = "1014";
+    internal const string NOTIFICATION_TITLE = "1015";
+    internal const string NOTIFICATION_MESSAGE = "1016";
+    internal const string NOTIFICATION_IMAGE_URL = "1017";
+    internal const string TEXT_MESSAGE = "1017";
 }
