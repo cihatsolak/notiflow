@@ -4,7 +4,7 @@ public sealed class UpdateCustomerPhoneNumberCommandValidator : AbstractValidato
 {
     public UpdateCustomerPhoneNumberCommandValidator()
     {
-        RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
-        RuleFor(p => p.PhoneNumber).MobilePhone("-1");
+        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.PhoneNumber).MobilePhone(FluentValidationErrorCodes.PHONE_NUMBER);
     }
 }

@@ -4,6 +4,6 @@ public sealed class UpdateCustomerBlockingCommandValidator : AbstractValidator<U
 {
     public UpdateCustomerBlockingCommandValidator()
     {
-        RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue);
+        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
     }
 }

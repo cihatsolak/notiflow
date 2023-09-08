@@ -4,7 +4,10 @@ public sealed class UpdateDeviceTokenCommandValidator : AbstractValidator<Update
 {
     public UpdateDeviceTokenCommandValidator()
     {
-        RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
-        RuleFor(p => p.Token).NotNullAndNotEmpty("-1").MaximumLength(180).WithMessage("-1");
+        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+
+        RuleFor(p => p.Token)
+            .NotNullAndNotEmpty(FluentValidationErrorCodes.DEVICE_TOKEN)
+            .MaximumLength(180).WithMessage(FluentValidationErrorCodes.DEVICE_TOKEN);
     }
 }

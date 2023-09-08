@@ -4,10 +4,20 @@ public sealed class AddDeviceCommandValidator : AbstractValidator<AddDeviceComma
 {
     public AddDeviceCommandValidator()
     {
-        RuleFor(p => p.CustomerId).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
-        RuleFor(p => p.OSVersion).IsInEnum().WithMessage("-1");
-        RuleFor(p => p.Code).NotNullAndNotEmpty("-1").MaximumLength(100).WithMessage("-1");
-        RuleFor(p => p.Token).NotNullAndNotEmpty("-1").MaximumLength(180).WithMessage("-1");
-        RuleFor(p => p.CloudMessagePlatform).IsInEnum().WithMessage("-1");
+        RuleFor(p => p.CustomerId)
+            .InclusiveBetween(1, int.MaxValue)
+            .WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
+
+        RuleFor(p => p.OSVersion).Enum(FluentValidationErrorCodes.OS_VERSION);
+
+        RuleFor(p => p.Code)
+            .NotNullAndNotEmpty(FluentValidationErrorCodes.DEVICE_CODE)
+            .MaximumLength(100).WithMessage(FluentValidationErrorCodes.DEVICE_CODE);
+
+        RuleFor(p => p.Token)
+            .NotNullAndNotEmpty(FluentValidationErrorCodes.DEVICE_TOKEN)
+            .MaximumLength(180).WithMessage(FluentValidationErrorCodes.DEVICE_CODE);
+
+        RuleFor(p => p.CloudMessagePlatform).Enum(FluentValidationErrorCodes.CLOUD_MESSAGE_PLATFORM);
     }
 }

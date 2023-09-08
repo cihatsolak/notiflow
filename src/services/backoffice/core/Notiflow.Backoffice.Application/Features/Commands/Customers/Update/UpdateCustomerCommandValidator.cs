@@ -14,7 +14,7 @@ public sealed class UpdateCustomerCommandValidator : AbstractValidator<UpdateCus
             .NotNullAndNotEmpty(FluentValidationErrorCodes.CUSTOMER_SURNAME)
             .MaximumLength(75).WithMessage(FluentValidationErrorCodes.CUSTOMER_SURNAME);
 
-        RuleFor(p => p.PhoneNumber).MobilePhone(FluentValidationErrorCodes.MOBILE_PHONE_NUMBER);
+        RuleFor(p => p.PhoneNumber).MobilePhone(FluentValidationErrorCodes.PHONE_NUMBER);
 
         RuleFor(p => p.Email).Email(FluentValidationErrorCodes.EMAIL);
 
