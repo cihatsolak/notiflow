@@ -53,8 +53,8 @@ public sealed class ExceptionMiddleware
         ValidationException validationException = exception as ValidationException;
         if (!validationException.Errors.Any())
         {
-            validationErrorResponse = Response<EmptyResponse>.Fail(FluenValidationErrorCodes.GENERAL_ERROR);
-            validationErrorResponse.Message = _validationErrorLocalizer[FluenValidationErrorCodes.GENERAL_ERROR.ToString()];
+            validationErrorResponse = Response<EmptyResponse>.Fail(FluentValidationErrorCodes.GENERAL_ERROR);
+            validationErrorResponse.Message = _validationErrorLocalizer[FluentValidationErrorCodes.GENERAL_ERROR.ToString()];
         }
         else
         {

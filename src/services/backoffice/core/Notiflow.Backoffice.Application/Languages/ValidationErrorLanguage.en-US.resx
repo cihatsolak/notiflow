@@ -123,4 +123,10 @@
   <data name="1000" xml:space="preserve">
     <value>Invalid credentials, please check.</value>
   </data>
+  <data name="1001" xml:space="preserve">
+    <value>Please enter a valid name.</value>
+  </data>
+  <data name="1002" xml:space="preserve">
+    <value>Please enter a valid surname.</value>
+  </data>
 </root>

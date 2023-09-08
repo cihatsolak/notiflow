@@ -1,7 +1,15 @@
 ﻿namespace Notiflow.Backoffice.Application.Constants;
 
-internal static class FluenValidationErrorCodes
+internal static class FluentValidationErrorCodes
 {
     internal const int GENERAL_ERROR = -1;
-    internal const string INVALID_ID_NUMBER = "1000";
+
+    internal const string ID_NUMBER = "1000";
+    internal const string CUSTOMER_NAME = "1001";
+    internal const string CUSTOMER_SURNAME = "1002";
+    internal const string MOBILE_PHONE_NUMBER = "1003";
+    internal const string EMAIL = "1004";
+    internal const string BIRTH_DATE = "1005";
+    internal const string GENDER = "1006";
+    internal const string MARRIAGE_STATUS = "1007";
 }
