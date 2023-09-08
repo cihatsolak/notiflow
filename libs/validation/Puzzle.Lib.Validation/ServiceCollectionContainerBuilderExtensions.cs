@@ -13,6 +13,21 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddFluentDesignValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
+        ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.CurrentCulture;
+
+        return services;
+    }
+
+    /// <summary>
+    /// Configures Fluent Design Auto Validation for the provided IServiceCollection.
+    /// This method adds validators from the calling assembly, configures FluentValidation for automatic validation,
+    /// and sets up FluentValidation client-side adapters. It also sets the validation language to the current culture.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to configure Fluent Design Auto Validation for.</param>
+    /// <returns>The modified IServiceCollection.</returns>
+    public static IServiceCollection AddFluentDesignAutoValidation(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
 
@@ -34,7 +49,6 @@ public static class ServiceCollectionContainerBuilderExtensions
 
             options.InvalidModelStateResponseFactory = context =>
             {
-                var asd = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors);
                 IEnumerable<string> errors = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
 
                 Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));

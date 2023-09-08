@@ -15,7 +15,7 @@ public static class ParameterRuleBuilderOptionsExtensions
     /// <remarks>
     /// This method sets a validation rule that ensures an integer property is inclusive between 1 and the maximum possible integer value.
     /// </remarks>
-    public static IRuleBuilderOptions<TElement, int> Integer<TElement>(this IRuleBuilder<TElement, int> ruleBuilder, string errorMessage) where TElement : class
+    public static IRuleBuilderOptions<TElement, int> Id<TElement>(this IRuleBuilder<TElement, int> ruleBuilder, string errorMessage) where TElement : class
     {
         return ruleBuilder.InclusiveBetween(1, int.MaxValue).WithMessage(errorMessage);
     }

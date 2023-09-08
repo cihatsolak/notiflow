@@ -156,6 +156,11 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                 descending: new[] { false, true, false });
 
             migrationBuilder.CreateIndex(
+                name: "ix_customer_is_blocked_is_deleted_tenant_id",
+                table: "customer",
+                columns: new[] { "is_blocked", "is_deleted", "tenant_id" });
+
+            migrationBuilder.CreateIndex(
                 name: "ix_customer_phone_number_created_date_tenant_id",
                 table: "customer",
                 columns: new[] { "phone_number", "created_date", "tenant_id" },

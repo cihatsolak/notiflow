@@ -4,6 +4,6 @@ public sealed class GetCustomerByIdQueryValidator : AbstractValidator<GetCustome
 {
     public GetCustomerByIdQueryValidator()
     {
-        RuleFor(p => p.Id).GreaterThan(10).WithErrorCode("-2").WithMessage("-3");
+        RuleFor(p => p.Id).Id(FluenValidationErrorCodes.INVALID_ID_NUMBER);
     }
 }

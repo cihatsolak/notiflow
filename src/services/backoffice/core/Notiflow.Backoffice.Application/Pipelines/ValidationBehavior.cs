@@ -15,24 +15,25 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (_validators.Any())
+        if (!_validators.Any())
         {
-            var validationContext = new ValidationContext<TRequest>(request);
-            var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
+            return await next();
+        }
 
-            var failures = validationResults
-                       .SelectMany(validationResult => validationResult.Errors)
-                       .Where(validationFailure => validationFailure is not null);
+        var validationContext = new ValidationContext<TRequest>(request);
+        var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
+
+        var failures = validationResults
+                   .SelectMany(validationResult => validationResult.Errors)
+                   .Where(validationFailure => validationFailure is not null);
 
 
-            _logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName());
+        _logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName());
 
-            if (failures.Any())
-            {
-                _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeof(TRequest).Name, request, failures);
-                throw new ValidationException(failures);
-            }
-
+        if (failures.Any())
+        {
+            _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeof(TRequest).Name, request, failures);
+            throw new ValidationException(failures);
         }
 
         return await next();

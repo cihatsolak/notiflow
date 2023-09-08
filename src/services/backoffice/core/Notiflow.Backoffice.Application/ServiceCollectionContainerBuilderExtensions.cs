@@ -7,7 +7,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+        
         services.AddMediatR(opt =>
         {
             opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -22,7 +22,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddFluentDesignValidation();
         services.AddRedisService();
 
-        services.AddApiBehaviorOptions();
+        services.AddHttpContextAccessor();
 
         services.AddMassTransit();
         services.AddLocalization();
