@@ -17,6 +17,7 @@ internal sealed class NotificationHistoryConfiguration : BaseEntityConfiguration
 
         builder.Property(p => p.Title).HasMaxLength(300).IsUnicode().IsRequired();
         builder.Property(p => p.Message).HasMaxLength(500).IsUnicode().IsRequired();
+        builder.Property(p => p.ImageUrl).HasMaxLength(350).IsRequired();
         builder.Property(p => p.SenderIdentity).HasMaxLength(36).IsUnicode(false).IsFixedLength().IsRequired();
         builder.Property(p => p.IsSent).IsRequired();
         builder.Property(p => p.ErrorMessage).IsUnicode(false).IsRequired(false);

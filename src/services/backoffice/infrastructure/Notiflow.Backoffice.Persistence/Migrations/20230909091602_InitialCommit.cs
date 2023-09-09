@@ -107,6 +107,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     message = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    image_url = table.Column<string>(type: "character varying(350)", maxLength: 350, nullable: false),
                     sender_identity = table.Column<Guid>(type: "uuid", unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
                     error_message = table.Column<string>(type: "text", unicode: false, nullable: true),

@@ -20,11 +20,12 @@ public sealed class NotificationDeliveredEventConsumer : IConsumer<NotificationD
         try
         {
             await npgSqlConnection
-                    .ExecuteAsync("insert into notificationhistory (title, message, sender_identity, is_sent, error_message, sent_date, customer_id) values (@title, @message, @sender_identity, @is_sent, @error_message, @sent_date, @customer_id)",
+                    .ExecuteAsync("insert into notificationhistory (title, message, image_url, sender_identity, is_sent, error_message, sent_date, customer_id) values (@title, @message, @image_url, @sender_identity, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {
                         title = context.Message.Title,
                         message = context.Message.Message,
+                        image_url = context.Message.ImageUrl,
                         sender_identity = context.Message.SenderIdentity,
                         is_sent = true,
                         error_message = (string)null,

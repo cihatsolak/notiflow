@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notiflow.Backoffice.Persistence.Migrations
 {
     [DbContext(typeof(NotiflowDbContext))]
-    [Migration("20230907220757_InitialCommit")]
+    [Migration("20230909091602_InitialCommit")]
     partial class InitialCommit
     {
         /// <inheritdoc />
@@ -285,6 +285,12 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .IsUnicode(false)
                         .HasColumnType("text")
                         .HasColumnName("error_message");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(350)
+                        .HasColumnType("character varying(350)")
+                        .HasColumnName("image_url");
 
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")

@@ -11,6 +11,7 @@ public sealed record NotificationNotDeliveredEvent
     public required int CustomerId { get; init; }
     public required string Title { get; init; }
     public required string Message { get; init; }
+    public required string ImageUrl { get; init; }
     public required DateTime SentDate { get; init; }
     public required string ErrorMessage { get; set; }
     public required Guid SenderIdentity { get; set; }

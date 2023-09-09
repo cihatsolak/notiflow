@@ -283,6 +283,12 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("error_message");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(350)
+                        .HasColumnType("character varying(350)")
+                        .HasColumnName("image_url");
+
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")
                         .HasColumnName("is_sent");
