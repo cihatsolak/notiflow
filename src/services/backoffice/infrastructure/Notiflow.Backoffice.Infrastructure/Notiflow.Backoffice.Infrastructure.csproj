@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="QRCoder" Version="1.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj" />
     <ProjectReference Include="..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />

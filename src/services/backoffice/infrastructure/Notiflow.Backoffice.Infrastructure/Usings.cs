@@ -20,6 +20,7 @@ global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Http;
 global using Puzzle.Lib.Http.Infrastructure.Extensions;
 global using Puzzle.Lib.Http.Services;
+global using QRCoder;
 global using System.Net.Mail;
 global using System.Text;
 global using System.Text.Json.Serialization;
