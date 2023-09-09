@@ -1,5 +1,3 @@
 ﻿namespace Notiflow.Backoffice.Application.Languages;
 
-public class MultiLanguage
-{
-}
+public sealed record ResponseLanguage();

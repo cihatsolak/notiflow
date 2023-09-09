@@ -4,9 +4,19 @@ public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailComma
 {
     public SendEmailCommandValidator()
     {
-        RuleForEach(p => p.CustomerIds).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
-        RuleForEach(p => p.CcAddresses).Email("errorMessage").When(p => !p.CcAddresses.IsNullOrNotAny());
-        RuleForEach(p => p.BccAddresses).Email("errorMessage").When(p => !p.CcAddresses.IsNullOrNotAny());
-        RuleFor(p => p.Subject).Length(2, 300);
+        RuleForEach(p => p.CustomerIds)
+            .InclusiveBetween(1, int.MaxValue).WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
+
+        RuleForEach(p => p.CcAddresses)
+            .Email(FluentValidationErrorCodes.EMAIL).When(p => !p.CcAddresses.IsNullOrNotAny());
+
+        RuleForEach(p => p.BccAddresses)
+            .Email(FluentValidationErrorCodes.EMAIL).When(p => !p.CcAddresses.IsNullOrNotAny());
+
+        RuleFor(p => p.Body).NotNullAndNotEmpty(FluentValidationErrorCodes.EMAIL_BODY);
+
+        RuleFor(p => p.Subject)
+            .NotNullAndNotEmpty(FluentValidationErrorCodes.EMAIL_SUBJECT)
+            .MaximumLength(300).WithMessage(FluentValidationErrorCodes.EMAIL_SUBJECT);
     }
 }

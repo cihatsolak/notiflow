@@ -1,6 +1,4 @@
-﻿using Azure;
-
-namespace Notiflow.Backoffice.Application.Constants;
+﻿namespace Notiflow.Backoffice.Application.Constants;
 
 internal record class ResponseCodes
 {
@@ -9,6 +7,8 @@ internal record class ResponseCodes
     /// </summary>
     internal struct Error
     {
+        internal const int GENERAL = -1;
+
         internal const int CUSTOMER_NOT_FOUND = 1000;
         internal const int CUSTOMER_EXISTS = 1001;
         internal const int CUSTOMER_NOT_DELETED = 1002;

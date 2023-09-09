@@ -10,7 +10,7 @@ internal sealed class TenantTokenOperationFilter : IOperationFilter
         {
             Name = "x-tenant-token",
             In = ParameterLocation.Header,
-            Required = false,
+            Required = true,
             Schema = new OpenApiSchema
             {
                 Type = "string",

@@ -1,3 +1,5 @@
+using Notiflow.Backoffice.Application.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder
@@ -16,11 +18,11 @@ app.UseHttpSecurityPrecautions()
    .UseAuth()
    .UseSwaggerWithRedoclyDoc()
    .UseMigrations()
-   .UseApiExceptionHandler()
    .UseResponseCompress()
    .UseRequestLocalization();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

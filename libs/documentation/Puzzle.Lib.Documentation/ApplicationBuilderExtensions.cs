@@ -62,4 +62,15 @@ public static class ApplicationBuilderExtensions
     {
         return app.UseSwaggerDoc().UseRedoclyDoc();
     }
+
+    /// <summary>
+    /// Adds Swagger basic authentication middleware to the ASP.NET Core application pipeline.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The modified <see cref="IApplicationBuilder"/> instance.</returns>
+    public static IApplicationBuilder UseSwaggerBasicAuth(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<SwaggerBasicAuthenticationMiddleware>();
+    }
+
 }

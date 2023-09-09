@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.File.Services;
+﻿using Puzzle.Lib.File.Infrastructure;
+
+namespace Puzzle.Lib.File.Services;
 
 public sealed class FtpManager : IFileService
 {
@@ -78,7 +80,9 @@ public sealed class FtpManager : IFileService
 
     public async Task<FileProcessResult> AddAfterRenameIfAvailableAsync(IFormFile formFile, string directory, CancellationToken cancellationToken)
     {
-        string path = await GenerateUniqueFileNameAsync(directory, Path.GetFileNameWithoutExtension(formFile.FileName), Path.GetExtension(formFile.FileName), cancellationToken);
+        string fileName = FileExtensions.CharacterRegulatory(Path.GetFileNameWithoutExtension(formFile.FileName));
+
+        string path = await GenerateUniqueFileNameAsync(directory, fileName, Path.GetExtension(formFile.FileName), cancellationToken);
         if (string.IsNullOrEmpty(path))
         {
             _logger.LogWarning("loglama"); //todo

@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Languages\MultiLanguage.en-US.resx">
+    <EmbeddedResource Update="Languages\ResponseLanguage.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Languages\MultiLanguage.tr-TR.resx">
+    <EmbeddedResource Update="Languages\ResponseLanguage.tr-TR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

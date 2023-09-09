@@ -41,6 +41,7 @@ internal static class SeedData
         return new Faker<NotificationHistory>("tr")
             .RuleFor(notificationHistory => notificationHistory.Title, faker => faker.Lorem.Sentence(3))
             .RuleFor(notificationHistory => notificationHistory.Message, faker => faker.Lorem.Sentence(10))
+            .RuleFor(notificationHistory => notificationHistory.ImageUrl, faker => faker.Internet.Avatar())
             .RuleFor(notificationHistory => notificationHistory.SenderIdentity, faker => Guid.NewGuid())
             .RuleFor(notificationHistory => notificationHistory.IsSent, faker => faker.Random.Bool())
             .RuleFor(notificationHistory => notificationHistory.ErrorMessage, (faker, notificationHistory) =>

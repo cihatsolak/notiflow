@@ -17,7 +17,7 @@ namespace Notiflow.Backoffice.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -104,6 +104,9 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                     b.HasIndex("Email", "CreatedDate", "TenantId")
                         .IsDescending(false, true, false)
                         .HasDatabaseName("ix_customer_email_created_date_tenant_id");
+
+                    b.HasIndex("IsBlocked", "IsDeleted", "TenantId")
+                        .HasDatabaseName("ix_customer_is_blocked_is_deleted_tenant_id");
 
                     b.HasIndex("PhoneNumber", "CreatedDate", "TenantId")
                         .IsDescending(false, true, false)
@@ -279,6 +282,12 @@ namespace Notiflow.Backoffice.Persistence.Migrations
                         .IsUnicode(false)
                         .HasColumnType("text")
                         .HasColumnName("error_message");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(350)
+                        .HasColumnType("character varying(350)")
+                        .HasColumnName("image_url");
 
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")

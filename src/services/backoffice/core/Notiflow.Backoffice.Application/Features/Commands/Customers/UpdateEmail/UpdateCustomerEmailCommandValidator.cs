@@ -4,7 +4,7 @@ public sealed class ChangePhoneNumberRequestValidator : AbstractValidator<Update
 {
     public ChangePhoneNumberRequestValidator()
     {
-        RuleFor(p => p.Id).InclusiveBetween(1, int.MaxValue).WithMessage("-1");
-        RuleFor(p => p.Email).Email("-1");
+        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.Email).Email(FluentValidationErrorCodes.EMAIL);
     }
 }

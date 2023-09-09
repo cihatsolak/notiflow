@@ -10,6 +10,7 @@ public sealed record NotificationDeliveredEvent
     public required int CustomerId { get; init; }
     public required string Title { get; init; }
     public required string Message { get; init; }
+    public required string ImageUrl { get; set; }
     public required DateTime SentDate { get; init; }
     public required Guid SenderIdentity { get; set; }
 }

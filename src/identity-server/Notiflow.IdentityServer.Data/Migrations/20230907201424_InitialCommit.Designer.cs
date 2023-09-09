@@ -12,7 +12,7 @@ using Notiflow.IdentityServer.Data;
 namespace Notiflow.IdentityServer.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230828145547_InitialCommit")]
+    [Migration("20230907201424_InitialCommit")]
     partial class InitialCommit
     {
         /// <inheritdoc />

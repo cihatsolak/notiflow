@@ -2,26 +2,32 @@
 
 internal static class SeedManager
 {
-    internal static async Task SeedAsync(this IServiceCollection services)
+    internal static async Task SeedAsync(this IServiceCollection services, CancellationToken cancellationToken = default)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        EnsureNotNull(services);
 
-        var applicationDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+        var applicationDbContext = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
 
-        if (!applicationDbContext.Database.CanConnect())
+        bool isConnected = await applicationDbContext.Database.CanConnectAsync(cancellationToken);
+        if (!isConnected)
         {
-            Debug.WriteLine("Could not connect to database. The database may not be available.");
+            Debug.WriteLine("[SeedManager] Could not connect to database. The database may not be available.");
             return;
         }
 
-        if (applicationDbContext.Tenants.Any())
+        bool isExists = await applicationDbContext.Tenants.AnyAsync();
+        if (isExists)
         {
-            Debug.WriteLine("There is no need for migration as there is tenant information in the database.");
+            Debug.WriteLine("[SeedManager] There is no need for migration as there is tenant information in the database.");
             return;
         }
 
-        await applicationDbContext.Tenants.AddRangeAsync(SeedData.GenerateFakeTenants());
-        await applicationDbContext.SaveChangesAsync();
+        await applicationDbContext.Tenants.AddRangeAsync(SeedData.GenerateFakeTenants(), cancellationToken);
+        await applicationDbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private static void EnsureNotNull(IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
     }
 }

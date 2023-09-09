@@ -4,6 +4,7 @@ public class NotificationHistory : BaseEntity<int>
 {
     public string Title { get; set; }
     public string Message { get; set; }
+    public string ImageUrl { get; set; }
     public Guid SenderIdentity { get; set; }
     public bool IsSent { get; set; }
     public string ErrorMessage { get; set; }
