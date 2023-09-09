@@ -11,3 +11,4 @@ global using Puzzle.Lib.File.Infrastructure.Settings;
 global using Puzzle.Lib.File.Models;
 global using Puzzle.Lib.File.Services;
 global using System.Text.Json.Serialization;
+global using System.Text.RegularExpressions;
