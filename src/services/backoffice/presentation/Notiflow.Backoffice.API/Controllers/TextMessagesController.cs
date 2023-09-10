@@ -12,7 +12,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(Response<DtResult<TextMessageDataTableCommandResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
@@ -30,7 +30,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Text message history not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response<GetTextMessageHistoryByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {

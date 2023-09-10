@@ -12,7 +12,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(Response<DtResult<CustomerDataTableCommandResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<DtResult<CustomerDataTableCommandResult>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
@@ -30,7 +30,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customer information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetCustomerByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {

@@ -13,25 +13,25 @@ internal sealed class ApplicationProfile : Profile
 
     private void CustomerMaps()
     {
-        CreateMap<Customer, CustomerDataTableCommandResponse>()
+        CreateMap<Customer, CustomerDataTableCommandResult>()
              .ForMember(dest => dest.CloudMessagePlatform, opt => opt.MapFrom(src => src.Device.CloudMessagePlatform));
 
-        CreateMap<Customer, GetCustomerByIdQueryResponse>();
+        CreateMap<Customer, GetCustomerByIdQueryResult>();
     }
 
     private void DeviceMaps()
     {
         CreateMap<AddDeviceCommand, Device>();
-        CreateMap<Device, GetDeviceByIdQueryResponse>();
+        CreateMap<Device, GetDeviceByIdQueryResult>();
 
-        CreateMap<Device, DeviceDataTableResponse>()
+        CreateMap<Device, DeviceDataTableResult>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.Customer.Name} {src.Customer.Surname}"));
     }
 
     private void TextMessageHistoryMaps()
     {
-        CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResponse>();
-        CreateMap<TextMessageHistory, TextMessageDataTableCommandResponse>();
+        CreateMap<TextMessageHistory, GetTextMessageHistoryByIdQueryResult>();
+        CreateMap<TextMessageHistory, TextMessageDataTableCommandResult>();
 
         CreateMap<SendTextMessageCommand, TextMessageDeliveredEvent>();
         CreateMap<SendTextMessageCommand, TextMessageNotDeliveredEvent>();
@@ -42,7 +42,7 @@ internal sealed class ApplicationProfile : Profile
         CreateMap<SendSingleNotificationCommand, NotificationDeliveredEvent>();
         CreateMap<SendSingleNotificationCommand, NotificationNotDeliveredEvent>();
 
-        CreateMap<NotificationHistory, GetNotificationHistoryByIdQueryResponse>();
+        CreateMap<NotificationHistory, GetNotificationHistoryByIdQueryResult>();
     }
 
     private void EmailMaps()
@@ -51,6 +51,6 @@ internal sealed class ApplicationProfile : Profile
         CreateMap<SendEmailCommand, EmailNotDeliveredEvent>();
         CreateMap<SendEmailCommand, EmailRequest>();
 
-        CreateMap<EmailHistory, GetEmailHistoryByIdQueryResponse>();
+        CreateMap<EmailHistory, GetEmailHistoryByIdQueryResult>();
     }
 }

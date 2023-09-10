@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 
-public sealed record GetEmailHistoryByIdQueryResponse
+public sealed record GetEmailHistoryByIdQueryResult
 {
     public int Id { get; init; }
     public string Recipients { get; init; }

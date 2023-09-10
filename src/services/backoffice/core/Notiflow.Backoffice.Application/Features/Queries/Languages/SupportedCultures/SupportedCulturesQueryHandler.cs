@@ -1,7 +1,7 @@
 ﻿
 namespace Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 
-public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCulturesQuery, Response<IEnumerable<SupportedCulturesQueryResponse>>>
+public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCulturesQuery, Response<IEnumerable<SupportedCulturesQueryResult>>>
 {
     private readonly RequestLocalizationOptions _localizationOptions;
     private readonly ILogger<SupportedCulturesQueryHandler> _logger;
@@ -14,10 +14,10 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
         _logger = logger;
     }
 
-    public Task<Response<IEnumerable<SupportedCulturesQueryResponse>>> Handle(SupportedCulturesQuery request, CancellationToken cancellationToken)
+    public Task<Response<IEnumerable<SupportedCulturesQueryResult>>> Handle(SupportedCulturesQuery request, CancellationToken cancellationToken)
     {
         var supportedCultures = _localizationOptions.SupportedCultures
-                .Select(culture => new SupportedCulturesQueryResponse
+                .Select(culture => new SupportedCulturesQueryResult
                 {
                     Name = culture.Name,
                     DisplayName = culture.DisplayName
@@ -26,9 +26,9 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
         if (supportedCultures.IsNullOrNotAny())
         {
             _logger.LogInformation("No supported language found.");
-            return Task.FromResult(Response<IEnumerable<SupportedCulturesQueryResponse>>.Fail(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
+            return Task.FromResult(Response<IEnumerable<SupportedCulturesQueryResult>>.Fail(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
         }
 
-        return Task.FromResult(Response<IEnumerable<SupportedCulturesQueryResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, supportedCultures));
+        return Task.FromResult(Response<IEnumerable<SupportedCulturesQueryResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, supportedCultures));
     }
 }

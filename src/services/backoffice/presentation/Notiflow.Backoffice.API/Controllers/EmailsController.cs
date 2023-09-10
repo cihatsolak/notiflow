@@ -12,7 +12,7 @@ public sealed class EmailsController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<GetEmailHistoryByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetEmailHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
     {

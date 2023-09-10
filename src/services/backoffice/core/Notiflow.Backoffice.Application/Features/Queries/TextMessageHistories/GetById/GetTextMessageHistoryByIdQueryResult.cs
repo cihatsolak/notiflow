@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 
-public sealed record GetTextMessageHistoryByIdQueryResponse
+public sealed record GetTextMessageHistoryByIdQueryResult
 {
     public int Id { get; init; }
     public string Message { get; init; }

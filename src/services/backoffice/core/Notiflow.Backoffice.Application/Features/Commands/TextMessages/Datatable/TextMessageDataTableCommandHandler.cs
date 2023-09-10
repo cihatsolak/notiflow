@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 
-public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Response<DtResult<TextMessageDataTableCommandResponse>>>
+public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Response<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<TextMessageDataTableCommandResponse>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Response<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<TextMessageHistory> textMessageHistories) = await _uow.TextMessageHistoryRead.GetPageAsync(request.SortKey,
                                                                                                                            request.SearchKey,
@@ -20,17 +20,17 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return Response<DtResult<TextMessageDataTableCommandResponse>>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return Response<DtResult<TextMessageDataTableCommandResult>>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
-        DtResult<TextMessageDataTableCommandResponse> textMessageHistoryDataTable = new()
+        DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
         {
             RecordsFiltered = recordsTotal,
             RecordsTotal = recordsTotal,
             Draw = request.Draw,
-            Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResponse>>(textMessageHistories)
+            Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return Response<DtResult<TextMessageDataTableCommandResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDataTable);
+        return Response<DtResult<TextMessageDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDataTable);
     }
 }

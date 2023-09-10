@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 
-public sealed record CustomerDataTableCommandResponse
+public sealed record CustomerDataTableCommandResult
 {
     public int Id { get; init; }
     public string Name { get; init; }
