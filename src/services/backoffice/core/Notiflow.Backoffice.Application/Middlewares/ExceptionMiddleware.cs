@@ -27,23 +27,16 @@ public sealed class ExceptionMiddleware
         {
             await _next(httpContext);
         }
+        catch (ValidationException exception)
+        {
+            _logger.LogError(exception, exception.Message);
+            await ValidationProblemAsync(httpContext, exception);
+        }
         catch (Exception exception)
         {
             _logger.LogError(exception, exception.Message);
-
-            await HandleExceptionAsync(httpContext, exception);
+            await InternalServerProblemAsync(httpContext);
         }
-    }
-
-    private Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
-    {
-        httpContext.Response.ContentType = MediaTypeNames.Application.Json;
-
-        return exception switch
-        {
-            ValidationException _ => ValidationProblemAsync(httpContext, exception),
-            _ => InternalServerProblemAsync(httpContext),
-        };
     }
 
     private Task ValidationProblemAsync(HttpContext httpContext, Exception exception)
@@ -67,6 +60,7 @@ public sealed class ExceptionMiddleware
             };
         }
 
+        httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         return httpContext.Response.WriteAsync(JsonSerializer.Serialize(validationErrorResponse, _jsonSerializerOptions));
     }
@@ -76,6 +70,7 @@ public sealed class ExceptionMiddleware
         var serverErrorResponse = Response<EmptyResponse>.Fail(ResponseCodes.Error.GENERAL);
         serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 
+        httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         return httpContext.Response.WriteAsync(JsonSerializer.Serialize(serverErrorResponse, _jsonSerializerOptions));
     }
