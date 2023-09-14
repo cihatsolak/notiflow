@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Filters;
+﻿namespace Notiflow.Backoffice.Infrastructure.Filters;
 
 public class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
 {
@@ -6,7 +6,7 @@ public class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
     private readonly ILogger<TenantTokenAuthenticationFilter> _logger;
 
     public TenantTokenAuthenticationFilter(
-        IRedisService redisService, 
+        IRedisService redisService,
         ILogger<TenantTokenAuthenticationFilter> logger)
     {
         _redisService = redisService;

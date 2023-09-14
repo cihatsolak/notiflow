@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.File.Infrastructure;
-
-namespace Puzzle.Lib.File.Services;
+﻿namespace Puzzle.Lib.File.Services;
 
 public sealed class FtpManager : IFileService
 {

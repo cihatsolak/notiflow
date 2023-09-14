@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.File.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.File.Settings;
 
 /// <summary>
 /// Represents the settings required to connect to an FTP server.
