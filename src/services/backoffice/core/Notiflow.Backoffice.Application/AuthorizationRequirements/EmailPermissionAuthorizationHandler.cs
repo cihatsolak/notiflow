@@ -13,7 +13,7 @@ public sealed class EmailPermissionAuthorizationHandler : AuthorizationHandler<E
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmailPermissionRequirement requirement)
     {
-        if (context?.User?.Identity == null)
+        if (context?.User?.Identity is null)
         {
             context.Fail();
             return;

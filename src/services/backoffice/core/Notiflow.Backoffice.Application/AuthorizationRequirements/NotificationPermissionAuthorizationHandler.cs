@@ -13,7 +13,7 @@ public sealed class NotificationPermissionAuthorizationHandler : AuthorizationHa
 
     protected async override Task HandleRequirementAsync(AuthorizationHandlerContext context, NotificationPermissionRequirement requirement)
     {
-        if (context?.User?.Identity == null)
+        if (context?.User?.Identity is null)
         {
             context.Fail();
             return;

@@ -1,9 +1,11 @@
-using Notiflow.Backoffice.Application.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder
-    .Services
+builder.Host
+    .AddAppConfiguration()
+    .AddServiceValidateScope()
+    .AddShutdownTimeOut();
+
+builder.Services
     .AddWebDependencies()
     .AddApplication()
     .AddInfrastructure()

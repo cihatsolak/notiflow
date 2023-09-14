@@ -23,7 +23,7 @@ public sealed class TenantIdClaimsTransformation : IClaimsTransformation
         int tenantId = await _redisService.HashGetAsync<int>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_ID);
         if (0 > tenantId)
         {
-            throw new TenantException("");
+            throw new TenantException("No tenant identification information was found in the cache.");
         }
 
         Claim tenantIdClaim = new(ClaimTypes.PrimaryGroupSid, $"{tenantId}", ClaimValueTypes.Integer32);

@@ -28,6 +28,7 @@ global using Notiflow.Backoffice.Application.Features.Queries.Languages.Supporte
 global using Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 global using Notiflow.Backoffice.Application.Filters;
+global using Notiflow.Backoffice.Application.Middlewares;
 global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Middlewares;
