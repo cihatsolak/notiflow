@@ -5,7 +5,11 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
   backoffice.postgresql:
     image: postgres
-  rabbitmq:
+  backoffice.rabbitmq.1:
+    image: rabbitmq:3.11.20-management
+  backoffice.rabbitmq.2:
+    image: rabbitmq:3.11.20-management
+  projections.rabbitmq:
     image: rabbitmq:3.11.20-management
   redis-master:
     image: redis:latest
@@ -15,5 +19,8 @@ services:
 volumes:
   identityserver.mssql_volume:
   backoffice.postgresql_volume:
-  rabbitmq_volume:
-  redis_volume:
+  backoffice.rabbitmq.1_volume:
+  backoffice.rabbitmq.2_volume:
+  projections.rabbitmq_volume:
+  redis-master_volume:
+  redis-slave_volume:

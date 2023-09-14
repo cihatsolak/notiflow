@@ -6,17 +6,25 @@ services:
     restart: always
     ports:
       - 1433:1433
+    depends_on:
+      - redis-master
+      - redis-slave
     volumes:
       - identityserver.mssql_volume:/var/opt/mssql
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password123
+    networks:
+      - notiflow_net
 
   backoffice.postgresql:
     container_name: backoffice-postgresql
     restart: on-failure:2
     ports:
       - 5432:5432
+    depends_on:
+      - redis-master
+      - redis-slave
     volumes:
       - backoffice.postgresql_volume:/var/lib/postgresql/data
     environment:
@@ -24,16 +32,67 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Password123
       - POSTGRES_DB=notiflow
+    networks:
+      - notiflow_net
 
-  rabbitmq:
+  backoffice.rabbitmq.1:
     container_name: backoffice-rabbitmq-1
-    hostname: backoffice-rabbitmq-1
+    hostname: backofficerabbitmq1
     restart: on-failure
     ports:
       - 5672:5672
       - 15672:15672
+    depends_on:
+      - backoffice.postgresql
+    volumes:
+      - backoffice.rabbitmq.1_volume:/var/lib/rabbitmq
     environment:
       - TZ=Europe/Istanbul
+      - RABBITMQ_ERLANG_COOKIE=secretcookie
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - notiflow_net
+
+  backoffice.rabbitmq.2:
+    container_name: backoffice-rabbitmq-2
+    hostname: backofficerabbitmq2
+    restart: on-failure
+    ports:
+      - 5673:5672
+      - 15673:15672
+    depends_on:
+      - backoffice.postgresql
+      - backoffice.rabbitmq.1
+    volumes:
+      - backoffice.rabbitmq.2_volume:/var/lib/rabbitmq
+    environment:
+      - TZ=Europe/Istanbul
+      - RABBITMQ_ERLANG_COOKIE=secretcookie
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - notiflow_net
+
+  projections.rabbitmq:
+    container_name: projections-rabbitmq
+    hostname: projectionsrabbitmq
+    restart: on-failure
+    ports:
+      - 5674:5672
+      - 15674:15672
+    depends_on:
+      - backoffice.rabbitmq.1
+      - backoffice.rabbitmq.2
+    volumes:
+      - projections.rabbitmq_volume:/var/lib/rabbitmq
+    environment:
+      - TZ=Europe/Istanbul
+      - RABBITMQ_ERLANG_COOKIE=secretcookie
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - notiflow_net
 
   redis-master:
     container_name: redis-master
@@ -42,11 +101,13 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - redis_volume:/data
+      - redis-master_volume:/data
     environment:
       - TZ=Europe/Istanbul
       - REDIS_REPLICATION_MODE=master
       - REDIS_PASSWORD=DMu4JbQ2ZnxyWFW
+    networks:
+      - notiflow_net
 
   redis-slave:
     container_name: redis-slave
@@ -57,7 +118,7 @@ services:
     depends_on:
       - redis-master
     volumes:
-      - redis_volume:/data
+      - redis-slave_volume:/data
     environment:
       - TZ=Europe/Istanbul
       - REDIS_REPLICATION_MODE=slave
@@ -65,3 +126,9 @@ services:
       - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_MASTER_PASSWORD=DMu4JbQ2ZnxyWFW
       - REDIS_PASSWORD=DMu4JbQ2ZnxyWFW
+    networks:
+      - notiflow_net
+
+networks:
+  notiflow_net:
+    driver: bridge
