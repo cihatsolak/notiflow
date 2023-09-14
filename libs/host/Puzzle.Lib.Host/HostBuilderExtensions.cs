@@ -59,11 +59,12 @@ public static class HostBuilderExtensions
     }
 
     /// <summary>
-    /// Starts the web host asynchronously and handles any exceptions that may occur.
+    /// Asynchronously starts the specified <see cref="IHost"/> instance.
     /// </summary>
-    /// <param name="app">The web application instance to start.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-
+    /// <param name="host">The <see cref="IHost"/> to start.</param>
+    /// <seealso cref="IHost"/>
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public static async Task StartProjectAsync(this IHost host)
     {
         ILogger logger = host.Services.GetRequiredService<ILoggerFactory>()
