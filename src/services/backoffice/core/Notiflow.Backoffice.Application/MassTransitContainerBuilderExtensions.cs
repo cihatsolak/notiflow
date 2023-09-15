@@ -16,7 +16,7 @@ internal static class MassTransitContainerBuilderExtensions
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
-                rabbitMqBusFactoryConfigurator.Host(rabbitMqClusterSetting.HostAddress, "/", hostConfigurator =>
+                rabbitMqBusFactoryConfigurator.Host(new Uri(rabbitMqClusterSetting.HostAddress), "/", hostConfigurator =>
                 {
                     hostConfigurator.Username(rabbitMqClusterSetting.Username);
                     hostConfigurator.Password(rabbitMqClusterSetting.Password);
