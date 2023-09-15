@@ -14,19 +14,21 @@ internal static class ServiceCollectionContainerBuilderExtensions
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        RabbitMqSetting rabbitMqSetting = configuration.GetRequiredSection(nameof(RabbitMqSetting)).Get<RabbitMqSetting>();
+        RabbitMqStandaloneSetting rabbitMqStandaloneSetting = configuration.GetRequiredSection(nameof(RabbitMqStandaloneSetting)).Get<RabbitMqStandaloneSetting>();
 
         services.AddMassTransit(serviceCollectionBusConfigurator =>
         {
+            serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
+
             serviceCollectionBusConfigurator.AddConsumer<TextMessageDeliveredEventConsumer>();
             serviceCollectionBusConfigurator.AddConsumer<TextMessageNotDeliveredEventConsumer>();
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
-                rabbitMqBusFactoryConfigurator.Host(rabbitMqSetting.ConnectionString, "/", hostConfigurator =>
+                rabbitMqBusFactoryConfigurator.Host(new Uri(rabbitMqStandaloneSetting.HostAddress), "/", hostConfigurator =>
                 {
-                    hostConfigurator.Username(rabbitMqSetting.Username);
-                    hostConfigurator.Password(rabbitMqSetting.Password);
+                    hostConfigurator.Username(rabbitMqStandaloneSetting.Username);
+                    hostConfigurator.Password(rabbitMqStandaloneSetting.Password);
                 });
 
                 rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_DELIVERED_EVENT_QUEUE, options =>
