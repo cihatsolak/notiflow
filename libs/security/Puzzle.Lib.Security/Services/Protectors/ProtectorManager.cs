@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Security.Services.Protectors;
 
-public sealed class ProtectorManager : IProtectorService
+internal sealed class ProtectorManager : IProtectorService
 {
     private readonly IDataProtector _dataProtector;
     private readonly ITimeLimitedDataProtector _timeLimitedDataProtector;

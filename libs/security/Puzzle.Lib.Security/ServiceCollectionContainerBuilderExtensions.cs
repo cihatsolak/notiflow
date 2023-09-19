@@ -1,4 +1,7 @@
-﻿namespace Puzzle.Lib.Security;
+﻿using Microsoft.AspNetCore.DataProtection;
+using StackExchange.Redis;
+
+namespace Puzzle.Lib.Security;
 
 /// <summary>
 /// Provides extension methods for <see cref="IServiceCollection"/> to add request detection functionality.
@@ -69,17 +72,18 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtectorService(this IServiceCollection services)
+    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-
-        string applicationName = $"{webHostEnvironment.ApplicationName}.{webHostEnvironment.EnvironmentName}.dataprotection.key".ToLowerInvariant();
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        RedisProtectorSetting protectorSetting = configuration.GetRequiredSection(nameof(RedisProtectorSetting)).Get<RedisProtectorSetting>();
 
         services.AddDataProtection()
-            .SetApplicationName(applicationName);
+            .SetApplicationName(serviceProvider.GetRequiredService<IWebHostEnvironment>().ApplicationName)
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(protectorSetting.ExpirationDays))
+            .PersistKeysToStackExchangeRedis(() => ConnectionMultiplexer.Connect(protectorSetting.ConnectionString).GetDatabase(protectorSetting.DatabaseNumber), protectorSetting.Key);
 
         services.TryAddSingleton<IProtectorService, ProtectorManager>();
 
