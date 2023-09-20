@@ -13,6 +13,7 @@ global using Puzzle.Lib.Security.Infrastructure.Settings;
 global using Puzzle.Lib.Security.Middlewares;
 global using Puzzle.Lib.Security.Services.Protectors;
 global using Puzzle.Lib.Security.Services.Protocols;
+global using StackExchange.Redis;
 global using System.Net;
 global using System.Reflection;
 global using System.Security.Cryptography;

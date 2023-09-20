@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using StackExchange.Redis;
+﻿using Puzzle.Lib.Security.Services.Encryptions;
 
 namespace Puzzle.Lib.Security;
 
@@ -33,6 +32,24 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.Configure<HostingSetting>(configuration.GetRequiredSection(nameof(HostingSetting)));
 
         services.TryAddSingleton<IProtocolService, ProtocolManager>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds an encryption service to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to which the encryption service will be added.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+    public static IServiceCollection AddEncryptionService(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        services.Configure<EncryptionSetting>(configuration.GetRequiredSection(nameof(EncryptionSetting)));
+
+        services.TryAddSingleton<IEncryptionService, EncryptionManager>();
 
         return services;
     }
