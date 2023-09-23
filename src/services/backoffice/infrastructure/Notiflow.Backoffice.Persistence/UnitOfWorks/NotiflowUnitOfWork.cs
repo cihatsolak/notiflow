@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Entities.Entities.Historical;
-
-namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
+﻿namespace Notiflow.Backoffice.Persistence.UnitOfWorks;
 
 internal sealed class NotiflowUnitOfWork : BaseUnitOfWork, INotiflowUnitOfWork
 {
