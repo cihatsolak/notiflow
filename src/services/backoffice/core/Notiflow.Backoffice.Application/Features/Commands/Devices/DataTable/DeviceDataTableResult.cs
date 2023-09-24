@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 
-public sealed record DeviceDataTableResponse
+public sealed record DeviceDataTableResult
 {
     public required int Id { get; init; }
     public OSVersion OSVersion { get; init; }

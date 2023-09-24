@@ -31,4 +31,26 @@ public static class JsonExtensions
 
         return JsonSerializer.Deserialize<TModel>(value);
     }
+
+    /// <summary>
+    /// Checks if the input string is a valid JSON object or array.
+    /// </summary>
+    /// <param name="text">The input string to check for JSON validity.</param>
+    /// <returns>True if the input is a valid JSON object or array; otherwise, false.</returns>
+    public static bool IsValidJson(this string text)
+    {
+        text = text.Trim();
+        if (!(text.StartsWith("{") && text.EndsWith("}")) && !(text.StartsWith("[") && text.EndsWith("]")))
+            return false;
+
+        try
+        {
+            _ = JsonDocument.Parse(text);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

@@ -5,19 +5,21 @@ builder.Host
     .AddServiceValidateScope()
     .AddShutdownTimeOut();
 
-builder.Services.AddWebDependencies();
-builder.Services.AddServiceDependencies();
-builder.Services.AddDataDependencies();
+builder.Services
+   .AddWebDependencies()
+   .AddServiceDependencies()
+   .AddDataDependencies();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
-app.UseHttpSecurityPrecautions();
-app.UseAuth();
-app.UseSwaggerWithRedoclyDoc();
-app.UseMigrations();
-app.UseApiExceptionHandler();
-app.UseResponseCompress();
+app
+   .UseHttpSecurityPrecautions()
+   .UseAuth()
+   .UseSwaggerWithRedoclyDoc()
+   .UseMigrations()
+   .UseApiExceptionHandler()
+   .UseResponseCompress();
 
 app.UseApplicationLifetimes();
 

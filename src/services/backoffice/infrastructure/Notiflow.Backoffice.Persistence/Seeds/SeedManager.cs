@@ -18,7 +18,7 @@ internal static class SeedManager
         bool isExists = await notiflowDbContext.Customers.IgnoreQueryFilters().AnyAsync(cancellationToken);
         if (isExists)
         {
-            Debug.WriteLine("[SeedManager] There is no need for migSration as there is tenant information in the database.");
+            Debug.WriteLine("[SeedManager] There is no need for migration as there is tenant information in the database.");
             return;
         }
 

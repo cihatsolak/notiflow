@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 
-public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, Response<GetNotificationHistoryByIdQueryResponse>>
+public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, Response<GetNotificationHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<GetNotificationHistoryByIdQueryHandler> _logger;
@@ -13,16 +13,16 @@ public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<Get
         _logger = logger;
     }
 
-    public async Task<Response<GetNotificationHistoryByIdQueryResponse>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Response<GetNotificationHistoryByIdQueryResult>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
             _logger.LogInformation("Notification with ID {@notificationId} was not found.", request.Id);
-            return Response<GetNotificationHistoryByIdQueryResponse>.Fail(ResponseCodes.Error.NOTIFICATION_NOT_FOUND);
+            return Response<GetNotificationHistoryByIdQueryResult>.Fail(ResponseCodes.Error.NOTIFICATION_NOT_FOUND);
         }
 
-        var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResponse>(notificationHistory);
-        return Response<GetNotificationHistoryByIdQueryResponse>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, notificationDto);
+        var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResult>(notificationHistory);
+        return Response<GetNotificationHistoryByIdQueryResult>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, notificationDto);
     }
 }

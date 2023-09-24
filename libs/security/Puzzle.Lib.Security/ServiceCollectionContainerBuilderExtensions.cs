@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Security;
+﻿using Puzzle.Lib.Security.Services.Encryptions;
+
+namespace Puzzle.Lib.Security;
 
 /// <summary>
 /// Provides extension methods for <see cref="IServiceCollection"/> to add request detection functionality.
@@ -30,6 +32,24 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.Configure<HostingSetting>(configuration.GetRequiredSection(nameof(HostingSetting)));
 
         services.TryAddSingleton<IProtocolService, ProtocolManager>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds an encryption service to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to which the encryption service will be added.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
+    public static IServiceCollection AddEncryptionService(this IServiceCollection services)
+    {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        services.Configure<EncryptionSetting>(configuration.GetRequiredSection(nameof(EncryptionSetting)));
+
+        services.TryAddSingleton<IEncryptionService, EncryptionManager>();
 
         return services;
     }
@@ -69,17 +89,18 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtectorService(this IServiceCollection services)
+    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-
-        string applicationName = $"{webHostEnvironment.ApplicationName}.{webHostEnvironment.EnvironmentName}.dataprotection.key".ToLowerInvariant();
+        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        RedisProtectorSetting protectorSetting = configuration.GetRequiredSection(nameof(RedisProtectorSetting)).Get<RedisProtectorSetting>();
 
         services.AddDataProtection()
-            .SetApplicationName(applicationName);
+            .SetApplicationName(serviceProvider.GetRequiredService<IWebHostEnvironment>().ApplicationName)
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(protectorSetting.ExpirationDays))
+            .PersistKeysToStackExchangeRedis(() => ConnectionMultiplexer.Connect(protectorSetting.ConnectionString).GetDatabase(protectorSetting.DatabaseNumber), protectorSetting.Key);
 
         services.TryAddSingleton<IProtectorService, ProtectorManager>();
 

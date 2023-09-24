@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 
-public sealed record GetCustomerByIdQueryResponse
+public sealed record GetCustomerByIdQueryResult
 {
     public string Name { get; init; }
     public string Surname { get; init; }

@@ -13,9 +13,9 @@ public sealed class MessagePermissionAuthorizationHandler : AuthorizationHandler
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MessagePermissionRequirement requirement)
     {
-        if (context?.User?.Identity == null)
+        if (context?.User?.Identity is null)
         {
-            context.Fail(new AuthorizationFailureReason(this, "selam"));
+            context.Fail();
             return;
         }
 

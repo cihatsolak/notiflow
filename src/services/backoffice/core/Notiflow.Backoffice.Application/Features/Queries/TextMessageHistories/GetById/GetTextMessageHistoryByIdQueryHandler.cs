@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 
-public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Response<GetTextMessageHistoryByIdQueryResponse>>
+public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Response<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<GetTextMessageHistoryByIdQueryHandler> _logger;
@@ -13,17 +13,17 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         _logger = logger;
     }
 
-    public async Task<Response<GetTextMessageHistoryByIdQueryResponse>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Response<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
             _logger.LogInformation("Text message history with ID {@textMessageHistoryId} was not found.", request.Id);
-            return Response<GetTextMessageHistoryByIdQueryResponse>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return Response<GetTextMessageHistoryByIdQueryResult>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
-        var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResponse>(textMessageHistory);
+        var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResult>(textMessageHistory);
 
-        return Response<GetTextMessageHistoryByIdQueryResponse>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDto);
+        return Response<GetTextMessageHistoryByIdQueryResult>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDto);
     }
 }

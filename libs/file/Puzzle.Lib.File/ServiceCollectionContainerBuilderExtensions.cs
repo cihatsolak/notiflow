@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-
-namespace Puzzle.Lib.File;
+﻿namespace Puzzle.Lib.File;
 
 /// <summary>
 /// Extension methods for registering FTP settings to the service collection.

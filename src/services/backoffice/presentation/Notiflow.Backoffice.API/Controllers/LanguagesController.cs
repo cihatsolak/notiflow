@@ -11,7 +11,7 @@ public class LanguagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">No supported language found.</response>
     [HttpGet("supported-cultures")]
-    [ProducesResponseType(typeof(Response<SupportedCulturesQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<SupportedCulturesQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AllLanguages()
     {

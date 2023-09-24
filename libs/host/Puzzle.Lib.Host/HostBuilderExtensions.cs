@@ -59,30 +59,32 @@ public static class HostBuilderExtensions
     }
 
     /// <summary>
-    /// Starts the web host asynchronously and handles any exceptions that may occur.
+    /// Asynchronously starts the specified <see cref="IHost"/> instance.
     /// </summary>
-    /// <param name="app">The web application instance to start.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-
-    public static async Task StartProjectAsync(this WebApplication app)
+    /// <param name="host">The <see cref="IHost"/> to start.</param>
+    /// <seealso cref="IHost"/>
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public static async Task StartProjectAsync(this IHost host)
     {
-        string applicationName = app.Environment.ApplicationName;
-        var logger = Log.ForContext(typeof(HostBuilderExtensions));
+        ILogger logger = host.Services.GetRequiredService<ILoggerFactory>()
+            .CreateLogger(nameof(HostBuilderExtensions));
 
+        IHostEnvironment hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
+       
         try
         {
-            logger.Information("-- Starting web host: {@applicationName} --", applicationName);
-            await app.RunAsync();
+            logger.LogInformation("-- Starting web host: {@applicationName} --", hostEnvironment.ApplicationName);
+            await host.RunAsync();
         }
         catch (Exception exception)
         {
-            logger.Fatal(exception, "-- Host terminated unexpectedly. {@applicationName} -- ", applicationName);
-            await app.StopAsync();
+            logger.LogCritical(exception, "-- Host terminated unexpectedly. {@applicationName} -- ", hostEnvironment.ApplicationName);
+            await host.StopAsync();
         }
         finally
         {
-            Log.CloseAndFlush();
-            await app.DisposeAsync();
+            await ((IAsyncDisposable)host).DisposeAsync();
         }
     }
 }

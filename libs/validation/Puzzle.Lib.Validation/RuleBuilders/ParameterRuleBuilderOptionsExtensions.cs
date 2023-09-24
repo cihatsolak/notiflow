@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Puzzle.Lib.Validation.RuleBuilders;
+﻿namespace Puzzle.Lib.Validation.RuleBuilders;
 
 /// <summary>
 /// Provides extension methods for creating integer validation rules using FluentValidation.

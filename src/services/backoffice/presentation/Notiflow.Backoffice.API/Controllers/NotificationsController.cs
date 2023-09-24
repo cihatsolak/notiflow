@@ -12,7 +12,7 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Notification not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response<GetNotificationHistoryByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {

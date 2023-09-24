@@ -33,6 +33,8 @@ public static class ApplicationBuilderExtensions
     /// <returns>The IApplicationBuilder instance after the middleware has been registered.</returns>
     public static IApplicationBuilder UseApiExceptionHandler(this IApplicationBuilder app)
     {
+        ILogger logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(UseApiExceptionHandler));
+
         app.UseExceptionHandler(applicationBuilder =>
         {
             applicationBuilder.Run(async httpContext =>
@@ -48,7 +50,7 @@ public static class ApplicationBuilderExtensions
                     _ => StatusCodes.Status500InternalServerError
                 };
 
-                Log.Error(exceptionHandlerFeature.Error, "-- HTTP {@httpStatusCode} -- {@message}", httpContext.Response.StatusCode, exceptionHandlerFeature.Error?.Message);
+                logger.LogError(exceptionHandlerFeature.Error, "-- HTTP {@httpStatusCode} -- {@message}", httpContext.Response.StatusCode, exceptionHandlerFeature.Error?.Message);
 
                 ErrorHandlerResponse errorHandlerResponse = new()
                 {

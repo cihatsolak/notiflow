@@ -12,7 +12,7 @@ public sealed class DevicesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Devices not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(Response<DtResult<DeviceDataTableResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<DtResult<DeviceDataTableResult>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
@@ -30,7 +30,7 @@ public sealed class DevicesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<GetDeviceByIdQueryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<GetDeviceByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {

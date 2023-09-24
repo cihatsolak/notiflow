@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 
-public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Response<DtResult<DeviceDataTableResponse>>>
+public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Response<DtResult<DeviceDataTableResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<DeviceDataTableResponse>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Response<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Device> devices) = await _uow.DeviceRead.GetPageAsync(request.SortKey,
                                                                                      request.SearchKey,
@@ -20,17 +20,17 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return Response<DtResult<DeviceDataTableResponse>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return Response<DtResult<DeviceDataTableResult>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
-        DtResult<DeviceDataTableResponse> deviceDataTable = new()
+        DtResult<DeviceDataTableResult> deviceDataTable = new()
         {
             RecordsFiltered = recordsTotal,
             RecordsTotal = recordsTotal,
             Draw = request.Draw,
-            Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResponse>>(devices)
+            Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResult>>(devices)
         };
 
-        return Response<DtResult<DeviceDataTableResponse>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
+        return Response<DtResult<DeviceDataTableResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
     }
 }

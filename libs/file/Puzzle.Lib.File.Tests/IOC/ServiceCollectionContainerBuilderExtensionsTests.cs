@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.File.Tests.IOC
+﻿using Puzzle.Lib.File.Settings;
+
+namespace Puzzle.Lib.File.Tests.IOC
 {
     public class ServiceCollectionContainerBuilderExtensionsTests
     {
