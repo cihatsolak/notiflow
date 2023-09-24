@@ -10,15 +10,9 @@ public static class ServiceConnectionHealthCheck
     /// </summary>
     /// <param name="healthChecksBuilder">The <see cref="IHealthChecksBuilder"/> to add the health checks to.</param>
     /// <returns>The updated <see cref="IHealthChecksBuilder"/>.</returns>
-    public static IHealthChecksBuilder AddServicesCheck(this IHealthChecksBuilder healthChecksBuilder)
+    public static IHealthChecksBuilder AddServicesCheck(this IHealthChecksBuilder healthChecksBuilder, List<HealthChecksUrlGroupSetting> healthChecksUrlGroupSettings)
     {
-        IServiceProvider serviceProvider = healthChecksBuilder.Services.BuildServiceProvider();
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HealthChecksUrlGroupSetting));
-        HealthChecksUrlGroupSetting healthChecksUrlGroupSetting = configurationSection.Get<HealthChecksUrlGroupSetting>();
-
-        foreach (var serviceInfo in healthChecksUrlGroupSetting.UrlGroups)
+        foreach (var serviceInfo in healthChecksUrlGroupSettings)
         {
             healthChecksBuilder.AddUrlGroup(
                 uri: serviceInfo.ServiceUri,

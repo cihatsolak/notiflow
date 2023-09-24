@@ -11,6 +11,7 @@ internal static class ElasticsearchLoggerConfiguration
         {
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
             AutoRegisterTemplate = true,
+            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
             TemplateName = "serilog-events-template",
             TypeName = $"{applicationName}logevent",
             BatchPostingLimit = 50,

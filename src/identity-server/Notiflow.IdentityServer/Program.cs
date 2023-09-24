@@ -19,7 +19,8 @@ app
    .UseSwaggerWithRedoclyDoc()
    .UseMigrations()
    .UseApiExceptionHandler()
-   .UseResponseCompress();
+   .UseResponseCompress()
+   .UseHealthChecksConfiguration();
 
 app.UseApplicationLifetimes();
 

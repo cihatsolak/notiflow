@@ -1,15 +1,14 @@
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
-
 var builder = WebApplication.CreateBuilder(args);
+
+string environmentName = builder.Environment.EnvironmentName;
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", true, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
-    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddJsonFile($"appsettings.{environmentName}.json", true, true)
+    .AddJsonFile($"ocelot.{environmentName}.json", true, true)
     .AddJsonFile($"ocelot.global.json", true, true)
-    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.SwaggerEndpoint.json", true, true)
+    .AddJsonFile($"ocelot.{environmentName}.SwaggerEndpoint.json", true, true)
     .AddEnvironmentVariables();
 
 builder.Services.AddControllers();
