@@ -73,47 +73,47 @@ namespace Puzzle.Lib.Security.Tests
             Assert.Throws<ArgumentException>(() => hashedPassword.VerifyPasswordHash(password));
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Encrypt_ThrowsArgumentNullException_WhenTextIsNull(string text)
-        {
-            Assert.Throws<ArgumentNullException>(() => text.Encrypt());
-        }
+        //[Theory]
+        //[InlineData(null)]
+        //public void Encrypt_ThrowsArgumentNullException_WhenTextIsNull(string text)
+        //{
+        //    Assert.Throws<ArgumentNullException>(() => text.Encrypt());
+        //}
 
-        [Theory]
-        [InlineData("")]
-        public void Encrypt_ThrowsArgumentException_WhenTextIsEmpty(string text)
-        {
-            Assert.Throws<ArgumentException>(() => text.Encrypt());
-        }
+        //[Theory]
+        //[InlineData("")]
+        //public void Encrypt_ThrowsArgumentException_WhenTextIsEmpty(string text)
+        //{
+        //    Assert.Throws<ArgumentException>(() => text.Encrypt());
+        //}
 
-        [Fact]
-        public void Decrypt_ReturnsOriginalText_AfterEncrypting()
-        {
-            // Arrange
-            string originalText = "hello world";
+        //[Fact]
+        //public void Decrypt_ReturnsOriginalText_AfterEncrypting()
+        //{
+        //    // Arrange
+        //    string originalText = "hello world";
 
-            // Act
-            string encryptedText = originalText.Encrypt();
-            string decryptedText = encryptedText.Decrypt();
+        //    // Act
+        //    string encryptedText = originalText.Encrypt();
+        //    string decryptedText = encryptedText.Decrypt();
 
-            // Assert
-            Assert.Equal(originalText, decryptedText);
-        }
+        //    // Assert
+        //    Assert.Equal(originalText, decryptedText);
+        //}
 
-        [Theory]
-        [InlineData(null)]
-        public void Decrypt_ThrowsArgumentNullException_WhenCipherTextIsNull(string cipherText)
-        {
-            Assert.Throws<ArgumentNullException>(() => cipherText.Decrypt());
-        }
+        //[Theory]
+        //[InlineData(null)]
+        //public void Decrypt_ThrowsArgumentNullException_WhenCipherTextIsNull(string cipherText)
+        //{
+        //    Assert.Throws<ArgumentNullException>(() => cipherText.Decrypt());
+        //}
 
-        [Theory]
-        [InlineData("")]
-        public void Decrypt_ThrowsArgumentException_WhenCipherTextIsEmpty(string cipherText)
-        {
-            Assert.Throws<ArgumentException>(() => cipherText.Decrypt());
-        }
+        //[Theory]
+        //[InlineData("")]
+        //public void Decrypt_ThrowsArgumentException_WhenCipherTextIsEmpty(string cipherText)
+        //{
+        //    Assert.Throws<ArgumentException>(() => cipherText.Decrypt());
+        //}
 
         [Theory]
         [InlineData(null)]

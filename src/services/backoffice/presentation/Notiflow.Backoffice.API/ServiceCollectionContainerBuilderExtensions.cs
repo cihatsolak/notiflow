@@ -35,6 +35,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         services.AddGzipResponseFastestCompress();
         services.AddHttpSecurityPrecautions();
         services.AddApiVersion();
+        services.AddConfigureHealthChecks();
 
         return services;
     }

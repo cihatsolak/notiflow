@@ -21,7 +21,8 @@ app.UseHttpSecurityPrecautions()
    .UseSwaggerWithRedoclyDoc()
    .UseMigrations()
    .UseResponseCompress()
-   .UseRequestLocalization();
+   .UseRequestLocalization()
+   .UseHealthChecksConfiguration();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();

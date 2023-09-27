@@ -20,7 +20,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         healthChecksBuilder.AddNpgSqlDatabaseCheck("npg sql database connection string");
         healthChecksBuilder.AddSystemCheck();
         healthChecksBuilder.AddServicesCheck(Array.Empty<HealthChecksUrlGroupSetting>().ToList());
-        healthChecksBuilder.AddRabbitMqCheck();
+        healthChecksBuilder.AddRabbitMqCheck(string.Empty);
 
         return services;
     }

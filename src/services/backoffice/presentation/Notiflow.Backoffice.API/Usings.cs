@@ -37,6 +37,8 @@ global using Notiflow.Common.Extensions;
 global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Documentation;
+global using Puzzle.Lib.HealthCheck;
+global using Puzzle.Lib.HealthCheck.Checks;
 global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Performance;
 global using Puzzle.Lib.Response;
