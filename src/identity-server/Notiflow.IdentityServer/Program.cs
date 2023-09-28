@@ -8,7 +8,7 @@ builder.Host
 builder.Services
    .AddWebDependencies()
    .AddServiceDependencies()
-   .AddDataDependencies();
+   .AddDataDependencies(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -17,7 +17,7 @@ app
    .UseHttpSecurityPrecautions()
    .UseAuth()
    .UseSwaggerWithRedoclyDoc()
-   .UseMigrations()
+   .UseMigrations(builder.Environment)
    .UseApiExceptionHandler()
    .UseResponseCompress()
    .UseHealthChecksConfiguration();

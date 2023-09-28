@@ -9,7 +9,7 @@ builder.Services
     .AddWebDependencies()
     .AddApplication()
     .AddInfrastructure()
-    .AddPersistence();
+    .AddPersistence(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -19,7 +19,7 @@ TenantCacheKeyFactory.Configure(app);
 app.UseHttpSecurityPrecautions()
    .UseAuth()
    .UseSwaggerWithRedoclyDoc()
-   .UseMigrations()
+   .UseMigrations(builder.Environment)
    .UseResponseCompress()
    .UseRequestLocalization()
    .UseHealthChecksConfiguration();

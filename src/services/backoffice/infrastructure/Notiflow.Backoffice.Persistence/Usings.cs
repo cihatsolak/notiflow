@@ -25,6 +25,7 @@ global using Notiflow.Backoffice.Persistence.Seeds;
 global using Notiflow.Backoffice.Persistence.UnitOfWorks;
 global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Database.Concrete;
+global using Puzzle.Lib.Database.Infrastructure.Settings;
 global using Puzzle.Lib.Entities.Entities.Base;
 global using Puzzle.Lib.Entities.Entities.Historical;
 global using Puzzle.Lib.Entities.Entities.HistoricalSoftDelete;

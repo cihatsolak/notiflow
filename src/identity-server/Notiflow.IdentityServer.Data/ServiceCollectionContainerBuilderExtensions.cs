@@ -2,9 +2,18 @@
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddDataDependencies(this IServiceCollection services)
+    public static IServiceCollection AddDataDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMicrosoftSql<ApplicationDbContext>(nameof(ApplicationDbContext));
+        SqlSetting sqlSetting = configuration.GetRequiredSection(nameof(ApplicationDbContext)).Get<SqlSetting>();
+
+        services.AddMicrosoftSql<ApplicationDbContext>(options =>
+        {
+            options.IsProduction = sqlSetting.IsProduction;
+            options.IsSplitQuery = sqlSetting.IsSplitQuery;
+            options.ConnectionString = sqlSetting.ConnectionString;
+            options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
+        });
+
         services.SeedAsync().Wait();
        
         return services;

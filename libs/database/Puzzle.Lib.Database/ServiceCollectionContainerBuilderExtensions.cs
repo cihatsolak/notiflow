@@ -13,26 +13,21 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="configKey">The configuration key for the PostgreSQL database settings.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, string configKey) where TDbContext : DbContext
+    public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> setup) where TDbContext : DbContext
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        bool isProductionEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction();
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        SqlSetting sqlSetting = configuration.GetRequiredSection(configKey).Get<SqlSetting>();
+        SqlSetting sqlSetting = new();
+        setup?.Invoke(sqlSetting);
 
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(isProductionEnvironment);
+            contextOptions.ConfigureCustomLogs(sqlSetting.IsProduction);
             contextOptions.UseSnakeCaseNamingConvention();
 
             contextOptions.UseNpgsql(sqlSetting.ConnectionString, sqlOptions =>
             {
                 sqlOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(TDbContext)).FullName);
-                sqlOptions.CommandTimeout((int)TimeSpan.FromSeconds(60).TotalSeconds);
+                sqlOptions.CommandTimeout(sqlSetting.CommandTimeoutSecond);
 
                 if (sqlSetting.IsSplitQuery)
                 {
@@ -43,10 +38,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
-            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
+            contextOptions.AddInterceptors(new SlowQueryInterceptor(services.BuildServiceProvider()));
         });
 
-        if (!isProductionEnvironment)
+        if (!sqlSetting.IsProduction)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
@@ -62,25 +57,20 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="configKey">The configuration key for the MicrosoftSQL database settings.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, string configKey) where TDbContext : DbContext
+    public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> setup) where TDbContext : DbContext
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        bool isProductionEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>().IsProduction();
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        SqlSetting sqlSetting = configuration.GetRequiredSection(configKey).Get<SqlSetting>();
+        SqlSetting sqlSetting = new();
+        setup?.Invoke(sqlSetting);
 
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(isProductionEnvironment);
+            contextOptions.ConfigureCustomLogs(sqlSetting.IsProduction);
 
             contextOptions.UseSqlServer(sqlSetting.ConnectionString, sqlOptions =>
             {
                 sqlOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(TDbContext)).FullName);
-                sqlOptions.CommandTimeout((int)TimeSpan.FromSeconds(60).TotalSeconds);
+                sqlOptions.CommandTimeout(sqlSetting.CommandTimeoutSecond);
 
                 if (sqlSetting.IsSplitQuery)
                 {
@@ -91,10 +81,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
-            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
+            contextOptions.AddInterceptors(new SlowQueryInterceptor(services.BuildServiceProvider()));
         });
 
-        if (!isProductionEnvironment)
+        if (!sqlSetting.IsProduction)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
