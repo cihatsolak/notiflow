@@ -37,13 +37,13 @@ public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
         }
     }
 
-    public static Response<EmptyResponse> InvalidErrorResponse => new()
+    public static ApiResponse<EmptyResponse> InvalidErrorResponse => new()
     {
         Code = 1,
         Message = "Invalid X-Tenant-Token header."
     };
 
-    public static Response<EmptyResponse> MissingErrorResponse => new()
+    public static ApiResponse<EmptyResponse> MissingErrorResponse => new()
     {
         Code = 1,
         Message = "Missing X-Tenant-Token header."

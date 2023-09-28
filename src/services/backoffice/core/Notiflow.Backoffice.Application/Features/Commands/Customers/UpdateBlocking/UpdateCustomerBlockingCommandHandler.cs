@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
 
-public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<UpdateCustomerBlockingCommand, Response<Unit>>
+public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<UpdateCustomerBlockingCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateCustomerBlockingCommandHandler> _logger;
@@ -11,19 +11,19 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
             _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.IsBlocked == request.IsBlocked)
         {
             _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 
         customer.IsBlocked = request.IsBlocked;
@@ -35,6 +35,6 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
             request.Id,
             request.IsBlocked ? "blocked" : "unblocked");
 
-        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_BLOCK_STATUS_UPDATED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_BLOCK_STATUS_UPDATED, Unit.Value);
     }
 }

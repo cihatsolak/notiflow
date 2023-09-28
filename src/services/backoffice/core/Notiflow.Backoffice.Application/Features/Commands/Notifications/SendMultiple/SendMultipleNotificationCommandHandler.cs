@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
 
-public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<SendMultipleNotificationCommand, Response<Unit>>
+public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<SendMultipleNotificationCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
     private readonly IFirebaseService _firebaseService;
@@ -22,13 +22,13 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(SendMultipleNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(SendMultipleNotificationCommand request, CancellationToken cancellationToken)
     {
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
             _logger.LogWarning("Customers device information could not be found.");
-            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices
@@ -87,7 +87,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
             }
         }
 
-        return Response<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendNotifyWithFirebase(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

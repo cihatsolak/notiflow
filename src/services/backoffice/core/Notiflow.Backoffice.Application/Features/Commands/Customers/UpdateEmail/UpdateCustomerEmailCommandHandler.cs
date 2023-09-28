@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 
-public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCustomerEmailCommand, Response<Unit>>
+public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCustomerEmailCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateCustomerEmailCommandHandler> _logger;
@@ -11,19 +11,19 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
             _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.Email == request.Email)
         {
             _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {@id}", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_EMAIL_ADDRESS_SAME);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_EMAIL_ADDRESS_SAME);
         }
 
         customer.Email = request.Email;
@@ -32,6 +32,6 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
 
         _logger.LogInformation("The customer's email address has been updated. Customer ID: {@id}", request.Id);
 
-        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_EMAIL_UPDATED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_EMAIL_UPDATED, Unit.Value);
     }
 }

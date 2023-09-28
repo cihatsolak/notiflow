@@ -1,5 +1,6 @@
 ﻿global using AutoMapper;
 global using FluentValidation;
+global using MassTransit;
 global using MediatR;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;

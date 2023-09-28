@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
-public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Response<Unit>>
+public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<DeleteCustomerCommandHandler> _logger;
@@ -13,15 +13,15 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
             _logger.LogInformation("Could not delete customer of ID {@customerId}.", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
         }
 
-        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_DELETED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_DELETED, Unit.Value);
     }
 }

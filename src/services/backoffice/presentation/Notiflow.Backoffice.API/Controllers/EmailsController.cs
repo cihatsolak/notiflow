@@ -12,8 +12,8 @@ public sealed class EmailsController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<GetEmailHistoryByIdQueryResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<GetEmailHistoryByIdQueryResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -31,8 +31,8 @@ public sealed class EmailsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = "EmailPermissionRestriction")]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

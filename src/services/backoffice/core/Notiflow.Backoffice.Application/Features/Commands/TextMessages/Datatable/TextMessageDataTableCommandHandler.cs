@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 
-public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Response<DtResult<TextMessageDataTableCommandResult>>>
+public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, ApiResponse<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<TextMessageHistory> textMessageHistories) = await _uow.TextMessageHistoryRead.GetPageAsync(request.SortKey,
                                                                                                                            request.SearchKey,
@@ -20,7 +20,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return Response<DtResult<TextMessageDataTableCommandResult>>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
@@ -31,6 +31,6 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
             Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return Response<DtResult<TextMessageDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDataTable);
+        return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDataTable);
     }
 }

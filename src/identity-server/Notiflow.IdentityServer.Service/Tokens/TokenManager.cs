@@ -9,7 +9,7 @@ internal sealed class TokenManager : ITokenService
         _jwtTokenSetting = jwtTokenSetting.Value;
     }
 
-    public Response<TokenResponse> CreateToken(User user)
+    public ApiResponse<TokenResponse> CreateToken(User user)
     {
         DateTime accessTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.AccessTokenExpirationMinute);
         DateTime refreshTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.RefreshTokenExpirationMinute);
@@ -37,7 +37,7 @@ internal sealed class TokenManager : ITokenService
             RefreshTokenExpiration = refreshTokenExpiration
         };
 
-        return Response<TokenResponse>.Success(tokenResponse);
+        return ApiResponse<TokenResponse>.Success(tokenResponse);
     }
 
     private static IEnumerable<Claim> SetUserClaims(User user, IEnumerable<string> audiences)

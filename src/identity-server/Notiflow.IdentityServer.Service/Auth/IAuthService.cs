@@ -4,8 +4,8 @@ namespace Notiflow.IdentityServer.Service.Auth;
 
 public interface IAuthService
 {
-    Task<Response<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken);
-    Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken);
-    Task<Response<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken);
-    Task<Response<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken);
+    Task<ApiResponse<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken);
+    Task<ApiResponse<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken);
+    Task<ApiResponse<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken);
+    Task<ApiResponse<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken);
 }

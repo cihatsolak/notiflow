@@ -19,8 +19,8 @@ public sealed class UsersController : BaseApiController
     /// <response code="401">unauthorized user</response>
     /// <response code="404">user not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
-    [ProducesResponseType(typeof(Response<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.GetDetailAsync(id, cancellationToken);
@@ -37,8 +37,8 @@ public sealed class UsersController : BaseApiController
     /// <response code="400">invalid request</response>
     /// <response code="401">unauthorized user</response>
     [HttpPost("add")]
-    [ProducesResponseType(typeof(Response<int>), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<int>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);
@@ -57,7 +57,7 @@ public sealed class UsersController : BaseApiController
     /// <response code="401">unauthorized user</response>
     [HttpPut("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateAsync(id, request, cancellationToken);
@@ -75,7 +75,7 @@ public sealed class UsersController : BaseApiController
     /// <response code="401">Unauthorized user</response>
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.DeleteAsync(id, cancellationToken);
@@ -94,7 +94,7 @@ public sealed class UsersController : BaseApiController
     [HttpPatch("{id:int:min(1):max(2147483647)}/update-profile-photo")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfilePhoto(int id, [FromForm] IFormFile profilePhoto, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);

@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 
-public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Response<GetTextMessageHistoryByIdQueryResult>>
+public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, ApiResponse<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<GetTextMessageHistoryByIdQueryHandler> _logger;
@@ -13,17 +13,17 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         _logger = logger;
     }
 
-    public async Task<Response<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
             _logger.LogInformation("Text message history with ID {@textMessageHistoryId} was not found.", request.Id);
-            return Response<GetTextMessageHistoryByIdQueryResult>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return ApiResponse<GetTextMessageHistoryByIdQueryResult>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
         var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResult>(textMessageHistory);
 
-        return Response<GetTextMessageHistoryByIdQueryResult>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDto);
+        return ApiResponse<GetTextMessageHistoryByIdQueryResult>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDto);
     }
 }

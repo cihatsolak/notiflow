@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 
-public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, Response<Unit>>
+public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<DeleteDeviceCommandHandler> _logger;
@@ -13,17 +13,17 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(DeleteDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
         bool isDeleted = await _uow.DeviceWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
             _logger.LogWarning("Could not delete device of ID {@deviceId}.", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_DELETED);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_DELETED);
         }
 
         _logger.LogInformation("The device with ID {@deviceId} has been deleted.", request.Id);
 
-        return Response<Unit>.Success(ResponseCodes.Success.DEVICE_DELETED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.DEVICE_DELETED, Unit.Value);
     }
 }

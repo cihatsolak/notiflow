@@ -18,7 +18,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         _logger = logger;
     }
 
-    public async Task<Response<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
+    public async Task<ApiResponse<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken)
     {
         var tenantPermission = await _context.TenantPermissions.AsNoTracking()
                                                                .ProjectToType<TenantPermissionResponse>()
@@ -26,19 +26,19 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return Response<TenantPermissionResponse>.Fail(-1);
+            return ApiResponse<TenantPermissionResponse>.Fail(-1);
         }
 
-        return Response<TenantPermissionResponse>.Success(tenantPermission);
+        return ApiResponse<TenantPermissionResponse>.Success(tenantPermission);
     }
 
-    public async Task<Response<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var tenantPermission = await _context.TenantPermissions.SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return Response<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Fail(-1);
         }
 
         List<Task<bool>> tenantPermissionCachingTasks = new();
@@ -67,6 +67,6 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
         await Task.WhenAll(tenantPermissionCachingTasks);
 
-        return Response<EmptyResponse>.Success(-1);
+        return ApiResponse<EmptyResponse>.Success(-1);
     }
 }

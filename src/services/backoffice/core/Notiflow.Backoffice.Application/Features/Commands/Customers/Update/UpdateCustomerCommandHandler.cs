@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Response<Unit>>
+public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateCustomerCommandHandler> _logger;
@@ -13,13 +13,13 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
             _logger.LogInformation("Customer not found. ID: {@customerId}", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, customer);
@@ -27,6 +27,6 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         _uow.CustomerWrite.Update(customer);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        return Response<Unit>.Success(ResponseCodes.Success.CUSTOMER_UPDATED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_UPDATED, Unit.Value);
     }
 }

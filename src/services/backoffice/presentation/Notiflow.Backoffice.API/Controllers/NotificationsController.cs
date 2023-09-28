@@ -12,8 +12,8 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Notification not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -31,8 +31,8 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = "NotificationPermissionRestriction")]
     [HttpPost("send-single")]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SendSingle([FromBody] SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -50,8 +50,8 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = "NotificationPermissionRestriction")]
     [HttpPost("send-multiple")]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SendMultiple([FromBody] SendMultipleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

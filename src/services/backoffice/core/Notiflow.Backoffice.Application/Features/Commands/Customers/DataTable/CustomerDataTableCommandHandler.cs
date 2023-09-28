@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 
-public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Response<DtResult<CustomerDataTableCommandResult>>>
+public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, ApiResponse<DtResult<CustomerDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<CustomerDataTableCommandResult>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<DtResult<CustomerDataTableCommandResult>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Customer> customers) = await _uow.CustomerRead.GetPageAsync(request.SortKey,
                                                                                             request.SearchKey,
@@ -20,7 +20,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return Response<DtResult<CustomerDataTableCommandResult>>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         DtResult<CustomerDataTableCommandResult> customerDataTable = new()
@@ -31,6 +31,6 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
             Data = ObjectMapper.Mapper.Map<List<CustomerDataTableCommandResult>>(customers)
         };
 
-        return Response<DtResult<CustomerDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, customerDataTable);
+        return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, customerDataTable);
     }
 }

@@ -26,7 +26,7 @@ namespace Puzzle.Lib.Performance.Tests
             var server = host.GetTestServer();
 
             // Act
-            var response = server.CreateClient().GetAsync("/").Result;
+            var response = server.CreateClient().GetAsync("/");
 
             // Assert
             Assert.NotNull(response);
