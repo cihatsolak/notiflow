@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Puzzle.Lib.Auth.Models;
-using System.Net.Mime;
-using System.Text.Json;
-
-namespace Puzzle.Lib.Auth;
+﻿namespace Puzzle.Lib.Auth;
 
 /// <summary>
 /// Provides extension methods to add JWT authentication and claim services to the <see cref="IServiceCollection"/> container.
@@ -15,17 +10,12 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, Action<JwtTokenSetting> setup)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        JwtTokenSetting jwtTokenSetting = new();
+        setup.Invoke(jwtTokenSetting);
 
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(JwtTokenSetting));
-        services.Configure<JwtTokenSetting>(configurationSection);
-        JwtTokenSetting jwtTokenSetting = configurationSection.Get<JwtTokenSetting>();
-
-        _ = services.AddAuthentication(options =>
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

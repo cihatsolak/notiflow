@@ -8,27 +8,27 @@ public sealed record JwtTokenSetting
     /// <summary>
     /// Gets or sets the list of valid audiences for the JWT token.
     /// </summary>
-    public required IEnumerable<string> Audiences { get; init; }
+    public IEnumerable<string> Audiences { get; set; }
 
     /// <summary>
     /// Gets or sets the issuer of the JWT token.
     /// </summary>
     [JsonRequired]
-    public required string Issuer { get; init; }
+    public string Issuer { get; set; }
 
     /// <summary>
     /// Gets or sets the expiration time of the access token in minutes.
     /// </summary>
-    public required int AccessTokenExpirationMinute { get; init; }
+    public int AccessTokenExpirationMinute { get; set; }
 
     /// <summary>
     /// Gets or sets the expiration time of the refresh token in minutes.
     /// </summary>
-    public required int RefreshTokenExpirationMinute { get; init; }
+    public int RefreshTokenExpirationMinute { get; set; }
 
     /// <summary>
     /// Gets or sets the security key for JWT token authentication.
     /// </summary>
     [JsonRequired]
-    public required string SecurityKey { get; init; }
+    public string SecurityKey { get; set; }
 }

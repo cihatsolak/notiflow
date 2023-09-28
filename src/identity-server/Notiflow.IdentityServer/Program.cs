@@ -6,7 +6,7 @@ builder.Host
     .AddShutdownTimeOut();
 
 builder.Services
-   .AddWebDependencies()
+   .AddWebDependencies(builder.Configuration)
    .AddServiceDependencies()
    .AddDataDependencies(builder.Configuration);
 
