@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Domain.Enums;
 
-public enum OSVersion
+public enum OSVersion : byte
 {
     Android = 1,
     IOS,

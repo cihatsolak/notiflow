@@ -84,7 +84,7 @@ public class DtOrder
 /// <summary>
 /// DataTable order enum
 /// </summary>
-public enum DtOrderDir
+public enum DtOrderDir : byte
 {
     Asc,
     Desc
