@@ -9,30 +9,30 @@ public sealed record FtpSetting
     /// Gets or sets the IP address of the FTP server.
     /// </summary>
     [JsonRequired]
-    public required string Ip { get; init; }
+    public string Ip { get; set; }
 
     /// <summary>
     /// Gets or sets the port number of the FTP server.
     /// </summary>
-    public required int Port { get; init; }
+    public int Port { get; set; }
 
     /// <summary>
     /// Gets or sets the username to authenticate with the FTP server.
     /// </summary>
-    public string Username { get; init; }
+    public string Username { get; set; }
 
     /// <summary>
     /// Gets or sets the password to authenticate with the FTP server.
     /// </summary>
-    public string Password { get; init; }
+    public string Password { get; set; }
 
     /// <summary>
     /// Gets or sets the URL of the FTP server.
     /// </summary>
-    public required string Url { get; init; }
+    public string Url { get; set; }
 
     /// <summary>
     /// Gets or sets the domain of the FTP server.
     /// </summary>
-    public required string Domain { get; init; }
+    public string Domain { get; set; }
 }

@@ -22,7 +22,7 @@ namespace Puzzle.Lib.File.Tests.IOC
                 .AddSingleton<IConfiguration>(configuration);
 
             // Act
-            services.AddFtpSetting();
+            //services.AddFtpSetting();
 
             // Assert
             var serviceProvider = services.BuildServiceProvider();

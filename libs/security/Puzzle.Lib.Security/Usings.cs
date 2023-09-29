@@ -11,6 +11,7 @@ global using Microsoft.Extensions.Options;
 global using Puzzle.Lib.Security.Infrastructure.Exceptions;
 global using Puzzle.Lib.Security.Infrastructure.Settings;
 global using Puzzle.Lib.Security.Middlewares;
+global using Puzzle.Lib.Security.Services.Encryptions;
 global using Puzzle.Lib.Security.Services.Protectors;
 global using Puzzle.Lib.Security.Services.Protocols;
 global using StackExchange.Redis;

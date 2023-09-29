@@ -11,15 +11,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The service collection to add API versioning services to.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddApiVersion(this IServiceCollection services)
+    public static IServiceCollection AddApiVersion(this IServiceCollection services, Action<ApiVersionSetting> setup)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(ApiVersionSetting));
-        services.Configure<ApiVersionSetting>(configurationSection);
-        ApiVersionSetting apiVersionSetting = configurationSection.Get<ApiVersionSetting>();
+        ApiVersionSetting apiVersionSetting = new();
+        setup?.Invoke(apiVersionSetting);
 
         services.AddApiVersioning(options =>
         {
@@ -39,15 +34,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="errorResponseProvider">The error response provider to use for error responses.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddApiVersioningWithProvider(this IServiceCollection services, IErrorResponseProvider errorResponseProvider)
+    public static IServiceCollection AddApiVersioningWithProvider(this IServiceCollection services, Action<ApiVersionSetting> setup, IErrorResponseProvider errorResponseProvider)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(ApiVersionSetting));
-        services.Configure<ApiVersionSetting>(configurationSection);
-        ApiVersionSetting apiVersionSetting = configurationSection.Get<ApiVersionSetting>();
+        ApiVersionSetting apiVersionSetting = new();
+        setup?.Invoke(apiVersionSetting);
 
         services.AddApiVersioning(options =>
         {

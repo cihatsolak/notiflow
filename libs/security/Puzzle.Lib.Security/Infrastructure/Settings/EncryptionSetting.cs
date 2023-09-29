@@ -9,6 +9,6 @@ public sealed record EncryptionSetting
     /// Gets or initializes the encryption key.
     /// </summary>
     [JsonRequired]
-    public required string Key { get; init; }
+    public string Key { get; set; }
 }
 

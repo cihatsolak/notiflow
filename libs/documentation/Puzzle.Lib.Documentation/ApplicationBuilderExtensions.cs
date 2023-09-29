@@ -10,11 +10,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
     {
-        IServiceProvider serviceProvider = app.ApplicationServices;
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-
         if (webHostEnvironment.IsProduction())
             return app;
 
@@ -34,15 +31,12 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
+    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
     {
-        IServiceProvider serviceProvider = app.ApplicationServices;
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-
         if (webHostEnvironment.IsProduction())
             return app;
 
-        SwaggerSetting swaggerSetting = serviceProvider.GetRequiredService<IOptions<SwaggerSetting>>().Value;
+        SwaggerSetting swaggerSetting = app.ApplicationServices.GetRequiredService<IOptions<SwaggerSetting>>().Value;
 
         app.UseReDoc(options =>
         {
@@ -58,9 +52,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app)
+    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
     {
-        return app.UseSwaggerDoc().UseRedoclyDoc();
+        return app.UseSwaggerDoc(webHostEnvironment).UseRedoclyDoc(webHostEnvironment);
     }
 
     /// <summary>

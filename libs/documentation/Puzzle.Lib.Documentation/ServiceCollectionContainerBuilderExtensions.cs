@@ -10,15 +10,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to add Swagger to.</param>
     /// <returns>The updated service collection.</returns>
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    public static IServiceCollection AddSwagger(this IServiceCollection services, Action<SwaggerSetting> setup)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(SwaggerSetting));
-        services.Configure<SwaggerSetting>(configurationSection);
-        SwaggerSetting swaggerSetting = configurationSection.Get<SwaggerSetting>();
+        SwaggerSetting swaggerSetting = new();
+        setup?.Invoke(swaggerSetting);
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -65,16 +60,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services)
-    {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        services.Configure<SwaggerSetting>(configuration.GetRequiredSection(nameof(SwaggerSetting)));
-
-        return services;
-    }
+    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services, Action<SwaggerSecuritySetting> setup) => services.Configure(setup);
 
     /// <summary>
     /// Adds operation filters to Swagger

@@ -7,7 +7,7 @@ builder.Host
 
 builder.Services
     .AddWebDependencies(builder.Configuration)
-    .AddApplication()
+    .AddApplication(builder.Configuration)
     .AddInfrastructure()
     .AddPersistence(builder.Configuration);
 
@@ -18,7 +18,7 @@ TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpSecurityPrecautions()
    .UseAuth()
-   .UseSwaggerWithRedoclyDoc()
+   .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
    .UseResponseCompress()
    .UseRequestLocalization()

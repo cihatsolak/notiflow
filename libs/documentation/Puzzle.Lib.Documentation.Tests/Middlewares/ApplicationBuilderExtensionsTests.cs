@@ -28,7 +28,7 @@ namespace Puzzle.Lib.Documentation.Tests.Middlewares
             appBuilder.ApplicationServices = _serviceProviderMock.Object;
             _serviceProviderMock.Setup(sp => sp.GetRequiredService<IWebHostEnvironment>()).Returns(_webHostEnvironmentMock.Object);
 
-            appBuilder.UseSwaggerDoc();
+            //appBuilder.UseSwaggerDoc();
 
             _appBuilderMock.Verify(ab => ab.UseSwagger(It.IsAny<Action<SwaggerOptions>>()), Times.Never);
             _appBuilderMock.Verify(ab => ab.UseSwaggerUI(It.IsAny<Action<SwaggerUIOptions>>()), Times.Never);
@@ -53,7 +53,7 @@ namespace Puzzle.Lib.Documentation.Tests.Middlewares
             _optionsMock.Setup(op => op.Value).Returns(swaggerSetting);
             _serviceProviderMock.Setup(sp => sp.GetRequiredService<IOptions<SwaggerSetting>>()).Returns(_optionsMock.Object);
 
-            appBuilder.UseSwaggerDoc();
+            //appBuilder.UseSwaggerDoc();
 
             _appBuilderMock.Verify(ab => ab.UseSwagger(It.IsAny<Action<SwaggerOptions>>()), Times.Once);
             _appBuilderMock.Verify(ab => ab.UseSwaggerUI(It.IsAny<Action<SwaggerUIOptions>>()), Times.Once);

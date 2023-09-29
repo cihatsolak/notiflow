@@ -52,6 +52,7 @@ global using Notiflow.Common.MessageBroker.Events.TextMessage;
 global using Notiflow.Common.Settings;
 global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Cache;
+global using Puzzle.Lib.Cache.Infrastructure.Settings;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Database.Interfaces;
 global using Puzzle.Lib.Response.Models;

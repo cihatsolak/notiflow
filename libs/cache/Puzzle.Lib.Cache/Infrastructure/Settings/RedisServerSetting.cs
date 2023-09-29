@@ -9,40 +9,40 @@ public sealed record RedisServerSetting
     /// Gets or sets the Redis server connection string.
     /// </summary>
     [JsonRequired]
-    public required string ConnectionString { get; init; }
+    public string ConnectionString { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to abort the connection if the server fails to respond during the connection phase.
     /// </summary>
-    public required bool AbortOnConnectFail { get; init; }
+    public bool AbortOnConnectFail { get; set; }
 
     /// <summary>
     /// Gets or sets the async timeout in seconds.
     /// </summary>
-    public required int AsyncTimeOutSecond { get; init; }
+    public int AsyncTimeOutSecond { get; set; }
 
     /// <summary>
     /// Gets or sets the connection timeout in seconds.
     /// </summary>
-    public required int ConnectTimeOutSecond { get; init; }
+    public int ConnectTimeOutSecond { get; set; }
 
     /// <summary>
     /// Gets or sets the Redis server username.
     /// </summary>
-    public string Username { get; init; }
+    public string Username { get; set; }
 
     /// <summary>
     /// Gets or sets the Redis server password.
     /// </summary>
-    public string Password { get; init; }
+    public string Password { get; set; }
 
     /// <summary>
     /// Gets or sets the default database to be used in the Redis server.
     /// </summary>
-    public required int DefaultDatabase { get; init; }
+    public int DefaultDatabase { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the Redis server allows administrative operations.
     /// </summary>
-    public required bool AllowAdmin { get; init; }
+    public bool AllowAdmin { get; set; }
 }
