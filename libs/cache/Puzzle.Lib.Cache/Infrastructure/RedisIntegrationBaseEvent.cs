@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Cache.Infrastructure.Events;
+﻿namespace Puzzle.Lib.Cache.Infrastructure;
 
 /// <summary>
 /// Base class for events that are integrated with Redis.
