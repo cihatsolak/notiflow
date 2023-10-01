@@ -8,7 +8,6 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddPostgreSql<NotiflowDbContext>(options =>
         {
-            options.IsProduction = sqlSetting.IsProduction;
             options.IsSplitQuery = sqlSetting.IsSplitQuery;
             options.ConnectionString = sqlSetting.ConnectionString;
             options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;

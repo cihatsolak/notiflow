@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Tokens;
+﻿using Puzzle.Lib.Auth.Infrastructure;
+
+namespace Notiflow.IdentityServer.Service.Tokens;
 
 internal sealed class TokenManager : ITokenService
 {

@@ -5,6 +5,8 @@
 /// </summary>
 public static class ServiceCollectionContainerBuilderExtensions
 {
+    public const string ACCESS_TOKEN = "access_token";
+
     /// <summary>
     /// Adds JWT authentication services to the <see cref="IServiceCollection"/> container.
     /// </summary>
@@ -84,7 +86,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 },
                 OnMessageReceived = context =>
                 {
-                    string token = context.Request.Query["access_token"];
+                    string token = context.Request.Query[ACCESS_TOKEN];
                     if (!string.IsNullOrWhiteSpace(token) && context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
                     {
                         context.Token = token;

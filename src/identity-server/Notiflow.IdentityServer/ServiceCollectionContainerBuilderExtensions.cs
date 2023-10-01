@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer;
+﻿using Puzzle.Lib.Auth.Infrastructure;
+
+namespace Notiflow.IdentityServer;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {

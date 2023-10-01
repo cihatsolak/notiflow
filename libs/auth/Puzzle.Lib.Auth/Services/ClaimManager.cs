@@ -26,7 +26,8 @@ public sealed class ClaimManager : IClaimService
     private int GetNameIdentifier()
     {
         string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
-        AuthArgumentException.ThrowIfNullOrEmpty(nameIdentifier);
+        if (string.IsNullOrWhiteSpace(nameIdentifier))
+            throw new JwtClaimException(nameof(nameIdentifier));
 
         bool succeeded = int.TryParse(nameIdentifier, out int identifier);
         if (!succeeded || 0 >= identifier)

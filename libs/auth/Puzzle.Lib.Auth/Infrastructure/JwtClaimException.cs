@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Auth.Infrastructure.Exceptions;
+﻿namespace Puzzle.Lib.Auth.Infrastructure;
 
 [Serializable]
 public sealed class JwtClaimException : Exception

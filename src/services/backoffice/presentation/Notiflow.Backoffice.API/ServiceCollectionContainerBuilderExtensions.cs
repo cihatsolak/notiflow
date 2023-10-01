@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.API;
+﻿using Puzzle.Lib.Auth.Infrastructure;
+
+namespace Notiflow.Backoffice.API;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Auth.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.Auth.Infrastructure;
 
 /// <summary>
 /// Represents a record that contains the settings related to JWT token authentication.
