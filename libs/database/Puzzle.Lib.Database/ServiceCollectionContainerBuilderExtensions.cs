@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Database;
+﻿using Puzzle.Lib.Database.Infrastructure;
+
+namespace Puzzle.Lib.Database;
 
 /// <summary>
 /// Provides extension methods for configuring SQL database in IServiceCollection.

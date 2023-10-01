@@ -8,7 +8,7 @@
 /// </remarks>
 public sealed class SlowQueryInterceptor : DbCommandInterceptor
 {
-    public const int _slowQueryThreesholdInSeconds = 3;
+    public const int SLOW_QUERY_THREE_SHOLD_IN_SECONDS = 3;
     private readonly ILogger<SlowQueryInterceptor> _logger;
 
     public SlowQueryInterceptor(IServiceProvider serviceProvider)
@@ -18,7 +18,7 @@ public sealed class SlowQueryInterceptor : DbCommandInterceptor
 
     public override ValueTask<DbDataReader> ReaderExecutedAsync(DbCommand command, CommandExecutedEventData eventData, DbDataReader result, CancellationToken cancellationToken = default)
     {
-        if (eventData.Duration.Seconds > _slowQueryThreesholdInSeconds)
+        if (eventData.Duration.Seconds > SLOW_QUERY_THREE_SHOLD_IN_SECONDS)
         {
             _logger.LogWarning("Slow database query ({@Seconds} second) : {@CommandText}", eventData.Duration.Seconds, command.CommandText);
         }

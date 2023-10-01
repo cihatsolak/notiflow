@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Database.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.Database.Infrastructure;
 
 /// <summary>
 /// Represents a SQL setting, containing a connection string and a flag indicating whether the query should be split.

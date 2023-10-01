@@ -6,6 +6,7 @@ global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Http;
+global using Microsoft.EntityFrameworkCore.Storage;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Localization;

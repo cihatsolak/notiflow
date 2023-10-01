@@ -16,7 +16,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="entity">The entity to insert.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the entity is null.</exception>
-    Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task InsertAsync(TEntity entity, CancellationToken cancellationToken);
 
     /// <summary>
     /// Asynchronously inserts a collection of entities into the database.
@@ -24,7 +24,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="entities">The collection of entities to insert.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the entities collection is null or empty.</exception>
-    Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+    Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
 
     /// <summary>
     /// Updates the specified entity in the context.
@@ -48,7 +48,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <returns>A task representing the asynchronous operation that returns the number of entities updated.</returns>
     Task<int> ExecuteUpdateAsync(
        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
-       CancellationToken cancellationToken = default);
+       CancellationToken cancellationToken);
 
     /// <summary>
     /// Executes an update query asynchronously for entities that match the specified predicate using the specified property calls.
@@ -60,7 +60,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     Task<int> ExecuteUpdateAsync(
         Expression<Func<TEntity, bool>> predicate,
         Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
 
     /// <summary>
     /// Deletes the specified entity from the database.
@@ -80,7 +80,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// Deletes all entities in the database of the current type.
     /// <param name="cancellationToken">The cancellation token.</param>
     /// </summary>
-    Task<bool> ExecuteDeleteAsync(CancellationToken cancellationToken = default);
+    Task<bool> ExecuteDeleteAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Deletes the entity with the specified ID.
@@ -88,7 +88,7 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="id">The ID of the entity to delete.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentException">Thrown when the ID is less than or equal to zero.</exception>
-    Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken = default) where TProperty : struct;
+    Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken) where TProperty : struct;
 
     /// <summary>
     /// Deletes all entities that match the specified predicate from the database.
@@ -96,5 +96,5 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="predicate">The predicate to filter entities to be deleted.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the input predicate is null.</exception>
-    Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken);
 }

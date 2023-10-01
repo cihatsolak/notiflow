@@ -35,7 +35,7 @@ global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;
 global using Notiflow.Common.Extensions;
 global using Puzzle.Lib.Auth;
-global using Puzzle.Lib.Auth.Infrastructure.Settings;
+global using Puzzle.Lib.Auth.Infrastructure;
 global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Documentation;
 global using Puzzle.Lib.Documentation.Settings;
