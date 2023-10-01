@@ -9,7 +9,7 @@
             string phoneNumber = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>(() => phoneNumber.ToGsmFormat());
+            Assert.Throws<ArgumentNullException>(() => phoneNumber.ToMobilePhoneFormat());
         }
 
         [Fact]
@@ -19,7 +19,7 @@
             string phoneNumber = string.Empty;
 
             // Act and Assert
-            Assert.Throws<ArgumentException>(() => phoneNumber.ToGsmFormat());
+            Assert.Throws<ArgumentException>(() => phoneNumber.ToMobilePhoneFormat());
         }
 
         [Theory]
@@ -28,7 +28,7 @@
         public void ToGsmFormat_ReturnsExpectedResult(string phone, string expected)
         {
             // Act
-            string actual = phone.ToGsmFormat();
+            string actual = phone.ToMobilePhoneFormat();
 
             // Assert
             Assert.Equal(expected, actual);

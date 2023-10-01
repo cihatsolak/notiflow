@@ -17,11 +17,6 @@ public sealed record SqlSetting
     public bool IsSplitQuery { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the application is running in a production environment.
-    /// </summary>
-    public bool IsProduction { get; set; }
-
-    /// <summary>
     /// Gets or sets the command timeout duration in seconds for SQL queries.
     /// </summary>
     public int CommandTimeoutSecond { get; set; }

@@ -1,5 +1,4 @@
-﻿global using Microsoft.Extensions.Hosting;
-global using Puzzle.Lib.Assistant.Enums;
+﻿global using Puzzle.Lib.Assistant.Enums;
 global using Puzzle.Lib.Assistant.Extensions;
 global using System.ComponentModel;
 global using System.Diagnostics;
