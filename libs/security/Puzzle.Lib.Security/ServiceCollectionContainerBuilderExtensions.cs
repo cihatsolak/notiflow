@@ -21,9 +21,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The <see cref="IServiceCollection"/> to add the protocol service functionality to.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtocolService(this IServiceCollection services, Action<HostingSetting> setup)
+    public static IServiceCollection AddProtocolService(this IServiceCollection services, Action<HostingSetting> configure)
     {
-        services.Configure(setup);
+        services.Configure(configure);
         services.TryAddSingleton<IProtocolService, ProtocolManager>();
 
         return services;
@@ -34,9 +34,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which the encryption service will be added.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-    public static IServiceCollection AddEncryptionService(this IServiceCollection services, Action<EncryptionSetting> setup)
+    public static IServiceCollection AddEncryptionService(this IServiceCollection services, Action<EncryptionSetting> configure)
     {
-        services.Configure(setup);
+        services.Configure(configure);
         services.TryAddSingleton<IEncryptionService, EncryptionManager>();
 
         return services;
@@ -73,10 +73,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services, Action<RedisProtectorSetting> setup)
+    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services, Action<RedisProtectorSetting> configure)
     {
         RedisProtectorSetting redisProtectorSetting = new();
-        setup?.Invoke(redisProtectorSetting);
+        configure?.Invoke(redisProtectorSetting);
 
         services.AddDataProtection()
             .SetApplicationName(Assembly.GetCallingAssembly().FullName)
@@ -95,10 +95,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddCustomCors(this IServiceCollection services, Action<CorsSetting> setup)
+    public static IServiceCollection AddCustomCors(this IServiceCollection services, Action<CorsSetting> configure)
     {
         CorsSetting corsSetting = new();
-        setup?.Invoke(corsSetting);
+        configure?.Invoke(corsSetting);
 
         services.AddCors(options =>
         {

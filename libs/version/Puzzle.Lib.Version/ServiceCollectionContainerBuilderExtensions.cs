@@ -11,10 +11,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The service collection to add API versioning services to.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddApiVersion(this IServiceCollection services, Action<ApiVersionSetting> setup)
+    public static IServiceCollection AddApiVersion(this IServiceCollection services, Action<ApiVersionSetting> configure)
     {
         ApiVersionSetting apiVersionSetting = new();
-        setup?.Invoke(apiVersionSetting);
+        configure?.Invoke(apiVersionSetting);
 
         services.AddApiVersioning(options =>
         {
@@ -34,10 +34,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="errorResponseProvider">The error response provider to use for error responses.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddApiVersioningWithProvider(this IServiceCollection services, Action<ApiVersionSetting> setup, IErrorResponseProvider errorResponseProvider)
+    public static IServiceCollection AddApiVersioningWithProvider(this IServiceCollection services, Action<ApiVersionSetting> configure, IErrorResponseProvider errorResponseProvider)
     {
         ApiVersionSetting apiVersionSetting = new();
-        setup?.Invoke(apiVersionSetting);
+        configure?.Invoke(apiVersionSetting);
 
         services.AddApiVersioning(options =>
         {

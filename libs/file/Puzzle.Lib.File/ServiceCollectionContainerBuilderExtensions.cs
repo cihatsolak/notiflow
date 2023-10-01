@@ -7,12 +7,12 @@ namespace Puzzle.Lib.File;
 /// </summary>
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddFtpService(this IServiceCollection services, Action<FtpSetting> setup)
+    public static IServiceCollection AddFtpService(this IServiceCollection services, Action<FtpSetting> configure)
     {
         FtpSetting ftpSetting = new();
-        setup?.Invoke(ftpSetting);
+        configure?.Invoke(ftpSetting);
 
-        services.Configure(setup);
+        services.Configure(configure);
 
         services.TryAddScoped<IFileService>(provider =>
         {

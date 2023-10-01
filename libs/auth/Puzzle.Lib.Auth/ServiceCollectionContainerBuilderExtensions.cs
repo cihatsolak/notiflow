@@ -12,10 +12,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, Action<JwtTokenSetting> setup)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, Action<JwtTokenSetting> configure)
     {
         JwtTokenSetting jwtTokenSetting = new();
-        setup.Invoke(jwtTokenSetting);
+        configure.Invoke(jwtTokenSetting);
 
         services.AddAuthentication(options =>
         {

@@ -15,13 +15,13 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="configKey">The configuration key for the PostgreSQL database settings.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> setup) where TDbContext : DbContext
+    public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
         SqlSetting sqlSetting = new();
-        setup?.Invoke(sqlSetting);
+        configure?.Invoke(sqlSetting);
 
         services.AddDbContext<TDbContext>(contextOptions =>
         {
@@ -62,13 +62,13 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="configKey">The configuration key for the MicrosoftSQL database settings.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
-    public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> setup) where TDbContext : DbContext
+    public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
         SqlSetting sqlSetting = new();
-        setup?.Invoke(sqlSetting);
+        configure?.Invoke(sqlSetting);
 
         services.AddDbContext<TDbContext>(contextOptions =>
         {

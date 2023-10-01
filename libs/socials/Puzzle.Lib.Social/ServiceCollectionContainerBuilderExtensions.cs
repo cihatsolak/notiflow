@@ -2,12 +2,12 @@
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddSocialServices(this IServiceCollection services , Action<SocialSettings> setup)
+    public static IServiceCollection AddSocialServices(this IServiceCollection services , Action<SocialSettings> configure)
     {
         SocialSettings socialSettings = new();
-        setup?.Invoke(socialSettings);
+        configure?.Invoke(socialSettings);
 
-        services.Configure(setup);
+        services.Configure(configure);
         services.TryAddSingleton<IGoogleAuthService, GoogleAuthService>();
         services.TryAddSingleton<IFacebookAuthService, FacebookAuthService>();
         

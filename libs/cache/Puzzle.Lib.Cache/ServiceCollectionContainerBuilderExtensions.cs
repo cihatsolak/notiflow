@@ -10,10 +10,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>The same instance of the <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddRedisService(this IServiceCollection services, Action<RedisServerSetting> setup)
+    public static IServiceCollection AddRedisService(this IServiceCollection services, Action<RedisServerSetting> configure)
     {
         RedisServerSetting redisServerSetting = new();
-        setup?.Invoke(redisServerSetting);
+        configure?.Invoke(redisServerSetting);
 
         services.TryAddSingleton<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect(new ConfigurationOptions
         {

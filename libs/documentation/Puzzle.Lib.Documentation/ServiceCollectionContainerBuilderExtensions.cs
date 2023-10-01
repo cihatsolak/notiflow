@@ -10,10 +10,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to add Swagger to.</param>
     /// <returns>The updated service collection.</returns>
-    public static IServiceCollection AddSwagger(this IServiceCollection services, Action<SwaggerSetting> setup)
+    public static IServiceCollection AddSwagger(this IServiceCollection services, Action<SwaggerSetting> configure)
     {
         SwaggerSetting swaggerSetting = new();
-        setup?.Invoke(swaggerSetting);
+        configure?.Invoke(swaggerSetting);
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -60,7 +60,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services, Action<SwaggerSecuritySetting> setup) => services.Configure(setup);
+    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services, Action<SwaggerSecuritySetting> configure) => services.Configure(configure);
 
     /// <summary>
     /// Adds operation filters to Swagger
