@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
 
-public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, Response<Unit>>
+public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendSingleNotificationCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
     private readonly IFirebaseService _firebaseService;
@@ -22,13 +22,13 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is null)
         {
             _logger.LogWarning("The customer's device information could not be found.");
-            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var notificationResult = device.CloudMessagePlatform switch
@@ -47,7 +47,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
             
             _logger.LogWarning("Notification could not be sent to customer with id: {customerId}.", request.CustomerId);
 
-            return Response<Unit>.Fail(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
         }
 
         var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
@@ -57,7 +57,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
         _logger.LogInformation("A notification has been sent to the customer with id: {customerId}", request.CustomerId);
 
-        return Response<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendNotifyWithFirebase(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)

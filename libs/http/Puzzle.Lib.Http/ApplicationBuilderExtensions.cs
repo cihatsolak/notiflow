@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Http.Middlewares;
-
-namespace Puzzle.Lib.Http;
+﻿namespace Puzzle.Lib.Http;
 
 public static class ApplicationBuilderExtensions
 {

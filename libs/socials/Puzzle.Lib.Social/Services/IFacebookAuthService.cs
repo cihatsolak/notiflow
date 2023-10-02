@@ -14,7 +14,7 @@ public interface IFacebookAuthService
     ///   A Task that represents the asynchronous operation. The task result contains
     ///   FacebookTokenValidationData when validating a token.
     /// </returns>
-    Task<FacebookTokenValidationData> ValidateTokenAsync(string accessToken, CancellationToken cancellationToken = default);
+    Task<FacebookTokenValidationData> ValidateTokenAsync(string accessToken, CancellationToken cancellationToken);
 
     /// <summary>
     ///   Retrieves user information from Facebook asynchronously.
@@ -25,5 +25,5 @@ public interface IFacebookAuthService
     ///   A Task that represents the asynchronous operation. The task result contains
     ///   FacebookUserInfoResponse when fetching user information.
     /// </returns>
-    Task<FacebookUserInfoResponse> GetUserInformationAsync(string accessToken, CancellationToken cancellationToken = default);
+    Task<FacebookUserInfoResponse> GetUserInformationAsync(string accessToken, CancellationToken cancellationToken);
 }

@@ -3,18 +3,7 @@
 /// <summary>
 /// Represents a setting that contains a list of URL groups to be used in health checks.
 /// </summary>
-internal sealed record HealthChecksUrlGroupSetting
-{
-    /// <summary>
-    /// Gets or sets the list of URL groups to be used in health checks.
-    /// </summary>
-    public required List<UrlGroupInformation> UrlGroups { get; init; }
-}
-
-/// <summary>
-/// Represents a URL group information that is used in health checks.
-/// </summary>
-internal sealed record UrlGroupInformation
+public sealed record HealthChecksUrlGroupSetting
 {
     /// <summary>
     /// Gets or sets the service URI for the URL group.

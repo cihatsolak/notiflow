@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
-public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, Response<int>>
+public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, ApiResponse<int>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
     private readonly ILogger<AddDeviceCommandHandler> _logger;
@@ -13,13 +13,13 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         _logger = logger;
     }
 
-    public async Task<Response<int>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<int>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var device = await _notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is not null)
         {
             _logger.LogInformation("There is a device that belongs to customer {@customerId}.", request.CustomerId);
-            return Response<int>.Fail(ResponseCodes.Error.DEVICE_EXISTS);
+            return ApiResponse<int>.Fail(ResponseCodes.Error.DEVICE_EXISTS);
         }
 
         device = ObjectMapper.Mapper.Map<Device>(request);
@@ -28,6 +28,6 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
 
         _logger.LogInformation("A new device has been added for the user with the ID number {@customerId}.", request.CustomerId);
 
-        return Response<int>.Success(ResponseCodes.Success.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
+        return ApiResponse<int>.Success(ResponseCodes.Success.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
     }
 }

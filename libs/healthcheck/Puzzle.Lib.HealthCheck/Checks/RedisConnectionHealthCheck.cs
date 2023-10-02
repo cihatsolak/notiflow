@@ -16,12 +16,10 @@ public static class RedisConnectionHealthCheck
     {
         ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
-        healthChecksBuilder.AddRedis(
-               redisConnectionString: connectionString,
-               name: "[Redis] - Cache Database",
-               failureStatus: HealthStatus.Unhealthy,
-               tags: new[] { "Cache", "NOSQL", "Database" });
-
-        return healthChecksBuilder;
+        return healthChecksBuilder.AddRedis(
+                   redisConnectionString: connectionString,
+                   name: "[Redis] - Caching Database",
+                   failureStatus: HealthStatus.Unhealthy,
+                   tags: new[] { "Cache", "NoSQL", "Data Store", "In-Memory" });
     }
 }

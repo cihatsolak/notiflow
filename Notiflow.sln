@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure", "azure", "{5E18AE45
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F5D8B786-DC50-403E-A48F-8767F243F93F}"
 	ProjectSection(SolutionItems) = preProject
+		docs\hangfire.txt = docs\hangfire.txt
 		docs\project-host-information.txt = docs\project-host-information.txt
 		docs\tokens.txt = docs\tokens.txt
 	EndProjectSection
@@ -199,7 +200,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "entities", "entities", "{B6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "socials", "socials", "{157A55F1-91EF-4FC1-94C6-7707C1FC2376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Social", "libs\socials\Puzzle.Lib.Social\Puzzle.Lib.Social.csproj", "{54B99CEA-F391-40EB-A95E-D39FE16239D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Social", "libs\socials\Puzzle.Lib.Social\Puzzle.Lib.Social.csproj", "{54B99CEA-F391-40EB-A95E-D39FE16239D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

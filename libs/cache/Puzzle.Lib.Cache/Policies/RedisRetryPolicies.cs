@@ -7,6 +7,8 @@
 /// </summary>
 internal static class RedisRetryPolicies
 {
+    private const int RETRY_COUNT = 2;
+
     /// <summary>
     /// Gets or sets the logger used for recording log information related to Redis retry policies.
     /// </summary>
@@ -28,7 +30,7 @@ internal static class RedisRetryPolicies
     /// <returns>An asynchronous retry policy.</returns>
     private static AsyncRetryPolicy RedisRetryAsyncPolicy()
     {
-        return Policy.Handle<Exception>().WaitAndRetryAsync(2, ComputeDuration, OnRedisRetry);
+        return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry);
     }
 
     /// <summary>
@@ -37,7 +39,7 @@ internal static class RedisRetryPolicies
     /// <returns>A retry policy.</returns>
     private static RetryPolicy RedisRetryPolicy()
     {
-        return Policy.Handle<Exception>().WaitAndRetry(2, ComputeDuration, OnRedisRetry);
+        return Policy.Handle<Exception>().WaitAndRetry(RETRY_COUNT, ComputeDuration, OnRedisRetry);
     }
 
     /// <summary>

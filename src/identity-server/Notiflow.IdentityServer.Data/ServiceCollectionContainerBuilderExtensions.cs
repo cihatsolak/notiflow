@@ -1,12 +1,22 @@
-﻿namespace Notiflow.IdentityServer.Data;
+﻿using Puzzle.Lib.Database.Infrastructure;
+
+namespace Notiflow.IdentityServer.Data;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddDataDependencies(this IServiceCollection services)
+    public static IServiceCollection AddDataDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMicrosoftSql<ApplicationDbContext>(nameof(ApplicationDbContext));
+        SqlSetting sqlSetting = configuration.GetRequiredSection(nameof(ApplicationDbContext)).Get<SqlSetting>();
+
+        services.AddMicrosoftSql<ApplicationDbContext>(options =>
+        {
+            options.IsSplitQuery = sqlSetting.IsSplitQuery;
+            options.ConnectionString = sqlSetting.ConnectionString;
+            options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
+        });
+
         services.SeedAsync().Wait();
-       
+
         return services;
     }
 }

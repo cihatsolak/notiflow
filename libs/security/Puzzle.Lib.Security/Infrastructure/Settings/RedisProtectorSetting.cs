@@ -9,23 +9,23 @@ public sealed record RedisProtectorSetting
     /// Gets or sets the connection string for Redis.
     /// </summary>
     [JsonRequired]
-    public required string ConnectionString { get; init; }
+    public string ConnectionString { get; set; }
 
     /// <summary>
     /// Gets or sets the number of the Redis database to use.
     /// </summary>
-    public required int DatabaseNumber { get; init; }
+    public int DatabaseNumber { get; set; }
 
     /// <summary>
     /// Gets or sets the key used for Redis data storage.
     /// </summary>
     [JsonRequired]
-    public required string Key { get; init; }
+    public string Key { get; set; }
 
     /// <summary>
     /// Gets or sets the number of days until Redis data expiration.
     /// </summary>
     [JsonRequired]
-    public required int ExpirationDays { get; init; }
+    public int ExpirationDays { get; set; }
 }
 

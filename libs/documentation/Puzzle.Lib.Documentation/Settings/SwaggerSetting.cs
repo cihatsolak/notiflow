@@ -6,29 +6,29 @@
 public sealed record SwaggerSetting
 {
     /// <summary>
-    /// Gets or initializes the title of the Swagger documentation.
+    /// Gets or setializes the title of the Swagger documentation.
     /// </summary>
     [JsonRequired]
-    public required string Title { get; init; }
+    public string Title { get; set; }
 
     /// <summary>
-    /// Gets or initializes the description of the Swagger documentation.
+    /// Gets or setializes the description of the Swagger documentation.
     /// </summary>
     [JsonRequired]
-    public required string Description { get; init; }
+    public string Description { get; set; }
 
     /// <summary>
-    /// Gets or initializes the version of the Swagger documentation.
+    /// Gets or setializes the version of the Swagger documentation.
     /// </summary>
-    public required string Version { get; init; }
+    public string Version { get; set; }
 
     /// <summary>
-    /// Gets or initializes the name of the contact for the Swagger documentation.
+    /// Gets or setializes the name of the contact for the Swagger documentation.
     /// </summary>
-    public string ContactName { get; init; }
+    public string ContactName { get; set; }
 
     /// <summary>
-    /// Gets or initializes the email address of the contact for the Swagger documentation.
+    /// Gets or setializes the email address of the contact for the Swagger documentation.
     /// </summary>
-    public string ContactEmail { get; init; }
+    public string ContactEmail { get; set; }
 }

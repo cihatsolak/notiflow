@@ -6,9 +6,9 @@ builder.Host
     .AddShutdownTimeOut();
 
 builder.Services
-   .AddWebDependencies()
-   .AddServiceDependencies()
-   .AddDataDependencies();
+   .AddWebDependencies(builder.Configuration)
+   .AddServiceDependencies(builder.Configuration)
+   .AddDataDependencies(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -16,10 +16,11 @@ var app = builder.Build();
 app
    .UseHttpSecurityPrecautions()
    .UseAuth()
-   .UseSwaggerWithRedoclyDoc()
-   .UseMigrations()
+   .UseSwaggerWithRedoclyDoc(builder.Environment)
+   .UseMigrations(builder.Environment)
    .UseApiExceptionHandler()
-   .UseResponseCompress();
+   .UseResponseCompress()
+   .UseHealthChecksConfiguration();
 
 app.UseApplicationLifetimes();
 

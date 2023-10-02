@@ -6,15 +6,13 @@
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Adds the Health Check middleware to the application pipeline, using the specified response path and health check options.
+    /// Adds the Health Check middleware to the application pipeline, using the specified response path and health check options. Path: /health
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealth(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealthChecksConfiguration(this IApplicationBuilder app)
     {
-        HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
-
-        app.UseHealthChecks(healthUISetting.ResponsePath, new HealthCheckOptions
+        app.UseHealthChecks("/health", new HealthCheckOptions
         {
             Predicate = _ => true,
             AllowCachingResponses = false,
@@ -22,7 +20,7 @@ public static class ApplicationBuilderExtensions
             ResultStatusCodes =
             {
                 [HealthStatus.Healthy] = StatusCodes.Status200OK,
-                [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                [HealthStatus.Degraded] = StatusCodes.Status503ServiceUnavailable,
                 [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
             }
         });
@@ -35,17 +33,15 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthUI(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealthUIConfiguration(this IApplicationBuilder app, string customCssPath)
     {
-        HealthUISetting healthUISetting = app.ApplicationServices.GetRequiredService<IOptions<HealthUISetting>>().Value;
-
         app.UseHealthChecksUI(setup =>
         {
-            setup.UIPath = healthUISetting.UIPath;
+            setup.UIPath = "/health-ui";
 
-            if (!string.IsNullOrWhiteSpace(healthUISetting.CustomCssPath))
+            if (!string.IsNullOrWhiteSpace(customCssPath))
             {
-                setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), healthUISetting.CustomCssPath));
+                setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), customCssPath));
             }
         });
 
@@ -57,8 +53,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthAndHealthUI(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealthAndUIConfiguration(this IApplicationBuilder app)
     {
-        return app.UseHealth().UseHealthUI();
+        return app.UseHealthChecksConfiguration().UseHealthChecksConfiguration();
     }
 }

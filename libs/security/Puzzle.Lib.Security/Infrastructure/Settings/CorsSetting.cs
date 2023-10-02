@@ -12,5 +12,5 @@ public sealed record CorsSetting
     /// <summary>
     /// Gets or sets the CORS settings for spa applications.
     /// </summary>
-    public required string[] Origins { get; set; }
+    public string[] Origins { get; set; }
 }

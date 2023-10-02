@@ -2,7 +2,7 @@
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         
@@ -20,7 +20,20 @@ public static class ServiceCollectionContainerBuilderExtensions
         });
 
         services.AddFluentDesignValidation();
-        services.AddRedisService();
+
+        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
+
+        services.AddRedisService(options =>
+        {
+            options.ConnectionString = redisServerSetting.ConnectionString;
+            options.AbortOnConnectFail = redisServerSetting.AbortOnConnectFail;
+            options.AsyncTimeOutSecond = redisServerSetting.AsyncTimeOutSecond;
+            options.ConnectTimeOutSecond = redisServerSetting.ConnectTimeOutSecond;
+            options.Username = redisServerSetting.Username;
+            options.Password = redisServerSetting.Password;
+            options.DefaultDatabase = redisServerSetting.DefaultDatabase;
+            options.AllowAdmin = redisServerSetting.AllowAdmin;
+        });
 
         services.AddHttpContextAccessor();
 

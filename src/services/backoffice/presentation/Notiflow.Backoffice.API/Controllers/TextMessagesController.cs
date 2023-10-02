@@ -12,8 +12,8 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(Response<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -30,8 +30,8 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Text message history not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(Response<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -49,8 +49,8 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [Authorize(Policy = "TextMessagePermissionRestriction")]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

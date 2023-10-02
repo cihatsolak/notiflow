@@ -1,6 +1,4 @@
-﻿using MassTransit;
-
-namespace Notiflow.Backoffice.Application;
+﻿namespace Notiflow.Backoffice.Application;
 
 internal static class MassTransitContainerBuilderExtensions
 {

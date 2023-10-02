@@ -17,7 +17,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
     }
 
 
-    public async Task<FacebookTokenValidationData> ValidateTokenAsync(string accessToken, CancellationToken cancellationToken = default)
+    public async Task<FacebookTokenValidationData> ValidateTokenAsync(string accessToken, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrEmpty(accessToken);
 
@@ -34,7 +34,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
         return facebookTokenValidationResponse.Data;
     }
 
-    public async Task<FacebookUserInfoResponse> GetUserInformationAsync(string accessToken, CancellationToken cancellationToken = default)
+    public async Task<FacebookUserInfoResponse> GetUserInformationAsync(string accessToken, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrEmpty(accessToken);
 

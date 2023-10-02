@@ -6,10 +6,10 @@ builder.Host
     .AddShutdownTimeOut();
 
 builder.Services
-    .AddWebDependencies()
-    .AddApplication()
+    .AddWebDependencies(builder.Configuration)
+    .AddApplication(builder.Configuration)
     .AddInfrastructure()
-    .AddPersistence();
+    .AddPersistence(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -18,10 +18,11 @@ TenantCacheKeyFactory.Configure(app);
 
 app.UseHttpSecurityPrecautions()
    .UseAuth()
-   .UseSwaggerWithRedoclyDoc()
-   .UseMigrations()
+   .UseSwaggerWithRedoclyDoc(builder.Environment)
+   .UseMigrations(builder.Environment)
    .UseResponseCompress()
-   .UseRequestLocalization();
+   .UseRequestLocalization()
+   .UseHealthChecksConfiguration();
 
 app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();

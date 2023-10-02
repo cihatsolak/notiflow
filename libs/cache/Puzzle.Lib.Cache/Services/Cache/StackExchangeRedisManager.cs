@@ -1,6 +1,4 @@
-﻿using StackExchange.Redis;
-
-namespace Puzzle.Lib.Cache.Services.Cache;
+﻿namespace Puzzle.Lib.Cache.Services.Cache;
 
 internal sealed class StackExchangeRedisManager : IRedisService
 {
@@ -34,7 +32,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
     public async Task<long> IncrementAsync(string cacheKey, int increment)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        CacheArgumentException.ThrowIfNegativeNumber(increment);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -51,7 +48,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
     public async Task<long> DecrementAsync(string cacheKey, int decrement)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        CacheArgumentException.ThrowIfNegativeNumber(decrement);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -113,9 +109,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> HashSetAsync<TValue>(string cacheKey, string hashField, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentException.ThrowIfNullOrEmpty(hashField);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, hashField, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -150,7 +144,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(memberKey);
-        CacheArgumentException.ThrowIfNegativeNumber(increment);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -167,7 +160,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
     public async Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        CacheArgumentException.ThrowIfNegativeNumber(start);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -185,7 +177,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
     public async Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        CacheArgumentException.ThrowIfNegativeNumber(start);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -219,8 +210,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> SetExistsAsync<TValue>(string cacheKey, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -246,8 +236,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> SetAddAsync<TValue>(string cacheKey, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -263,8 +252,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> SetRemoveAsync<TValue>(string cacheKey, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -294,8 +282,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -311,12 +298,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes((int)cacheDuration), When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDuration.GetHashCode()), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
@@ -328,8 +314,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task<bool> ChangeStringAsync<TValue>(string cacheKey, TValue value)
     {
-        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
-        ArgumentNullException.ThrowIfNull(value);
+        CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
@@ -356,12 +341,12 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 return default;
             }
 
-            TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes((int)cacheDuration));
+            TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes(cacheDuration.GetHashCode()));
 
             bool succeeded = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, (int)cacheDuration);
+                _logger.LogWarning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, cacheDuration.GetHashCode());
             }
 
             return succeeded;
@@ -439,5 +424,18 @@ internal sealed class StackExchangeRedisManager : IRedisService
         {
             await _server.FlushDatabaseAsync(databaseNumber, CommandFlags.DemandMaster);
         });
+    }
+
+    private static void CheckArguments<TValue>(string cacheKey, string hashField, TValue value)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentException.ThrowIfNullOrEmpty(hashField);
+        ArgumentNullException.ThrowIfNull(value);
+    }
+
+    private static void CheckArguments<TValue>(string cacheKey, TValue value)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(cacheKey);
+        ArgumentNullException.ThrowIfNull(value);
     }
 }

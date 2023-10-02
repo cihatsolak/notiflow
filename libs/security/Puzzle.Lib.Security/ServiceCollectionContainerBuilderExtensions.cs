@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Security.Services.Encryptions;
-
-namespace Puzzle.Lib.Security;
+﻿namespace Puzzle.Lib.Security;
 
 /// <summary>
 /// Provides extension methods for <see cref="IServiceCollection"/> to add request detection functionality.
@@ -23,14 +21,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The <see cref="IServiceCollection"/> to add the protocol service functionality to.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtocolService(this IServiceCollection services)
+    public static IServiceCollection AddProtocolService(this IServiceCollection services, Action<HostingSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        services.Configure<HostingSetting>(configuration.GetRequiredSection(nameof(HostingSetting)));
-
+        services.Configure(configure);
         services.TryAddSingleton<IProtocolService, ProtocolManager>();
 
         return services;
@@ -41,14 +34,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which the encryption service will be added.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-    public static IServiceCollection AddEncryptionService(this IServiceCollection services)
+    public static IServiceCollection AddEncryptionService(this IServiceCollection services, Action<EncryptionSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        services.Configure<EncryptionSetting>(configuration.GetRequiredSection(nameof(EncryptionSetting)));
-
+        services.Configure(configure);
         services.TryAddSingleton<IEncryptionService, EncryptionManager>();
 
         return services;
@@ -60,12 +48,8 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services)
+    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, IWebHostEnvironment webHostEnvironment)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
         if (!webHostEnvironment.IsProduction())
             return services;
 
@@ -89,18 +73,15 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services)
+    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services, Action<RedisProtectorSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        RedisProtectorSetting protectorSetting = configuration.GetRequiredSection(nameof(RedisProtectorSetting)).Get<RedisProtectorSetting>();
+        RedisProtectorSetting redisProtectorSetting = new();
+        configure?.Invoke(redisProtectorSetting);
 
         services.AddDataProtection()
-            .SetApplicationName(serviceProvider.GetRequiredService<IWebHostEnvironment>().ApplicationName)
-            .SetDefaultKeyLifetime(TimeSpan.FromDays(protectorSetting.ExpirationDays))
-            .PersistKeysToStackExchangeRedis(() => ConnectionMultiplexer.Connect(protectorSetting.ConnectionString).GetDatabase(protectorSetting.DatabaseNumber), protectorSetting.Key);
+            .SetApplicationName(Assembly.GetCallingAssembly().FullName)
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(redisProtectorSetting.ExpirationDays))
+            .PersistKeysToStackExchangeRedis(() => ConnectionMultiplexer.Connect(redisProtectorSetting.ConnectionString).GetDatabase(redisProtectorSetting.DatabaseNumber), redisProtectorSetting.Key);
 
         services.TryAddSingleton<IProtectorService, ProtectorManager>();
 
@@ -114,13 +95,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddCustomCors(this IServiceCollection services)
+    public static IServiceCollection AddCustomCors(this IServiceCollection services, Action<CorsSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        CorsSetting corsSetting = configuration.GetRequiredSection(nameof(CorsSetting)).Get<CorsSetting>();
+        CorsSetting corsSetting = new();
+        configure?.Invoke(corsSetting);
 
         services.AddCors(options =>
         {

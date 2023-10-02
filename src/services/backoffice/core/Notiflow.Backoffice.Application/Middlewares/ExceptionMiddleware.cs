@@ -41,18 +41,18 @@ public sealed class ExceptionMiddleware
 
     private Task ValidationProblemAsync(HttpContext httpContext, Exception exception)
     {
-        Response<EmptyResponse> validationErrorResponse = null;
+        ApiResponse<EmptyResponse> validationErrorResponse = null;
 
         ValidationException validationException = exception as ValidationException;
         if (!validationException.Errors.Any())
         {
-            validationErrorResponse = Response<EmptyResponse>.Fail(FluentValidationErrorCodes.GENERAL_ERROR);
+            validationErrorResponse = ApiResponse<EmptyResponse>.Fail(FluentValidationErrorCodes.GENERAL_ERROR);
             validationErrorResponse.Message = _validationErrorLocalizer[FluentValidationErrorCodes.GENERAL_ERROR.ToString()];
         }
         else
         {
             string errorCodeText = validationException.Errors.First().ErrorMessage;
-            validationErrorResponse = new Response<EmptyResponse>()
+            validationErrorResponse = new ApiResponse<EmptyResponse>()
             {
                 Code = int.Parse(errorCodeText),
                 Message = _validationErrorLocalizer[errorCodeText].Value,
@@ -67,7 +67,7 @@ public sealed class ExceptionMiddleware
 
     private Task InternalServerProblemAsync(HttpContext httpContext)
     {
-        var serverErrorResponse = Response<EmptyResponse>.Fail(ResponseCodes.Error.GENERAL);
+        var serverErrorResponse = ApiResponse<EmptyResponse>.Fail(ResponseCodes.Error.GENERAL);
         serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;

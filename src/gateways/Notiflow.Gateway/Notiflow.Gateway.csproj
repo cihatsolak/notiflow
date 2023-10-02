@@ -9,7 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.11" />
     <PackageReference Include="MMLib.SwaggerForOcelot" Version="7.0.1" />
-    <PackageReference Include="Ocelot" Version="19.0.2" />
+    <PackageReference Include="Ocelot" Version="19.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
   </ItemGroup>
 
 </Project>

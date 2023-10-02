@@ -1,10 +1,19 @@
-﻿namespace Notiflow.Backoffice.Persistence;
+﻿using Puzzle.Lib.Database.Infrastructure;
+
+namespace Notiflow.Backoffice.Persistence;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPostgreSql<NotiflowDbContext>(nameof(NotiflowDbContext));
+        SqlSetting sqlSetting = configuration.GetRequiredSection(nameof(NotiflowDbContext)).Get<SqlSetting>();
+
+        services.AddPostgreSql<NotiflowDbContext>(options =>
+        {
+            options.IsSplitQuery = sqlSetting.IsSplitQuery;
+            options.ConnectionString = sqlSetting.ConnectionString;
+            options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
+        });
 
         services
             .AddScoped<ICustomerReadRepository, CustomerReadRepository>()

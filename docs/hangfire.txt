@@ -1,0 +1,17 @@
+Bu kod parçası, Hangfire adlı bir görev planlama ve arka plan işleme kütüphanesini kullanarak bir SQL Server depolama sağlayıcısını yapılandırıyor. SqlServerStorage Hangfire için SQL Server'ı kullanarak görevlerin saklanmasını ve yönetilmesini sağlar. Kodun içeriğini adım adım açıklayalım:
+
+UseSqlServerStorage: Bu metot, Hangfire'ın SQL Server kullanarak depolama sağlayıcısını ayarlamak için kullanılır. İlk parametre, Hangfire'ın kullanması gereken SQL Server bağlantı dizesini alır. Configuration.GetConnectionString("HangfireConnection") ifadesi, bağlantı dizesini uygulama yapılandırma dosyasından alır.
+
+SqlServerStorageOptions: Bu sınıf, SQL Server depolama sağlayıcısının yapılandırma seçeneklerini belirtmek için kullanılır. Şimdi bu seçeneklerin ne anlama geldiğini açıklayalım:
+
+CommandBatchMaxTimeout: Bu, bir Hangfire komut yığını (batch) için maksimum zaman aşımını belirtir. Yani, bir dizi görevin Hangfire tarafından işlenmesi ne kadar süre alabilir. Bu örnekte, 5 dakika olarak ayarlanmış.
+
+SlidingInvisibilityTimeout: Görevlerin görünmezlik süresini (invisibility timeout) belirtir. Görev bir işçi (worker) tarafından alındığında, bu süre boyunca diğer işçiler tarafından görünmez olur. Bu örnekte, 5 dakika olarak ayarlanmış.
+
+QueuePollInterval: Hangfire'ın görev kuyruğunu kontrol etme aralığını belirtir. TimeSpan.Zero kullanıldığında, Hangfire, kuyruğu sürekli olarak anlık olarak denetler.
+
+UseRecommendedIsolationLevel: Bu, Hangfire tarafından önerilen izolasyon seviyesini kullanıp kullanmayacağınızı belirtir. Bu ayar, Hangfire'ın SQL Server'da işlemleri hangi izolasyon seviyesinde çalıştıracağını kontrol eder.
+
+DisableGlobalLocks: Bu, Hangfire'ın global kilitleri kullanıp kullanmayacağınızı belirtir. Global kilitler, birden fazla işçi tarafından aynı anda aynı görevi çalıştırmamak için kullanılır. Bu ayar, bu global kilitleri devre dışı bırakır veya etkinleştirir.
+
+Bu ayarlar, Hangfire'ın SQL Server ile nasıl etkileşimde bulunacağını ve görevleri nasıl planlayacağınızı kontrol etmenizi sağlar. Ayarları ihtiyaca göre özelleştirebilirsiniz, ancak verilen ayarlar genellikle iyi bir başlangıç ​​noktasıdır ve Hangfire'ın performansını ve davranışını optimize etmeye yardımcı olabilir.

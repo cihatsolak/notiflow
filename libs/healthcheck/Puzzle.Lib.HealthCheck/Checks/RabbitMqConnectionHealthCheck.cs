@@ -10,9 +10,10 @@ public static class RabbitMqConnectionHealthCheck
     /// </summary>
     /// <param name="healthChecksBuilder">The IHealthChecksBuilder instance to add the health check to.</param>
     /// <returns>The IHealthChecksBuilder instance with the added RabbitMQ health check.</returns>
-    public static IHealthChecksBuilder AddRabbitMqCheck(this IHealthChecksBuilder healthChecksBuilder)
+    public static IHealthChecksBuilder AddRabbitMqCheck(this IHealthChecksBuilder healthChecksBuilder, string connectionString)
     {
         healthChecksBuilder.AddRabbitMQ(
+            rabbitConnectionString: connectionString,
             name: "[RabbitMQ] - Message Broker",
             failureStatus: HealthStatus.Unhealthy,
             tags: new[] { "RabbitMQ", "Event", "Message" });

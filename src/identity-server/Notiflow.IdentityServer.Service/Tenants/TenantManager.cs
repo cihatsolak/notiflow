@@ -13,7 +13,7 @@ internal class TenantManager : ITenantService
         _logger = logger;
     }
 
-    public async Task<Response<List<Tenant>>> GetTenantsWithoutFilterAsync(CancellationToken cancellationToken)
+    public async Task<ApiResponse<List<Tenant>>> GetTenantsWithoutFilterAsync(CancellationToken cancellationToken)
     {
         var tenants = await  _context.Tenants
                                 .TagWith("Lists existing tenants unfiltered.")
@@ -26,9 +26,9 @@ internal class TenantManager : ITenantService
         if (tenants.IsNullOrNotAny())
         {
             _logger.LogWarning("The tenants information could not be found.");
-            return Response<List<Tenant>>.Fail(-1);
+            return ApiResponse<List<Tenant>>.Fail(-1);
         }
 
-        return Response<List<Tenant>>.Success(tenants);
+        return ApiResponse<List<Tenant>>.Success(tenants);
     }
 }

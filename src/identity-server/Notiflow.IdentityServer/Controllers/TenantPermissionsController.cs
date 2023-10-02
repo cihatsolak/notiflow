@@ -19,8 +19,8 @@ public sealed class TenantPermissionsController : BaseApiController
     /// <response code="401">unauthorized user</response>
     /// <response code="404">permissions not found</response>
     [HttpGet("detail")]
-    [ProducesResponseType(typeof(Response<TenantPermissionResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<TenantPermissionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPermissions(CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.GetPermissionsAsync(cancellationToken);
@@ -38,7 +38,7 @@ public sealed class TenantPermissionsController : BaseApiController
     /// <response code="401">unauthorized user</response>
     [HttpPut("update-preferences")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdatePreferences([FromBody] TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.UpdateAsync(request, cancellationToken);

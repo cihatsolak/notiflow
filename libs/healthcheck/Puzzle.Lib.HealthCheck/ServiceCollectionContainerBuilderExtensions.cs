@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.HealthCheck.Settings;
-
-namespace Puzzle.Lib.HealthCheck;
+﻿namespace Puzzle.Lib.HealthCheck;
 
 /// <summary>
 /// Contains extension methods for adding custom health checks to a service collection.
@@ -12,24 +10,17 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to add the health checks to.</param>
     /// <returns>The modified service collection.</returns>
-    public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services)
+    public static IServiceCollection AddHealthChecksWithDependencies(this IServiceCollection services)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-        if (webHostEnvironment.EnvironmentName.Equals("Localhost"))
-            return services;
-
         IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
         ArgumentNullException.ThrowIfNull(healthChecksBuilder);
 
         healthChecksBuilder.AddHangfireCheck();
         healthChecksBuilder.AddRedisCheck("redis connection string");
         healthChecksBuilder.AddNpgSqlDatabaseCheck("npg sql database connection string");
-        healthChecksBuilder.AddSystemConfigurationCheck();
-        healthChecksBuilder.AddServicesCheck();
-        healthChecksBuilder.AddRabbitMqCheck();
+        healthChecksBuilder.AddSystemCheck();
+        healthChecksBuilder.AddServicesCheck(Array.Empty<HealthChecksUrlGroupSetting>().ToList());
+        healthChecksBuilder.AddRabbitMqCheck(string.Empty);
 
         return services;
     }

@@ -19,7 +19,7 @@ internal class AuthManager : IAuthService
         _logger = logger;
     }
 
-    public async Task<Response<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var user = await _appDbContext.Users
             .AsNoTracking()
@@ -28,20 +28,20 @@ internal class AuthManager : IAuthService
         if (user is null)
         {
             _logger.LogInformation("No user found with username {@username}.", request.Username);
-            return Response<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Fail(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(user);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", request.Username);
-            return Response<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Fail(-1);
         }
 
         return tokenResponse;
     }
 
-    public async Task<Response<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<TokenResponse>> CreateAccessTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var refreshToken = await _appDbContext.RefreshTokens
             .Include(p => p.User)
@@ -50,14 +50,14 @@ internal class AuthManager : IAuthService
         if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return Response<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Fail(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(refreshToken.User);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", refreshToken.User.Username);
-            return Response<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Fail(-1);
         }
 
         refreshToken.Token = tokenResponse.Data.RefreshToken;
@@ -68,34 +68,34 @@ internal class AuthManager : IAuthService
         return tokenResponse;
     }
 
-    public async Task<Response<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken)
+    public async Task<ApiResponse<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken)
     {
         var refreshToken = await _appDbContext.RefreshTokens.AsNoTracking().SingleOrDefaultAsync(p => p.Token == token, cancellationToken);
         if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return Response<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Fail(-1);
         }
 
         int numberOfRowsDeleted = await _appDbContext.RefreshTokens.Where(p => p.Token == refreshToken.Token).ExecuteDeleteAsync(cancellationToken);
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete refresh token.");
-            return Response<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Fail(-1);
         }
 
-        return Response<EmptyResponse>.Success(-1);
+        return ApiResponse<EmptyResponse>.Success(-1);
     }
 
-    public async Task<Response<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
+    public async Task<ApiResponse<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)
     {
         var user = await _appDbContext.Users.FindAsync(new object[] { _claimService.NameIdentifier }, cancellationToken);
         if (user is null)
         {
             _logger.LogInformation("No authorized user found.");
-            return Response<UserResponse>.Fail(-1);
+            return ApiResponse<UserResponse>.Fail(-1);
         }
 
-        return Response<UserResponse>.Success(user.Adapt<UserResponse>());
+        return ApiResponse<UserResponse>.Success(user.Adapt<UserResponse>());
     }
 }

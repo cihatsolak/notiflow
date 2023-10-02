@@ -10,14 +10,11 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> to configure.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> after the configuration has been applied.</returns>
-    public static IApplicationBuilder UseMigrations(this IApplicationBuilder app)
+    public static IApplicationBuilder UseMigrations(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
     {
-        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
         if (webHostEnvironment.IsProduction())
             return app;
 
-        app.UseMigrationsEndPoint();
-
-        return app;
+        return app.UseMigrationsEndPoint();
     }
 }

@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Cache.Services.Cache;
-
-namespace Puzzle.Lib.Cache;
+﻿namespace Puzzle.Lib.Cache;
 
 /// <summary>
 /// Contains extension methods to register Redis related services to the <see cref="IServiceCollection"/>.
@@ -12,15 +10,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>The same instance of the <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddRedisService(this IServiceCollection services)
+    public static IServiceCollection AddRedisService(this IServiceCollection services, Action<RedisServerSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(RedisServerSetting));
-        services.Configure<RedisServerSetting>(configurationSection);
-        RedisServerSetting redisServerSetting = configurationSection.Get<RedisServerSetting>();
+        RedisServerSetting redisServerSetting = new();
+        configure?.Invoke(redisServerSetting);
 
         services.TryAddSingleton<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect(new ConfigurationOptions
         {
@@ -40,7 +33,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             return connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
         });
 
-        RedisRetryPolicies.Logger = serviceProvider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+        RedisRetryPolicies.Logger = services.BuildServiceProvider().GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
         services.TryAddSingleton<IRedisService>(provider =>
         {

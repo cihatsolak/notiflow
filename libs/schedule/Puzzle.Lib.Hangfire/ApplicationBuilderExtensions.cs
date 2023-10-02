@@ -5,6 +5,8 @@
 /// </summary>
 public static class ApplicationBuilderExtensions
 {
+    private const string HANGFIRE_MAIN_PATH = "/hangfire";
+
     /// <summary>
     /// Configures Hangfire with the specified settings and options.
     /// </summary>
@@ -12,12 +14,13 @@ public static class ApplicationBuilderExtensions
     /// <returns>The configured IApplicationBuilder instance.</returns>
     public static IApplicationBuilder UseHangfire(this IApplicationBuilder app)
     {
+        IWebHostEnvironment webHostEnvironment = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
         HangfireSetting hangfireSetting = app.ApplicationServices.GetRequiredService<IOptions<HangfireSetting>>().Value;
 
-        app.UseHangfireDashboard(hangfireSetting.DashboardPath, new DashboardOptions
+        app.UseHangfireDashboard(HANGFIRE_MAIN_PATH, new DashboardOptions
         {
-            DashboardTitle = hangfireSetting.DashboardTitle,
-            AppPath = hangfireSetting.BackButtonPath,
+            DashboardTitle = $"{webHostEnvironment.ApplicationName} Job Dashboards",
+            AppPath = HANGFIRE_MAIN_PATH,
             Authorization = new[] { new HangfireCustomBasicAuthenticationFilter
             {
                 User = hangfireSetting.Username,
@@ -28,6 +31,11 @@ public static class ApplicationBuilderExtensions
 
         GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
         GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.ApplicationServices));
+
+        if (!webHostEnvironment.IsProduction())
+        {
+            GlobalConfiguration.Configuration.UseColouredConsoleLogProvider();
+        }
 
         return app;
     }

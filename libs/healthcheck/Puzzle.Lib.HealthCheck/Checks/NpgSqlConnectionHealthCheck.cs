@@ -16,12 +16,10 @@ public static class NpgSqlConnectionHealthCheck
     {
         ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
-        healthChecksBuilder.AddNpgSql(
+        return healthChecksBuilder.AddNpgSql(
                 connectionString: connectionString,
-                name: "[NPG SQL] - Postgresql Database",
+                name: "[NPG SQL] - PostgreSQL Database",
                 failureStatus: HealthStatus.Unhealthy,
-                tags: new[] { "Postgre Server", "DbContext", "SQL" });
-
-        return healthChecksBuilder;
+                tags: new[] { "Postgre Server", "DbContext", "SQL", "Database", "NPG" });
     }
 }

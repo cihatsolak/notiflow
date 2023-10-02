@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Auth.Tests.Services
+﻿using Puzzle.Lib.Auth.Infrastructure;
+
+namespace Puzzle.Lib.Auth.Tests.Services
 {
     public class ClaimManagerTests
     {

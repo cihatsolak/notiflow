@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(Response<EmptyResponse>), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status500InternalServerError)]
 public class BaseApiController : MainController
 {
     private ISender _sender = null!;

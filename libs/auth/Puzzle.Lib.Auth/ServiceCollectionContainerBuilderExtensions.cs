@@ -1,31 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Puzzle.Lib.Auth.Models;
-using System.Net.Mime;
-using System.Text.Json;
-
-namespace Puzzle.Lib.Auth;
+﻿namespace Puzzle.Lib.Auth;
 
 /// <summary>
 /// Provides extension methods to add JWT authentication and claim services to the <see cref="IServiceCollection"/> container.
 /// </summary>
 public static class ServiceCollectionContainerBuilderExtensions
 {
+    public const string ACCESS_TOKEN = "access_token";
+
     /// <summary>
     /// Adds JWT authentication services to the <see cref="IServiceCollection"/> container.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, Action<JwtTokenSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        JwtTokenSetting jwtTokenSetting = new();
+        configure.Invoke(jwtTokenSetting);
 
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(JwtTokenSetting));
-        services.Configure<JwtTokenSetting>(configurationSection);
-        JwtTokenSetting jwtTokenSetting = configurationSection.Get<JwtTokenSetting>();
-
-        _ = services.AddAuthentication(options =>
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,7 +86,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 },
                 OnMessageReceived = context =>
                 {
-                    string token = context.Request.Query["access_token"];
+                    string token = context.Request.Query[ACCESS_TOKEN];
                     if (!string.IsNullOrWhiteSpace(token) && context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
                     {
                         context.Token = token;

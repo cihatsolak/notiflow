@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 
-public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Response<DtResult<DeviceDataTableResult>>>
+public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, ApiResponse<DtResult<DeviceDataTableResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
 
@@ -9,7 +9,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
         _uow = uow;
     }
 
-    public async Task<Response<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Device> devices) = await _uow.DeviceRead.GetPageAsync(request.SortKey,
                                                                                      request.SearchKey,
@@ -20,7 +20,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return Response<DtResult<DeviceDataTableResult>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<DtResult<DeviceDataTableResult>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         DtResult<DeviceDataTableResult> deviceDataTable = new()
@@ -31,6 +31,6 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
             Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResult>>(devices)
         };
 
-        return Response<DtResult<DeviceDataTableResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
+        return ApiResponse<DtResult<DeviceDataTableResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
     }
 }

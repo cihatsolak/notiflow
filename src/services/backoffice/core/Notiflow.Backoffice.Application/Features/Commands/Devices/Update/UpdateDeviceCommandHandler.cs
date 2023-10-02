@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 
-public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, Response<Unit>>
+public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ILogger<UpdateDeviceCommandHandler> _logger;
@@ -13,13 +13,13 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
             _logger.LogWarning("The device with id {@id} was not found.", request.Id);
-            return Response<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, device);
@@ -28,6 +28,6 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
         _logger.LogInformation("Updated device information with {@id} id.", request.Id);
 
-        return Response<Unit>.Success(ResponseCodes.Success.DEVICE_UPDATED, Unit.Value);
+        return ApiResponse<Unit>.Success(ResponseCodes.Success.DEVICE_UPDATED, Unit.Value);
     }
 }

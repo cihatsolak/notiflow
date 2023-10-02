@@ -22,11 +22,11 @@ internal static class DbContextOptionsBuilderExtensions
     /// Configures the given DbContextOptionsBuilder instance for logging.
     /// </summary>
     /// <param name="contextOptions">The DbContextOptionsBuilder instance to configure.</param>
-    /// <param name="isProductionEnvironment">A flag indicating whether the application is running in a production environment.</param>
-    internal static void ConfigureCustomLogs(this DbContextOptionsBuilder contextOptions, bool isProductionEnvironment)
+    /// <param name="isProduction">A flag indicating whether the application is running in a production environment.</param>
+    internal static void ConfigureCustomLogs(this DbContextOptionsBuilder contextOptions, bool isProduction)
     {
-        contextOptions.EnableDetailedErrors(!isProductionEnvironment);
-        contextOptions.EnableSensitiveDataLogging(!isProductionEnvironment);
+        contextOptions.EnableDetailedErrors(!isProduction);
+        contextOptions.EnableSensitiveDataLogging(!isProduction);
         contextOptions.LogTo(Console.WriteLine, LogLevel.Information);
         contextOptions.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
     }

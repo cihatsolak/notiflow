@@ -21,16 +21,16 @@ public sealed class LanguageBehaviour<TRequest, TResponse> : IPipelineBehavior<T
 
         Type source = response.GetType();
 
-        int code = (int)source.GetProperty(nameof(Response<object>.Code)).GetValue(response);
+        int code = (int)source.GetProperty(nameof(ApiResponse<object>.Code)).GetValue(response);
         if (Math.Sign(code) != 1)
         {
             _logger.LogWarning("There is no multilingual message for the response code. Code to be served: {@code}", code);
 
-            source.GetProperty(nameof(Response<object>.Message)).SetValue(source, string.Empty, null);
+            source.GetProperty(nameof(ApiResponse<object>.Message)).SetValue(source, string.Empty, null);
         }
         else
         {
-            source.GetProperty(nameof(Response<object>.Message)).SetValue(response, _localizer[$"{code}"].Value, null);
+            source.GetProperty(nameof(ApiResponse<object>.Message)).SetValue(response, _localizer[$"{code}"].Value, null);
         }
 
         return response;
