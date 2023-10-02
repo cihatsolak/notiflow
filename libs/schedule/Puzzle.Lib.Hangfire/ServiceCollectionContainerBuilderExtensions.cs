@@ -43,7 +43,8 @@ public static class ServiceCollectionContainerBuilderExtensions
                   .UseDashboardMetric(DashboardMetrics.FailedCount)
                   .UseDashboardMetric(DashboardMetrics.DeletedCount)
                   .UseSimpleAssemblyNameTypeSerializer()
-                  .UseRecommendedSerializerSettings();
+                  .UseRecommendedSerializerSettings()
+                  .UseSerilogLogProvider();
         });
 
         services.AddHangfireServer();
