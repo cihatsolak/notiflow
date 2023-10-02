@@ -10,43 +10,44 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static IServiceCollection AddHangfireWithSqlServerStorage(this IServiceCollection services)
+    public static IServiceCollection AddHangfireWithSqlServerStorage(this IServiceCollection services, Action<HangfireSetting> configure)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        HangfireSetting hangfireSetting = new();
+        configure?.Invoke(hangfireSetting);
 
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HangfireSetting));
-        services.Configure<HangfireSetting>(configurationSection);
-        HangfireSetting hangfireSetting = configurationSection.Get<HangfireSetting>();
+        services.Configure(configure);
 
         services.AddHangfire(config =>
         {
-            config.UseSqlServerStorage(
-                nameOrConnectionString: hangfireSetting.ConnectionString,
-                options: GenerateSqlServerStorageOptions(hangfireSetting)
-                ).WithJobExpirationTimeout(TimeSpan.FromDays(hangfireSetting.JobExpirationTimeoutDay));
+            config.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
+            {
+                PrepareSchemaIfNecessary = true,
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(8),
+                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.FromSeconds(30),
+                DisableGlobalLocks = true,
+                UseRecommendedIsolationLevel = true,
+            })
+            .WithJobExpirationTimeout(TimeSpan.FromDays(15));
+
+            config.UseDashboardMetric(DashboardMetrics.ServerCount)
+                  .UseDashboardMetric(SqlServerStorage.ActiveConnections)
+                  .UseDashboardMetric(SqlServerStorage.TotalConnections)
+                  .UseDashboardMetric(DashboardMetrics.RecurringJobCount)
+                  .UseDashboardMetric(DashboardMetrics.RetriesCount)
+                  .UseDashboardMetric(DashboardMetrics.AwaitingCount)
+                  .UseDashboardMetric(DashboardMetrics.EnqueuedAndQueueCount)
+                  .UseDashboardMetric(DashboardMetrics.ScheduledCount)
+                  .UseDashboardMetric(DashboardMetrics.ProcessingCount)
+                  .UseDashboardMetric(DashboardMetrics.SucceededCount)
+                  .UseDashboardMetric(DashboardMetrics.FailedCount)
+                  .UseDashboardMetric(DashboardMetrics.DeletedCount)
+                  .UseSimpleAssemblyNameTypeSerializer()
+                  .UseRecommendedSerializerSettings();
         });
 
         services.AddHangfireServer();
 
         return services;
-    }
-
-    /// <summary>
-    /// Generates SqlServerStorage options based on the provided HangfireSetting object.
-    /// </summary>
-    /// <param name="hangfireSetting">The HangfireSetting object to use for generating options.</param>
-    /// <returns>A <see cref="SqlServerStorageOptions"/> object generated using the provided HangfireSetting object.</returns>
-    private static SqlServerStorageOptions GenerateSqlServerStorageOptions(HangfireSetting hangfireSetting)
-    {
-        SqlServerStorageOptions sqlServerStorageOptions = new()
-        {
-            PrepareSchemaIfNecessary = true,
-            QueuePollInterval = TimeSpan.FromMinutes(hangfireSetting.QueuePollIntervalMinute),
-            CommandBatchMaxTimeout = TimeSpan.FromMinutes(hangfireSetting.CommandBatchMaxTimeoutMinute)
-        };
-
-        return sqlServerStorageOptions;
     }
 }
