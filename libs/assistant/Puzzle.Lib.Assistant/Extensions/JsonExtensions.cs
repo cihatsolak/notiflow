@@ -39,9 +39,12 @@ public static class JsonExtensions
     /// <returns>True if the input is a valid JSON object or array; otherwise, false.</returns>
     public static bool IsValidJson(this string text)
     {
+        if (string.IsNullOrWhiteSpace(text))
+            return default;
+
         text = text.Trim();
         if (!(text.StartsWith("{") && text.EndsWith("}")) && !(text.StartsWith("[") && text.EndsWith("]")))
-            return false;
+            return default;
 
         try
         {
@@ -50,7 +53,7 @@ public static class JsonExtensions
         }
         catch
         {
-            return false;
+            return default;
         }
     }
 }
