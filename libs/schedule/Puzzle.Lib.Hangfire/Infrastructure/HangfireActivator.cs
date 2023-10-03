@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Hangfire.IOC;
+﻿namespace Puzzle.Lib.Hangfire.Infrastructure;
 
 /// <summary>
 /// Custom job activator for Hangfire that uses an <see cref="IServiceProvider"/> to resolve job instances.

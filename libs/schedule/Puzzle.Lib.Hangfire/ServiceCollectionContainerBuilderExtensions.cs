@@ -26,9 +26,9 @@ public static class ServiceCollectionContainerBuilderExtensions
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                 QueuePollInterval = TimeSpan.FromSeconds(30),
                 DisableGlobalLocks = true,
-                UseRecommendedIsolationLevel = true,
+                UseRecommendedIsolationLevel = true
             })
-            .WithJobExpirationTimeout(TimeSpan.FromDays(15));
+           .WithJobExpirationTimeout(TimeSpan.FromDays(15));
 
             config.UseDashboardMetric(DashboardMetrics.ServerCount)
                   .UseDashboardMetric(SqlServerStorage.ActiveConnections)
