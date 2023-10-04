@@ -18,7 +18,6 @@ public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<Get
         var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
-            _logger.LogInformation("Notification with ID {@notificationId} was not found.", request.Id);
             return ApiResponse<GetNotificationHistoryByIdQueryResult>.Fail(ResponseCodes.Error.NOTIFICATION_NOT_FOUND);
         }
 

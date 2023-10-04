@@ -24,7 +24,6 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         List<string> phoneNumbers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
         if (phoneNumbers.IsNullOrNotAny())
         {
-            _logger.LogWarning("No customers of customer IDs were found. {@customerIds}", request.CustomerIds);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND);
         }
 
@@ -45,8 +44,6 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         }
 
         await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
-
-        _logger.LogWarning("Message to customers {@CustomerIds} has been sent successfully.", request.CustomerIds);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.TEXT_MESSAGES_SENDING_SUCCESSFUL);
     }

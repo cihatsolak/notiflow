@@ -18,7 +18,6 @@ public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQue
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            _logger.LogInformation("Device with ID {@deviceId} was not found.", request.Id);
             return ApiResponse<GetDeviceByIdQueryResult>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 

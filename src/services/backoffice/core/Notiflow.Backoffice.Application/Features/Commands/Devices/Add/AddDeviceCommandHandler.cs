@@ -18,7 +18,6 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         var device = await _notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is not null)
         {
-            _logger.LogInformation("There is a device that belongs to customer {@customerId}.", request.CustomerId);
             return ApiResponse<int>.Fail(ResponseCodes.Error.DEVICE_EXISTS);
         }
 
@@ -26,7 +25,7 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         await _notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
         await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new device has been added for the user with the ID number {@customerId}.", request.CustomerId);
+        _logger.LogInformation("A new device has been added for the customer with the ID number {@customerId}.", request.CustomerId);
 
         return ApiResponse<int>.Success(ResponseCodes.Success.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
     }

@@ -18,7 +18,6 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            _logger.LogInformation("Customer not found. ID: {@customerId}", request.Id);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
@@ -26,6 +25,8 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
 
         _uow.CustomerWrite.Update(customer);
         await _uow.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Customer updated. ID: {@customerId}", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_UPDATED, Unit.Value);
     }

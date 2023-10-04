@@ -18,7 +18,6 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
-            _logger.LogInformation("Text message history with ID {@textMessageHistoryId} was not found.", request.Id);
             return ApiResponse<GetTextMessageHistoryByIdQueryResult>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 

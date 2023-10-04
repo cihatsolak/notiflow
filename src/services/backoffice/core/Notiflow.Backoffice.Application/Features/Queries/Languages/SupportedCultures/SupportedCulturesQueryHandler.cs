@@ -25,7 +25,6 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
 
         if (supportedCultures.IsNullOrNotAny())
         {
-            _logger.LogInformation("No supported language found.");
             return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Fail(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
         }
 

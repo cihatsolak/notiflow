@@ -27,7 +27,6 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            _logger.LogWarning("Customers device information could not be found.");
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 

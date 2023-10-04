@@ -18,7 +18,6 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            _logger.LogWarning("The device with id {@deviceId} was not found.", request.Id);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 

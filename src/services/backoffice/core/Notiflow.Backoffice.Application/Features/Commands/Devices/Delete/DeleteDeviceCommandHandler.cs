@@ -18,7 +18,6 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         bool isDeleted = await _uow.DeviceWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            _logger.LogWarning("Could not delete device of ID {@deviceId}.", request.Id);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_DELETED);
         }
 

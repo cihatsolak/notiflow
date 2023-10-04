@@ -27,7 +27,6 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is null)
         {
-            _logger.LogWarning("The customer's device information could not be found.");
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 

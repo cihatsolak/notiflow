@@ -18,7 +18,6 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            _logger.LogInformation("Customer with ID {@customerId} was not found.", request.Id);
             return ApiResponse<GetCustomerByIdQueryResult>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 

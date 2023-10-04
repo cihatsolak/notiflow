@@ -16,7 +16,6 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 

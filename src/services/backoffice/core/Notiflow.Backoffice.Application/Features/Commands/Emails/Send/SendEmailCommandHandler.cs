@@ -24,8 +24,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         var emailAddresses = await _uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {
-            _logger.LogWarning("Customers' e-mail addresses could not be found for sending e-mails. customer ids: {@customerid}", request.CustomerIds);
-
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
         }
 
@@ -55,8 +53,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
 
-        _logger.LogWarning("Email sending failed. {@CustomerIds}", request.CustomerIds);
-
         return ApiResponse<Unit>.Fail(ResponseCodes.Error.EMAIL_SENDING_FAILED);
     }
   
@@ -66,8 +62,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         emailDeliveredEvent.Recipients = emailAddresses;
 
         await _publishEndpoint.Publish(emailDeliveredEvent, cancellationToken);
-
-        _logger.LogInformation("Email sending completed successfully. {@CustomerIds}", request.CustomerIds);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.EMAIL_SENDING_SUCCESSFUL);
     }
