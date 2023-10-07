@@ -1,4 +1,4 @@
-﻿using Puzzle.Lib.File.Settings;
+﻿using Puzzle.Lib.File.Infrastructure;
 
 namespace Puzzle.Lib.File.Tests.IOC
 {
