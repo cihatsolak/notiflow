@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Security.Extensions;
+﻿namespace Puzzle.Lib.Security.Infrastructure;
 
 /// <summary>
 /// Provides extension methods for security related functionalities such as password hashing, encryption, and decryption.

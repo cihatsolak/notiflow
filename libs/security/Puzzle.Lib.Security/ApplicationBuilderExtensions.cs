@@ -37,6 +37,6 @@ public static class ApplicationBuilderExtensions
     /// <returns>The updated application builder with the custom CORS policy added.</returns>
     public static IApplicationBuilder UseCustomCors(IApplicationBuilder app)
     {
-        return app.UseCors(Assembly.GetEntryAssembly().GetName().Name);
+        return app.UseCors(Assembly.GetCallingAssembly().GetName().Name);
     }
 }

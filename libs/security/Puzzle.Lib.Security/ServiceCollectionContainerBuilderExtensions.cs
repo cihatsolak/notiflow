@@ -102,7 +102,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddCors(options =>
         {
-            options.AddPolicy(Assembly.GetEntryAssembly().GetName().Name, builder => builder
+            options.AddPolicy(Assembly.GetCallingAssembly().GetName().Name, builder => builder
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()

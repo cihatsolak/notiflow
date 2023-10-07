@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Version.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.Version.Infrastructure;
 
 /// <summary>
 /// Represents the API version settings.

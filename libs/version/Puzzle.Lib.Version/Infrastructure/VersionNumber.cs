@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Version.Infrastructure.Constants;
+﻿namespace Puzzle.Lib.Version.Infrastructure;
 
 /// <summary>
 /// Provides version numbers as constants.

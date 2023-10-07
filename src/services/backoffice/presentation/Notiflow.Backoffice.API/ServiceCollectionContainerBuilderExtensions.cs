@@ -1,4 +1,5 @@
 ﻿using Puzzle.Lib.Auth.Infrastructure;
+using Puzzle.Lib.Version.Infrastructure;
 
 namespace Notiflow.Backoffice.API;
 
