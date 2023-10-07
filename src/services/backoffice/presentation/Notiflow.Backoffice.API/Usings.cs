@@ -48,4 +48,4 @@ global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Security;
 global using Puzzle.Lib.Version;
-global using Puzzle.Lib.Version.Infrastructure.Settings;
+global using Puzzle.Lib.Version.Infrastructure;

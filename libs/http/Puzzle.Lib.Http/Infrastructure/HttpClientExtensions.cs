@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Http.Infrastructure.Extensions;
+﻿namespace Puzzle.Lib.Http.Infrastructure;
 
 /// <summary>
 /// Provides extension methods for HttpClient objects.

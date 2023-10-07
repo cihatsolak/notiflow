@@ -21,7 +21,7 @@ global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Http;
-global using Puzzle.Lib.Http.Infrastructure.Extensions;
+global using Puzzle.Lib.Http.Infrastructure;
 global using Puzzle.Lib.Http.Services;
 global using Puzzle.Lib.Response.Models;
 global using QRCoder;

@@ -5,6 +5,8 @@
 /// </summary>
 public static class HttpClientCircuitBreakerPattern
 {
+    internal static ILogger Logger { get; set; }
+
     /// <summary>
     /// Handles error states of http calls
     /// </summary>
@@ -40,16 +42,16 @@ public static class HttpClientCircuitBreakerPattern
 
     public static void OnBreak(DelegateResult<HttpResponseMessage> outcome, TimeSpan timeSpan)
     {
-        Log.Error(outcome?.Exception, "Http call terminated, requests will not flow.");
+        Logger.LogError(outcome?.Exception, "Http call terminated, requests will not flow.");
     }
 
     public static void OnReset()
     {
-        Log.Information("Http call enabled, requests flow normally.");
+        Logger.LogInformation("Http call enabled, requests flow normally.");
     }
 
     public static void OnHalfOpen()
     {
-        Log.Warning("Http call in test mode, one request will be allowed.");
+        Logger.LogWarning("Http call in test mode, one request will be allowed.");
     }
 }

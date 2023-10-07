@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿using Puzzle.Lib.Http.Infrastructure;
+
+namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class HuaweiManager : IHuaweiService
 {

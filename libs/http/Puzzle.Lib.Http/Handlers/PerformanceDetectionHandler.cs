@@ -31,6 +31,8 @@ public sealed class PerformanceDetectionHandler : DelegatingHandler
         var elapsedSeconds = Math.Round(_stopwatch.ElapsedMilliseconds / 1000.0);
         _logger.LogInformation("Request completed in {elapsedSeconds} seconds.", elapsedSeconds);
 
+        _stopwatch.Reset();
+
         return httpResponseMessage;
     }
 }

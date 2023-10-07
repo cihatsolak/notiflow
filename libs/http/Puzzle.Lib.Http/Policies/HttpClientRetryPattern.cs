@@ -5,6 +5,8 @@
 /// </summary>
 public static class HttpClientRetryPattern
 {
+    internal static ILogger Logger { get; set; }
+
     /// <summary>
     /// Handles error states of http calls
     /// </summary>
@@ -31,7 +33,7 @@ public static class HttpClientRetryPattern
     /// </remarks>
     private static void OnRetry(DelegateResult<HttpResponseMessage> httpResponseMessage, TimeSpan timeSpan, int retryAttempt, Context context)
     {
-        Log.Error(httpResponseMessage.Exception, "Request to {@RequestUri} failed with code {@StatusCode}. Waiting for {@timeSpan} before next attempt. Retry attempt: {@retryAttempt}. Context: {@context}",
+        Logger.LogError(httpResponseMessage.Exception, "Request to {@RequestUri} failed with code {@StatusCode}. Waiting for {@timeSpan} before next attempt. Retry attempt: {retryAttempt}. Context: {@context}",
             httpResponseMessage?.Result?.RequestMessage?.RequestUri, httpResponseMessage?.Result?.StatusCode, timeSpan, retryAttempt, context);
     }
 
