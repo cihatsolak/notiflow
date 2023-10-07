@@ -29,7 +29,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
-            _logger.LogWarning("The number of customers to be sent does not match the number of registered mails.");
+            _logger.LogWarning("The number of customers to be sent does not match the number of registered mails. Customer IDs: {customerIds}", request.CustomerIds);
 
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
         }

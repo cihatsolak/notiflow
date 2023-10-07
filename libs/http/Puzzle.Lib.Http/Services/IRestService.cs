@@ -12,7 +12,7 @@ public interface IRestService
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
     /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
     /// <exception cref="ArgumentNullException">throws when parameters are empty or null</exception>
-    Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
+    Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
@@ -30,7 +30,7 @@ public interface IRestService
         string clientName, 
         string routeUrl, 
         NameValueCollection nameValueCollection, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
@@ -42,7 +42,7 @@ public interface IRestService
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
     /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
     /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-    Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
+    Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters,
@@ -59,7 +59,7 @@ public interface IRestService
         string clientName, 
         string routeUrl, 
         object parameters, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request using the specified client name and route URL, with the specified parameters and query parameters,
@@ -78,7 +78,7 @@ public interface IRestService
         string routeUrl,
         object parameters,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request with multipart/form-data content using the specified client name and route URL,
@@ -95,7 +95,7 @@ public interface IRestService
         string clientName,
         string routeUrl,
         MultipartFormDataContent multipartFormDataContent,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request with multipart/form-data content using the specified client name and route URL,
@@ -115,7 +115,7 @@ public interface IRestService
         string routeUrl,
         MultipartFormDataContent multipartFormDataContent,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request with URL encoded content using the specified client name and route URL,
@@ -133,7 +133,7 @@ public interface IRestService
         string clientName, 
         string routeUrl, 
         IList<KeyValuePair<string, string>> keyValuePairs, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP POST request with URL encoded content using the specified client name and route URL,
@@ -153,7 +153,7 @@ public interface IRestService
         string routeUrl,
         IList<KeyValuePair<string, string>> keyValuePairs,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, and returns the expected response type as Task<TResponse>.
@@ -165,7 +165,7 @@ public interface IRestService
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the request</param>
     /// <returns>A Task object representing the asynchronous operation that returns the expected response type</returns>
     /// <exception cref="ArgumentNullException">thrown when http client type cannot be created</exception>
-    Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new();
+    Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters,
@@ -182,7 +182,7 @@ public interface IRestService
         string clientName,
         string routeUrl,
         object parameters,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends an asynchronous HTTP PATCH request using the specified client name and route URL, with the specified parameters and query parameters,
@@ -201,7 +201,7 @@ public interface IRestService
         string routeUrl,
         object parameters,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
    
     /// <summary>
     /// Sends a PUT request to the specified API endpoint with the specified parameters and returns the response as the specified type. 
@@ -216,7 +216,7 @@ public interface IRestService
         string clientName, 
         string routeUrl, 
         object parameters, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends a PUT request to the specified API endpoint with the specified parameters and headers, and returns the response as the specified type.
@@ -233,7 +233,7 @@ public interface IRestService
         string routeUrl, 
         object parameters, 
         NameValueCollection nameValueCollection, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends a DELETE request to the specified API endpoint and returns the response as the specified type.
@@ -246,7 +246,7 @@ public interface IRestService
     Task<TResponse> DeleteApiResponseAsync<TResponse>(
         string clientName, 
         string routeUrl, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 
     /// <summary>
     /// Sends a DELETE request to the specified API endpoint with the specified headers and returns the response as the specified type.
@@ -261,5 +261,5 @@ public interface IRestService
         string clientName, 
         string routeUrl, 
         NameValueCollection nameValueCollection, 
-        CancellationToken cancellationToken = default) where TResponse : class, new();
+        CancellationToken cancellationToken) where TResponse : class, new();
 }
