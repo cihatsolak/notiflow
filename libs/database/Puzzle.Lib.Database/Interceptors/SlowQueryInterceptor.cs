@@ -20,7 +20,7 @@ public sealed class SlowQueryInterceptor : DbCommandInterceptor
     {
         if (eventData.Duration.Seconds > SLOW_QUERY_THREE_SHOLD_IN_SECONDS)
         {
-            _logger.LogWarning("Slow database query ({@Seconds} second) : {@CommandText}", eventData.Duration.Seconds, command.CommandText);
+            _logger.LogWarning("Slow database query ({Seconds} second) : {CommandText}", eventData.Duration.Seconds, command.CommandText);
         }
 
         return base.ReaderExecutedAsync(command, eventData, result, cancellationToken);
