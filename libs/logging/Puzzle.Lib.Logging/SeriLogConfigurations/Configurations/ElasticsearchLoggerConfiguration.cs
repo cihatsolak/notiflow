@@ -2,12 +2,12 @@
 
 internal static class ElasticsearchLoggerConfiguration
 {
-    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, IWebHostEnvironment webHostEnvironment)
+    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, IWebHostEnvironment webHostEnvironment, SeriLogElasticSetting seriLogElasticSetting)
     {
         string applicationName = webHostEnvironment.ApplicationName.Replace(".", "-").ToLowerInvariant();
         string environmentName = webHostEnvironment.EnvironmentName.Replace(".", "-").ToLowerInvariant();
 
-        loggerConfiguration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("Elastic url eklenecek"))
+        ElasticsearchSinkOptions elasticsearchSinkOptions = new(new Uri(seriLogElasticSetting.Address))
         {
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
             AutoRegisterTemplate = true,
@@ -21,9 +21,14 @@ internal static class ElasticsearchLoggerConfiguration
             BufferBaseFilename = "serilog-buffer",
             BufferFileSizeLimitBytes = 5242880,
             BufferLogShippingInterval = TimeSpan.FromSeconds(5),
-            IndexFormat = $"applogs-{applicationName}-{environmentName}-log{DateTime.Now:yyyy.MM.dd}"
-        });
+            IndexFormat = $"{environmentName}-{applicationName}-logs{DateTime.Now:yyyy.MM.dd}"
+        };
+        
+        if (seriLogElasticSetting.IsRequiredAuthentication)
+        {
+            elasticsearchSinkOptions.ModifyConnectionSettings = (connection) => connection.BasicAuthentication(seriLogElasticSetting.Username, seriLogElasticSetting.Password);
+        }
 
-        return loggerConfiguration;
+        return loggerConfiguration.WriteTo.Elasticsearch();
     }
 }

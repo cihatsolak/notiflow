@@ -10,29 +10,22 @@ internal static class DatabaseLoggerConfiguration
         {
             AdditionalColumns = new Collection<SqlColumn>
            {
-              //new SqlColumn(LogPushProperties.IpAddress, SqlDbType.VarChar, allowNull: true, dataLength: 100), //Todo
-              new SqlColumn(LogPushProperties.CorrelationId, SqlDbType.VarChar, allowNull: true, dataLength: 150),
-              new SqlColumn(LogPushProperties.TraceIdentifier, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-              //new SqlColumn(LogPushProperties.Device, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-              //new SqlColumn(LogPushProperties.OperatingSystem, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-              //new SqlColumn(LogPushProperties.Browser, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-
-              new SqlColumn(LogPushProperties.ApplicationName, SqlDbType.VarChar, allowNull: true, dataLength: 70),
-              new SqlColumn(LogPushProperties.MachineName, SqlDbType.NVarChar, allowNull: true, dataLength: 70),
-
-              new SqlColumn(LogPushProperties.RequestMethod, SqlDbType.NVarChar, allowNull: true, dataLength: 70),
-              new SqlColumn(LogPushProperties.RequestPath, SqlDbType.NVarChar, allowNull: true, dataLength: 70),
-              new SqlColumn(LogPushProperties.SourceContext, SqlDbType.NVarChar, allowNull: true, dataLength: 70),
-              new SqlColumn(LogPushProperties.EnvironmentUserName, SqlDbType.NVarChar, allowNull: true, dataLength: 150)
+              new SqlColumn("CorrelationId", SqlDbType.VarChar, allowNull: true, dataLength: 150),
+              new SqlColumn("TraceIdentifier", SqlDbType.VarChar, allowNull: true, dataLength: 70)
            },
         };
 
         loggerConfiguration.WriteTo.MSSqlServer(
             connectionString: connectionString,
-            sinkOptions: new MSSqlServerSinkOptions { TableName = LogTableName },
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = LogTableName,
+                AutoCreateSqlTable = true,
+                SchemaName = "dbo"
+            },
             sinkOptionsSection: null,
             appConfiguration: null,
-            restrictedToMinimumLevel: LogEventLevel.Verbose,
+            restrictedToMinimumLevel: LogEventLevel.Warning,
             formatProvider: null,
             columnOptions: columnOptions,
             columnOptionsSection: null,
