@@ -48,9 +48,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, IWebHostEnvironment webHostEnvironment)
+    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, bool isProduction)
     {
-        if (!webHostEnvironment.IsProduction())
+        if (!isProduction)
             return services;
 
         services.AddHttpsRedirection(options =>

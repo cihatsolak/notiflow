@@ -2,6 +2,7 @@
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Notiflow.Backoffice.API;
+global using Notiflow.Backoffice.API.Infrastructure;
 global using Notiflow.Backoffice.Application;
 global using Notiflow.Backoffice.Application.AuthorizationRequirements;
 global using Notiflow.Backoffice.Application.Features.Commands.Customers.Add;

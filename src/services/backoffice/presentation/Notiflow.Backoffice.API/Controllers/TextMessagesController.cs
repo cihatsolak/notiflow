@@ -47,7 +47,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Message could not be sent</response>
     /// <response code="401">Unauthorized action</response>
-    [Authorize(Policy = "TextMessagePermissionRestriction")]
+    [Authorize(Policy = PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION)]
     [HttpPost("send")]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]

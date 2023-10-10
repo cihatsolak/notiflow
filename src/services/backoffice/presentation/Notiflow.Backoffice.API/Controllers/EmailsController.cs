@@ -29,7 +29,7 @@ public sealed class EmailsController : BaseApiController
     /// <response code="200">email/s sent</response>
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
-    [Authorize(Policy = "EmailPermissionRestriction")]
+    [Authorize(Policy = PolicyName.EMAIL_PERMISSION_RESTRICTION)]
     [HttpPost("send")]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]

@@ -4,6 +4,8 @@ internal static class ServiceCollectionContainerBuilderExtensions
 {
     internal static IServiceCollection AddWebDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        IWebHostEnvironment webHostEnvironment = services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>();
+
         JwtTokenSetting jwtTokenSetting = configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
@@ -25,23 +27,22 @@ internal static class ServiceCollectionContainerBuilderExtensions
 
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("TextMessagePermissionRestriction", policy =>
+            options.AddPolicy(PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION, policy =>
             {
                 policy.AddRequirements(new MessagePermissionRequirement());
             });
 
-            options.AddPolicy("NotificationPermissionRestriction", policy =>
+            options.AddPolicy(PolicyName.NOTIFICATION_PERMISSION_RESTRICTION, policy =>
             {
                 policy.AddRequirements(new NotificationPermissionRequirement());
             });
 
-            options.AddPolicy("EmailPermissionRestriction", policy =>
+            options.AddPolicy(PolicyName.EMAIL_PERMISSION_RESTRICTION, policy =>
             {
                 policy.AddRequirements(new EmailPermissionRequirement());
             });
         });
 
-       
         services.AddSwagger(options =>
         {
             options.Title = swaggerSetting.Title;
@@ -58,9 +59,10 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services.AddLowercaseRouting();
-        services.AddGzipResponseFastestCompress();
-        services.AddHttpSecurityPrecautions(services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>());
+        services
+            .AddLowercaseRouting()
+            .AddGzipResponseFastestCompress()
+            .AddHttpSecurityPrecautions(webHostEnvironment.IsProduction());
 
         services.AddBackofficeHealthChecks();
 
