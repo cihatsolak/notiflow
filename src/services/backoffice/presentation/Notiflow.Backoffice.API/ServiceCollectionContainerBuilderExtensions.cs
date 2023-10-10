@@ -1,7 +1,4 @@
-﻿using Puzzle.Lib.Auth.Infrastructure;
-using Puzzle.Lib.Version.Infrastructure;
-
-namespace Notiflow.Backoffice.API;
+﻿namespace Notiflow.Backoffice.API;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
@@ -61,11 +58,11 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services.AddRouteSettings();
+        services.AddLowercaseRouting();
         services.AddGzipResponseFastestCompress();
         services.AddHttpSecurityPrecautions(services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>());
 
-        services.AddConfigureHealthChecks();
+        services.AddBackofficeHealthChecks();
 
         return services;
     }

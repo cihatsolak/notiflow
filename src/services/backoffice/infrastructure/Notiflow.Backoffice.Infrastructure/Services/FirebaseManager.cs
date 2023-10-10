@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Http.Infrastructure;
-
-namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class FirebaseManager : IFirebaseService
 {
@@ -30,7 +28,7 @@ internal sealed class FirebaseManager : IFirebaseService
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 
-        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", _firebaseSetting.Route, request, credentials, cancellationToken);
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>(nameof(FirebaseManager), _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
             _logger.LogInformation("Can't get response from firebase services.");
@@ -46,14 +44,14 @@ internal sealed class FirebaseManager : IFirebaseService
 
     public async Task<NotificationResult> SendNotificationsAsync(FirebaseMultipleNotificationRequest request, CancellationToken cancellationToken)
     {
-        var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
+        var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(CacheKeys.TENANT_INFO, CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
         var credentials = HttpClientHeaderExtensions
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 
-        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>("firebase", _firebaseSetting.Route, request, credentials, cancellationToken);
+        var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>(nameof(FirebaseManager), _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
             _logger.LogInformation("Can't get response from firebase services.");

@@ -17,7 +17,7 @@ public sealed class EmailsController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -36,6 +36,6 @@ public sealed class EmailsController : BaseApiController
     public async Task<IActionResult> Send([FromBody] SendEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Ok(response);
+        return Result.Ok(response);
     }
 }

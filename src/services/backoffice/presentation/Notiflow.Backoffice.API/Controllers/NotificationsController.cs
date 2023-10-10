@@ -17,7 +17,7 @@ public sealed class NotificationsController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public sealed class NotificationsController : BaseApiController
     public async Task<IActionResult> SendSingle([FromBody] SendSingleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Ok(response);
+        return Result.Ok(response);
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ public sealed class NotificationsController : BaseApiController
     public async Task<IActionResult> SendMultiple([FromBody] SendMultipleNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Ok(response);
+        return Result.Ok(response);
     }
 }

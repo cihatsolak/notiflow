@@ -24,7 +24,7 @@ public sealed class TenantPermissionsController : BaseApiController
     public async Task<IActionResult> GetPermissions(CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.GetPermissionsAsync(cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -42,6 +42,6 @@ public sealed class TenantPermissionsController : BaseApiController
     public async Task<IActionResult> UpdatePreferences([FromBody] TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var response = await _tenantPermissionService.UpdateAsync(request, cancellationToken);
-        return HttpResult.NoContent(response);
+        return Result.NoContent(response);
     }
 }

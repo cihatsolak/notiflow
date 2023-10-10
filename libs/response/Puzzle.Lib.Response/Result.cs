@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Response;
 
-public static class HttpResult
+public static class Result
 {
     [NonAction]
     public static IActionResult Get<T>(ApiResponse<T> response)

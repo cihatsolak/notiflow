@@ -12,7 +12,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddHuawei();
 
         services
-             .AddRouteSettings()
+             .AddLowercaseRouting()
              .AddRestApiService();
 
         return services;
@@ -28,7 +28,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.Configure<FirebaseSetting>(configurationSection);
         FirebaseSetting firebaseSetting = configurationSection.Get<FirebaseSetting>();
 
-        services.AddHttpClient("firebase", configure =>
+        services.AddHttpClient(nameof(FirebaseManager), configure =>
         {
             configure.BaseAddress = firebaseSetting.BaseAddress;
         });
@@ -46,7 +46,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.Configure<HuaweiSetting>(configurationSection);
         HuaweiSetting huaweiSetting = configurationSection.Get<HuaweiSetting>();
 
-        services.AddHttpClient("huawei", configure =>
+        services.AddHttpClient(nameof(HuaweiManager), configure =>
         {
             configure.BaseAddress = huaweiSetting.BaseAddress;
         });

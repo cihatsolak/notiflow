@@ -55,6 +55,6 @@ public static class ApplicationBuilderExtensions
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
     public static IApplicationBuilder UseHealthAndUIConfiguration(this IApplicationBuilder app)
     {
-        return app.UseHealthChecksConfiguration().UseHealthChecksConfiguration();
+        return app.UseHealthChecksConfiguration().UseHealthUIConfiguration(string.Empty);
     }
 }

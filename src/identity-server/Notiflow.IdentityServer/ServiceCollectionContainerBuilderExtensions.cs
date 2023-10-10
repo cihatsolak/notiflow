@@ -41,7 +41,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services.AddRouteSettings();
+        services.AddLowercaseRouting();
         services.AddGzipResponseFastestCompress();
         services.AddHttpSecurityPrecautions(services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>());
         

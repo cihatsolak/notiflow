@@ -1,11 +1,13 @@
-﻿namespace Notiflow.Backoffice.Application;
+﻿using Notiflow.Common;
+
+namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        
+        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
+
         services.AddMediatR(opt =>
         {
             opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -19,10 +21,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             });
         });
 
-        services.AddFluentDesignValidation();
-
-        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
-
         services.AddRedisService(options =>
         {
             options.ConnectionString = redisServerSetting.ConnectionString;
@@ -35,6 +33,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.AllowAdmin = redisServerSetting.AllowAdmin;
         });
 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddFluentDesignValidation();
         services.AddHttpContextAccessor();
 
         services.AddMassTransit();
