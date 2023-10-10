@@ -29,7 +29,7 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
 
         if (phoneNumbers.Count != request.CustomerIds.Count)
         {
-            _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match.", request.CustomerIds);
+            _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match. Customer IDs: {CustomerIds}.", request.CustomerIds);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL);
         }
 
@@ -37,14 +37,12 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         if (!succeeded)
         {
             await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
-
-            _logger.LogWarning("Sending messages to customers {@CustomerIds} failed.", request.CustomerIds);
-
+            
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.TEXT_MESSAGE_SENDING_FAILED);
         }
 
         await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
-
+        
         return ApiResponse<Unit>.Success(ResponseCodes.Success.TEXT_MESSAGES_SENDING_SUCCESSFUL);
     }
 }

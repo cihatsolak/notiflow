@@ -1,6 +1,4 @@
-﻿using Notiflow.Common;
-
-namespace Notiflow.Backoffice.Application;
+﻿namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -33,13 +31,13 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.AllowAdmin = redisServerSetting.AllowAdmin;
         });
 
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddFluentDesignValidation();
-        services.AddHttpContextAccessor();
+        services
+            .AddMassTransit()
+            .AddHttpContextAccessor()
+            .AddFluentDesignValidation()
+            .AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddMassTransit();
         services.AddLocalization();
-
         services.Configure<RequestLocalizationOptions>(options =>
         {
             var supportedCultures = new[]

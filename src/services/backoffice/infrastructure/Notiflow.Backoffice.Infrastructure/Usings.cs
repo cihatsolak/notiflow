@@ -25,6 +25,8 @@ global using Puzzle.Lib.Http.Infrastructure;
 global using Puzzle.Lib.Http.Services;
 global using Puzzle.Lib.Response.Models;
 global using QRCoder;
+global using System.Net.Http.Headers;
 global using System.Net.Mail;
+global using System.Net.Mime;
 global using System.Text;
 global using System.Text.Json.Serialization;
