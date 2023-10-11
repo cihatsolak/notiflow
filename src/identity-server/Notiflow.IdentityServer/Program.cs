@@ -14,7 +14,7 @@ builder.Services
 var app = builder.Build();
 
 app
-   .UseHttpSecurityPrecautions()
+   .UseHttpSecurityPrecautions(builder.Environment)
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)

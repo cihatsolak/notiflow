@@ -1,5 +1,6 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
+[Route("api/text-messages")]
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>

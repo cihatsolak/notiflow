@@ -10,9 +10,12 @@ internal static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
+        var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
         services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;
+            options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
             options.Filters.Add<TenantTokenAuthenticationFilter>();
         });
 
@@ -29,16 +32,19 @@ internal static class ServiceCollectionContainerBuilderExtensions
         {
             options.AddPolicy(PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION, policy =>
             {
+                policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new MessagePermissionRequirement());
             });
 
             options.AddPolicy(PolicyName.NOTIFICATION_PERMISSION_RESTRICTION, policy =>
             {
+                policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new NotificationPermissionRequirement());
             });
 
             options.AddPolicy(PolicyName.EMAIL_PERMISSION_RESTRICTION, policy =>
             {
+                policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new EmailPermissionRequirement());
             });
         });

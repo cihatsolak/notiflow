@@ -5,8 +5,6 @@
 /// </summary>
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public const string ACCESS_TOKEN = "access_token";
-
     /// <summary>
     /// Adds JWT authentication services to the <see cref="IServiceCollection"/> container.
     /// </summary>
@@ -16,6 +14,8 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         JwtTokenSetting jwtTokenSetting = new();
         configure.Invoke(jwtTokenSetting);
+
+        services.Configure(configure);
 
         services.AddAuthentication(options =>
         {
@@ -54,27 +54,28 @@ public static class ServiceCollectionContainerBuilderExtensions
                 },
                 OnChallenge = context =>
                 {
-                   //var a = context.AuthenticateFailure.Message;
+                    context.HandleResponse();
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    context.Response.ContentType = MediaTypeNames.Application.Json;
 
-                    //context.HandleResponse();
-                    //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    //context.Response.ContentType = MediaTypeNames.Application.Json;
+                    if (string.IsNullOrEmpty(context.Error))
+                        context.Error = "invalid_token";
 
-                    //if (string.IsNullOrEmpty(context.Error))
-                    //    context.Error = "invalid_token";
+                    if (string.IsNullOrEmpty(context.ErrorDescription))
+                        context.ErrorDescription = "This request requires a valid JWT access token to be provided";
 
-                    //if (string.IsNullOrEmpty(context.ErrorDescription))
-                    //    context.ErrorDescription = "This request requires a valid JWT access token to be provided";
+                    if (context.AuthenticateFailure is SecurityTokenExpiredException)
+                    {
+                        var authenticationException = context.AuthenticateFailure as SecurityTokenExpiredException;
+                        context.Response.Headers.Add("x-token-expired", authenticationException.Expires.ToString("o"));
+                        context.ErrorDescription = $"The token expired on {authenticationException.Expires:o}";
+                    }
 
-                    //if (context.AuthenticateFailure is SecurityTokenExpiredException)
-                    //{
-                    //    var authenticationException = context.AuthenticateFailure as SecurityTokenExpiredException;
-                    //    context.Response.Headers.Add("x-token-expired", authenticationException.Expires.ToString("o"));
-                    //    context.ErrorDescription = $"The token expired on {authenticationException.Expires:o}";
-                    //}
-
-                    //return context.Response.WriteAsync(HandleJwtEventError(context.ErrorDescription));
-                    return Task.CompletedTask;
+                    return context.Response.WriteAsync(JsonSerializer.Serialize(new
+                    {
+                        error = context.Error,
+                        error_description = context.ErrorDescription
+                    }));
                 },
                 OnForbidden = context =>
                 {
@@ -86,7 +87,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 },
                 OnMessageReceived = context =>
                 {
-                    string token = context.Request.Query[ACCESS_TOKEN];
+                    string token = context.Request.Query["access_token"];
                     if (!string.IsNullOrWhiteSpace(token) && context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
                     {
                         context.Token = token;

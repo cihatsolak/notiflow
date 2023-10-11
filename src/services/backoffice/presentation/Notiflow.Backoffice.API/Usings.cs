@@ -1,6 +1,7 @@
 ﻿global using MediatR;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Authorization;
 global using Notiflow.Backoffice.API;
 global using Notiflow.Backoffice.API.Infrastructure;
 global using Notiflow.Backoffice.Application;
