@@ -2,21 +2,19 @@
 
 public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessageNotDeliveredEvent>
 {
-    private readonly NotiflowDbSetting _notiflowDbSetting;
-    private readonly ILogger<TextMessageNotDeliveredEventConsumer> _logger;
+    private readonly IDbConnection _connection;
+    private readonly ILogger<TextMessageDeliveredEventConsumer> _logger;
 
     public TextMessageNotDeliveredEventConsumer(
-        IOptions<NotiflowDbSetting> notiflowDbSetting,
-        ILogger<TextMessageNotDeliveredEventConsumer> logger)
+        IDbConnection connection,
+        ILogger<TextMessageDeliveredEventConsumer> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting.Value;
+        _connection = connection;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<TextMessageNotDeliveredEvent> context)
     {
-        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
-
         try
         {
             var textMessageHistories = context.Message.CustomerIds.Select(customerId => new
@@ -28,7 +26,7 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
                 customer_id = customerId
             });
 
-            await npgSqlConnection
+            await _connection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, error_message, sent_date, customer_id) values (@message, @is_sent, @error_message, @sent_date, @customer_id)",
                     textMessageHistories);
 
@@ -37,11 +35,7 @@ public sealed class TextMessageNotDeliveredEventConsumer : IConsumer<TextMessage
         catch (Exception exception)
         {
             _logger.LogError(exception, "The not sent messages could not be saved to the database.");
-        }
-        finally
-        {
-            await npgSqlConnection.CloseAsync();
-            await npgSqlConnection.DisposeAsync();
+            throw;
         }
     }
 }

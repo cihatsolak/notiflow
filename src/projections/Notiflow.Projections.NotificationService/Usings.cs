@@ -7,3 +7,4 @@ global using Notiflow.Common.Settings;
 global using Notiflow.Projections.NotificationService;
 global using Notiflow.Projections.NotificationService.Consumers;
 global using Npgsql;
+global using System.Data;

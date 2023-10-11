@@ -2,14 +2,14 @@
 
 public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
 {
-    private readonly IDbConnection _dbConnection;
+    private readonly IDbConnection _connection;
     private readonly ILogger<TextMessageDeliveredEventConsumer> _logger;
 
     public TextMessageDeliveredEventConsumer(
-        IDbConnection dbConnection, 
+        IDbConnection connection, 
         ILogger<TextMessageDeliveredEventConsumer> logger)
     {
-        _dbConnection = dbConnection;
+        _connection = connection;
         _logger = logger;
     }
 
@@ -25,7 +25,7 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
                 customer_id = customerId
             });
 
-            await _dbConnection
+            await _connection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, sent_date, customer_id) values (@message, @is_sent, @sent_date, @customer_id)",
                      textMessageHistories);
 

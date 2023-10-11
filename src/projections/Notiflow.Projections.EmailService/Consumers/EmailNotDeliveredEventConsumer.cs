@@ -2,26 +2,24 @@
 
 internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent>
 {
-    private readonly NotiflowDbSetting _notiflowDbSetting;
+    private readonly IDbConnection _connection;
     private readonly ILogger<EmailNotDeliveredEventConsumer> _logger;
 
     public EmailNotDeliveredEventConsumer(
-        IOptions<NotiflowDbSetting> notiflowDbSetting, 
+        IDbConnection connection,
         ILogger<EmailNotDeliveredEventConsumer> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting.Value;
+        _connection = connection;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<EmailNotDeliveredEvent> context)
     {
-        using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
-        await npgsqlConnection.OpenAsync();
-        using NpgsqlTransaction npgsqlTransaction = await npgsqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        IDbTransaction transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
 
         try
         {
-            
+
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
                 recipients = CombineWithComma(context.Message.Recipients),
@@ -36,13 +34,13 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
                 customer_id = customerId
             });
 
-            await npgsqlConnection
+            await _connection
                   .ExecuteAsync(
                    "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
                    emailHistories,
-                   npgsqlTransaction);
+                   transaction);
 
-            await npgsqlTransaction.CommitAsync();
+            transaction.Commit();
 
             _logger.LogInformation("Failed e-mail sending information is saved in the database.");
 
@@ -51,13 +49,8 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
         {
             _logger.LogError(exception, "Failed to save failed e-mail sending information to database.");
 
-            await npgsqlTransaction.RollbackAsync();
-        }
-        finally
-        {
-            await npgsqlTransaction.DisposeAsync();
-            await npgsqlConnection.CloseAsync();
-            await npgsqlConnection.DisposeAsync();
+            transaction.Rollback();
+            throw;
         }
     }
 
