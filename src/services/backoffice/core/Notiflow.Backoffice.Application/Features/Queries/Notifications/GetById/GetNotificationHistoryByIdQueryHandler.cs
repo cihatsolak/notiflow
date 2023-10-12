@@ -3,14 +3,11 @@
 public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, ApiResponse<GetNotificationHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetNotificationHistoryByIdQueryHandler> _logger;
 
     public GetNotificationHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<GetNotificationHistoryByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetNotificationHistoryByIdQueryResult>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)

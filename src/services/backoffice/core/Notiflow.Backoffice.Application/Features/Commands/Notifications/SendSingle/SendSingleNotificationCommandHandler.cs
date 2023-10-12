@@ -6,20 +6,17 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ILogger<SendSingleNotificationCommandHandler> _logger;
 
     public SendSingleNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
-        IPublishEndpoint publishEndpoint,
-        ILogger<SendSingleNotificationCommandHandler> logger)
+        IPublishEndpoint publishEndpoint)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<Unit>> Handle(SendSingleNotificationCommand request, CancellationToken cancellationToken)
@@ -32,34 +29,31 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
         var notificationResult = device.CloudMessagePlatform switch
         {
-            CloudMessagePlatform.Firesabe => await SendNotifyWithFirebase(request, device.Token, cancellationToken),
-            CloudMessagePlatform.Huawei => await SendNotifyWithHuawei(request, device.Token, cancellationToken),
+            CloudMessagePlatform.Firesabe => await SendFirebaseNotifyAsync(request, device.Token, cancellationToken),
+            CloudMessagePlatform.Huawei => await SendHuaweiNotifyAsync(request, device.Token, cancellationToken),
             _ => throw new DeviceException("The cloud messaging platform could not be determined."),
         };
 
         if (!notificationResult.Succeeded)
         {
             var notificationNotDeliveredEvent = ObjectMapper.Mapper.Map<NotificationNotDeliveredEvent>(request);
-            ObjectMapper.Mapper.Map(notificationResult, notificationNotDeliveredEvent);
+            notificationNotDeliveredEvent.SenderIdentity = notificationResult.SecretIdentity;
+            notificationNotDeliveredEvent.ErrorMessage = notificationResult.ErrorMessage;
 
             await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
             
-            _logger.LogWarning("Notification could not be sent to customer with id: {customerId}.", request.CustomerId);
-
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
         }
 
         var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
-        ObjectMapper.Mapper.Map(notificationResult, notificationDeliveredEvent);
+        notificationDeliveredEvent.SenderIdentity = notificationResult.SecretIdentity;
 
         await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
-
-        _logger.LogInformation("A notification has been sent to the customer with id: {customerId}", request.CustomerId);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
-    private async Task<NotificationResult> SendNotifyWithFirebase(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendFirebaseNotifyAsync(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 
@@ -86,7 +80,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         return notificationResult;
     }
 
-    private async Task<NotificationResult> SendNotifyWithHuawei(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendHuaweiNotifyAsync(SendSingleNotificationCommand request, string deviceToken, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 

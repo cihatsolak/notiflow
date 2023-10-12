@@ -26,7 +26,7 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         _uow.CustomerWrite.Update(customer);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Customer updated. ID: {@customerId}", request.Id);
+        _logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_UPDATED, Unit.Value);
     }

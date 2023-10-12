@@ -49,12 +49,11 @@ internal sealed class EmailManager : IEmailService
             mailMessage.Bcc.Add(emailAddress);
         }
 
-        bool succeeded = default;
-
+        
         try
         {
             await smtpClient.SendMailAsync(mailMessage);
-            succeeded = true;
+            return true;
         }
         catch (Exception exception)
         {
@@ -66,6 +65,6 @@ internal sealed class EmailManager : IEmailService
             mailMessage.Dispose();
         }
 
-        return succeeded;
+        return default;
     }
 }

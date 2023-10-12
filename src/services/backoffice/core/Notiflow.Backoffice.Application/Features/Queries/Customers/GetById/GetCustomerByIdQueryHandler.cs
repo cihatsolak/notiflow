@@ -3,14 +3,11 @@
 public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, ApiResponse<GetCustomerByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetCustomerByIdQueryHandler> _logger;
 
     public GetCustomerByIdQueryHandler(
-        INotiflowUnitOfWork notiflowUnitOfWork, 
-        ILogger<GetCustomerByIdQueryHandler> logger)
+        INotiflowUnitOfWork notiflowUnitOfWork)
     {
         _uow = notiflowUnitOfWork;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetCustomerByIdQueryResult>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)

@@ -21,7 +21,7 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
 
         if (customer.IsBlocked == request.IsBlocked)
         {
-            _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {@id}", request.Id);
+            _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {id}", request.Id);
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 
@@ -30,7 +30,7 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
         await _uow.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation(
-            "Customer with id {@id} is {@status}.",
+            "Customer with id {id} is {status}.",
             request.Id,
             request.IsBlocked ? "blocked" : "unblocked");
 

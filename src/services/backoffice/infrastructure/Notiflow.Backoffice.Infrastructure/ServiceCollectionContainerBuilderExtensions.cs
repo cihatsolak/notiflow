@@ -12,13 +12,13 @@ public static class ServiceCollectionContainerBuilderExtensions
         services
             .AddLowercaseRouting()
             .AddRestApiService()
-            .AddFirebase(configuration)
-            .AddHuawei(configuration);
+            .AddFirebaseService(configuration)
+            .AddHuaweiService(configuration);
 
         return services;
     }
 
-    private static IServiceCollection AddFirebase(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddFirebaseService(this IServiceCollection services, IConfiguration configuration)
     {
         IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(FirebaseSetting));
         services.Configure<FirebaseSetting>(configurationSection);
@@ -37,7 +37,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         return services;
     }
 
-    private static IServiceCollection AddHuawei(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddHuaweiService(this IServiceCollection services, IConfiguration configuration)
     {
         IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HuaweiSetting));
         services.Configure<HuaweiSetting>(configurationSection);

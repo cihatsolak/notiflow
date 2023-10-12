@@ -3,21 +3,17 @@
 public sealed class TenantIdClaimsTransformation : IClaimsTransformation
 {
     private readonly IRedisService _redisService;
-    private readonly ILogger<TenantIdClaimsTransformation> _logger;
 
-    public TenantIdClaimsTransformation(IRedisService redisService, ILogger<TenantIdClaimsTransformation> logger)
+    public TenantIdClaimsTransformation(IRedisService redisService)
     {
         _redisService = redisService;
-        _logger = logger;
     }
 
     public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
     {
         if (principal is null || !principal.Identity.IsAuthenticated)
         {
-            _logger.LogWarning("A tenant ID cannot be given to a non-claimed or unauthorized user.");
-
-            return principal;
+            throw new TenantException("A tenant ID cannot be given to a non-claimed or unauthorized user.");
         }
 
         int tenantId = await _redisService.HashGetAsync<int>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_ID);

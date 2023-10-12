@@ -25,7 +25,7 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         await _notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
         await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new device with ID {@deviceId} has been added for the customer with ID number {@customerId}.", device.Id, device.CustomerId);
+        _logger.LogInformation("A new device with ID {@deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
 
         return ApiResponse<int>.Success(ResponseCodes.Success.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
     }

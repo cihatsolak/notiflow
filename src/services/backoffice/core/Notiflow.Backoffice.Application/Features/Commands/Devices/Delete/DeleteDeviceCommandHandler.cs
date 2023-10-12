@@ -21,7 +21,7 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_DELETED);
         }
 
-        _logger.LogInformation("The device with ID {@deviceId} has been deleted.", request.Id);
+        _logger.LogInformation("The device with ID {deviceId} has been deleted.", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.DEVICE_DELETED, Unit.Value);
     }

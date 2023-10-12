@@ -2,21 +2,20 @@
 
 internal sealed class FirebaseManager : IFirebaseService
 {
+    internal static readonly NotificationResult notificationResult = new();
+
     private readonly IRestService _restService;
     private readonly IRedisService _redisService;
     private readonly FirebaseSetting _firebaseSetting;
-    private readonly ILogger<FirebaseManager> _logger;
 
     public FirebaseManager(
         IRestService restService,
         IRedisService redisService,
-        IOptions<FirebaseSetting> firebaseSetting,
-        ILogger<FirebaseManager> logger)
+        IOptions<FirebaseSetting> firebaseSetting)
     {
         _restService = restService;
         _redisService = redisService;
         _firebaseSetting = firebaseSetting.Value;
-        _logger = logger;
     }
 
     public async Task<NotificationResult> SendNotificationAsync(FirebaseSingleNotificationRequest request, CancellationToken cancellationToken)
@@ -31,15 +30,10 @@ internal sealed class FirebaseManager : IFirebaseService
         var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>(nameof(FirebaseManager), _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
-            _logger.LogInformation("Can't get response from firebase services.");
-            return new NotificationResult();
+            return notificationResult;
         }
 
-        return new NotificationResult
-        {
-            ErrorMessage = firebaseNotificationResponse.ErrorMessage,
-            Succeeded = firebaseNotificationResponse.Succeeded
-        };
+        return new NotificationResult(firebaseNotificationResponse.Succeeded, firebaseNotificationResponse.ErrorMessage);
     }
 
     public async Task<NotificationResult> SendNotificationsAsync(FirebaseMultipleNotificationRequest request, CancellationToken cancellationToken)
@@ -54,8 +48,7 @@ internal sealed class FirebaseManager : IFirebaseService
         var firebaseNotificationResponse = await _restService.PostResponseAsync<FirebaseNotificationResponse>(nameof(FirebaseManager), _firebaseSetting.Route, request, credentials, cancellationToken);
         if (firebaseNotificationResponse is null)
         {
-            _logger.LogInformation("Can't get response from firebase services.");
-            return new NotificationResult();
+            return notificationResult;
         }
 
         return new NotificationResult(firebaseNotificationResponse.Succeeded, firebaseNotificationResponse.ErrorMessage);

@@ -26,7 +26,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         await _uow.CustomerWrite.InsertAsync(customer, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new customer with {@customerId} id has been registered.", customer.Id);
+        _logger.LogInformation("A new customer with {customerId} id has been registered.", customer.Id);
 
         return ApiResponse<int>.Success(ResponseCodes.Success.CUSTOMER_ADDED, customer.Id);
     }

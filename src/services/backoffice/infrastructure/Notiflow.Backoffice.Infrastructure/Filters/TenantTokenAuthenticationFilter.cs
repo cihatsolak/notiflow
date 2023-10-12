@@ -32,7 +32,7 @@ public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
         bool isExists = await _redisService.SetExistsAsync(CacheKeys.TENANT_TOKENS, tenantToken);
         if (!isExists)
         {
-            _logger.LogInformation("A request was made with a valid tenant token: {@tenantToken}.", tenantToken);
+            _logger.LogInformation("A request was made with a valid tenant token: {tenantToken}.", tenantToken);
             context.Result = new UnauthorizedObjectResult(InvalidErrorResponse);
         }
     }

@@ -21,7 +21,7 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
             return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
         }
 
-        _logger.LogInformation("Customer deleted. ID: {@customerId}", request.Id);
+        _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_DELETED, Unit.Value);
     }

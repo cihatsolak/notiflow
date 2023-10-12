@@ -6,20 +6,17 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ILogger<SendMultipleNotificationCommandHandler> _logger;
 
     public SendMultipleNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
-        IPublishEndpoint publishEndpoint,
-        ILogger<SendMultipleNotificationCommandHandler> logger)
+        IPublishEndpoint publishEndpoint)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<Unit>> Handle(SendMultipleNotificationCommand request, CancellationToken cancellationToken)
@@ -31,30 +28,27 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         }
 
         var firesabeDeviceTokens = devices
-                                   .Where(device => device.CloudMessagePlatform == CloudMessagePlatform.Firesabe)
-                                   .Select(p => p.Token)
-                                   .ToList();
+                                  .Where(device => device.CloudMessagePlatform == CloudMessagePlatform.Firesabe)
+                                  .Select(p => p.Token)
+                                  .ToList();
 
         if (!firesabeDeviceTokens.IsNullOrNotAny())
         {
-            var firebaseNotificationResult = await SendNotifyWithFirebase(request, firesabeDeviceTokens, cancellationToken);
+            var firebaseNotificationResult = await SendFirebaseNotifyAsync(request, firesabeDeviceTokens, cancellationToken);
             if (!firebaseNotificationResult.Succeeded)
             {
                 var notificationNotDeliveredEvent = ObjectMapper.Mapper.Map<NotificationNotDeliveredEvent>(request);
-                ObjectMapper.Mapper.Map(firebaseNotificationResult, notificationNotDeliveredEvent);
+                notificationNotDeliveredEvent.SenderIdentity = firebaseNotificationResult.SecretIdentity;
+                notificationNotDeliveredEvent.ErrorMessage = firebaseNotificationResult.ErrorMessage;
 
                 await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
-
-                _logger.LogWarning("Sending multiple notifications with firebase failed.");
             }
             else
             {
                 var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
-                ObjectMapper.Mapper.Map(firebaseNotificationResult, notificationDeliveredEvent);
+                notificationDeliveredEvent.SenderIdentity = firebaseNotificationResult.SecretIdentity;
 
                 await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
-
-                _logger.LogInformation("Sending multiple notifications with firebase is successful.");
             }
         }
 
@@ -65,31 +59,28 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
 
         if (huaweiDeviceTokens.IsNullOrNotAny())
         {
-            var huaweiNotificationResult = await SendNotifyWithHuawei(request, huaweiDeviceTokens, cancellationToken);
+            var huaweiNotificationResult = await SendHuaweiNotifyAsync(request, huaweiDeviceTokens, cancellationToken);
             if (!huaweiNotificationResult.Succeeded)
             {
                 var notificationNotDeliveredEvent = ObjectMapper.Mapper.Map<NotificationNotDeliveredEvent>(request);
-                ObjectMapper.Mapper.Map(huaweiNotificationResult, notificationNotDeliveredEvent);
+                notificationNotDeliveredEvent.SenderIdentity = huaweiNotificationResult.SecretIdentity;
+                notificationNotDeliveredEvent.ErrorMessage = huaweiNotificationResult.ErrorMessage;
 
                 await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
-
-                _logger.LogWarning("Sending multiple notifications with huawei failed.");
             }
             else
             {
                 var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
-                ObjectMapper.Mapper.Map(huaweiNotificationResult, notificationDeliveredEvent);
+                notificationDeliveredEvent.SenderIdentity = huaweiNotificationResult.SecretIdentity;
 
                 await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
-
-                _logger.LogInformation("Sending multiple notifications with huawei is successful.");
             }
         }
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
-    private async Task<NotificationResult> SendNotifyWithFirebase(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendFirebaseNotifyAsync(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 
@@ -116,7 +107,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         return notificationResult;
     }
 
-    private async Task<NotificationResult> SendNotifyWithHuawei(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendHuaweiNotifyAsync(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 

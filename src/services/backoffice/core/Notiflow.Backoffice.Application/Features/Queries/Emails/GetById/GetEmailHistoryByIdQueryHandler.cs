@@ -3,14 +3,11 @@
 public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, ApiResponse<GetEmailHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetEmailHistoryByIdQueryHandler> _logger;
 
     public GetEmailHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<GetEmailHistoryByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetEmailHistoryByIdQueryResult>> Handle(GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)

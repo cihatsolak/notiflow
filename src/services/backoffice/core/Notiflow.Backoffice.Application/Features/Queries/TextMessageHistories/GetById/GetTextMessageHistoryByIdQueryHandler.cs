@@ -3,14 +3,11 @@
 public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, ApiResponse<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetTextMessageHistoryByIdQueryHandler> _logger;
 
     public GetTextMessageHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow, 
-        ILogger<GetTextMessageHistoryByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)

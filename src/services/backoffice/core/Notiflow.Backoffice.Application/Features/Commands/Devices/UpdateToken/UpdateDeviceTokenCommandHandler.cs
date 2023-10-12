@@ -25,7 +25,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("The token information of the device with {@deviceId} ids has been updated.", request.Id);
+        _logger.LogInformation("The token information of the device with {deviceId} ids has been updated.", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.DEVICE_TOKEN_UPDATED, Unit.Value);
     }

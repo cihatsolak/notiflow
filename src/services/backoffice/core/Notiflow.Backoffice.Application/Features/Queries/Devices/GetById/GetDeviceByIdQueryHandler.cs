@@ -3,14 +3,11 @@
 public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, ApiResponse<GetDeviceByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetDeviceByIdQueryHandler> _logger;
 
     public GetDeviceByIdQueryHandler(
-        INotiflowUnitOfWork uow, 
-        ILogger<GetDeviceByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetDeviceByIdQueryResult>> Handle(GetDeviceByIdQuery request, CancellationToken cancellationToken)
