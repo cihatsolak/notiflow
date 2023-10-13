@@ -39,13 +39,10 @@ public static class ServiceCollectionContainerBuilderExtensions
 
     private static IServiceCollection AddHuaweiService(this IServiceCollection services, IConfiguration configuration)
     {
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HuaweiSetting));
-        services.Configure<HuaweiSetting>(configurationSection);
-        HuaweiSetting huaweiSetting = configurationSection.Get<HuaweiSetting>();
+        services.Configure<HuaweiSetting>(configuration.GetRequiredSection(nameof(HuaweiSetting)));
 
         services.AddHttpClient(nameof(HuaweiManager), httpClient =>
         {
-            httpClient.BaseAddress = huaweiSetting.BaseAddress;
             httpClient.Timeout = TimeSpan.FromSeconds(15);
             httpClient.DefaultRequestHeaders.ExpectContinue = false;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));

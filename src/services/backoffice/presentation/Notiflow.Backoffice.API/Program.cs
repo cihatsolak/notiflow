@@ -24,7 +24,6 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseRequestLocalization()
    .UseHealthChecksConfiguration();
 
-app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();

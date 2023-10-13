@@ -33,7 +33,6 @@ global using Notiflow.Backoffice.Application.Middlewares;
 global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Infrastructure;
 global using Notiflow.Backoffice.Infrastructure.Filters;
-global using Notiflow.Backoffice.Infrastructure.Middlewares;
 global using Notiflow.Backoffice.Persistence;
 global using Notiflow.Common.Extensions;
 global using Puzzle.Lib.Auth;

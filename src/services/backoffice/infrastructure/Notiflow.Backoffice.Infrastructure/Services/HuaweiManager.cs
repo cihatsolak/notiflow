@@ -30,7 +30,7 @@ internal sealed class HuaweiManager : IHuaweiService
             new KeyValuePair<string, string>("client_id", tenantApplication.HuaweiClientId)
         };
 
-        var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>(nameof(HuaweiManager), _huaweiSetting.AuthenticationRoute, credentials, cancellationToken);
+        var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>(nameof(HuaweiManager), _huaweiSetting.AuthTokenServiceUrl, credentials, cancellationToken);
         if (authenticationResponse is null)
         {
             return notificationResult;
@@ -39,9 +39,9 @@ internal sealed class HuaweiManager : IHuaweiService
         var auhorizationCollection = HttpClientHeaderExtensions
                                       .Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
 
-        //sendUrl = sendUrl.Replace("{ClientId}", clientId); //Todo:
+        string sendServiceUrl = _huaweiSetting.SendServiceUrl.Replace("{ClientId}", tenantApplication.HuaweiClientId);
 
-        var huaweiNotificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>(nameof(HuaweiManager), _huaweiSetting.NotificationRoute, request, auhorizationCollection, cancellationToken);
+        var huaweiNotificationResponse = await _restService.PostResponseAsync<HuaweiNotificationResponse>(nameof(HuaweiManager), sendServiceUrl, request, auhorizationCollection, cancellationToken);
         if (huaweiNotificationResponse is null)
         {
             return notificationResult;
