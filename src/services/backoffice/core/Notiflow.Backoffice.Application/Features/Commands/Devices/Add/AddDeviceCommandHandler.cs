@@ -18,7 +18,7 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         var device = await _notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is not null)
         {
-            return ApiResponse<int>.Fail(ResponseCodes.Error.DEVICE_EXISTS);
+            return ApiResponse<int>.Failure(ResponseCodes.Error.DEVICE_EXISTS);
         }
 
         device = ObjectMapper.Mapper.Map<Device>(request);

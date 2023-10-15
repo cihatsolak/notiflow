@@ -15,7 +15,7 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return ApiResponse<GetCustomerByIdQueryResult>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<GetCustomerByIdQueryResult>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         var customerDto = ObjectMapper.Mapper.Map<GetCustomerByIdQueryResult>(customer);

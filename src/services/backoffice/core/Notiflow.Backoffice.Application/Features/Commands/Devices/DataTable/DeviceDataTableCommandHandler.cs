@@ -20,7 +20,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<DeviceDataTableResult>>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<DtResult<DeviceDataTableResult>>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         DtResult<DeviceDataTableResult> deviceDataTable = new()

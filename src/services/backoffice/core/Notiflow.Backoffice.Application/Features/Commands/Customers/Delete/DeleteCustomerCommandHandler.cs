@@ -18,7 +18,7 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
         }
 
         _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);

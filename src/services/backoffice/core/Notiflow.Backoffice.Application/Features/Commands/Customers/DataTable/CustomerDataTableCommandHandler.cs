@@ -20,7 +20,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         DtResult<CustomerDataTableCommandResult> customerDataTable = new()

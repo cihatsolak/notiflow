@@ -24,7 +24,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
         Device device = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is null)
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var notificationResult = device.CloudMessagePlatform switch
@@ -42,7 +42,7 @@ public sealed class SendSingleNotificationCommandHandler : IRequestHandler<SendS
 
             await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
             
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.NOTIFICATION_SENDING_FAILED);
         }
 
         var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);

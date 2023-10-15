@@ -15,6 +15,7 @@ public record ApiResponse<TData>
     /// <summary>
     /// Gets or sets the data that the response model holds.
     /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public TData Data { get; init; }
 
     /// <summary>
@@ -27,11 +28,13 @@ public record ApiResponse<TData>
     /// Gets or sets the status message of the response.
     /// </summary>
     [JsonRequired]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Message { get; set; }
 
     /// <summary>
     /// Gets or sets the errors that occurred during the request.
     /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public IEnumerable<string> Errors { get; init; }
 
 
@@ -103,7 +106,7 @@ public record ApiResponse<TData>
     /// </summary>
     /// <param name="code">The HTTP status code.</param>
     /// <returns>A failed response with the specified status code.</returns>
-    public static ApiResponse<TData> Fail(int code)
+    public static ApiResponse<TData> Failure(int code)
     {
         return new ApiResponse<TData>
         {
@@ -117,7 +120,7 @@ public record ApiResponse<TData>
     /// <param name="code">The HTTP status code for the response.</param>
     /// <param name="error">The error message for the response.</param>
     /// <returns>A response model indicating failure with the specified status code and error message.</returns>
-    public static ApiResponse<TData> Fail(int code, string error)
+    public static ApiResponse<TData> Failure(int code, string error)
     {
         return new ApiResponse<TData>
         {
@@ -132,7 +135,7 @@ public record ApiResponse<TData>
     /// <param name="code">The HTTP status code for the response.</param>
     /// <param name="errors">The list of error messages for the response.</param>
     /// <returns>A response model indicating failure with the specified status code and error messages.</returns>
-    public static ApiResponse<TData> Fail(int code, IEnumerable<string> errors)
+    public static ApiResponse<TData> Failure(int code, IEnumerable<string> errors)
     {
         return new ApiResponse<TData>
         {

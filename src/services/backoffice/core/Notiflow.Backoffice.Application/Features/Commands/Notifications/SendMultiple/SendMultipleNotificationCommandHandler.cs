@@ -24,7 +24,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices

@@ -24,14 +24,14 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         var emailAddresses = await _uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
         }
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to be sent does not match the number of registered mails. Customer IDs: {customerIds}", request.CustomerIds);
 
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
@@ -53,7 +53,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
 
-        return ApiResponse<Unit>.Fail(ResponseCodes.Error.EMAIL_SENDING_FAILED);
+        return ApiResponse<Unit>.Failure(ResponseCodes.Error.EMAIL_SENDING_FAILED);
     }
   
     private async Task<ApiResponse<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)

@@ -22,7 +22,7 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
 
         if (supportedCultures.IsNullOrNotAny())
         {
-            return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Fail(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
+            return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Failure(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
         }
 
         return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, supportedCultures));

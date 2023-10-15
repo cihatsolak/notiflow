@@ -20,7 +20,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Fail(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Failure(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()

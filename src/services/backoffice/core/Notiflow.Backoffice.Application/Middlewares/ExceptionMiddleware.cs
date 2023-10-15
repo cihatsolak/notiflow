@@ -46,7 +46,7 @@ public sealed class ExceptionMiddleware
         ValidationException validationException = exception as ValidationException;
         if (!validationException.Errors.Any())
         {
-            validationErrorResponse = ApiResponse<EmptyResponse>.Fail(FluentValidationErrorCodes.GENERAL_ERROR);
+            validationErrorResponse = ApiResponse<EmptyResponse>.Failure(FluentValidationErrorCodes.GENERAL_ERROR);
             validationErrorResponse.Message = _validationErrorLocalizer[FluentValidationErrorCodes.GENERAL_ERROR.ToString()];
         }
         else
@@ -67,7 +67,7 @@ public sealed class ExceptionMiddleware
 
     private Task InternalServerProblemAsync(HttpContext httpContext)
     {
-        var serverErrorResponse = ApiResponse<EmptyResponse>.Fail(ResponseCodes.Error.GENERAL);
+        var serverErrorResponse = ApiResponse<EmptyResponse>.Failure(ResponseCodes.Error.GENERAL);
         serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;

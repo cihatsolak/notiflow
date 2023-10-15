@@ -18,7 +18,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         bool isExists = await _uow.CustomerRead.IsExistsByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
         if (isExists)
         {
-            return ApiResponse<int>.Fail(ResponseCodes.Error.CUSTOMER_EXISTS);
+            return ApiResponse<int>.Failure(ResponseCodes.Error.CUSTOMER_EXISTS);
         }
 
         var customer = ObjectMapper.Mapper.Map<Customer>(request);

@@ -15,7 +15,7 @@ public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHi
         var emailHistory = await _uow.EmailHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (emailHistory is null)
         {
-            return ApiResponse<GetEmailHistoryByIdQueryResult>.Fail(ResponseCodes.Error.EMAIL_HISTORY_NOT_FOUND);
+            return ApiResponse<GetEmailHistoryByIdQueryResult>.Failure(ResponseCodes.Error.EMAIL_HISTORY_NOT_FOUND);
         }
 
         var emailHistoryDto = ObjectMapper.Mapper.Map<GetEmailHistoryByIdQueryResult>(emailHistory);

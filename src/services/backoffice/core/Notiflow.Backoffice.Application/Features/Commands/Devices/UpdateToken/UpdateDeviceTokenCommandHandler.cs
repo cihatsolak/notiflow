@@ -18,7 +18,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         device.Token = request.Token;

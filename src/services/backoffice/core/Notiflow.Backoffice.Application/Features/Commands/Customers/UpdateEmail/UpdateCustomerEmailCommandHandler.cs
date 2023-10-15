@@ -16,13 +16,13 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (string.Equals(customer.Email, request.Email, StringComparison.OrdinalIgnoreCase))
         {
             _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {id}", request.Id);
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_EMAIL_ADDRESS_SAME);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_EMAIL_ADDRESS_SAME);
         }
 
         customer.Email = request.Email;

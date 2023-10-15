@@ -16,13 +16,13 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.IsBlocked == request.IsBlocked)
         {
             _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {id}", request.Id);
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 
         customer.IsBlocked = request.IsBlocked;

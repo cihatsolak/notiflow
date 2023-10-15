@@ -15,7 +15,7 @@ public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQue
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return ApiResponse<GetDeviceByIdQueryResult>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<GetDeviceByIdQueryResult>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
 
         var deviceDto = ObjectMapper.Mapper.Map<GetDeviceByIdQueryResult>(device);
