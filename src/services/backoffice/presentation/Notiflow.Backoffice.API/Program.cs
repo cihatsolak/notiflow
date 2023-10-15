@@ -16,7 +16,7 @@ var app = builder.Build();
 
 TenantCacheKeyFactory.Configure(app);
 
-app.UseHttpSecurityPrecautions()
+app.UseHttpSecurityPrecautions(builder.Environment)
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
@@ -24,7 +24,6 @@ app.UseHttpSecurityPrecautions()
    .UseRequestLocalization()
    .UseHealthChecksConfiguration();
 
-app.UseMiddleware<ApplicationIdMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();

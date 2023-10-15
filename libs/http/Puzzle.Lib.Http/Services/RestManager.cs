@@ -11,10 +11,9 @@ internal sealed class RestManager : IRestService
         _logger = logger;
     }
 
-    public async Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
+    public async Task<TResponse> GetResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        CheckArguments(clientName, routeUrl);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -31,11 +30,9 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -47,23 +44,22 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
     }
 
-    public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
+    public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        CheckArguments(clientName, routeUrl);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, default(TResponse), cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -73,18 +69,16 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         object parameters,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
+        CheckArguments(clientName, routeUrl, parameters);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -95,12 +89,9 @@ internal sealed class RestManager : IRestService
         string routeUrl,
         object parameters,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, parameters, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -112,7 +103,7 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -122,18 +113,16 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         MultipartFormDataContent multipartFormDataContent,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(multipartFormDataContent);
+        CheckArguments(clientName, routeUrl, multipartFormDataContent);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -144,15 +133,12 @@ internal sealed class RestManager : IRestService
         string routeUrl,
         MultipartFormDataContent multipartFormDataContent,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(multipartFormDataContent);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, multipartFormDataContent, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
-       
+
         foreach (var key in nameValueCollection.AllKeys)
         {
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
@@ -161,7 +147,7 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -171,21 +157,19 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         IList<KeyValuePair<string, string>> keyValuePairs,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(keyValuePairs);
+        CheckArguments(clientName, routeUrl, keyValuePairs);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
-        
+
         using FormUrlEncodedContent content = new(keyValuePairs);
         HttpRequestMessage request = new(HttpMethod.Post, routeUrl) { Content = content };
 
         HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -196,15 +180,12 @@ internal sealed class RestManager : IRestService
         string routeUrl,
         IList<KeyValuePair<string, string>> keyValuePairs,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(keyValuePairs);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, keyValuePairs, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
-       
+
         foreach (var key in nameValueCollection.AllKeys)
         {
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
@@ -216,23 +197,22 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
     }
 
-    public async Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
+    public async Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        CheckArguments(clientName, routeUrl);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, default(TResponse), cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -242,18 +222,16 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         object parameters,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
+        CheckArguments(clientName, routeUrl, parameters);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -264,12 +242,9 @@ internal sealed class RestManager : IRestService
         string routeUrl,
         object parameters,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, parameters, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -281,7 +256,7 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -291,18 +266,16 @@ internal sealed class RestManager : IRestService
         string clientName,
         string routeUrl,
         object parameters,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
+        CheckArguments(clientName, routeUrl, parameters);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -313,12 +286,9 @@ internal sealed class RestManager : IRestService
         string routeUrl,
         object parameters,
         NameValueCollection nameValueCollection,
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(parameters);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, parameters, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -330,23 +300,22 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
     }
 
-    public async Task<TResponse> DeleteApiResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken = default) where TResponse : class, new()
+    public async Task<TResponse> DeleteApiResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        CheckArguments(clientName, routeUrl);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
         HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
@@ -354,13 +323,11 @@ internal sealed class RestManager : IRestService
 
     public async Task<TResponse> DeleteApiResponseAsync<TResponse>(
         string clientName,
-        string routeUrl, 
-        NameValueCollection nameValueCollection, 
-        CancellationToken cancellationToken = default) where TResponse : class, new()
+        string routeUrl,
+        NameValueCollection nameValueCollection,
+        CancellationToken cancellationToken) where TResponse : class, new()
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientName);
-        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
-        ArgumentNullException.ThrowIfNull(nameValueCollection);
+        CheckArguments(clientName, routeUrl, nameValueCollection);
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
@@ -372,9 +339,67 @@ internal sealed class RestManager : IRestService
         HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
+            _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
         return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, NameValueCollection nameValueCollection)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(nameValueCollection);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, object parameters)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(parameters);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(keyValuePairs);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, IList<KeyValuePair<string, string>> keyValuePairs, NameValueCollection nameValueCollection)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(keyValuePairs);
+        ArgumentNullException.ThrowIfNull(nameValueCollection);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(multipartFormDataContent);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, MultipartFormDataContent multipartFormDataContent, NameValueCollection nameValueCollection)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(multipartFormDataContent);
+        ArgumentNullException.ThrowIfNull(nameValueCollection);
+    }
+
+    private static void CheckArguments(string clientName, string routeUrl, object parameters, NameValueCollection nameValueCollection)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientName);
+        ArgumentException.ThrowIfNullOrEmpty(routeUrl);
+        ArgumentNullException.ThrowIfNull(parameters);
+        ArgumentNullException.ThrowIfNull(nameValueCollection);
     }
 }

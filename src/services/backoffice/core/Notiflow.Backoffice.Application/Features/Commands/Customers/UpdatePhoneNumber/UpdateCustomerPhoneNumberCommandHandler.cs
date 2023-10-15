@@ -16,21 +16,20 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            _logger.LogWarning("Customer not found. ID: {@id}", request.Id);
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
         }
 
-        if (customer.PhoneNumber == request.PhoneNumber)
+        if (string.Equals(customer.PhoneNumber, request.PhoneNumber))
         {
-            _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {@id}", request.Id);
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.CUSTOMER_PHONE_NUMBER_SAME);
+            _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {id}", request.Id);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
         customer.PhoneNumber = request.PhoneNumber;
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("The customer's phone number has been updated. Customer ID: {@id}", request.Id);
+        _logger.LogInformation("The customer's phone number has been updated. ID: {id}", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_PHONE_NUMBER_UPDATED, Unit.Value);
     }

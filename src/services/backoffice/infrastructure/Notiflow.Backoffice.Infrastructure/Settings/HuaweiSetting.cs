@@ -3,11 +3,8 @@
 internal sealed record HuaweiSetting
 {
     [JsonRequired]
-    public required Uri BaseAddress { get; init; }
+    public required string SendServiceUrl { get; init; }
 
     [JsonRequired]
-    public required string AuthenticationRoute { get; set; }
-
-    [JsonRequired]
-    public required string NotificationRoute { get; set; }
+    public required string AuthTokenServiceUrl { get; init; }
 }

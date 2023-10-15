@@ -4,53 +4,52 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        IConfiguration configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+
         services.TryAddSingleton<IEmailService, EmailManager>();
         services.TryAddSingleton<ITextMessageService, TextMessageManager>();
 
         services
-            .AddFirebase()
-            .AddHuawei();
-
-        services
-             .AddRouteSettings()
-             .AddRestApiService();
+            .AddLowercaseRouting()
+            .AddRestApiService()
+            .AddFirebaseService(configuration)
+            .AddHuaweiService(configuration);
 
         return services;
     }
 
-    private static IServiceCollection AddFirebase(this IServiceCollection services)
+    private static IServiceCollection AddFirebaseService(this IServiceCollection services, IConfiguration configuration)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
         IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(FirebaseSetting));
         services.Configure<FirebaseSetting>(configurationSection);
         FirebaseSetting firebaseSetting = configurationSection.Get<FirebaseSetting>();
 
-        services.AddHttpClient("firebase", configure =>
+        services.AddHttpClient(nameof(FirebaseManager), httpClient =>
         {
-            configure.BaseAddress = firebaseSetting.BaseAddress;
+            httpClient.BaseAddress = firebaseSetting.BaseAddress;
+            httpClient.Timeout = TimeSpan.FromSeconds(15);
+            httpClient.DefaultRequestHeaders.ExpectContinue = false;
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         });
 
-        return services.AddSingleton<IFirebaseService, FirebaseManager>();
+        services.TryAddSingleton<IFirebaseService, FirebaseManager>();
+
+        return services;
     }
 
-    private static IServiceCollection AddHuawei(this IServiceCollection services)
+    private static IServiceCollection AddHuaweiService(this IServiceCollection services, IConfiguration configuration)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        services.Configure<HuaweiSetting>(configuration.GetRequiredSection(nameof(HuaweiSetting)));
 
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(HuaweiSetting));
-        services.Configure<HuaweiSetting>(configurationSection);
-        HuaweiSetting huaweiSetting = configurationSection.Get<HuaweiSetting>();
-
-        services.AddHttpClient("huawei", configure =>
+        services.AddHttpClient(nameof(HuaweiManager), httpClient =>
         {
-            configure.BaseAddress = huaweiSetting.BaseAddress;
+            httpClient.Timeout = TimeSpan.FromSeconds(15);
+            httpClient.DefaultRequestHeaders.ExpectContinue = false;
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         });
 
-        return services.AddSingleton<IHuaweiService, HuaweiManager>();
+        services.TryAddSingleton<IHuaweiService, HuaweiManager>();
+
+        return services;
     }
 }

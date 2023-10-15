@@ -49,23 +49,17 @@ internal sealed class EmailManager : IEmailService
             mailMessage.Bcc.Add(emailAddress);
         }
 
-        bool succeeded = default;
-
+        
         try
         {
             await smtpClient.SendMailAsync(mailMessage);
-            succeeded = true;
+            return true;
         }
         catch (Exception exception)
         {
             _logger.LogError(exception, "Email sending failed.");
         }
-        finally
-        {
-            smtpClient.Dispose();
-            mailMessage.Dispose();
-        }
 
-        return succeeded;
+        return default;
     }
 }

@@ -4,7 +4,7 @@
 /// Migration manager extensions
 /// <see cref="DbContext"/> 
 /// <see cref="IServiceCollection"/>
-/// <see cref="IWebHostEnvironment"/>
+/// <see cref="IHostEnvironment"/>
 /// </summary>
 public static class MigrationManagerExtensions
 {
@@ -18,8 +18,8 @@ public static class MigrationManagerExtensions
         await using AsyncServiceScope asyncServiceScope = services.BuildServiceProvider().CreateAsyncScope();
         IServiceProvider serviceProvider = asyncServiceScope.ServiceProvider;
 
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
-        if (webHostEnvironment.IsProduction())
+        IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
+        if (hostEnvironment.IsProduction())
             return;
 
         var logger = serviceProvider.GetRequiredService<ILogger<TDbContext>>();

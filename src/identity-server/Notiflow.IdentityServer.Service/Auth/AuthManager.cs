@@ -28,14 +28,14 @@ internal class AuthManager : IAuthService
         if (user is null)
         {
             _logger.LogInformation("No user found with username {@username}.", request.Username);
-            return ApiResponse<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Failure(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(user);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", request.Username);
-            return ApiResponse<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Failure(-1);
         }
 
         return tokenResponse;
@@ -50,14 +50,14 @@ internal class AuthManager : IAuthService
         if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return ApiResponse<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Failure(-1);
         }
 
         var tokenResponse = _tokenService.CreateToken(refreshToken.User);
         if (!tokenResponse.Succeeded)
         {
             _logger.LogWarning("Failed to generate access token for {@username} user.", refreshToken.User.Username);
-            return ApiResponse<TokenResponse>.Fail(-1);
+            return ApiResponse<TokenResponse>.Failure(-1);
         }
 
         refreshToken.Token = tokenResponse.Data.RefreshToken;
@@ -74,14 +74,14 @@ internal class AuthManager : IAuthService
         if (refreshToken is null)
         {
             _logger.LogInformation("Refresh token not found.");
-            return ApiResponse<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Failure(-1);
         }
 
         int numberOfRowsDeleted = await _appDbContext.RefreshTokens.Where(p => p.Token == refreshToken.Token).ExecuteDeleteAsync(cancellationToken);
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete refresh token.");
-            return ApiResponse<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Failure(-1);
         }
 
         return ApiResponse<EmptyResponse>.Success(-1);
@@ -93,7 +93,7 @@ internal class AuthManager : IAuthService
         if (user is null)
         {
             _logger.LogInformation("No authorized user found.");
-            return ApiResponse<UserResponse>.Fail(-1);
+            return ApiResponse<UserResponse>.Failure(-1);
         }
 
         return ApiResponse<UserResponse>.Success(user.Adapt<UserResponse>());

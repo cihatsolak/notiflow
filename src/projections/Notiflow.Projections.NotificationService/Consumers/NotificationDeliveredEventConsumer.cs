@@ -2,24 +2,22 @@
 
 public sealed class NotificationDeliveredEventConsumer : IConsumer<NotificationDeliveredEvent>
 {
-    private readonly NotiflowDbSetting _notiflowDbSetting;
+    private readonly IDbConnection _connection;
     private readonly ILogger<NotificationDeliveredEventConsumer> _logger;
 
     public NotificationDeliveredEventConsumer(
-        IOptions<NotiflowDbSetting> notiflowDbSetting,
+        IDbConnection connection, 
         ILogger<NotificationDeliveredEventConsumer> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting.Value;
+        _connection = connection;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<NotificationDeliveredEvent> context)
     {
-        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
-
         try
         {
-            await npgSqlConnection
+            await _connection
                     .ExecuteAsync("insert into notificationhistory (title, message, image_url, sender_identity, is_sent, error_message, sent_date, customer_id) values (@title, @message, @image_url, @sender_identity, @is_sent, @error_message, @sent_date, @customer_id)",
                     new
                     {
@@ -38,11 +36,7 @@ public sealed class NotificationDeliveredEventConsumer : IConsumer<NotificationD
         catch (Exception ex)
         {
             _logger.LogError(ex, "The sent notification could not be saved to the database.");
-        }
-        finally
-        {
-            await npgSqlConnection.CloseAsync();
-            await npgSqlConnection.DisposeAsync();
+            throw;
         }
     }
 }

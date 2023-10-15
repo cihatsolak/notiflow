@@ -48,9 +48,9 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, IWebHostEnvironment webHostEnvironment)
+    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, IHostEnvironment hostEnvironment)
     {
-        if (!webHostEnvironment.IsProduction())
+        if (!hostEnvironment.IsProduction())
             return services;
 
         services.AddHttpsRedirection(options =>
@@ -102,7 +102,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddCors(options =>
         {
-            options.AddPolicy(Assembly.GetEntryAssembly().GetName().Name, builder => builder
+            options.AddPolicy(Assembly.GetCallingAssembly().GetName().Name, builder => builder
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()

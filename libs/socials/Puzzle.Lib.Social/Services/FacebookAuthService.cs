@@ -26,7 +26,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
-            _logger.LogInformation("Failed to verify facebook access token. Access token: {@}", accessToken);
+            _logger.LogInformation("Failed to verify facebook access token. Access token: {accessToken}", accessToken);
             return default;
         }
 
@@ -43,7 +43,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
-            _logger.LogInformation("Facebook user information could not be accessed. Access token: {@accessToken}", accessToken);
+            _logger.LogInformation("Facebook user information could not be accessed. Access token: {accessToken}", accessToken);
             return default;
         }
 

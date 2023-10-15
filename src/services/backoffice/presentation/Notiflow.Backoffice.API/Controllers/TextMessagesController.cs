@@ -1,5 +1,6 @@
 ﻿namespace Notiflow.Backoffice.API.Controllers;
 
+[Route("api/text-messages")]
 public sealed class TextMessagesController : BaseApiController
 {
     /// <summary>
@@ -17,7 +18,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -35,7 +36,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -47,13 +48,13 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="200">Operation successful</response>
     /// <response code="400">Message could not be sent</response>
     /// <response code="401">Unauthorized action</response>
-    [Authorize(Policy = "TextMessagePermissionRestriction")]
+    [Authorize(Policy = PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION)]
     [HttpPost("send")]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return HttpResult.Ok(response);
+        return Result.Ok(response);
     }
 }

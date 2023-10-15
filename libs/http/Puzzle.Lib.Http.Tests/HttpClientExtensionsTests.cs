@@ -1,3 +1,5 @@
+using Puzzle.Lib.Http.Infrastructure;
+
 namespace Puzzle.Lib.Http.Tests
 {
     public class HttpClientExtensionsTests

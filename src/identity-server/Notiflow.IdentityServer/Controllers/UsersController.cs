@@ -24,7 +24,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.GetDetailAsync(id, cancellationToken);
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);
-        return HttpResult.Created(response, nameof(GetDetail));
+        return Result.Created(response, nameof(GetDetail));
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateAsync(id, request, cancellationToken);
-        return HttpResult.NoContent(response);
+        return Result.NoContent(response);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var response = await _userService.DeleteAsync(id, cancellationToken);
-        return HttpResult.NoContent(response);
+        return Result.NoContent(response);
     }
 
     /// <summary>
@@ -98,6 +98,6 @@ public sealed class UsersController : BaseApiController
     public async Task<IActionResult> UpdateProfilePhoto(int id, [FromForm] IFormFile profilePhoto, CancellationToken cancellationToken)
     {
         var response = await _userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
-        return HttpResult.NoContent(response);
+        return Result.NoContent(response);
     }
 }

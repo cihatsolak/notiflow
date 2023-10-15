@@ -2,10 +2,8 @@
 
 internal static class MassTransitContainerBuilderExtensions
 {
-    internal static IServiceCollection AddCustomMassTransit(this IServiceCollection services)
+    internal static IServiceCollection AddCustomMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
         RabbitMqStandaloneSetting rabbitMqStandaloneSetting = configuration.GetRequiredSection(nameof(RabbitMqStandaloneSetting)).Get<RabbitMqStandaloneSetting>();
 
         services.AddMassTransit(serviceCollectionBusConfigurator =>

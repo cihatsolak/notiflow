@@ -2,21 +2,19 @@
 
 public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
 {
-    private readonly NotiflowDbSetting _notiflowDbSetting;
+    private readonly IDbConnection _connection;
     private readonly ILogger<TextMessageDeliveredEventConsumer> _logger;
 
     public TextMessageDeliveredEventConsumer(
-        IOptions<NotiflowDbSetting> notiflowDbSetting,
+        IDbConnection connection, 
         ILogger<TextMessageDeliveredEventConsumer> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting.Value;
+        _connection = connection;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<TextMessageDeliveredEvent> context)
     {
-        using NpgsqlConnection npgSqlConnection = new(_notiflowDbSetting.ConnectionString);
-
         try
         {
             var textMessageHistories = context.Message.CustomerIds.Select(customerId => new
@@ -27,7 +25,7 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
                 customer_id = customerId
             });
 
-            await npgSqlConnection
+            await _connection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, sent_date, customer_id) values (@message, @is_sent, @sent_date, @customer_id)",
                      textMessageHistories);
 
@@ -36,11 +34,7 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
         catch (Exception exception)
         {
             _logger.LogError(exception, "The sent messages could not be saved to the database.");
-        }
-        finally
-        {
-            await npgSqlConnection.CloseAsync();
-            await npgSqlConnection.DisposeAsync();
+            throw;
         }
     }
 }

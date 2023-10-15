@@ -12,7 +12,8 @@ public static class PhoneFormatterExtensions
     /// <returns>The phone number formatted in GSM format. {0:0 ### ### ## ##}</returns>
     public static string ToMobilePhoneFormat(this string mobilePhone)
     {
-        ArgumentException.ThrowIfNullOrEmpty(mobilePhone);
+        if (string.IsNullOrWhiteSpace(mobilePhone))
+            return mobilePhone;
 
         return string.Format("{0:0 ### ### ## ##}", long.Parse(mobilePhone));
     }

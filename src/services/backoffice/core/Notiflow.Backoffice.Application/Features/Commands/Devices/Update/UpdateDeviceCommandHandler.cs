@@ -18,15 +18,14 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            _logger.LogWarning("The device with id {@id} was not found.", request.Id);
-            return ApiResponse<Unit>.Fail(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return ApiResponse<Unit>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
         }
-
+        
         ObjectMapper.Mapper.Map(request, device);
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Updated device information with {@id} id.", request.Id);
+        _logger.LogInformation("Device information updated. Device ID: {id}", request.Id);
 
         return ApiResponse<Unit>.Success(ResponseCodes.Success.DEVICE_UPDATED, Unit.Value);
     }

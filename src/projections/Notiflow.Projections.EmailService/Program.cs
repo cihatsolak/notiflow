@@ -1,28 +1,25 @@
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((builder, services) =>
     {
-        services
-        .AddNotiflowDbSetting()
-        .AddCustomMassTransit();
+        services.AddCustomMassTransit(builder.Configuration);
+
+        services.AddScoped<IDbConnection>(provider => new NpgsqlConnection(builder.Configuration.GetConnectionString("BackOfficeDb")));
 
         services.AddHostedService<EmailServiceWorker>();
     })
     .Build();
 
 var logger = host.Services.GetRequiredService<ILogger<EmailServiceWorker>>();
-var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
-
-string applicationName = hostEnvironment.ApplicationName;
 
 try
 {
-    logger.LogInformation("-- Starting web host: {@applicationName} --", applicationName);
+    logger.LogInformation("Starting worker service.");
 
     await host.RunAsync();
 }
 catch (Exception ex)
 {
-    logger.LogCritical(ex, "-- Host terminated unexpectedly. {@applicationName} -- ", applicationName);
+    logger.LogCritical(ex, "Host terminated unexpectedly.");
     await host.StopAsync();
 }
 finally

@@ -21,7 +21,7 @@ public sealed class LanguageBehaviour<TRequest, TResponse> : IPipelineBehavior<T
 
         Type source = response.GetType();
 
-        int code = (int)source.GetProperty(nameof(ApiResponse<object>.Code)).GetValue(response);
+        int code = (int)source.GetProperty(nameof(ApiResponse<object>.HttpStatusCode)).GetValue(response);
         if (Math.Sign(code) != 1)
         {
             _logger.LogWarning("There is no multilingual message for the response code. Code to be served: {@code}", code);

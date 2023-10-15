@@ -26,7 +26,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return ApiResponse<TenantPermissionResponse>.Fail(-1);
+            return ApiResponse<TenantPermissionResponse>.Failure(-1);
         }
 
         return ApiResponse<TenantPermissionResponse>.Success(tenantPermission);
@@ -38,7 +38,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         if (tenantPermission is null)
         {
             _logger.LogInformation("Tenant permissions not found.");
-            return ApiResponse<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Failure(-1);
         }
 
         List<Task<bool>> tenantPermissionCachingTasks = new();

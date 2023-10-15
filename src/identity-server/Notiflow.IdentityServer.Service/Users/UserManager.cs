@@ -22,7 +22,7 @@ internal sealed class UserManager : IUserService
         if (user is null)
         {
             _logger.LogInformation("User not found by ID {@userId}.", id);
-            return ApiResponse<UserResponse>.Fail(-1);
+            return ApiResponse<UserResponse>.Failure(-1);
         }
 
         return ApiResponse<UserResponse>.Success(user.Adapt<UserResponse>());
@@ -34,7 +34,7 @@ internal sealed class UserManager : IUserService
         if (isExists)
         {
             _logger.LogInformation("There is an existing user by username or e-mail.");
-            return ApiResponse<int>.Fail(-1);
+            return ApiResponse<int>.Failure(-1);
         }
 
         var user = request.Adapt<User>();
@@ -52,7 +52,7 @@ internal sealed class UserManager : IUserService
         if (user is null)
         {
             _logger.LogInformation("User not found by ID {@userId}.", id);
-            return ApiResponse<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Failure(-1);
         }
 
         request.Adapt(user);
@@ -83,7 +83,7 @@ internal sealed class UserManager : IUserService
         if (numberOfRowsDeleted != 1)
         {
             _logger.LogInformation("Could not delete user of ID {@userId}.", id);
-            return ApiResponse<EmptyResponse>.Fail(-1);
+            return ApiResponse<EmptyResponse>.Failure(-1);
         }
 
         return ApiResponse<EmptyResponse>.Success(1);
@@ -95,14 +95,14 @@ internal sealed class UserManager : IUserService
         if (user is null)
         {
             _logger.LogInformation("User not found by ID {@userId}.", id);
-            return ApiResponse<string>.Fail(-1);
+            return ApiResponse<string>.Failure(-1);
         }
         
         var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, FilePaths.PROFILE_PHOTOS, cancellationToken);
         if (!fileProcessResult.Succeeded)
         {
             _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
-            return ApiResponse<string>.Fail(-1);
+            return ApiResponse<string>.Failure(-1);
         }
 
         user.Avatar = fileProcessResult.Url;

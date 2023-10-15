@@ -2,7 +2,7 @@
 
 internal static class HealthChecksContainerBuilderExtensions
 {
-    internal static IServiceCollection AddConfigureHealthChecks(this IServiceCollection services)
+    internal static IServiceCollection AddBackofficeHealthChecks(this IServiceCollection services)
     {
         IConfiguration configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 

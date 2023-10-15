@@ -16,7 +16,7 @@ public sealed class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavio
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _stopwatch.Start();
-        TResponse response = await next();
+        TResponse response = await next().ConfigureAwait(false);
         _stopwatch.Stop();
 
         var elapsedSeconds = _stopwatch.Elapsed.TotalSeconds;

@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Exceptions;
-
-namespace Notiflow.Backoffice.Persistence.Contexts;
+﻿namespace Notiflow.Backoffice.Persistence.Contexts;
 
 public sealed class NotiflowDbContext : DbContext
 {
@@ -13,7 +11,7 @@ public sealed class NotiflowDbContext : DbContext
         if (httpContextAccessor?.HttpContext is null)
             return;
 
-        var tenantIdClaim = httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid);
+        var tenantIdClaim = httpContextAccessor.HttpContext?.User?.Claims?.SingleOrDefault(claim => claim.Type == ClaimTypes.PrimaryGroupSid);
         if (tenantIdClaim is null)
         {
             throw new TenantException("Unauthorized transaction detected.");

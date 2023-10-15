@@ -1,3 +1,5 @@
+using Puzzle.Lib.Security.Infrastructure;
+
 namespace Puzzle.Lib.Security.Tests
 {
     public sealed class SecurityExtensionsTests

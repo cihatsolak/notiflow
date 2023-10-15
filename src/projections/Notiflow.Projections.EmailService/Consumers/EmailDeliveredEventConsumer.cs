@@ -2,22 +2,20 @@
 
 public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
 {
-    private readonly NotiflowDbSetting _notiflowDbSetting;
+    private readonly IDbConnection _connection;
     private readonly ILogger<EmailDeliveredEvent> _logger;
 
     public EmailDeliveredEventConsumer(
-        IOptions<NotiflowDbSetting> notiflowDbSetting, 
+        IDbConnection connection,
         ILogger<EmailDeliveredEvent> logger)
     {
-        _notiflowDbSetting = notiflowDbSetting.Value;
+        _connection = connection;
         _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
-        using NpgsqlConnection npgsqlConnection = new(_notiflowDbSetting.ConnectionString);
-        await npgsqlConnection.OpenAsync();
-        using NpgsqlTransaction npgsqlTransaction = await npgsqlConnection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        IDbTransaction transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
 
         try
         {
@@ -35,13 +33,13 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
                 customer_id = customerId
             });
 
-            await npgsqlConnection
+            await _connection
                 .ExecuteAsync(
                  "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
                  emailHistories,
-                 npgsqlTransaction);
+                 transaction);
 
-            await npgsqlTransaction.CommitAsync();
+            transaction.Commit();
 
             _logger.LogInformation("Successful e-mail sending information has been saved in the database.");
         }
@@ -49,13 +47,8 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
         {
             _logger.LogError(exception, "Failed to save successful e-mail sending information to database.");
 
-            await npgsqlTransaction.RollbackAsync();
-        }
-        finally
-        {
-            await npgsqlTransaction.DisposeAsync();
-            await npgsqlConnection.CloseAsync();
-            await npgsqlConnection.DisposeAsync();
+            transaction.Rollback();
+            throw;
         }
     }
 

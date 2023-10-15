@@ -5,15 +5,6 @@
 /// </summary>
 public static partial class UrlExtensions
 {
-    [GeneratedRegex("\\s", RegexOptions.Compiled)]
-    private static partial Regex SpaceToDashConverter();
-
-    [GeneratedRegex("[^a-z0-9\\s-_]", RegexOptions.Compiled)]
-    private static partial Regex NonAlphanumericRemover();
-
-    [GeneratedRegex("([-_]){2,}", RegexOptions.Compiled)]
-    private static partial Regex ConsecutiveSymbolReducer();
-
     /// <summary>
     /// Converts a string to a slug URL format.
     /// </summary>
@@ -35,4 +26,16 @@ public static partial class UrlExtensions
 
         return text;
     }
+}
+
+public static partial class UrlExtensions
+{
+    [GeneratedRegex("\\s", RegexOptions.Compiled)]
+    private static partial Regex SpaceToDashConverter();
+
+    [GeneratedRegex("[^a-z0-9\\s-_]", RegexOptions.Compiled)]
+    private static partial Regex NonAlphanumericRemover();
+
+    [GeneratedRegex("([-_]){2,}", RegexOptions.Compiled)]
+    private static partial Regex ConsecutiveSymbolReducer();
 }

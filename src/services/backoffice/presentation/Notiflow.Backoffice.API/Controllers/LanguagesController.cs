@@ -16,6 +16,6 @@ public class LanguagesController : BaseApiController
     public async Task<IActionResult> AllLanguages()
     {
         var response = await Sender.Send(new SupportedCulturesQuery());
-        return HttpResult.Get(response);
+        return Result.Get(response);
     }
 }

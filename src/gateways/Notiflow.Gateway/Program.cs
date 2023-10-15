@@ -1,5 +1,3 @@
-using Puzzle.Lib.HealthCheck;
-
 var builder = WebApplication.CreateBuilder(args);
 
 string environmentName = builder.Environment.EnvironmentName;
@@ -17,16 +15,18 @@ builder.Services.AddControllers();
 builder.Services.AddOcelot(builder.Configuration);
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
+List<HealthCheckEndpointSetting> healthCheckEndpointSetting =
+    builder.Configuration.GetRequiredSection(nameof(HealthCheckEndpointSetting)).Get<List<HealthCheckEndpointSetting>>();
+
 builder.Services.AddHealthChecks();
 builder.Services.AddHealthChecksUI(settings =>
 {
-    settings.AddHealthCheckEndpoint("Notiflow.Gateway", "https://localhost:7282/health");
-    settings.AddHealthCheckEndpoint("Notiflow.IdentityServer", "https://localhost:7006/health");
-    settings.AddHealthCheckEndpoint("Notiflow.Backoffice.API", "https://localhost:7139/health");
-    //settings.SetEvaluationTimeInSeconds(60);
-    //settings.SetApiMaxActiveRequests(150);
-    //settings.MaximumHistoryEntriesPerEndpoint(5000);
-}).AddInMemoryStorage(databaseName: Guid.NewGuid().ToString());
+    foreach (var endpoint in healthCheckEndpointSetting.OrEmptyIfNull())
+    {
+        settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
+    }
+})
+.AddInMemoryStorage(databaseName: Guid.NewGuid().ToString());
 
 var app = builder.Build();
 
@@ -37,11 +37,6 @@ app.UseSwaggerForOcelotUI(options =>
 
 app.UseHealthChecksConfiguration();
 
-app.UseHealthChecksUI(setup =>
-{
-    setup.UIPath = "/health-ui";
-});
-
 await app.UseOcelot();
 
-await app.RunAsync();
+await app.RunAsync(CancellationToken.None);

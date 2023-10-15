@@ -28,8 +28,7 @@ internal sealed class ProtectorManager : IProtectorService
     public string TimeDependentEncrypt<TData>(TData flatData, int minutesToExpire)
     {
         ArgumentNullException.ThrowIfNull(flatData);
-        SecurityArgumentException.ThrowIfNegativeNumber(minutesToExpire);
-
+       
         return _timeLimitedDataProtector.Protect(JsonSerializer.Serialize(flatData), TimeSpan.FromMinutes(minutesToExpire));
     }
 

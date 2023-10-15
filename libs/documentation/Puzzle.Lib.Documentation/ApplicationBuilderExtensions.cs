@@ -10,9 +10,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
     {
-        if (webHostEnvironment.IsProduction())
+        if (hostEnvironment.IsProduction())
             return app;
 
         app.UseSwagger();
@@ -31,9 +31,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
+    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
     {
-        if (webHostEnvironment.IsProduction())
+        if (hostEnvironment.IsProduction())
             return app;
 
         SwaggerSetting swaggerSetting = app.ApplicationServices.GetRequiredService<IOptions<SwaggerSetting>>().Value;
@@ -52,9 +52,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
+    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
     {
-        return app.UseSwaggerDoc(webHostEnvironment).UseRedoclyDoc(webHostEnvironment);
+        return app.UseSwaggerDoc(hostEnvironment).UseRedoclyDoc(hostEnvironment);
     }
 
     /// <summary>

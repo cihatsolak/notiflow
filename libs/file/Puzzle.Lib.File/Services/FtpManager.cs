@@ -16,76 +16,74 @@ public sealed class FtpManager : IFileService
         _logger = logger;
     }
 
-    public async Task<FileProcessResult> AddIfNoExistsAsync(byte[] fileData, string path, CancellationToken cancellationToken)
+    public async Task<FileResult> AddIfNoExistsAsync(byte[] fileData, string path, CancellationToken cancellationToken)
     {
+        CheckArguments(fileData, path);
+
         bool isExists = await _asyncFtpClient.FileExists(path, cancellationToken);
         if (isExists)
         {
-            _logger.LogWarning("-- '{@path}' -- the file you want to save in path exists.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- the file you want to save in path exists.", path);
+            return FileResult.Fail();
         }
 
         FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(fileData, path, FtpRemoteExists.Skip, true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
         {
-            _logger.LogWarning("-- '{@path}' -- Could not save file to path.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- Could not save file to path.", path);
+            return FileResult.Fail();
         }
 
-        return FileProcessResult.Success($"{_ftpSetting.Url}{path}");
+        return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileProcessResult> AddIfNoExistsAsync(IFormFile formFile, string path, CancellationToken cancellationToken)
+    public async Task<FileResult> AddIfNoExistsAsync(IFormFile formFile, string path, CancellationToken cancellationToken)
     {
-        bool isExists = await _asyncFtpClient.FileExists($"{path}/{formFile.FileName}", cancellationToken);
+        CheckArguments(formFile, path);
+
+        string fileName = FileExtensions.CharacterRegulatory(formFile.FileName);
+
+        bool isExists = await _asyncFtpClient.FileExists($"{path}/{fileName}", cancellationToken);
         if (isExists)
         {
-            _logger.LogWarning("-- '{@path}' -- the file you want to save in path exists.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- the file you want to save in path exists.", path);
+            return FileResult.Fail();
         }
 
         using MemoryStream memoryStream = new();
         await formFile.CopyToAsync(memoryStream, cancellationToken);
 
-        FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(memoryStream.ToArray(), $"{path}/{formFile.FileName}", FtpRemoteExists.Skip, true, token: cancellationToken);
+        FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(memoryStream.ToArray(), $"{path}/{fileName}", FtpRemoteExists.Skip, true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
         {
-            _logger.LogWarning("-- '{@path}' -- Could not save file to path.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- Could not save file to path.", path);
+            return FileResult.Fail();
         }
 
-        return FileProcessResult.Success($"{_ftpSetting.Url}{path}");
+        return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileProcessResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extention, CancellationToken cancellationToken)
+    public async Task<FileResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extention, CancellationToken cancellationToken)
     {
+        CheckArguments(fileData, directory, fileName, extention);
+
+        fileName = FileExtensions.CharacterRegulatory(fileName);
         string path = await GenerateUniqueFileNameAsync(directory, fileName, extention, cancellationToken);
-        if (string.IsNullOrEmpty(path))
-        {
-            _logger.LogWarning("loglama");
-            return FileProcessResult.Fail();
-        }
 
         FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(fileData, path, FtpRemoteExists.Skip, true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
         {
-            _logger.LogWarning("-- '{@path}' -- Could not save file to path.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- Could not save file to path.", path);
+            return FileResult.Fail();
         }
 
-        return FileProcessResult.Success($"{_ftpSetting.Url}{path}");
+        return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileProcessResult> AddAfterRenameIfAvailableAsync(IFormFile formFile, string directory, CancellationToken cancellationToken)
+    public async Task<FileResult> AddAfterRenameIfAvailableAsync(IFormFile formFile, string directory, CancellationToken cancellationToken)
     {
         string fileName = FileExtensions.CharacterRegulatory(Path.GetFileNameWithoutExtension(formFile.FileName));
-
         string path = await GenerateUniqueFileNameAsync(directory, fileName, Path.GetExtension(formFile.FileName), cancellationToken);
-        if (string.IsNullOrEmpty(path))
-        {
-            _logger.LogWarning("loglama"); //todo
-            return FileProcessResult.Fail();
-        }
 
         using MemoryStream memoryStream = new();
         await formFile.CopyToAsync(memoryStream, cancellationToken);
@@ -93,31 +91,33 @@ public sealed class FtpManager : IFileService
         FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(memoryStream.ToArray(), path, FtpRemoteExists.Skip, true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
         {
-            _logger.LogWarning("-- '{@path}' -- Could not save file to path.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- Could not save file to path.", path);
+            return FileResult.Fail();
         }
 
-        return FileProcessResult.Success($"{_ftpSetting.Url}{path}");
+        return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileProcessResult> AddOrUpdateAsync(byte[] fileData, string path, CancellationToken cancellationToken)
+    public async Task<FileResult> AddOrUpdateAsync(byte[] fileData, string path, CancellationToken cancellationToken)
     {
+        CheckArguments(fileData, path);
+
         FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(fileData, path, createRemoteDir: true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
         {
-            _logger.LogWarning("-- Could not save file to '{@path}' --.", path);
-            return FileProcessResult.Fail();
+            _logger.LogWarning("-- {path} -- Could not save file to path.", path);
+            return FileResult.Fail();
         }
 
-        return FileProcessResult.Success($"{_ftpSetting.Url}{path}");
+        return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileProcessResult> AddOrUpdateAsync(IFormFile formFile, string path, CancellationToken cancellationToken)
+    public async Task<FileResult> AddOrUpdateAsync(IFormFile formFile, string path, CancellationToken cancellationToken)
     {
         using MemoryStream memoryStream = new();
         await formFile.CopyToAsync(memoryStream, cancellationToken);
 
-        return await AddOrUpdateAsync(memoryStream.ToArray(), $"{path}/{formFile.FileName}", cancellationToken);
+        return await AddOrUpdateAsync(memoryStream.ToArray(), $"{path}/{FileExtensions.CharacterRegulatory(formFile.FileName)}", cancellationToken);
     }
 
     public async Task DeleteAsync(string path, CancellationToken cancellationToken)
@@ -131,19 +131,39 @@ public sealed class FtpManager : IFileService
 
         bool isExists = await _asyncFtpClient.FileExists(path, cancellationToken);
         if (!isExists)
-            return path;
-
-        for (int index = 1; index < int.MaxValue; index++)
         {
-            path = $"{directory}/{fileName}-{index}{extention}";
-
-            isExists = await _asyncFtpClient.FileExists(path, cancellationToken);
-            if (!isExists)
-            {
-                break;
-            }
+            return path;
         }
 
+        long index = 0;
+
+        do
+        {
+            index++;
+            path = $"{directory}/{fileName}-{index}{extention}";
+
+        } while (await _asyncFtpClient.FileExists(path, cancellationToken));
+
         return path;
+    }
+
+    private static void CheckArguments(byte[] fileData, string path)
+    {
+        ArgumentNullException.ThrowIfNull(fileData);
+        ArgumentException.ThrowIfNullOrEmpty(path);
+    }
+
+    private static void CheckArguments(IFormFile formFile, string path)
+    {
+        ArgumentNullException.ThrowIfNull(formFile);
+        ArgumentException.ThrowIfNullOrEmpty(path);
+    }
+
+    private static void CheckArguments(byte[] fileData, string directory, string fileName, string extention)
+    {
+        ArgumentNullException.ThrowIfNull(fileData);
+        ArgumentException.ThrowIfNullOrEmpty(directory);
+        ArgumentException.ThrowIfNullOrEmpty(fileName);
+        ArgumentException.ThrowIfNullOrEmpty(extention);
     }
 }

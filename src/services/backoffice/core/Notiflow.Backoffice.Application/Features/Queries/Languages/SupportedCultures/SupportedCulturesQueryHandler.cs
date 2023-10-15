@@ -4,14 +4,11 @@ namespace Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCu
 public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCulturesQuery, ApiResponse<IEnumerable<SupportedCulturesQueryResult>>>
 {
     private readonly RequestLocalizationOptions _localizationOptions;
-    private readonly ILogger<SupportedCulturesQueryHandler> _logger;
 
     public SupportedCulturesQueryHandler(
-        IOptions<RequestLocalizationOptions> localizationOptions,
-        ILogger<SupportedCulturesQueryHandler> logger)
+        IOptions<RequestLocalizationOptions> localizationOptions)
     {
         _localizationOptions = localizationOptions.Value;
-        _logger = logger;
     }
 
     public Task<ApiResponse<IEnumerable<SupportedCulturesQueryResult>>> Handle(SupportedCulturesQuery request, CancellationToken cancellationToken)
@@ -25,8 +22,7 @@ public sealed class SupportedCulturesQueryHandler : IRequestHandler<SupportedCul
 
         if (supportedCultures.IsNullOrNotAny())
         {
-            _logger.LogInformation("No supported language found.");
-            return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Fail(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
+            return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Failure(ResponseCodes.Error.SUPPORTED_LANGUAGES_NOT_FOUND));
         }
 
         return Task.FromResult(ApiResponse<IEnumerable<SupportedCulturesQueryResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, supportedCultures));

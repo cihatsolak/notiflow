@@ -12,6 +12,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
     public static IServiceCollection AddRestApiService(this IServiceCollection services)
     {
+        ILogger logger = services.BuildServiceProvider().GetRequiredService<ILogger<RestManager>>();
+        HttpClientCircuitBreakerPattern.Logger = logger;
+        HttpClientRetryPattern.Logger = logger;
+
         services.AddHttpClient();
         services.TryAddSingleton<IRestService, RestManager>();
 

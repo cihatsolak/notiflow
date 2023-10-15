@@ -13,12 +13,16 @@ public sealed class CorrelationIdMiddleware
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        string correlationId = Guid.NewGuid().ToString();
+        string correlationId;
 
         bool isCorrelationIdExists = httpContext.Request.Headers.TryGetValue("x-correlation-id", out var values);
         if (isCorrelationIdExists)
         {
             correlationId = values.First();
+        }
+        else
+        {
+            correlationId = Guid.NewGuid().ToString();
         }
 
         _httpContextAccesor.HttpContext.Request.Headers.TryAdd("x-correlation-id", correlationId);

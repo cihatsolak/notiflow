@@ -3,14 +3,11 @@
 public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, ApiResponse<GetNotificationHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetNotificationHistoryByIdQueryHandler> _logger;
 
     public GetNotificationHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<GetNotificationHistoryByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetNotificationHistoryByIdQueryResult>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
@@ -18,8 +15,7 @@ public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<Get
         var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
-            _logger.LogInformation("Notification with ID {@notificationId} was not found.", request.Id);
-            return ApiResponse<GetNotificationHistoryByIdQueryResult>.Fail(ResponseCodes.Error.NOTIFICATION_NOT_FOUND);
+            return ApiResponse<GetNotificationHistoryByIdQueryResult>.Failure(ResponseCodes.Error.NOTIFICATION_NOT_FOUND);
         }
 
         var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResult>(notificationHistory);

@@ -26,7 +26,7 @@ internal class TenantManager : ITenantService
         if (tenants.IsNullOrNotAny())
         {
             _logger.LogWarning("The tenants information could not be found.");
-            return ApiResponse<List<Tenant>>.Fail(-1);
+            return ApiResponse<List<Tenant>>.Failure(-1);
         }
 
         return ApiResponse<List<Tenant>>.Success(tenants);

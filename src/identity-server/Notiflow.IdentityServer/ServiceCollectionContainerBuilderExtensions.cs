@@ -1,11 +1,11 @@
-﻿using Puzzle.Lib.Auth.Infrastructure;
-
-namespace Notiflow.IdentityServer;
+﻿namespace Notiflow.IdentityServer;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
     internal static IServiceCollection AddWebDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        IHostEnvironment hostEnvironment = services.BuildServiceProvider().GetRequiredService<IHostEnvironment>();
+
         JwtTokenSetting jwtTokenSetting = configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
@@ -35,14 +35,14 @@ internal static class ServiceCollectionContainerBuilderExtensions
 
         services.AddApiVersion(options =>
         {
-            options.HeaderName = apiVersionSetting.HeaderName;
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services.AddRouteSettings();
-        services.AddGzipResponseFastestCompress();
-        services.AddHttpSecurityPrecautions(services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>());
+        services
+            .AddLowercaseRouting()
+            .AddGzipResponseFastestCompress()
+            .AddHttpSecurityPrecautions(hostEnvironment);
         
         services.AddConfigureHealthChecks();
 

@@ -3,14 +3,11 @@
 public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, ApiResponse<GetEmailHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<GetEmailHistoryByIdQueryHandler> _logger;
 
     public GetEmailHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<GetEmailHistoryByIdQueryHandler> logger)
+        INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _logger = logger;
     }
 
     public async Task<ApiResponse<GetEmailHistoryByIdQueryResult>> Handle(GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
@@ -18,8 +15,7 @@ public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHi
         var emailHistory = await _uow.EmailHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (emailHistory is null)
         {
-            _logger.LogInformation("Email history with ID {@notificationId} was not found.", request.Id);
-            return ApiResponse<GetEmailHistoryByIdQueryResult>.Fail(ResponseCodes.Error.EMAIL_HISTORY_NOT_FOUND);
+            return ApiResponse<GetEmailHistoryByIdQueryResult>.Failure(ResponseCodes.Error.EMAIL_HISTORY_NOT_FOUND);
         }
 
         var emailHistoryDto = ObjectMapper.Mapper.Map<GetEmailHistoryByIdQueryResult>(emailHistory);

@@ -4,8 +4,8 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        
+        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
+
         services.AddMediatR(opt =>
         {
             opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -19,10 +19,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             });
         });
 
-        services.AddFluentDesignValidation();
-
-        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
-
         services.AddRedisService(options =>
         {
             options.ConnectionString = redisServerSetting.ConnectionString;
@@ -35,11 +31,13 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.AllowAdmin = redisServerSetting.AllowAdmin;
         });
 
-        services.AddHttpContextAccessor();
+        services
+            .AddMassTransit()
+            .AddHttpContextAccessor()
+            .AddFluentDesignValidation()
+            .AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddMassTransit();
         services.AddLocalization();
-
         services.Configure<RequestLocalizationOptions>(options =>
         {
             var supportedCultures = new[]

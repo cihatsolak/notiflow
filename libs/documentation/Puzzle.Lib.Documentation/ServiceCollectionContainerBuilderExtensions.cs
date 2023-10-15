@@ -99,12 +99,12 @@ public static class ServiceCollectionContainerBuilderExtensions
             Scheme = "bearer",
             Reference = new()
             {
-                Id = JwtBearerDefaults.AuthenticationScheme,
+                Id = "Bearer",
                 Type = ReferenceType.SecurityScheme
             }
         };
 
-        options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, jwtSecurityScheme);
+        options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
         options.AddSecurityRequirement(new()
         {
             { jwtSecurityScheme, Array.Empty<string>() }

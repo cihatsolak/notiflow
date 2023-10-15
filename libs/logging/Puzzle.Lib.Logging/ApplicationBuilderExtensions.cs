@@ -6,23 +6,13 @@
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Adds middleware for logging HTTP request properties.
-    /// </summary>
-    /// <param name="app">The application builder instance.</param>
-    /// <returns>The updated application builder instance.</returns>
-    public static IApplicationBuilder UseHttpRequestPropertyLogging(this IApplicationBuilder app)
-    {
-        return app.UseMiddleware<HttpRequestPropertyMiddleware>();
-    }
-
-    /// <summary>
     /// Adds middleware for logging HTTP requests and responses using Serilog.
     /// </summary>
     /// <param name="app">The application builder instance.</param>
     /// <returns>The updated application builder instance.</returns>
-    public static IApplicationBuilder UseCustomSeriLogging(this IApplicationBuilder app)
+    public static IApplicationBuilder UseSerilog(this IApplicationBuilder app)
     {
-        return app.UseSerilogRequestLogging().UseHttpRequestPropertyLogging();
+        return app.UseSerilogRequestLogging();
     }
 
     /// <summary>

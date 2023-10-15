@@ -2,6 +2,10 @@
 {
     public sealed record HuaweiNotificationResponse
     {
+        private const int SUCCESS_CODE = 80000000;
+        private const string SUCCESS_MESSAGE = "Success";
+
+
         [JsonPropertyName("code")]
         public string Code { get; init; }
 
@@ -11,8 +15,6 @@
         [JsonPropertyName("requestId")]
         public string RequestId { get; init; }
 
-#pragma warning disable S3256 // "string.IsNullOrEmpty" should be used
-        public bool Succeeded => !Code.Equals("") || !ErrorMessage.Equals("", StringComparison.OrdinalIgnoreCase);
-#pragma warning restore S3256 // "string.IsNullOrEmpty" should be used
+        public bool Succeeded => Code.Equals(SUCCESS_CODE) && ErrorMessage.Equals(SUCCESS_MESSAGE, StringComparison.OrdinalIgnoreCase);
     }
 }

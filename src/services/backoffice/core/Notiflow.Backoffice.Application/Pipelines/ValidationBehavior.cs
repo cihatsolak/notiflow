@@ -17,25 +17,25 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     {
         if (!_validators.Any())
         {
-            return await next();
+            return await next().ConfigureAwait(false);
         }
 
         var validationContext = new ValidationContext<TRequest>(request);
-        var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
+        var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(validationContext, cancellationToken))).ConfigureAwait(false);
 
         var failures = validationResults
-                   .SelectMany(validationResult => validationResult.Errors)
-                   .Where(validationFailure => validationFailure is not null);
+                   .Where(validationFailure => validationFailure is not null && validationFailure.Errors.Any())
+                   .SelectMany(validationResult => validationResult.Errors);
 
 
         _logger.LogInformation("--- Validating command {CommandType}", request.GetTypeName());
 
         if (failures.Any())
         {
-            _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeof(TRequest).Name, request, failures);
+            _logger.LogWarning("Validation errors - {CommandType} - Command: {Command} - Errors: {@ValidationErrors}", typeof(TRequest).Name, request, failures);
             throw new ValidationException(failures);
         }
 
-        return await next();
+        return await next().ConfigureAwait(false);
     }
 }

@@ -18,8 +18,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         bool isExists = await _uow.CustomerRead.IsExistsByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
         if (isExists)
         {
-            _logger.LogInformation("Phone number or e-mail address is already registered.");
-            return ApiResponse<int>.Fail(ResponseCodes.Error.CUSTOMER_EXISTS);
+            return ApiResponse<int>.Failure(ResponseCodes.Error.CUSTOMER_EXISTS);
         }
 
         var customer = ObjectMapper.Mapper.Map<Customer>(request);
@@ -27,7 +26,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         await _uow.CustomerWrite.InsertAsync(customer, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new customer with {@customerId} id has been registered.", customer.Id);
+        _logger.LogInformation("A new customer with {customerId} id has been registered.", customer.Id);
 
         return ApiResponse<int>.Success(ResponseCodes.Success.CUSTOMER_ADDED, customer.Id);
     }

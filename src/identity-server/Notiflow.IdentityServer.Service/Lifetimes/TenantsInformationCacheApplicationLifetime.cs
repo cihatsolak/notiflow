@@ -45,10 +45,6 @@ public static class TenantsInformationCacheApplicationLifetime
         {
             Logger.LogError(exception, "An error occurred while adding tenant information to the cache.");
         }
-        finally
-        {
-            await asyncServiceScope.DisposeAsync();
-        }
     }
 
 
