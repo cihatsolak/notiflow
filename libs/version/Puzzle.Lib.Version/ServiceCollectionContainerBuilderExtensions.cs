@@ -5,6 +5,8 @@
 /// </summary>
 public static class ServiceCollectionContainerBuilderExtensions
 {
+    private const string API_VERSION_HEADER_NAME = "x-api-version";
+
     /// <summary>
     /// Adds API versioning services to the specified <see cref="IServiceCollection"/>.
     /// </summary>
@@ -21,7 +23,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new(apiVersionSetting.MajorVersion, apiVersionSetting.MinorVersion);
             options.ReportApiVersions = true;
-            options.ApiVersionReader = new HeaderApiVersionReader(apiVersionSetting.HeaderName);
+            options.ApiVersionReader = new HeaderApiVersionReader(API_VERSION_HEADER_NAME);
         });
 
         return services;
@@ -44,7 +46,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new(apiVersionSetting.MajorVersion, apiVersionSetting.MinorVersion);
             options.ReportApiVersions = true;
-            options.ApiVersionReader = new HeaderApiVersionReader(apiVersionSetting.HeaderName);
+            options.ApiVersionReader = new HeaderApiVersionReader(API_VERSION_HEADER_NAME);
             options.ErrorResponses = errorResponseProvider;
         });
 

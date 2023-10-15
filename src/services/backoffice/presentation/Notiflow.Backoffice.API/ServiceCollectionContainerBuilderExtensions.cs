@@ -60,7 +60,6 @@ internal static class ServiceCollectionContainerBuilderExtensions
 
         services.AddApiVersion(options =>
         {
-            options.HeaderName = apiVersionSetting.HeaderName;
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
