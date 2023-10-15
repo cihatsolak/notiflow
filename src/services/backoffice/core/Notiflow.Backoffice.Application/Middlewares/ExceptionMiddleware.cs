@@ -54,7 +54,7 @@ public sealed class ExceptionMiddleware
             string errorCodeText = validationException.Errors.First().ErrorMessage;
             validationErrorResponse = new ApiResponse<EmptyResponse>()
             {
-                Code = int.Parse(errorCodeText),
+                HttpStatusCode = int.Parse(errorCodeText),
                 Message = _validationErrorLocalizer[errorCodeText].Value,
                 Errors = validationException.Errors.Select(p => p.ErrorMessage)
             };

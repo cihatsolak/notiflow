@@ -18,7 +18,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+        IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
 
         SqlSetting sqlSetting = new();
         configure?.Invoke(sqlSetting);
@@ -26,7 +26,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(webHostEnvironment.IsProduction());
+            contextOptions.ConfigureCustomLogs(hostEnvironment.IsProduction());
             contextOptions.UseSnakeCaseNamingConvention();
 
             contextOptions.UseNpgsql(sqlSetting.ConnectionString, sqlOptions =>
@@ -46,7 +46,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
         });
 
-        if (!webHostEnvironment.IsProduction())
+        if (!hostEnvironment.IsProduction())
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
@@ -65,7 +65,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
-        IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+        IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
 
         SqlSetting sqlSetting = new();
         configure?.Invoke(sqlSetting);
@@ -73,7 +73,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(webHostEnvironment.IsProduction());
+            contextOptions.ConfigureCustomLogs(hostEnvironment.IsProduction());
 
             contextOptions.UseSqlServer(sqlSetting.ConnectionString, sqlOptions =>
             {
@@ -89,10 +89,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
-            contextOptions.AddInterceptors(new SlowQueryInterceptor(services.BuildServiceProvider()));
+            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
         });
 
-        if (!webHostEnvironment.IsProduction())
+        if (!hostEnvironment.IsProduction())
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }

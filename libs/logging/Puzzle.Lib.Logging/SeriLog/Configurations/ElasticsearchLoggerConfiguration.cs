@@ -2,10 +2,10 @@
 
 internal static class ElasticsearchLoggerConfiguration
 {
-    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, IWebHostEnvironment webHostEnvironment, SeriLogElasticSetting seriLogElasticSetting)
+    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, IHostEnvironment hostEnvironment, SeriLogElasticSetting seriLogElasticSetting)
     {
-        string applicationName = webHostEnvironment.ApplicationName.Replace(".", "-").ToLowerInvariant();
-        string environmentName = webHostEnvironment.EnvironmentName.Replace(".", "-").ToLowerInvariant();
+        string applicationName = hostEnvironment.ApplicationName.Replace(".", "-").ToLowerInvariant();
+        string environmentName = hostEnvironment.EnvironmentName.Replace(".", "-").ToLowerInvariant();
 
         ElasticsearchSinkOptions elasticsearchSinkOptions = new(new Uri(seriLogElasticSetting.Address))
         {

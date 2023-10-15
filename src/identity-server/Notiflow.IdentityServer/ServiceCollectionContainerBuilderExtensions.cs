@@ -4,7 +4,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
 {
     internal static IServiceCollection AddWebDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        IWebHostEnvironment webHostEnvironment = services.BuildServiceProvider().GetRequiredService<IWebHostEnvironment>();
+        IHostEnvironment hostEnvironment = services.BuildServiceProvider().GetRequiredService<IHostEnvironment>();
 
         JwtTokenSetting jwtTokenSetting = configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
@@ -43,7 +43,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         services
             .AddLowercaseRouting()
             .AddGzipResponseFastestCompress()
-            .AddHttpSecurityPrecautions(webHostEnvironment.IsProduction());
+            .AddHttpSecurityPrecautions(hostEnvironment);
         
         services.AddConfigureHealthChecks();
 

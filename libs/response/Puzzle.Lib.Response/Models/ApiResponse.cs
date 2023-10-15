@@ -21,7 +21,7 @@ public record ApiResponse<TData>
     /// Gets or sets the status code of the response.
     /// </summary>
     [JsonRequired]
-    public int Code { get; init; }
+    public int HttpStatusCode { get; init; }
 
     /// <summary>
     /// Gets or sets the status message of the response.
@@ -44,7 +44,7 @@ public record ApiResponse<TData>
     {
         return new ApiResponse<TData>
         {
-            Code = code,
+            HttpStatusCode = code,
             Succeeded = true
         };
     }
@@ -59,7 +59,7 @@ public record ApiResponse<TData>
         return new ApiResponse<TData>
         {
             Data = data,
-            Code = 9001,
+            HttpStatusCode = 9001,
             Succeeded = true
         };
     }
@@ -75,7 +75,7 @@ public record ApiResponse<TData>
         return new ApiResponse<TData>
         {
             Data = data,
-            Code = code,
+            HttpStatusCode = code,
             Succeeded = true
         };
     }
@@ -92,7 +92,7 @@ public record ApiResponse<TData>
         return new ApiResponse<TData>
         {
             Data = data,
-            Code = code,
+            HttpStatusCode = code,
             Succeeded = true,
             Message = message
         };
@@ -107,7 +107,7 @@ public record ApiResponse<TData>
     {
         return new ApiResponse<TData>
         {
-            Code = code
+            HttpStatusCode = code
         };
     }
 
@@ -122,7 +122,7 @@ public record ApiResponse<TData>
         return new ApiResponse<TData>
         {
             Errors = new List<string>() { error },
-            Code = code
+            HttpStatusCode = code
         };
     }
 
@@ -137,7 +137,7 @@ public record ApiResponse<TData>
         return new ApiResponse<TData>
         {
             Errors = errors,
-            Code = code
+            HttpStatusCode = code
         };
     }
 }
