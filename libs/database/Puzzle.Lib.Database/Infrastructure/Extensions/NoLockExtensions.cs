@@ -63,7 +63,7 @@ public static class NoLockExtensions
     /// <returns>query result</returns>
     public static async Task<List<TEntity>> ToListWithNoLockAsync<TEntity>(this IQueryable<TEntity> query, CancellationToken cancellationToken = default) where TEntity : class, new()
     {
-        List<TEntity> result = default;
+        List<TEntity> result;
         using (var scope = new TransactionScope(TransactionScopeOption.Required,
                                 new TransactionOptions()
                                 {

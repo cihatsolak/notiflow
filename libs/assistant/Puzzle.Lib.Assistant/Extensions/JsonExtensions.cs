@@ -43,7 +43,7 @@ public static class JsonExtensions
             return default;
 
         text = text.Trim();
-        if (!(text.StartsWith("{") && text.EndsWith("}")) && !(text.StartsWith("[") && text.EndsWith("]")))
+        if (!(text.StartsWith('{') && text.EndsWith('}')) && !(text.StartsWith('[') && text.EndsWith(']')))
             return default;
 
         try

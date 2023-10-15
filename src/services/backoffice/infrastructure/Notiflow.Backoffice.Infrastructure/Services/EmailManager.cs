@@ -59,11 +59,6 @@ internal sealed class EmailManager : IEmailService
         {
             _logger.LogError(exception, "Email sending failed.");
         }
-        finally
-        {
-            smtpClient.Dispose();
-            mailMessage.Dispose();
-        }
 
         return default;
     }

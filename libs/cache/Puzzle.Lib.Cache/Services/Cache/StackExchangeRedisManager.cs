@@ -384,7 +384,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             };
 
             var redisKeys = _server.Keys(_defaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
-            if (redisKeys is null || !redisKeys.Any())
+            if (!redisKeys.Any())
             {
                 _logger.LogInformation("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
                 return default;
@@ -396,7 +396,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 _logger.LogError("A total of {@redisKeysCount} keys for {@searchKey} searched in Redis were found, but none of the keys could be deleted.", searchKey, redisKeys.Length);
                 return default;
             }
-            else if (totalNumberOfDeletedKeys > 0 && totalNumberOfDeletedKeys != redisKeys.Length)
+            else if (totalNumberOfDeletedKeys != redisKeys.Length)
             {
                 _logger.LogWarning("A total of {@redisKeysCount} keys for the searched keyword {@searchKey} were found in redis, but the total {@totalNumberOfDeletedKeys} keys were deleted.", searchKey, redisKeys.Length, totalNumberOfDeletedKeys);
                 return true;
