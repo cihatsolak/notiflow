@@ -196,6 +196,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "socials", "socials", "{157A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Social", "libs\socials\Puzzle.Lib.Social\Puzzle.Lib.Social.csproj", "{54B99CEA-F391-40EB-A95E-D39FE16239D5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schedule", "schedule", "{C136032E-9856-4124-8EF1-BD19E148B975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Schedule", "src\services\schedule\Notiflow.Schedule\Notiflow.Schedule.csproj", "{0FEE47E1-9F57-42C1-9C88-18B8AC066804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -410,6 +414,10 @@ Global
 		{54B99CEA-F391-40EB-A95E-D39FE16239D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54B99CEA-F391-40EB-A95E-D39FE16239D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54B99CEA-F391-40EB-A95E-D39FE16239D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -497,6 +505,8 @@ Global
 		{B6D2A456-1CB4-43DA-AE46-2575CC521575} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{157A55F1-91EF-4FC1-94C6-7707C1FC2376} = {D57DC945-9274-43EC-8372-953B9EB27E99}
 		{54B99CEA-F391-40EB-A95E-D39FE16239D5} = {157A55F1-91EF-4FC1-94C6-7707C1FC2376}
+		{C136032E-9856-4124-8EF1-BD19E148B975} = {925B00F3-88F1-4586-8AC7-C79E87321181}
+		{0FEE47E1-9F57-42C1-9C88-18B8AC066804} = {C136032E-9856-4124-8EF1-BD19E148B975}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}
