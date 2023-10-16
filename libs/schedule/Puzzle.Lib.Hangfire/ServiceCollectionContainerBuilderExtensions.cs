@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Puzzle.Lib.Hangfire;
+﻿namespace Puzzle.Lib.Hangfire;
 
 /// <summary>
 /// Extension methods for <see cref="IServiceCollection"/> to configure and add Hangfire with SqlServer storage.
@@ -19,9 +17,9 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.Configure(configure);
 
-        services.AddHangfire((provider, config) =>
+        services.AddHangfire((provider, options) =>
         {
-            config.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
+            options.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
             {
                 PrepareSchemaIfNecessary = true,
                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(8),
@@ -30,36 +28,36 @@ public static class ServiceCollectionContainerBuilderExtensions
                 DisableGlobalLocks = true,
                 UseRecommendedIsolationLevel = true
             }).WithJobExpirationTimeout(TimeSpan.FromDays(10));
-            
-            config.UseHeartbeatPage(TimeSpan.FromMinutes(1));
 
-            config.UseFilter(new AutomaticRetryAttribute() { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
+            options.UseHeartbeatPage(TimeSpan.FromMinutes(1));
 
-            config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
-            config.UseSimpleAssemblyNameTypeSerializer();
-            config.UseRecommendedSerializerSettings();
+            options.UseFilter(new AutomaticRetryAttribute() { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
+
+            options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+            options.UseSimpleAssemblyNameTypeSerializer();
+            options.UseRecommendedSerializerSettings();
             //config.UseSerilogLogProvider();
-            config.UseColouredConsoleLogProvider();
-            config.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
+            options.UseColouredConsoleLogProvider();
+            options.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
 
-            config.UseDashboardMetric(DashboardMetrics.ServerCount)
-                  .UseDashboardMetric(SqlServerStorage.ActiveConnections)
-                  .UseDashboardMetric(SqlServerStorage.TotalConnections)
-                  .UseDashboardMetric(DashboardMetrics.RecurringJobCount)
-                  .UseDashboardMetric(DashboardMetrics.RetriesCount)
-                  .UseDashboardMetric(DashboardMetrics.AwaitingCount)
-                  .UseDashboardMetric(DashboardMetrics.EnqueuedAndQueueCount)
-                  .UseDashboardMetric(DashboardMetrics.ScheduledCount)
-                  .UseDashboardMetric(DashboardMetrics.ProcessingCount)
-                  .UseDashboardMetric(DashboardMetrics.SucceededCount)
-                  .UseDashboardMetric(DashboardMetrics.FailedCount)
-                  .UseDashboardMetric(DashboardMetrics.DeletedCount);
+            options.UseDashboardMetric(DashboardMetrics.ServerCount)
+                   .UseDashboardMetric(SqlServerStorage.ActiveConnections)
+                   .UseDashboardMetric(SqlServerStorage.TotalConnections)
+                   .UseDashboardMetric(DashboardMetrics.RecurringJobCount)
+                   .UseDashboardMetric(DashboardMetrics.RetriesCount)
+                   .UseDashboardMetric(DashboardMetrics.AwaitingCount)
+                   .UseDashboardMetric(DashboardMetrics.EnqueuedAndQueueCount)
+                   .UseDashboardMetric(DashboardMetrics.ScheduledCount)
+                   .UseDashboardMetric(DashboardMetrics.ProcessingCount)
+                   .UseDashboardMetric(DashboardMetrics.SucceededCount)
+                   .UseDashboardMetric(DashboardMetrics.FailedCount)
+                   .UseDashboardMetric(DashboardMetrics.DeletedCount);
 
         });
 
-        services.AddHangfireServer(opt =>
+        services.AddHangfireServer(options =>
         {
-            opt.ServerName = string.Format("{0}.{1}", Environment.MachineName, Guid.NewGuid().ToString());
+            options.ServerName = string.Format("{0}.{1}", Environment.MachineName, Random.Shared.Next(100000, 999999));
         });
 
         return services;

@@ -10,4 +10,5 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using Puzzle.Lib.Hangfire.Infrastructure;
 global using System.Diagnostics.CodeAnalysis;
+global using System.Globalization;
 global using System.Reflection;
