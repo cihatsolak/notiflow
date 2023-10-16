@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Hangfire;
+﻿using Hangfire.Heartbeat;
+
+namespace Puzzle.Lib.Hangfire;
 
 /// <summary>
 /// Extension methods for <see cref="IServiceCollection"/> to configure and add Hangfire with SqlServer storage.
@@ -17,7 +19,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.Configure(configure);
 
-        services.AddHangfire(config =>
+        services.AddHangfire((provider, config) =>
         {
             config.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
             {
@@ -27,8 +29,17 @@ public static class ServiceCollectionContainerBuilderExtensions
                 QueuePollInterval = TimeSpan.FromSeconds(30),
                 DisableGlobalLocks = true,
                 UseRecommendedIsolationLevel = true
-            })
-           .WithJobExpirationTimeout(TimeSpan.FromDays(15));
+            }).WithJobExpirationTimeout(TimeSpan.FromDays(10));
+
+            config.UseHeartbeatPage(TimeSpan.FromMinutes(1));
+
+            config.UseFilter(new AutomaticRetryAttribute() { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
+
+            config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+            config.UseSimpleAssemblyNameTypeSerializer();
+            config.UseRecommendedSerializerSettings();
+            config.UseSerilogLogProvider();
+            config.UseColouredConsoleLogProvider();
 
             config.UseDashboardMetric(DashboardMetrics.ServerCount)
                   .UseDashboardMetric(SqlServerStorage.ActiveConnections)
@@ -41,13 +52,14 @@ public static class ServiceCollectionContainerBuilderExtensions
                   .UseDashboardMetric(DashboardMetrics.ProcessingCount)
                   .UseDashboardMetric(DashboardMetrics.SucceededCount)
                   .UseDashboardMetric(DashboardMetrics.FailedCount)
-                  .UseDashboardMetric(DashboardMetrics.DeletedCount)
-                  .UseSimpleAssemblyNameTypeSerializer()
-                  .UseRecommendedSerializerSettings()
-                  .UseSerilogLogProvider();
+                  .UseDashboardMetric(DashboardMetrics.DeletedCount);
+
         });
 
-        services.AddHangfireServer();
+        services.AddHangfireServer(opt =>
+        {
+            opt.ServerName = string.Format("{0}.{1}", Environment.MachineName, Guid.NewGuid().ToString());
+        });
 
         return services;
     }

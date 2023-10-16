@@ -2,7 +2,7 @@
 
 public sealed class AzureBlobStorageManager : IFileService
 {
-    public Task<FileResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extention, CancellationToken cancellationToken)
+    public Task<FileResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extension, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

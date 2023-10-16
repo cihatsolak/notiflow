@@ -29,13 +29,7 @@ public static class ApplicationBuilderExtensions
             IgnoreAntiforgeryToken = true
         });
 
-        GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
         GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.ApplicationServices));
-
-        if (!hostEnvironment.IsProduction())
-        {
-            GlobalConfiguration.Configuration.UseColouredConsoleLogProvider();
-        }
 
         return app;
     }
