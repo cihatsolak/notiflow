@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.File.Infrastructure;
-
-namespace Notiflow.IdentityServer.Service;
+﻿namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -14,7 +12,6 @@ public static class ServiceCollectionContainerBuilderExtensions
         services
             .AddFluentDesignValidation()
             .AddApiBehaviorOptions();
-
 
         services.AddRedisService(options =>
         {

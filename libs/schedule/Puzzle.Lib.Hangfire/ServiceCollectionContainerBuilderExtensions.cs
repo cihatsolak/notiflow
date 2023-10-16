@@ -1,4 +1,4 @@
-﻿using Hangfire.Heartbeat;
+﻿using System.Globalization;
 
 namespace Puzzle.Lib.Hangfire;
 
@@ -8,11 +8,11 @@ namespace Puzzle.Lib.Hangfire;
 public static class ServiceCollectionContainerBuilderExtensions
 {
     /// <summary>
-    /// Adds Hangfire services with SqlServer storage.
+    /// Adds Hangfire services with microsoft sql server storage.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static IServiceCollection AddHangfireWithSqlServerStorage(this IServiceCollection services, Action<HangfireSetting> configure)
+    public static IServiceCollection AddHangfireMsSql(this IServiceCollection services, Action<HangfireSetting> configure)
     {
         HangfireSetting hangfireSetting = new();
         configure?.Invoke(hangfireSetting);
@@ -30,7 +30,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 DisableGlobalLocks = true,
                 UseRecommendedIsolationLevel = true
             }).WithJobExpirationTimeout(TimeSpan.FromDays(10));
-
+            
             config.UseHeartbeatPage(TimeSpan.FromMinutes(1));
 
             config.UseFilter(new AutomaticRetryAttribute() { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
@@ -38,8 +38,9 @@ public static class ServiceCollectionContainerBuilderExtensions
             config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
             config.UseSimpleAssemblyNameTypeSerializer();
             config.UseRecommendedSerializerSettings();
-            config.UseSerilogLogProvider();
+            //config.UseSerilogLogProvider();
             config.UseColouredConsoleLogProvider();
+            config.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
 
             config.UseDashboardMetric(DashboardMetrics.ServerCount)
                   .UseDashboardMetric(SqlServerStorage.ActiveConnections)
