@@ -14,6 +14,7 @@ internal static class MassTransitContainerBuilderExtensions
 
             serviceCollectionBusConfigurator.AddConsumer<ScheduledTextMessageEventConsumer>();
             serviceCollectionBusConfigurator.AddConsumer<ScheduledNotificationEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<ScheduledEmailEventConsumer>();
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
@@ -31,18 +32,27 @@ internal static class MassTransitContainerBuilderExtensions
                     });
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND, options =>
-                {
-                    options.ConfigureConsumer<ScheduledTextMessageEventConsumer>(busRegistrationContext);
-                });
-
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND, options =>
-                {
-                    options.ConfigureConsumer<ScheduledNotificationEventConsumer>(busRegistrationContext);
-                });
+                ConfigureQueues(busRegistrationContext, rabbitMqBusFactoryConfigurator);
             });
         });
-
         return services;
+    }
+
+    private static void ConfigureQueues(IBusRegistrationContext busRegistrationContext, IRabbitMqBusFactoryConfigurator rabbitMqBusFactoryConfigurator)
+    {
+        rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND, options =>
+        {
+            options.ConfigureConsumer<ScheduledTextMessageEventConsumer>(busRegistrationContext);
+        });
+
+        rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND, options =>
+        {
+            options.ConfigureConsumer<ScheduledNotificationEventConsumer>(busRegistrationContext);
+        });
+
+        rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_EMAIL_SEND, options =>
+        {
+            options.ConfigureConsumer<ScheduledEmailEventConsumer>(busRegistrationContext);
+        });
     }
 }
