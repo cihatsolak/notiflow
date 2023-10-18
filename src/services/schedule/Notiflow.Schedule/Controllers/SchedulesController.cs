@@ -59,4 +59,31 @@ public sealed class SchedulesController : MainController
 
         return Accepted();
     }
+
+    [HttpPost("email-delivery")]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> EmailDelivery([FromBody] ScheduleEmailRequest request, CancellationToken cancellationToken)
+    {
+        ScheduledEmailEvent @event = new()
+        {
+            Body = request.Body,
+            Subject = request.Subject,
+            CustomerIds = request.CustomerIds,
+            CcAddresses = request.CcAddresses,
+            BccAddresses = request.BccAddresses,
+            IsBodyHtml = request.IsBodyHtml
+        };
+
+        ScheduledEmail scheduledEmail = new()
+        {
+            Data = @event.ToJson(),
+            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
+        };
+
+        await _context.ScheduledEmails.AddAsync(scheduledEmail, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Accepted();
+    }
 }

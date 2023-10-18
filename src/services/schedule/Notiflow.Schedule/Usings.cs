@@ -7,6 +7,7 @@ global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Notiflow.Common.MessageBroker;
 global using Notiflow.Common.MessageBroker.Events;
+global using Notiflow.Common.MessageBroker.Events.Emails;
 global using Notiflow.Common.MessageBroker.Events.Notifications;
 global using Notiflow.Common.MessageBroker.Events.TextMessage;
 global using Notiflow.Common.Settings;

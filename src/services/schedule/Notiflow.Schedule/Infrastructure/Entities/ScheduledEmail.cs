@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Entities;
 
-public class ScheduledNotification : BaseEntity<int>
+public class ScheduledEmail : BaseEntity<int>
 {
     public string Data { get; set; }
     public DateTime PlannedDeliveryDate { get; set; }
@@ -11,9 +11,9 @@ public class ScheduledNotification : BaseEntity<int>
     public bool IsSent { get; set; }
 }
 
-public sealed class ScheduledNotificationEntityConfiguration : BaseEntityConfiguration<ScheduledNotification>
+public sealed class ScheduledEmailEntityConfiguration : BaseEntityConfiguration<ScheduledEmail>
 {
-    public ScheduledNotificationEntityConfiguration() : base()
+    public ScheduledEmailEntityConfiguration() : base()
     {
     }
 }
