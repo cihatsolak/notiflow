@@ -12,4 +12,5 @@ public static class RabbitQueueName
     public const string EMAIL_NOT_DELIVERED_EVENT_QUEUE = "email-not-delivered-event-queue";
 
     public const string SCHEDULED_TEXT_MESSAGE_SEND = "scheduled-text-message-send-queue";
+    public const string SCHEDULED_NOTIFICATIN_SEND = "scheduled-notification-send-queue";
 }

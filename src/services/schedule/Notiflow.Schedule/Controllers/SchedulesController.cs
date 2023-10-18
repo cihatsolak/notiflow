@@ -17,7 +17,7 @@ public sealed class SchedulesController : MainController
     [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
-        ScheduledTextMessageSendEvent @event = new()
+        ScheduledTextMessageEvent @event = new()
         {
             CustomerIds = request.CustomerIds,
             Message = request.Message
@@ -30,6 +30,31 @@ public sealed class SchedulesController : MainController
         };
 
         await _context.ScheduledTextMessages.AddAsync(scheduledTextMessage, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Accepted();
+    }
+
+    [HttpPost("notification-delivery")]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> NotificationDelivery([FromBody] ScheduleNotificationRequest request, CancellationToken cancellationToken)
+    {
+        ScheduledNotificationEvent @event = new()
+        {
+            CustomerIds = request.CustomerIds,
+            Message = request.Message,
+            ImageUrl = request.ImageUrl,
+            Title = request.Title
+        };
+
+        ScheduledNotification scheduledNotification = new()
+        {
+            Data = @event.ToJson(),
+            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
+        };
+
+        await _context.ScheduledNotifications.AddAsync(scheduledNotification, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return Accepted();

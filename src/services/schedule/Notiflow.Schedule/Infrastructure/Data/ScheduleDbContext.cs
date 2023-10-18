@@ -12,4 +12,5 @@ public class ScheduleDbContext : DbContext
     }
 
     public DbSet<ScheduledTextMessage> ScheduledTextMessages { get; set; }
+    public DbSet<ScheduledNotification> ScheduledNotifications { get; set; }
 }

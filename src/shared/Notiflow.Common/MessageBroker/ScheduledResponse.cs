@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Common.MessageBroker;
 
-public sealed record ScheduleEventResponse
+public sealed record ScheduledResponse
 {
     [JsonRequired]
     public bool Succeeded { get; set; }

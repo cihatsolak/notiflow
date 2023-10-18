@@ -12,7 +12,8 @@ internal static class MassTransitContainerBuilderExtensions
         {
             serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
 
-            serviceCollectionBusConfigurator.AddRequestClient<ScheduledTextMessageSendEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND}"), RequestTimeout.Default);
+            serviceCollectionBusConfigurator.AddRequestClient<ScheduledTextMessageEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND}"), RequestTimeout.Default);
+            serviceCollectionBusConfigurator.AddRequestClient<ScheduledNotificationEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND}"), RequestTimeout.Default);
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {

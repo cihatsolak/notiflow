@@ -1,8 +1,4 @@
-﻿using MassTransit.Configuration;
-using Notiflow.Backoffice.Application.Consumers;
-using Notiflow.Common.MessageBroker.Events;
-
-namespace Notiflow.Backoffice.Application;
+﻿namespace Notiflow.Backoffice.Application;
 
 internal static class MassTransitContainerBuilderExtensions
 {
@@ -16,7 +12,8 @@ internal static class MassTransitContainerBuilderExtensions
         {
             serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
 
-            serviceCollectionBusConfigurator.AddConsumer<TextMessageSendingPlannedEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<ScheduledTextMessageEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<ScheduledNotificationEventConsumer>();
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
@@ -36,7 +33,12 @@ internal static class MassTransitContainerBuilderExtensions
 
                 rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND, options =>
                 {
-                    options.ConfigureConsumer<TextMessageSendingPlannedEventConsumer>(busRegistrationContext);
+                    options.ConfigureConsumer<ScheduledTextMessageEventConsumer>(busRegistrationContext);
+                });
+
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND, options =>
+                {
+                    options.ConfigureConsumer<ScheduledNotificationEventConsumer>(busRegistrationContext);
                 });
             });
         });
