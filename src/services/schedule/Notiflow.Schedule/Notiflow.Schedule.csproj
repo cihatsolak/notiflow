@@ -4,14 +4,22 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />

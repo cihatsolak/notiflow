@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Data;
 
-public class NotiflowDbContextFactory : IDesignTimeDbContextFactory<ScheduleDbContext>
+public class ScheduleDbContextFactory : IDesignTimeDbContextFactory<ScheduleDbContext>
 {
     public ScheduleDbContext CreateDbContext(string[] args)
     {

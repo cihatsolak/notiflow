@@ -28,8 +28,6 @@ public static class ApplicationBuilderExtensions
             IgnoreAntiforgeryToken = true
         });
 
-        GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.ApplicationServices));
-
         return app;
     }
 }

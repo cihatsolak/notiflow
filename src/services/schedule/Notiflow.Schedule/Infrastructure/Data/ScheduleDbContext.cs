@@ -10,4 +10,6 @@ public class ScheduleDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+
+    public DbSet<ScheduledTextMessage> ScheduledTextMessages { get; set; }
 }
