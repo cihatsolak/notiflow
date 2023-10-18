@@ -1,13 +1,13 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
-public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<SendMultipleNotificationCommand, ApiResponse<Unit>>
+public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, ApiResponse<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public SendMultipleNotificationCommandHandler(
+    public SendNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
@@ -19,7 +19,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<ApiResponse<Unit>> Handle(SendMultipleNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
     {
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
@@ -80,7 +80,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
-    private async Task<NotificationResult> SendFirebaseNotifyAsync(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 
@@ -107,7 +107,7 @@ public sealed class SendMultipleNotificationCommandHandler : IRequestHandler<Sen
         return notificationResult;
     }
 
-    private async Task<NotificationResult> SendHuaweiNotifyAsync(SendMultipleNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
+    private async Task<NotificationResult> SendHuaweiNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)
     {
         Guid secretIdentity = Guid.NewGuid();
 

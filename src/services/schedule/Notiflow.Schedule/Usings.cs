@@ -10,7 +10,6 @@ global using Notiflow.Common.MessageBroker.Events;
 global using Notiflow.Common.MessageBroker.Events.Notifications;
 global using Notiflow.Common.MessageBroker.Events.TextMessage;
 global using Notiflow.Common.Settings;
-global using Notiflow.Schedule;
 global using Notiflow.Schedule.Infrastructure.Data;
 global using Notiflow.Schedule.Infrastructure.Entities;
 global using Notiflow.Schedule.Jobs;

@@ -21,26 +21,7 @@ public sealed class NotificationsController : BaseApiController
     }
 
     /// <summary>
-    /// Sends a single notification based on the provided command.
-    /// </summary>
-    /// <param name="request">The command containing notification details to send.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>The response indicating the result of the notification sending operation.</returns>
-    /// <response code="200">notification sent</response>
-    /// <response code="401">unauthorized user</response>
-    /// <response code="400">request is illegal</response>
-    [Authorize(Policy = PolicyName.NOTIFICATION_PERMISSION_RESTRICTION)]
-    [HttpPost("send-single")]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SendSingle([FromBody] SendSingleNotificationCommand request, CancellationToken cancellationToken)
-    {
-        var response = await Sender.Send(request, cancellationToken);
-        return Result.Ok(response);
-    }
-
-    /// <summary>
-    /// Sends multiple notifications based on the provided command.
+    /// Sends notifications based on the provided command.
     /// </summary>
     /// <param name="request">The command containing multiple notification details to send.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
@@ -49,10 +30,10 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="401">unauthorized user</response>
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = PolicyName.NOTIFICATION_PERMISSION_RESTRICTION)]
-    [HttpPost("send-multiple")]
+    [HttpPost("send")]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SendMultiple([FromBody] SendMultipleNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Send([FromBody] SendNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
         return Result.Ok(response);

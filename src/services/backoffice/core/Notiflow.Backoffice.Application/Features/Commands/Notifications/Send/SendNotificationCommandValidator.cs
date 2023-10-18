@@ -1,11 +1,11 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
-public sealed class SendSingleNotificationCommandValidator : AbstractValidator<SendSingleNotificationCommand>
+public sealed class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {
-    public SendSingleNotificationCommandValidator()
+    public SendNotificationCommandValidator()
     {
-        RuleFor(p => p.CustomerId)
-          .InclusiveBetween(1, int.MaxValue).WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
+        RuleForEach(p => p.CustomerIds)
+           .InclusiveBetween(1, int.MaxValue).WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
 
         RuleFor(p => p.Title)
             .NotNullAndNotEmpty(FluentValidationErrorCodes.NOTIFICATION_TITLE)

@@ -21,7 +21,7 @@ global using Notiflow.Backoffice.Application.Features.Commands.Customers.DataTab
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 global using Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 global using Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
-global using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendSingle;
+global using Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;

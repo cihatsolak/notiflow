@@ -1,6 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Notifications.SendMultiple;
-
-namespace Notiflow.Backoffice.Application.Consumers;
+﻿namespace Notiflow.Backoffice.Application.Consumers;
 
 public sealed class ScheduledNotificationEventConsumer : IConsumer<ScheduledNotificationEvent>
 {
@@ -13,7 +11,7 @@ public sealed class ScheduledNotificationEventConsumer : IConsumer<ScheduledNoti
 
     public async Task Consume(ConsumeContext<ScheduledNotificationEvent> context)
     {
-        var response = await _mediator.Send(new SendMultipleNotificationCommand
+        var response = await _mediator.Send(new SendNotificationCommand
         {
             CustomerIds = context.Message.CustomerIds,
             ImageUrl = context.Message.ImageUrl,
