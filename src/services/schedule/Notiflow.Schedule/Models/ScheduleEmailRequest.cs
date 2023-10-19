@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule.Models;
 
-public class ScheduleEmailRequest
+public sealed record ScheduleEmailRequest
 {
     public required string Body { get; init; }
     public required string Subject { get; init; }
@@ -10,4 +10,12 @@ public class ScheduleEmailRequest
     public required bool IsBodyHtml { get; init; }
     public required string Date { get; init; }
     public required string Time { get; init; }
+}
+
+public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>
+{
+    public ScheduleEmailRequestValidator()
+    {
+        
+    }
 }

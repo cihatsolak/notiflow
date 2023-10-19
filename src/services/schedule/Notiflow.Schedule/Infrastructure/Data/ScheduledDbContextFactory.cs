@@ -1,8 +1,8 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Data;
 
-public class ScheduleDbContextFactory : IDesignTimeDbContextFactory<ScheduleDbContext>
+public class ScheduledDbContextFactory : IDesignTimeDbContextFactory<ScheduledDbContext>
 {
-    public ScheduleDbContext CreateDbContext(string[] args)
+    public ScheduledDbContext CreateDbContext(string[] args)
     {
         string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -13,9 +13,9 @@ public class ScheduleDbContextFactory : IDesignTimeDbContextFactory<ScheduleDbCo
                            .AddJsonFile($"appsettings.Localhost.json", optional: true, reloadOnChange: true)
                            .Build();
 
-        var optionsBuilder = new DbContextOptionsBuilder<ScheduleDbContext>();
-        optionsBuilder.UseSqlServer(configurationRoot.GetSection(nameof(ScheduleDbContext))["ConnectionString"]);
+        var optionsBuilder = new DbContextOptionsBuilder<ScheduledDbContext>();
+        optionsBuilder.UseSqlServer(configurationRoot.GetSection(nameof(ScheduledDbContext))["ConnectionString"]);
 
-        return new ScheduleDbContext(optionsBuilder.Options);
+        return new ScheduledDbContext(optionsBuilder.Options);
     }
 }

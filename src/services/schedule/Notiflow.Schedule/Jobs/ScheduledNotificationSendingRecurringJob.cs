@@ -5,12 +5,12 @@ public sealed class ScheduledNotificationSendingRecurringJob
 {
     private const int MAXIMUM_FAILED_ATTEMPTS = 2;
 
-    private readonly ScheduleDbContext _context;
+    private readonly ScheduledDbContext _context;
     private readonly IRequestClient<ScheduledNotificationEvent> _client;
     private readonly ILogger<ScheduledNotificationSendingRecurringJob> _logger;
 
     public ScheduledNotificationSendingRecurringJob(
-        ScheduleDbContext context, 
+        ScheduledDbContext context, 
         IRequestClient<ScheduledNotificationEvent> client, 
         ILogger<ScheduledNotificationSendingRecurringJob> logger)
     {
@@ -33,19 +33,15 @@ public sealed class ScheduledNotificationSendingRecurringJob
                .ToListAsync();
 
         if (!scheduledNotifications.IsNullOrNotAny())
-        {
             return;
-        }
 
         foreach (var scheduledNotification in scheduledNotifications)
         {
-            var scheduledNotificationEvent = scheduledNotification.Data.AsModel<ScheduledNotificationEvent>();
-
-            var scheduledResponse = await _client.GetResponse<ScheduledResponse>(scheduledNotificationEvent);
-            if (!scheduledResponse.Message.Succeeded)
+            var response = await _client.GetResponse<ScheduledResponse>(scheduledNotification.Data.AsModel<ScheduledNotificationEvent>());
+            if (!response.Message.Succeeded)
             {
                 scheduledNotification.FailedAttempts += 1;
-                scheduledNotification.ErrorMessage = scheduledResponse.Message.ErrorMessage;
+                scheduledNotification.ErrorMessage = response.Message.ErrorMessage;
                 scheduledNotification.LastAttemptDate = DateTime.Now;
             }
             else

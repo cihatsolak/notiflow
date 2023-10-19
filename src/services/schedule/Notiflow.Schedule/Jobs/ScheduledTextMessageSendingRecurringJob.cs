@@ -5,13 +5,13 @@ public sealed class ScheduledTextMessageSendingRecurringJob
 {
     private const int MAXIMUM_FAILED_ATTEMPTS = 3;
 
-    private readonly ScheduleDbContext _context;
+    private readonly ScheduledDbContext _context;
     private readonly IRequestClient<ScheduledTextMessageEvent> _client;
     private readonly ILogger<ScheduledTextMessageSendingRecurringJob> _logger;
 
     public ScheduledTextMessageSendingRecurringJob(
-        ScheduleDbContext context, 
-        IRequestClient<ScheduledTextMessageEvent> client, 
+        ScheduledDbContext context,
+        IRequestClient<ScheduledTextMessageEvent> client,
         ILogger<ScheduledTextMessageSendingRecurringJob> logger)
     {
         _context = context;
@@ -33,19 +33,15 @@ public sealed class ScheduledTextMessageSendingRecurringJob
             .ToListAsync();
 
         if (!scheduledTextMessages.IsNullOrNotAny())
-        {
             return;
-        }
 
         foreach (var scheduledTextMessage in scheduledTextMessages)
         {
-            var scheduledTextMessageEvent = scheduledTextMessage.Data.AsModel<ScheduledTextMessageEvent>();
-
-            var scheduledResponse = await _client.GetResponse<ScheduledResponse>(scheduledTextMessageEvent, CancellationToken.None);
-            if (!scheduledResponse.Message.Succeeded)
+            var response = await _client.GetResponse<ScheduledResponse>(scheduledTextMessage.Data.AsModel<ScheduledTextMessageEvent>());
+            if (!response.Message.Succeeded)
             {
                 scheduledTextMessage.FailedAttempts += 1;
-                scheduledTextMessage.ErrorMessage = scheduledResponse.Message.ErrorMessage;
+                scheduledTextMessage.ErrorMessage = response.Message.ErrorMessage;
                 scheduledTextMessage.LastAttemptDate = DateTime.Now;
             }
             else

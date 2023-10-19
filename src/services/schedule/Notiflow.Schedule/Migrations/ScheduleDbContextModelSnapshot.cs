@@ -10,7 +10,7 @@ using Notiflow.Schedule.Infrastructure.Data;
 
 namespace Notiflow.Schedule.Migrations
 {
-    [DbContext(typeof(ScheduleDbContext))]
+    [DbContext(typeof(ScheduledDbContext))]
     partial class ScheduleDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

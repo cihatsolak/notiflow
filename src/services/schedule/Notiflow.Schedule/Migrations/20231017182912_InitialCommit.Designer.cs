@@ -11,7 +11,7 @@ using Notiflow.Schedule.Infrastructure.Data;
 
 namespace Notiflow.Schedule.Migrations
 {
-    [DbContext(typeof(ScheduleDbContext))]
+    [DbContext(typeof(ScheduledDbContext))]
     [Migration("20231017182912_InitialCommit")]
     partial class InitialCommit
     {

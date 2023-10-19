@@ -1,8 +1,8 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Data;
 
-public class ScheduleDbContext : DbContext
+public class ScheduledDbContext : DbContext
 {
-    public ScheduleDbContext(DbContextOptions<ScheduleDbContext> options) : base(options)
+    public ScheduledDbContext(DbContextOptions<ScheduledDbContext> options) : base(options)
     {
     }
 

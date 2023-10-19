@@ -10,10 +10,3 @@ public class ScheduledNotification : BaseEntity<int>
     public string ErrorMessage { get; set; }
     public bool IsSent { get; set; }
 }
-
-public sealed class ScheduledNotificationEntityConfiguration : BaseEntityConfiguration<ScheduledNotification>
-{
-    public ScheduledNotificationEntityConfiguration() : base()
-    {
-    }
-}

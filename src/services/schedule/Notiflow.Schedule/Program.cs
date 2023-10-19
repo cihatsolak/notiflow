@@ -7,9 +7,9 @@ builder.Host
 
 builder.Services.AddControllers();
 
-SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduleDbContext)).Get<SqlSetting>();
+SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduledDbContext)).Get<SqlSetting>();
 
-builder.Services.AddMicrosoftSql<ScheduleDbContext>(options =>
+builder.Services.AddMicrosoftSql<ScheduledDbContext>(options =>
 {
     options.ConnectionString = sqlSetting.ConnectionString;
     options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;

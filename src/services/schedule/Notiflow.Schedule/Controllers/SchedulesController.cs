@@ -5,9 +5,9 @@
 [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status500InternalServerError)]
 public sealed class SchedulesController : MainController
 {
-    private readonly ScheduleDbContext _context;
+    private readonly ScheduledDbContext _context;
 
-    public SchedulesController(ScheduleDbContext context)
+    public SchedulesController(ScheduledDbContext context)
     {
         _context = context;
     }
