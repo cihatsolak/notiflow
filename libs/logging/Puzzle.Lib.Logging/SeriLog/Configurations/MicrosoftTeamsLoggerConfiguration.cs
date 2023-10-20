@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Configurations;
+﻿namespace Puzzle.Lib.Logging.SeriLog.Configurations;
 
 internal static class MicrosoftTeamsLoggerConfiguration
 {

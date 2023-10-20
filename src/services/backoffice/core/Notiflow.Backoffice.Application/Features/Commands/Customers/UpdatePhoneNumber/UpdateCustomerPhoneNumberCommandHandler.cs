@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdatePhoneNumber;
 
 public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<UpdateCustomerPhoneNumberCommand, ApiResponse<Unit>>
 {

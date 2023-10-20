@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application;
+﻿using Puzzle.Lib.Cache.Infrastructure;
+
+namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {

@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 
 public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, ApiResponse<DtResult<TextMessageDataTableCommandResult>>>
 {

@@ -1,4 +1,4 @@
-﻿namespace Notiflow.Backoffice.Application.Exceptions;
+﻿namespace Notiflow.Common.Exceptions;
 
 [Serializable]
 public sealed class TenantException : Exception

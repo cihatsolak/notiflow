@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Constants;
+﻿namespace Notiflow.Backoffice.Application.Localize;
 
-internal record class ResponseCodes
+public record class ResponseCodes
 {
     /// <summary>
     /// Contains error codes from 1000 to 7999.
@@ -55,3 +55,5 @@ internal record class ResponseCodes
         internal const int TEXT_MESSAGES_SENDING_SUCCESSFUL = 8013;
     }
 }
+
+

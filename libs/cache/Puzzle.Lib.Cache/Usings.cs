@@ -5,7 +5,6 @@ global using Polly;
 global using Polly.Retry;
 global using Puzzle.Lib.Cache.Infrastructure;
 global using Puzzle.Lib.Cache.Infrastructure.Enums;
-global using Puzzle.Lib.Cache.Infrastructure.Settings;
 global using Puzzle.Lib.Cache.Policies;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.Cache.Services.Messaging;

@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 
 public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, ApiResponse<Unit>>
 {

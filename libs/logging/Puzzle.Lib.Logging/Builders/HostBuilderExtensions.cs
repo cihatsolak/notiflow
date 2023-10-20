@@ -1,4 +1,7 @@
-﻿namespace Puzzle.Lib.Logging.Builders;
+﻿using Puzzle.Lib.Logging.SeriLog.Configurations;
+using Puzzle.Lib.Logging.SeriLog.Enrichers;
+
+namespace Puzzle.Lib.Logging.Builders;
 
 /// <summary>
 /// Provides extension methods for configuring logging in a web application.

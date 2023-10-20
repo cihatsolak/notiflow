@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
 public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, ApiResponse<Unit>>
 {

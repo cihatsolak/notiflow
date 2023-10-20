@@ -2,8 +2,10 @@
 
 public sealed class AddCustomerCommandValidator : AbstractValidator<AddCustomerCommand>
 {
-    public AddCustomerCommandValidator()
+    public AddCustomerCommandValidator(ILocalizerService<FluentValidationErrorCodes> localizer)
     {
+        string message = localizer[FluentValidationErrorCodes.CUSTOMER_NAME];
+
         RuleFor(p => p.Name)
             .NotNullAndNotEmpty(FluentValidationErrorCodes.CUSTOMER_NAME)
             .MaximumLength(50).WithMessage(FluentValidationErrorCodes.CUSTOMER_NAME);

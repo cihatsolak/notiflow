@@ -26,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Languages\ResponseLanguage.en-US.resx">
+    <EmbeddedResource Update="Localize\FluentValidationErrorCodes.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Languages\ResponseLanguage.tr-TR.resx">
+    <EmbeddedResource Update="Localize\FluentValidationErrorCodes.tr-TR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

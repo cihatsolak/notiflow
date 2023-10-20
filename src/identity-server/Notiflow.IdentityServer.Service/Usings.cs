@@ -34,7 +34,6 @@ global using Puzzle.Lib.Auth.Models;
 global using Puzzle.Lib.Auth.Services;
 global using Puzzle.Lib.Cache;
 global using Puzzle.Lib.Cache.Infrastructure.Enums;
-global using Puzzle.Lib.Cache.Infrastructure.Settings;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.File;
 global using Puzzle.Lib.File.Infrastructure;

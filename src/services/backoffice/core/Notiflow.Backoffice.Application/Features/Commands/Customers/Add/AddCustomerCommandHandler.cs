@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 
 public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerCommand, ApiResponse<int>>
 {

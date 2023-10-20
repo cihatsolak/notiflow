@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 
 public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, ApiResponse<DtResult<CustomerDataTableCommandResult>>>
 {

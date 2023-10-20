@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 
 public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, ApiResponse<GetEmailHistoryByIdQueryResult>>
 {

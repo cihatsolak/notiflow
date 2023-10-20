@@ -1,17 +1,19 @@
-﻿namespace Notiflow.Backoffice.Application.Middlewares;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Middlewares;
 
 public sealed class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IStringLocalizer<ValidationErrorLanguage> _validationErrorLocalizer;
-    private readonly IStringLocalizer<ResponseLanguage> _responseLocalizer;
+    private readonly IStringLocalizer<ResponseCodes> _validationErrorLocalizer;
+    private readonly IStringLocalizer<FluentValidationErrorCodes> _responseLocalizer;
     private readonly ILogger<ExceptionMiddleware> _logger;
 
     public ExceptionMiddleware(
         RequestDelegate next,
-        IStringLocalizer<ValidationErrorLanguage> validationErrorLocalizer,
-        IStringLocalizer<ResponseLanguage> responseLocalizer,
+        IStringLocalizer<ResponseCodes> validationErrorLocalizer,
+        IStringLocalizer<FluentValidationErrorCodes> responseLocalizer,
         ILogger<ExceptionMiddleware> logger)
     {
         _next = next;

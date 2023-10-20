@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Constants;
+﻿namespace Notiflow.Backoffice.Application.Localize;
 
-internal static class FluentValidationErrorCodes
+public class FluentValidationErrorCodes
 {
     internal const int GENERAL_ERROR = -1;
 
@@ -23,4 +23,4 @@ internal static class FluentValidationErrorCodes
     internal const string NOTIFICATION_MESSAGE = "1016";
     internal const string NOTIFICATION_IMAGE_URL = "1017";
     internal const string TEXT_MESSAGE = "1017";
-}
+};

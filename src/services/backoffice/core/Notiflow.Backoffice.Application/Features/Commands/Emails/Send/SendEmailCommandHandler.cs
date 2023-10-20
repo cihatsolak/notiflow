@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
 public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, ApiResponse<Unit>>
 {

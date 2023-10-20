@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 
 public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, ApiResponse<DtResult<DeviceDataTableResult>>>
 {

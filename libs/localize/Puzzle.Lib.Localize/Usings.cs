@@ -2,6 +2,7 @@
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Microsoft.Extensions.Localization;
 global using Microsoft.Extensions.Options;
 global using Puzzle.Lib.Localize.Infrastructure;
 global using System.Globalization;

@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
 public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, ApiResponse<int>>
 {

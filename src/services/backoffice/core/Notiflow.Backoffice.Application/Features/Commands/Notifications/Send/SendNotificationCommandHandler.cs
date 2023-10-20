@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
 public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, ApiResponse<Unit>>
 {

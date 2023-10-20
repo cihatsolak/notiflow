@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 
 public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, ApiResponse<GetTextMessageHistoryByIdQueryResult>>
 {

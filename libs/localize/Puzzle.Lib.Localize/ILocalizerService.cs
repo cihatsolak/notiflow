@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-
-namespace Puzzle.Lib.Localize;
+﻿namespace Puzzle.Lib.Localize;
 
 public interface ILocalizerService<TResource> where TResource : class, new()
 {

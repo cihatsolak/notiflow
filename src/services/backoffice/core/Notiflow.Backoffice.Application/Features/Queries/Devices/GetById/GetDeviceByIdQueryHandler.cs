@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
 
 public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, ApiResponse<GetDeviceByIdQueryResult>>
 {

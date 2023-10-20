@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
+﻿using Notiflow.Backoffice.Application.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 
 public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, ApiResponse<GetCustomerByIdQueryResult>>
 {
