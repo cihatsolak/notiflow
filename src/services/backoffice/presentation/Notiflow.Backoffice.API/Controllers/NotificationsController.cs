@@ -12,12 +12,12 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Notification not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(ApiResponse<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return Result.Get(response);
+        return ResultT.Get(response);
     }
 
     /// <summary>
@@ -31,11 +31,11 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = PolicyName.NOTIFICATION_PERMISSION_RESTRICTION)]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Send([FromBody] SendNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return Result.Ok(response);
+        return ResultT.Ok(response);
     }
 }

@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
 public sealed class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCommand>
 {

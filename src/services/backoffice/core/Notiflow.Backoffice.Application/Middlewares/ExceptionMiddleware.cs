@@ -1,22 +1,20 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Middlewares;
+﻿namespace Notiflow.Backoffice.Application.Middlewares;
 
 public sealed class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IStringLocalizer<ValidationErrorCodes> _responseLocalizer;
+    private readonly IStringLocalizer<ResultState> _validationErrorLocalizer;
     private readonly ILogger<ExceptionMiddleware> _logger;
 
     public ExceptionMiddleware(
         RequestDelegate next,
-        IStringLocalizer<ValidationErrorCodes> responseLocalizer,
+        IStringLocalizer<ResultState> validationErrorLocalizer,
         ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
         _jsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        _responseLocalizer = responseLocalizer;
+        _validationErrorLocalizer = validationErrorLocalizer;
         _logger = logger;
     }
 
@@ -26,17 +24,34 @@ public sealed class ExceptionMiddleware
         {
             await _next(httpContext);
         }
-        catch (Exception exception) when (exception is not ValidationException)
+        catch (ValidationException exception)
         {
-            _logger.LogError(exception, exception.Message);
+            await ValidationProblemAsync(httpContext, exception);
+        }
+        catch
+        {
             await InternalServerProblemAsync(httpContext);
         }
     }
 
+    private Task ValidationProblemAsync(HttpContext httpContext, ValidationException validationException)
+    {
+        Result<EmptyResponse> validationErrorResponse = new()
+        {
+            Message = validationException.Errors.FirstOrDefault()?.ErrorMessage,
+            Errors = validationException.Errors.Select(p => p.ErrorMessage)
+        };
+
+        httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+        return httpContext.Response.WriteAsync(JsonSerializer.Serialize(validationErrorResponse, _jsonSerializerOptions));
+    }
+
     private Task InternalServerProblemAsync(HttpContext httpContext)
     {
-        var serverErrorResponse = ApiResponse<EmptyResponse>.Failure(ResponseCodes.Error.GENERAL);
-        serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
+        var serverErrorResponse = Result<EmptyResponse>.Failure(ResultState.Error.GENERAL);
+        serverErrorResponse.Message = "";
+        //serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;

@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 
 public sealed class GetNotificationHistoryByIdQueryValidator : AbstractValidator<GetNotificationHistoryByIdQuery>
 {

@@ -1,32 +1,33 @@
-﻿using Notiflow.Common.Localize;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
-namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
-
-public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, ApiResponse<Unit>>
+public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public SendNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
+        ILocalizerService<ResultState> localizer,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
         IPublishEndpoint publishEndpoint)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
+        _localizer = localizer;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<ApiResponse<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
     {
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return ApiResponse<Unit>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
         }
 
         var firesabeDeviceTokens = devices
@@ -79,7 +80,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         }
 
-        return ApiResponse<Unit>.Success(ResponseCodes.Success.NOTIFICATION_SENDING_SUCCESSFUL);
+        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultState.NOTIFICATION_SENDING_SUCCESSFUL], Unit.Value);
     }
 
     private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

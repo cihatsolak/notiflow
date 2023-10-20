@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 
 public sealed class UpdateDeviceCommandValidator : AbstractValidator<UpdateDeviceCommand>
 {

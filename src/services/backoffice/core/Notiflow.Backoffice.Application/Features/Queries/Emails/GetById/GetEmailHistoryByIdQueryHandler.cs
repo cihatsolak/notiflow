@@ -1,26 +1,27 @@
-﻿using Notiflow.Common.Localize;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 
-namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
-
-public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, ApiResponse<GetEmailHistoryByIdQueryResult>>
+public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, Result<GetEmailHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
 
     public GetEmailHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow)
+        INotiflowUnitOfWork uow, 
+        ILocalizerService<ResultState> localizer)
     {
         _uow = uow;
+        _localizer = localizer;
     }
 
-    public async Task<ApiResponse<GetEmailHistoryByIdQueryResult>> Handle(GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetEmailHistoryByIdQueryResult>> Handle(GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var emailHistory = await _uow.EmailHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (emailHistory is null)
         {
-            return ApiResponse<GetEmailHistoryByIdQueryResult>.Failure(ResponseCodes.Error.EMAIL_HISTORY_NOT_FOUND);
+            return Result<GetEmailHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.EMAIL_HISTORY_NOT_FOUND]);
         }
 
         var emailHistoryDto = ObjectMapper.Mapper.Map<GetEmailHistoryByIdQueryResult>(emailHistory);
-        return ApiResponse<GetEmailHistoryByIdQueryResult>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, emailHistoryDto);
+        return Result<GetEmailHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], emailHistoryDto);
     }
 }

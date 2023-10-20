@@ -1,26 +1,27 @@
-﻿using Notiflow.Common.Localize;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
-namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
-
-public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, ApiResponse<int>>
+public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, Result<int>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly ILogger<AddDeviceCommandHandler> _logger;
 
     public AddDeviceCommandHandler(
-        INotiflowUnitOfWork notiflowUnitOfWork, 
+        INotiflowUnitOfWork notiflowUnitOfWork,
+        ILocalizerService<ResultState> localizer, 
         ILogger<AddDeviceCommandHandler> logger)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
+        _localizer = localizer;
         _logger = logger;
     }
 
-    public async Task<ApiResponse<int>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var device = await _notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is not null)
         {
-            return ApiResponse<int>.Failure(ResponseCodes.Error.DEVICE_EXISTS);
+            return Result<int>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_EXISTS]);
         }
 
         device = ObjectMapper.Mapper.Map<Device>(request);
@@ -29,6 +30,6 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
 
         _logger.LogInformation("A new device with ID {@deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
 
-        return ApiResponse<int>.Success(ResponseCodes.Success.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
+        return Result<int>.Success(StatusCodes.Status201Created, _localizer[ResultState.DEVICE_ASSOCIATED_CUSTOMER_ADDED], device.Id);
     }
 }

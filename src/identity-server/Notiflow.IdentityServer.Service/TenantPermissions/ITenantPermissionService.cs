@@ -2,6 +2,6 @@
 
 public interface ITenantPermissionService
 {
-    Task<ApiResponse<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
-    Task<ApiResponse<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
+    Task<Result<TenantPermissionResponse>> GetPermissionsAsync(CancellationToken cancellationToken);
+    Task<Result<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken);
 }

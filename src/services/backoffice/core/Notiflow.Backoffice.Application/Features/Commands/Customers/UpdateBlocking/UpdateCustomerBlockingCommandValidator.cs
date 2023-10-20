@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
 
 public sealed class UpdateCustomerBlockingCommandValidator : AbstractValidator<UpdateCustomerBlockingCommand>
 {

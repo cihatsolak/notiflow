@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
 public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailCommand>
 {

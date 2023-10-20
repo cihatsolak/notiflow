@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
 
 public sealed class GetDeviceByIdQueryValidator : AbstractValidator<GetDeviceByIdQuery>
 {

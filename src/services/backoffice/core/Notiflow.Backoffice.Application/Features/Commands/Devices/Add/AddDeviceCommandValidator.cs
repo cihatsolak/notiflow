@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
 public sealed class AddDeviceCommandValidator : AbstractValidator<AddDeviceCommand>
 {

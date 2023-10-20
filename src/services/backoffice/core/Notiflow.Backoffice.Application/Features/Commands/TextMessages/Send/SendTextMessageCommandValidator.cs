@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 
 public sealed class SendTextMessageCommandValidator : AbstractValidator<SendTextMessageCommand>
 {

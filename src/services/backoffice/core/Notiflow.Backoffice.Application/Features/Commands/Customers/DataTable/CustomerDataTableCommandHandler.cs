@@ -1,17 +1,19 @@
-﻿using Notiflow.Common.Localize;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
 
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.DataTable;
-
-public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, ApiResponse<DtResult<CustomerDataTableCommandResult>>>
+public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Result<DtResult<CustomerDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
 
-    public CustomerDataTableCommandHandler(INotiflowUnitOfWork uow)
+    public CustomerDataTableCommandHandler(
+        INotiflowUnitOfWork uow,
+        ILocalizerService<ResultState> localizer)
     {
         _uow = uow;
+        _localizer = localizer;
     }
 
-    public async Task<ApiResponse<DtResult<CustomerDataTableCommandResult>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Result<DtResult<CustomerDataTableCommandResult>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Customer> customers) = await _uow.CustomerRead.GetPageAsync(request.SortKey,
                                                                                             request.SearchKey,
@@ -22,7 +24,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return Result<DtResult<CustomerDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_FOUND]);
         }
 
         DtResult<CustomerDataTableCommandResult> customerDataTable = new()
@@ -33,6 +35,6 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
             Data = ObjectMapper.Mapper.Map<List<CustomerDataTableCommandResult>>(customers)
         };
 
-        return ApiResponse<DtResult<CustomerDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, customerDataTable);
+        return Result<DtResult<CustomerDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], customerDataTable);
     }
 }

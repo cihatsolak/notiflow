@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Cache.Infrastructure;
-
-namespace Notiflow.Backoffice.Application;
+﻿namespace Notiflow.Backoffice.Application;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -15,7 +13,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             {
                 new(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>), ServiceLifetime.Singleton),
                 new(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>), ServiceLifetime.Scoped),
-                new(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>), ServiceLifetime.Singleton),
                 new(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>), ServiceLifetime.Scoped),
                 new(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>), ServiceLifetime.Scoped),
             });

@@ -13,12 +13,12 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
-    [ProducesResponseType(typeof(ApiResponse<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return Result.Get(response);
+        return ResultT.Get(response);
     }
 
     /// <summary>
@@ -31,12 +31,12 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     /// <response code="404">Text message history not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
-    [ProducesResponseType(typeof(ApiResponse<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return Result.Get(response);
+        return ResultT.Get(response);
     }
 
     /// <summary>
@@ -50,11 +50,11 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [Authorize(Policy = PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION)]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return Result.Ok(response);
+        return ResultT.Ok(response);
     }
 }

@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
 public sealed class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
 {

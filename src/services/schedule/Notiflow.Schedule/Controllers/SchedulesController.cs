@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status500InternalServerError)]
 public sealed class SchedulesController : MainController
 {
     private readonly ScheduledDbContext _context;
@@ -13,8 +13,8 @@ public sealed class SchedulesController : MainController
     }
 
     [HttpPost("text-message-delivery")]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
         ScheduledTextMessageEvent @event = new()
@@ -36,8 +36,8 @@ public sealed class SchedulesController : MainController
     }
 
     [HttpPost("notification-delivery")]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> NotificationDelivery([FromBody] ScheduleNotificationRequest request, CancellationToken cancellationToken)
     {
         ScheduledNotificationEvent @event = new()
@@ -61,8 +61,8 @@ public sealed class SchedulesController : MainController
     }
 
     [HttpPost("email-delivery")]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ApiResponse<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> EmailDelivery([FromBody] ScheduleEmailRequest request, CancellationToken cancellationToken)
     {
         ScheduledEmailEvent @event = new()

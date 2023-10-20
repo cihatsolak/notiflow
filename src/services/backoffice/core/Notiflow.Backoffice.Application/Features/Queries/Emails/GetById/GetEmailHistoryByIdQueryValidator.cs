@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
+﻿namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 
 public sealed class GetEmailHistoryByIdQueryValidator : AbstractValidator<GetEmailHistoryByIdQuery>
 {

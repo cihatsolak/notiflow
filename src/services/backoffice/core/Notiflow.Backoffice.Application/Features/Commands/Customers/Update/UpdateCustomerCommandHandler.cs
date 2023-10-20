@@ -1,26 +1,27 @@
-﻿using Notiflow.Common.Localize;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
-
-public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, ApiResponse<Unit>>
+public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly ILogger<UpdateCustomerCommandHandler> _logger;
 
     public UpdateCustomerCommandHandler(
         INotiflowUnitOfWork uow,
+        ILocalizerService<ResultState> localizer,
         ILogger<UpdateCustomerCommandHandler> logger)
     {
         _uow = uow;
+        _localizer = localizer;
         _logger = logger;
     }
 
-    public async Task<ApiResponse<Unit>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_FOUND);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_FOUND]);
         }
 
         ObjectMapper.Mapper.Map(request, customer);
@@ -30,6 +31,6 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
 
         _logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
 
-        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_UPDATED, Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.CUSTOMER_UPDATED], Unit.Value);
     }
 }

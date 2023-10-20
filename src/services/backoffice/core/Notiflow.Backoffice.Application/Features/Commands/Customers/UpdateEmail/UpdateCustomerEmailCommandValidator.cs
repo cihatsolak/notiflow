@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Localize;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 
 public sealed class ChangePhoneNumberRequestValidator : AbstractValidator<UpdateCustomerEmailCommand>
 {
