@@ -1,9 +1,11 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
+﻿using Notiflow.Common.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 
 public sealed class GetCustomerByIdQueryValidator : AbstractValidator<GetCustomerByIdQuery>
 {
-    public GetCustomerByIdQueryValidator()
+    public GetCustomerByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

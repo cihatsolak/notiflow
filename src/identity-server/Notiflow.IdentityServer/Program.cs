@@ -22,6 +22,7 @@ app
    .UseResponseCompress()
    .UseHealthChecksConfiguration();
 
+app.UseLocalizationWithEndpoint();
 app.UseApplicationLifetimes();
 
 app.MapControllers();

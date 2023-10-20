@@ -25,13 +25,4 @@
     <ProjectReference Include="..\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Localize\FluentValidationErrorCodes.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localize\FluentValidationErrorCodes.tr-TR.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

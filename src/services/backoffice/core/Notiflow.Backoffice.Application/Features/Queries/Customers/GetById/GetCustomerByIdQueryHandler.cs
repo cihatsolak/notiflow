@@ -1,4 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Localize;
+﻿using Notiflow.Common.Localize;
 
 namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 

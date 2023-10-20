@@ -1,9 +1,11 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
+﻿using Notiflow.Common.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 
 public sealed class DeleteDeviceCommandValidator : AbstractValidator<DeleteDeviceCommand>
 {
-    public DeleteDeviceCommandValidator()
+    public DeleteDeviceCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

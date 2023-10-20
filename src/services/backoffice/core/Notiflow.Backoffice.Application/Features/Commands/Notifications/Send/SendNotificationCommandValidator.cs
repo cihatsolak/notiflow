@@ -1,22 +1,23 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
+﻿using Notiflow.Common.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
 public sealed class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {
-    public SendNotificationCommandValidator()
+    public SendNotificationCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleForEach(p => p.CustomerIds)
-           .InclusiveBetween(1, int.MaxValue).WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
 
         RuleFor(p => p.Title)
-            .NotNullAndNotEmpty(FluentValidationErrorCodes.NOTIFICATION_TITLE)
-            .MaximumLength(300).WithMessage(FluentValidationErrorCodes.NOTIFICATION_TITLE);
+            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_TITLE])
+            .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_TITLE]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(FluentValidationErrorCodes.NOTIFICATION_MESSAGE)
-           .MaximumLength(300).WithMessage(FluentValidationErrorCodes.NOTIFICATION_MESSAGE);
+           .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_MESSAGE])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_MESSAGE]);
 
         RuleFor(p => p.ImageUrl)
-           .NotNullAndNotEmpty(FluentValidationErrorCodes.NOTIFICATION_IMAGE_URL)
-           .MaximumLength(300).WithMessage(FluentValidationErrorCodes.NOTIFICATION_IMAGE_URL);
+           .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_IMAGE_URL])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_IMAGE_URL]);
     }
 }

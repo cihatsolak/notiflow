@@ -40,6 +40,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         });
 
         services
+            .AddLocalize()
             .AddLowercaseRouting()
             .AddGzipResponseFastestCompress()
             .AddHttpSecurityPrecautions(hostEnvironment);

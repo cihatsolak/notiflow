@@ -1,4 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Localize;
+﻿using Notiflow.Common.Localize;
 
 namespace Notiflow.Backoffice.Application.Pipelines;
 
@@ -6,11 +6,11 @@ public sealed class LanguageBehaviour<TRequest, TResponse> : IPipelineBehavior<T
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
 {
-    private readonly IStringLocalizer<FluentValidationErrorCodes> _localizer;
+    private readonly IStringLocalizer<ValidationErrorCodes> _localizer;
     private readonly ILogger<LanguageBehaviour<TRequest, TResponse>> _logger;
 
     public LanguageBehaviour(
-        IStringLocalizer<FluentValidationErrorCodes> localizer,
+        IStringLocalizer<ValidationErrorCodes> localizer,
         ILogger<LanguageBehaviour<TRequest, TResponse>> logger)
     {
         _localizer = localizer;

@@ -1,14 +1,15 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
+﻿using Notiflow.Common.Localize;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 
 public sealed class SendTextMessageCommandValidator : AbstractValidator<SendTextMessageCommand>
 {
-    public SendTextMessageCommandValidator()
+    public SendTextMessageCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleForEach(p => p.CustomerIds)
-           .InclusiveBetween(1, int.MaxValue).WithMessage(FluentValidationErrorCodes.CUSTOMER_ID);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(FluentValidationErrorCodes.TEXT_MESSAGE)
-           .MaximumLength(300).WithMessage(FluentValidationErrorCodes.TEXT_MESSAGE);
+           .NotNullAndNotEmpty(localizer[ValidationErrorCodes.TEXT_MESSAGE])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.TEXT_MESSAGE]);
     }
 }

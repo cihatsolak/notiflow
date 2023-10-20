@@ -32,7 +32,6 @@ global using Notiflow.Backoffice.Application.Interfaces.Repositories.Notificatio
 global using Notiflow.Backoffice.Application.Interfaces.Repositories.TextMessageHistories;
 global using Notiflow.Backoffice.Application.Interfaces.Services;
 global using Notiflow.Backoffice.Application.Interfaces.UnitOfWorks;
-global using Notiflow.Backoffice.Application.Localize;
 global using Notiflow.Backoffice.Application.Mappers;
 global using Notiflow.Backoffice.Application.Models.Common;
 global using Notiflow.Backoffice.Application.Models.Emails;
@@ -44,6 +43,7 @@ global using Notiflow.Backoffice.Domain.Entities.Histories;
 global using Notiflow.Backoffice.Domain.Enums;
 global using Notiflow.Common.Caching;
 global using Notiflow.Common.Extensions;
+global using Notiflow.Common.Localize;
 global using Notiflow.Common.MessageBroker;
 global using Notiflow.Common.MessageBroker.Events;
 global using Notiflow.Common.MessageBroker.Events.Emails;
