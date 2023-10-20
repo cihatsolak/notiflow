@@ -198,7 +198,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Social", "libs\s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schedule", "schedule", "{C136032E-9856-4124-8EF1-BD19E148B975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Schedule", "src\services\schedule\Notiflow.Schedule\Notiflow.Schedule.csproj", "{0FEE47E1-9F57-42C1-9C88-18B8AC066804}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Schedule", "src\services\schedule\Notiflow.Schedule\Notiflow.Schedule.csproj", "{0FEE47E1-9F57-42C1-9C88-18B8AC066804}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "localizer", "localizer", "{2463C29D-A271-4573-BA36-9E29BD93A578}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzle.Lib.Localize", "libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj", "{995F0DCF-AF42-47C8-8368-61043713BB9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -418,6 +422,10 @@ Global
 		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FEE47E1-9F57-42C1-9C88-18B8AC066804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995F0DCF-AF42-47C8-8368-61043713BB9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995F0DCF-AF42-47C8-8368-61043713BB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995F0DCF-AF42-47C8-8368-61043713BB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995F0DCF-AF42-47C8-8368-61043713BB9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -507,6 +515,8 @@ Global
 		{54B99CEA-F391-40EB-A95E-D39FE16239D5} = {157A55F1-91EF-4FC1-94C6-7707C1FC2376}
 		{C136032E-9856-4124-8EF1-BD19E148B975} = {925B00F3-88F1-4586-8AC7-C79E87321181}
 		{0FEE47E1-9F57-42C1-9C88-18B8AC066804} = {C136032E-9856-4124-8EF1-BD19E148B975}
+		{2463C29D-A271-4573-BA36-9E29BD93A578} = {D57DC945-9274-43EC-8372-953B9EB27E99}
+		{995F0DCF-AF42-47C8-8368-61043713BB9B} = {2463C29D-A271-4573-BA36-9E29BD93A578}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

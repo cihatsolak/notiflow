@@ -33,25 +33,10 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services
             .AddMassTransit()
+            .AddLocalize()
             .AddHttpContextAccessor()
             .AddFluentDesignValidation()
             .AddAutoMapper(Assembly.GetExecutingAssembly());
-
-        services.AddLocalization();
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
-
-            options.DefaultRequestCulture = new("tr-TR");
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-
-            options.ApplyCurrentCultureToResponseHeaders = true;
-        });
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
 

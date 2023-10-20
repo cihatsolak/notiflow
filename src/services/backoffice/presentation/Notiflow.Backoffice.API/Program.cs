@@ -21,8 +21,9 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
    .UseResponseCompress()
-   .UseRequestLocalization()
    .UseHealthChecksConfiguration();
+
+app.UseLocalizationWithEndpoint();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

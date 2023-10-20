@@ -25,7 +25,6 @@ global using Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send
 global using Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
-global using Notiflow.Backoffice.Application.Features.Queries.Languages.SupportedCultures;
 global using Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 global using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 global using Notiflow.Backoffice.Application.Middlewares;
@@ -42,6 +41,7 @@ global using Puzzle.Lib.Documentation.Settings;
 global using Puzzle.Lib.HealthCheck;
 global using Puzzle.Lib.HealthCheck.Checks;
 global using Puzzle.Lib.Host;
+global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Performance;
 global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
