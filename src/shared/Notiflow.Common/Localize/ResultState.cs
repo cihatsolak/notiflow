@@ -26,6 +26,22 @@ public record class ResultState
     public const int NOTIFICATION_NOT_FOUND = 1018;
     public const int EMAIL_HISTORY_NOT_FOUND = 1019;
 
+
+    public const int USER_NOT_FOUND = 2000;
+    public const int ACCESS_TOKEN_NOT_PRODUCED = 2001;
+    public const int REFRESH_TOKEN_NOT_FOUND = 2002;
+    public const int REFRESH_TOKEN_COULD_NOT_BE_DELETED = 2003;
+    public const int USER_EXISTS = 2004;
+    public const int USER_ADDED = 2005;
+    public const int USER_UPTATED = 2006;
+    public const int USER_NOT_DELETED = 2007;
+    public const int USER_DELETED = 2008;
+    public const int USER_PROFILE_PHOTO_NOT_UPDATED = 2009;
+    public const int USER_PROFILE_PHOTO_UPDATED = 2010;
+    public const int ACCESS_TOKEN_GENERATED = 2011;
+    public const int TENANT_PERMISSION_NOT_FOUND = 2012;
+    public const int TENANT_PERMISSION_UPDATED = 2013;
+
     public const int GENERAL_SUCCESS = 8000;
     public const int CUSTOMER_ADDED = 8001;
     public const int CUSTOMER_DELETED = 8002;

@@ -39,13 +39,13 @@ public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
 
     public static Result<EmptyResponse> InvalidErrorResponse => new()
     {
-        HttpStatusCode = 1,
+        StatusCode = 1,
         Message = "Invalid X-Tenant-Token header."
     };
 
     public static Result<EmptyResponse> MissingErrorResponse => new()
     {
-        HttpStatusCode = 1,
+        StatusCode = 1,
         Message = "Missing X-Tenant-Token header."
     };
 }

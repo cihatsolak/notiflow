@@ -17,7 +17,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> DataTable([FromBody] CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Created(response, nameof(GetById));
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> Update([FromBody] UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> Delete([FromRoute] DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> UpdateBlocking([FromBody] UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> UpdateEmail([FromBody] UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -143,6 +143,6 @@ public sealed class CustomersController : BaseApiController
     public async Task<IActionResult> UpdatePhoneNumber([FromBody] UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 }

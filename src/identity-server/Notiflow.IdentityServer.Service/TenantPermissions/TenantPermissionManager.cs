@@ -1,20 +1,21 @@
-﻿using Notiflow.Common.Extensions;
-
-namespace Notiflow.IdentityServer.Service.TenantPermissions;
+﻿namespace Notiflow.IdentityServer.Service.TenantPermissions;
 
 internal sealed class TenantPermissionManager : ITenantPermissionService
 {
     private readonly ApplicationDbContext _context;
     private readonly IRedisService _redisService;
+    private readonly ILocalizerService<TenantPermission> _localizer;
     private readonly ILogger<TenantPermissionManager> _logger;
 
     public TenantPermissionManager(
         ApplicationDbContext context,
         IRedisService redisService,
+        ILocalizerService<TenantPermission> localizer,
         ILogger<TenantPermissionManager> logger)
     {
         _context = context;
         _redisService = redisService;
+        _localizer = localizer;
         _logger = logger;
     }
 
@@ -25,11 +26,10 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
                                                                .SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
-            _logger.LogInformation("Tenant permissions not found.");
-            return Result<TenantPermissionResponse>.Failure(-1);
+            return Result<TenantPermissionResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
         }
 
-        return Result<TenantPermissionResponse>.Success(tenantPermission);
+        return Result<TenantPermissionResponse>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], tenantPermission);
     }
 
     public async Task<Result<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
@@ -37,8 +37,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
         var tenantPermission = await _context.TenantPermissions.SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
-            _logger.LogInformation("Tenant permissions not found.");
-            return Result<EmptyResponse>.Failure(-1);
+            return Result<EmptyResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
         }
 
         List<Task<bool>> tenantPermissionCachingTasks = new();
@@ -67,6 +66,6 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
         await Task.WhenAll(tenantPermissionCachingTasks);
 
-        return Result<EmptyResponse>.Success(-1);
+        return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
     }
 }

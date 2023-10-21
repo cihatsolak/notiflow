@@ -18,7 +18,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ public sealed class TextMessagesController : BaseApiController
     public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Ok(response);
+        return CreateActionResultInstance(response);
     }
 }

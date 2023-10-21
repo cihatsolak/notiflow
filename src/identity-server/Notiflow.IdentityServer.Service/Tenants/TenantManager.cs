@@ -3,14 +3,14 @@
 internal class TenantManager : ITenantService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<TenantManager> _logger;
+    private readonly ILocalizerService<ResultState> _localizer;
 
     public TenantManager(
        ApplicationDbContext context,
-        ILogger<TenantManager> logger)
+       ILocalizerService<ResultState> localizer)
     {
         _context = context;
-        _logger = logger;
+        _localizer = localizer;
     }
 
     public async Task<Result<List<Tenant>>> GetTenantsWithoutFilterAsync(CancellationToken cancellationToken)
@@ -25,10 +25,9 @@ internal class TenantManager : ITenantService
 
         if (tenants.IsNullOrNotAny())
         {
-            _logger.LogWarning("The tenants information could not be found.");
-            return Result<List<Tenant>>.Failure(-1);
+            return Result<List<Tenant>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_NOT_FOUND]);
         }
 
-        return Result<List<Tenant>>.Success(tenants);
+        return Result<List<Tenant>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], tenants);
     }
 }

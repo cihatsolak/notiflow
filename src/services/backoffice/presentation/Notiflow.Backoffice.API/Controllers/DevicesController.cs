@@ -17,7 +17,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> DataTable([FromBody] DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> GetById([FromRoute] GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Get(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> Add([FromBody] AddDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.Created(response, nameof(GetById));
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> Update([FromBody] UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> Delete([FromRoute] DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 
     /// <summary>
@@ -107,6 +107,6 @@ public sealed class DevicesController : BaseApiController
     public async Task<IActionResult> UpdateToken([FromBody] UpdateDeviceTokenCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
-        return ResultT.NoContent(response);
+        return CreateActionResultInstance(response);
     }
 }
