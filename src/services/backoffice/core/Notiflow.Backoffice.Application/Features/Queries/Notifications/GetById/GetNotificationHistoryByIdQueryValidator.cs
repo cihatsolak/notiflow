@@ -2,8 +2,8 @@
 
 public sealed class GetNotificationHistoryByIdQueryValidator : AbstractValidator<GetNotificationHistoryByIdQuery>
 {
-    public GetNotificationHistoryByIdQueryValidator(ILocalizerService<ResultState> localizer)
+    public GetNotificationHistoryByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ResultState.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

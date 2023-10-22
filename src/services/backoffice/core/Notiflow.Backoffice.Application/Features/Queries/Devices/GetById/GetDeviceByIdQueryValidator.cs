@@ -2,8 +2,8 @@
 
 public sealed class GetDeviceByIdQueryValidator : AbstractValidator<GetDeviceByIdQuery>
 {
-    public GetDeviceByIdQueryValidator(ILocalizerService<ResultState> localizer)
+    public GetDeviceByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ResultState.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

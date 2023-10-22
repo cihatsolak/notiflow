@@ -2,8 +2,8 @@
 
 public sealed class UpdateCustomerBlockingCommandValidator : AbstractValidator<UpdateCustomerBlockingCommand>
 {
-    public UpdateCustomerBlockingCommandValidator(ILocalizerService<ResultState> localizer)
+    public UpdateCustomerBlockingCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ResultState.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

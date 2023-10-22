@@ -3,14 +3,14 @@
 public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
-    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public SendNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
-        ILocalizerService<ValidationErrorCodes> localizer,
+        ILocalizerService<ResultState> localizer,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
         IPublishEndpoint publishEndpoint)
@@ -27,7 +27,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.DEVICE_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
         }
 
         var firesabeDeviceTokens = devices
@@ -80,7 +80,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         }
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.NOTIFICATION_SENDING_SUCCESSFUL], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultState.NOTIFICATION_SENDING_SUCCESSFUL], Unit.Value);
     }
 
     private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

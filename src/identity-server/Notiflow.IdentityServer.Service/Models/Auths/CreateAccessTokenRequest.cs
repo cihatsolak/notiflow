@@ -10,14 +10,14 @@ public sealed record CreateAccessTokenRequest
 
 public sealed class CreateAccessTokenRequestValidator : AbstractValidator<CreateAccessTokenRequest>
 {
-    public CreateAccessTokenRequestValidator(ILocalizerService<ResultState> localizer)
+    public CreateAccessTokenRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
         RuleFor(p => p.Username)
-            .NotNullAndNotEmpty(localizer[ResultState.USERNAME])
-            .Length(5, 100).WithMessage(localizer[ResultState.PASSWORD]);
+            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.USERNAME])
+            .Length(5, 100).WithMessage(localizer[ValidationErrorCodes.PASSWORD]);
 
         RuleFor(p => p.Password)
-            .StrongPassword(localizer[ResultState.PASSWORD])
-            .MaximumLength(100).WithMessage(localizer[ResultState.PASSWORD]);
+            .StrongPassword(localizer[ValidationErrorCodes.PASSWORD])
+            .MaximumLength(100).WithMessage(localizer[ValidationErrorCodes.PASSWORD]);
     }
 }

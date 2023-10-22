@@ -3,11 +3,11 @@
 internal class TenantManager : ITenantService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
+    private readonly ILocalizerService<ResultState> _localizer;
 
     public TenantManager(
        ApplicationDbContext context,
-       ILocalizerService<ValidationErrorCodes> localizer)
+       ILocalizerService<ResultState> localizer)
     {
         _context = context;
         _localizer = localizer;
@@ -25,9 +25,9 @@ internal class TenantManager : ITenantService
 
         if (tenants.IsNullOrNotAny())
         {
-            return Result<List<Tenant>>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.TENANT_NOT_FOUND]);
+            return Result<List<Tenant>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_NOT_FOUND]);
         }
 
-        return Result<List<Tenant>>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.GENERAL_SUCCESS], tenants);
+        return Result<List<Tenant>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], tenants);
     }
 }

@@ -6,12 +6,22 @@
 public sealed class SchedulesController : MainController
 {
     private readonly ScheduledDbContext _context;
+    private readonly ILocalizerService<ResultState> _localizer;
 
-    public SchedulesController(ScheduledDbContext context)
+    public SchedulesController(
+        ScheduledDbContext context,
+        ILocalizerService<ResultState> localizer)
     {
         _context = context;
+        _localizer = localizer;
     }
 
+    /// <summary>
+    /// Schedules the delivery of a text message.
+    /// </summary>
+    /// <param name="request">The request containing the necessary information for the text message delivery.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>An Accepted result if the text message delivery is successfully scheduled.</returns>
     [HttpPost("text-message-delivery")]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
@@ -32,9 +42,16 @@ public sealed class SchedulesController : MainController
         await _context.ScheduledTextMessages.AddAsync(scheduledTextMessage, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Accepted();
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.TEXT_MESSAGE_SENDING_ACCEPTED]);
+        return CreateActionResultInstance(response);
     }
 
+    /// <summary>
+    /// Schedules the delivery of a notification.
+    /// </summary>
+    /// <param name="request">The request containing the necessary information for the notification delivery.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>An Accepted result if the notification delivery is successfully scheduled.</returns>
     [HttpPost("notification-delivery")]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
@@ -57,9 +74,16 @@ public sealed class SchedulesController : MainController
         await _context.ScheduledNotifications.AddAsync(scheduledNotification, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Accepted();
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.NOTIFICATION_SENDING_ACCEPTED]);
+        return CreateActionResultInstance(response);
     }
 
+    /// <summary>
+    /// Schedules the delivery of an email.
+    /// </summary>
+    /// <param name="request">The request containing the necessary information for the email delivery.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>An Accepted result if the email delivery is successfully scheduled.</returns>
     [HttpPost("email-delivery")]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
@@ -84,6 +108,7 @@ public sealed class SchedulesController : MainController
         await _context.ScheduledEmails.AddAsync(scheduledEmail, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Accepted();
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.EMAIL_SENDING_ACCEPTED]);
+        return CreateActionResultInstance(response);
     }
 }

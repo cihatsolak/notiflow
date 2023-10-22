@@ -4,12 +4,12 @@ public sealed class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IStringLocalizer<ValidationErrorCodes> _validationErrorLocalizer;
+    private readonly IStringLocalizer<ResultState> _validationErrorLocalizer;
     private readonly ILogger<ExceptionMiddleware> _logger;
 
     public ExceptionMiddleware(
         RequestDelegate next,
-        IStringLocalizer<ValidationErrorCodes> validationErrorLocalizer,
+        IStringLocalizer<ResultState> validationErrorLocalizer,
         ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
@@ -49,7 +49,7 @@ public sealed class ExceptionMiddleware
 
     private Task InternalServerProblemAsync(HttpContext httpContext)
     {
-        var serverErrorResponse = Result<EmptyResponse>.Failure(ValidationErrorCodes.GENERAL_ERROR);
+        var serverErrorResponse = Result<EmptyResponse>.Failure(ResultState.GENERAL_ERROR);
         serverErrorResponse.Message = "";
         //serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 

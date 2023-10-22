@@ -5,44 +5,27 @@ builder.Host
     .AddServiceValidateScope()
     .AddShutdownTimeOut();
 
-builder.Services.AddControllers();
-
-SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduledDbContext)).Get<SqlSetting>();
-
-builder.Services.AddMicrosoftSql<ScheduledDbContext>(options =>
-{
-    options.ConnectionString = sqlSetting.ConnectionString;
-    options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
-    options.IsSplitQuery = sqlSetting.IsSplitQuery;
-});
-
-HangfireSetting hangfireSetting = builder.Configuration.GetRequiredSection(nameof(HangfireSetting)).Get<HangfireSetting>();
-
-builder.Services.AddHangfireMsSql(options =>
-{
-    options.ConnectionString = hangfireSetting.ConnectionString;
-    options.GlobalAutomaticRetryAttempts = hangfireSetting.GlobalAutomaticRetryAttempts;
-    options.Username = hangfireSetting.Username;
-    options.Password = hangfireSetting.Password;
-});
-
-SwaggerSetting swaggerSetting = builder.Configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
-
-builder.Services.AddSwagger(options =>
-{
-    options.Title = swaggerSetting.Title;
-    options.Description = swaggerSetting.Description;
-    options.Version = swaggerSetting.Version;
-    options.ContactName = swaggerSetting.ContactName;
-    options.ContactEmail = swaggerSetting.ContactEmail;
-});
+builder.Services
+    .AddLowercaseRouting()
+    .AddLocalize()
+    .AddGzipResponseFastestCompress()
+    .AddHttpSecurityPrecautions(builder.Environment);
 
 builder.Services.AddMassTransit();
 
 var app = builder.Build();
 
-app.UseSwaggerWithRedoclyDoc(builder.Environment);
-app.UseHangfire();
+app
+   .UseHttpSecurityPrecautions(builder.Environment)
+   .UseAuth()
+   .UseSwaggerWithRedoclyDoc(builder.Environment)
+   .UseMigrations(builder.Environment)
+   .UseApiExceptionHandler()
+   .UseResponseCompress()
+   .UseHealthChecksConfiguration()
+   .UseHangfire();
+
+app.UseLocalizationWithEndpoint();
 app.MapControllers();
 
 RecurringJob.AddOrUpdate<ScheduledTextMessageSendingRecurringJob>("475fe763-e667-467f-b373-bcdfc2e1deab", recurring => recurring.ExecuteAsync(), "*/5 * * * *");

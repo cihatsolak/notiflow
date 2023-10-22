@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-
-namespace Notiflow.IdentityServer;
+﻿namespace Notiflow.IdentityServer;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {

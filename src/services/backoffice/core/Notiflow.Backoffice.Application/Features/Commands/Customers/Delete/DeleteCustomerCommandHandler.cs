@@ -3,12 +3,12 @@
 public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly ILogger<DeleteCustomerCommandHandler> _logger;
 
     public DeleteCustomerCommandHandler(
         INotiflowUnitOfWork uow,
-         ILocalizerService<ValidationErrorCodes> localizer,
+         ILocalizerService<ResultState> localizer,
         ILogger<DeleteCustomerCommandHandler> logger)
     {
         _uow = uow;
@@ -21,11 +21,11 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.CUSTOMER_NOT_DELETED]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_DELETED]);
         }
 
         _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ValidationErrorCodes.CUSTOMER_DELETED], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.CUSTOMER_DELETED], Unit.Value);
     }
 }

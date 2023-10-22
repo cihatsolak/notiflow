@@ -118,18 +118,105 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="-1" xml:space="preserve">
-    <value>An undetermined validation error occurred.</value>
+    <value>A system error has occurred.</value>
   </data>
   <data name="1000" xml:space="preserve">
-    <value>Invalid credentials, please check.</value>
+    <value>Customer not found.</value>
   </data>
   <data name="1001" xml:space="preserve">
-    <value>Please enter a valid name.</value>
+    <value>The customer is currently registered.</value>
   </data>
   <data name="1002" xml:space="preserve">
-    <value>Please enter a valid surname.</value>
+    <value>The customer could not be deleted.</value>
   </data>
-  <data name="1020" xml:space="preserve">
-    <value>test</value>
+  <data name="1003" xml:space="preserve">
+    <value>The customer's disability status must be different from the one to be updated.</value>
+  </data>
+  <data name="1004" xml:space="preserve">
+    <value>The customer's e-mail address must be different from the e-mail address to be updated.</value>
+  </data>
+  <data name="1005" xml:space="preserve">
+    <value>The customer's phone number must be different from the phone number to be updated.</value>
+  </data>
+  <data name="1006" xml:space="preserve">
+    <value>There is an existing device belonging to the customer.</value>
+  </data>
+  <data name="1007" xml:space="preserve">
+    <value>The customer's device could not be deleted.</value>
+  </data>
+  <data name="1008" xml:space="preserve">
+    <value>Device not found.</value>
+  </data>
+  <data name="1009" xml:space="preserve">
+    <value>Customer e-mail addresses could not be found.</value>
+  </data>
+  <data name="1010" xml:space="preserve">
+    <value>The number of registered e-mail addresses and the number of requested e-mail addresses are not equal.</value>
+  </data>
+  <data name="1011" xml:space="preserve">
+    <value>E-mail sending failed.</value>
+  </data>
+  <data name="1012" xml:space="preserve">
+    <value>Notification submission failed.</value>
+  </data>
+  <data name="1013" xml:space="preserve">
+    <value>Customer phone numbers could not be found.</value>
+  </data>
+  <data name="1014" xml:space="preserve">
+    <value>The number of registered phone numbers and the number of desired phone numbers are not equal.</value>
+  </data>
+  <data name="1015" xml:space="preserve">
+    <value>Sending a text message has failed.</value>
+  </data>
+  <data name="1016" xml:space="preserve">
+    <value>Supported languages not found.</value>
+  </data>
+  <data name="1017" xml:space="preserve">
+    <value>Text message not found.</value>
+  </data>
+  <data name="1018" xml:space="preserve">
+    <value>Notification not found.</value>
+  </data>
+  <data name="8000" xml:space="preserve">
+    <value>The operation is successful.</value>
+  </data>
+  <data name="8001" xml:space="preserve">
+    <value>New customer added.</value>
+  </data>
+  <data name="8002" xml:space="preserve">
+    <value>The customer has been successfully deleted.</value>
+  </data>
+  <data name="8003" xml:space="preserve">
+    <value>The client has been successfully updated.</value>
+  </data>
+  <data name="8004" xml:space="preserve">
+    <value>Müşteri engel durumu güncellenmiştir.</value>
+  </data>
+  <data name="8005" xml:space="preserve">
+    <value>The customer e-mail address has been updated.</value>
+  </data>
+  <data name="8006" xml:space="preserve">
+    <value>Customer phone number has been updated.</value>
+  </data>
+  <data name="8007" xml:space="preserve">
+    <value>The device associated with the customer has been added.</value>
+  </data>
+  <data name="8008" xml:space="preserve">
+    <value>The device has been deleted.</value>
+  </data>
+  <data name="8009" xml:space="preserve">
+    <value>The device has been updated.</value>
+  </data>
+  <data name="8010" xml:space="preserve">
+    <value>The device token has been updated.</value>
+  </data>
+  <data name="8011" xml:space="preserve">
+    <value>Email sending was successful.</value>
+  </data>
+  <data name="8012" xml:space="preserve">
+    <value>The notification has been sent successfully.</value>
+  </data>
+  <data name="8013" xml:space="preserve">
+    <value>The text message was sent successfully.</value>
   </data>
 </root>

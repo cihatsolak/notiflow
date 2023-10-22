@@ -3,11 +3,11 @@
 public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
+    private readonly ILocalizerService<ResultState> _localizer;
 
     public TextMessageDataTableCommandHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ValidationErrorCodes> localizer)
+        ILocalizerService<ResultState> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -24,7 +24,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.TEXT_MESSAGE_NOT_FOUND]);
+            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TEXT_MESSAGE_NOT_FOUND]);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
@@ -35,6 +35,6 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
             Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.GENERAL_SUCCESS], textMessageHistoryDataTable);
+        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], textMessageHistoryDataTable);
     }
 }

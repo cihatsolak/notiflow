@@ -4,10 +4,10 @@ public sealed record RefreshTokenRequest(string Token);
 
 public sealed class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
 {
-    public RefreshTokenRequestValidator(ILocalizerService<ResultState> localizer)
+    public RefreshTokenRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
         RuleFor(p => p.Token)
-            .NotNullAndNotEmpty(localizer[ResultState.REFRESH_TOKEN])
-            .Length(45, 55).WithMessage(localizer[ResultState.REFRESH_TOKEN]);
+            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.REFRESH_TOKEN])
+            .Length(45, 55).WithMessage(localizer[ValidationErrorCodes.REFRESH_TOKEN]);
     }
 }

@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Localize\ResultState.en-US.resx">
+    <EmbeddedResource Update="Localize\ValidationErrorCodes.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Localize\ResultState.tr-TR.resx">
+    <EmbeddedResource Update="Localize\ValidationErrorCodes.tr-TR.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>

@@ -4,7 +4,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly IEmailService _emailService;
-    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<SendEmailCommandHandler> _logger;
 
@@ -12,7 +12,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         INotiflowUnitOfWork uow,
         IEmailService emailService,
         IPublishEndpoint publishEndpoint,
-        ILocalizerService<ValidationErrorCodes> localizer,
+        ILocalizerService<ResultState> localizer,
         ILogger<SendEmailCommandHandler> logger)
     {
         _uow = uow;
@@ -27,14 +27,14 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         var emailAddresses = await _uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND]);
         }
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to be sent does not match the number of registered mails. Customer IDs: {customerIds}", request.CustomerIds);
 
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ValidationErrorCodes.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL]);
+            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultState.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL]);
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
@@ -56,7 +56,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
 
-        return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ValidationErrorCodes.EMAIL_SENDING_FAILED]);
+        return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultState.EMAIL_SENDING_FAILED]);
     }
   
     private async Task<Result<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
@@ -66,6 +66,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailDeliveredEvent, cancellationToken);
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.EMAIL_SENDING_SUCCESSFUL], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultState.EMAIL_SENDING_SUCCESSFUL], Unit.Value);
     }
 }
