@@ -5,13 +5,14 @@ builder.Host
     .AddServiceValidateScope()
     .AddShutdownTimeOut();
 
+builder.AddDependencies();
+
 builder.Services
+    .AddMassTransit()
     .AddLowercaseRouting()
     .AddLocalize()
     .AddGzipResponseFastestCompress()
     .AddHttpSecurityPrecautions(builder.Environment);
-
-builder.Services.AddMassTransit();
 
 var app = builder.Build();
 

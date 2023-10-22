@@ -2,7 +2,7 @@
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
-    internal static IServiceCollection AddDependencies(this WebApplicationBuilder  builder)
+    internal static WebApplicationBuilder AddDependencies(this WebApplicationBuilder  builder)
     {
         SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduledDbContext)).Get<SqlSetting>();
         HangfireSetting hangfireSetting = builder.Configuration.GetRequiredSection(nameof(HangfireSetting)).Get<HangfireSetting>();

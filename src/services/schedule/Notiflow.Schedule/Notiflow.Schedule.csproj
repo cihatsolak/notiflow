@@ -19,6 +19,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
