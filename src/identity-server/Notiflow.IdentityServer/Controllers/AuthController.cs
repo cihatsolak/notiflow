@@ -1,10 +1,11 @@
-﻿namespace Notiflow.IdentityServer.Controllers;
+﻿using FluentValidation;
+
+namespace Notiflow.IdentityServer.Controllers;
 
 [AllowAnonymous]
 public sealed class AuthController : BaseApiController
 {
     private readonly IAuthService _authService;
-
     public AuthController(IAuthService authService)
     {
         _authService = authService;

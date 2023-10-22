@@ -1,5 +1,6 @@
 ﻿global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Authorization;
 global using Notiflow.IdentityServer;
 global using Notiflow.IdentityServer.Data;
 global using Notiflow.IdentityServer.Middlewares;
@@ -22,7 +23,6 @@ global using Puzzle.Lib.HealthCheck.Checks;
 global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Performance;
-global using Puzzle.Lib.Response;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Security;

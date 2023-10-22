@@ -46,7 +46,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         services.Configure<ApiBehaviorOptions>(options =>
         {
-            options.SuppressInferBindingSourcesForParameters = true;
+            //options.SuppressInferBindingSourcesForParameters = true;
 
             options.InvalidModelStateResponseFactory = context =>
             {

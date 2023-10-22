@@ -1,4 +1,7 @@
-﻿namespace Notiflow.IdentityServer;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+
+namespace Notiflow.IdentityServer;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
@@ -10,9 +13,12 @@ internal static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
+        var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        
         services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;
+            options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
         });
 
         services.AddJwtAuthentication(options =>
@@ -40,7 +46,6 @@ internal static class ServiceCollectionContainerBuilderExtensions
         });
 
         services
-            .AddLocalize()
             .AddLowercaseRouting()
             .AddGzipResponseFastestCompress()
             .AddHttpSecurityPrecautions(hostEnvironment);

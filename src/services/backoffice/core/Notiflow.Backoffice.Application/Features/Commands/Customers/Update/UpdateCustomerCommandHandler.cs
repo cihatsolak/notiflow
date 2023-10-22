@@ -3,12 +3,12 @@
 public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
     private readonly ILogger<UpdateCustomerCommandHandler> _logger;
 
     public UpdateCustomerCommandHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ResultState> localizer,
+        ILocalizerService<ValidationErrorCodes> localizer,
         ILogger<UpdateCustomerCommandHandler> logger)
     {
         _uow = uow;
@@ -21,7 +21,7 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.CUSTOMER_NOT_FOUND]);
         }
 
         ObjectMapper.Mapper.Map(request, customer);
@@ -31,6 +31,6 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
 
         _logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.CUSTOMER_UPDATED], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ValidationErrorCodes.CUSTOMER_UPDATED], Unit.Value);
     }
 }

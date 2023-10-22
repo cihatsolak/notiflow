@@ -3,11 +3,11 @@
 public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Result<DtResult<DeviceDataTableResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
 
     public DeviceDataTableCommandHandler(
         INotiflowUnitOfWork uow, 
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ValidationErrorCodes> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -24,7 +24,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return Result<DtResult<DeviceDataTableResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
+            return Result<DtResult<DeviceDataTableResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.DEVICE_NOT_FOUND]);
         }
 
         DtResult<DeviceDataTableResult> deviceDataTable = new()
@@ -35,6 +35,6 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
             Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResult>>(devices)
         };
 
-        return Result<DtResult<DeviceDataTableResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], deviceDataTable);
+        return Result<DtResult<DeviceDataTableResult>>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.GENERAL_SUCCESS], deviceDataTable);
     }
 }

@@ -3,12 +3,12 @@
 public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
     private readonly ILogger<UpdateDeviceCommandHandler> _logger;
 
     public UpdateDeviceCommandHandler(
         INotiflowUnitOfWork uow, 
-        ILocalizerService<ResultState> localizer, 
+        ILocalizerService<ValidationErrorCodes> localizer, 
         ILogger<UpdateDeviceCommandHandler> logger)
     {
         _uow = uow;
@@ -21,7 +21,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.DEVICE_NOT_FOUND]);
         }
         
         ObjectMapper.Mapper.Map(request, device);
@@ -30,6 +30,6 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
         _logger.LogInformation("Device information updated. Device ID: {id}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.DEVICE_UPDATED], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ValidationErrorCodes.DEVICE_UPDATED], Unit.Value);
     }
 }

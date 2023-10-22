@@ -3,11 +3,11 @@
 public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, Result<GetDeviceByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ValidationErrorCodes> _localizer;
 
     public GetDeviceByIdQueryHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ValidationErrorCodes> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -18,11 +18,11 @@ public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQue
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<GetDeviceByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
+            return Result<GetDeviceByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ValidationErrorCodes.DEVICE_NOT_FOUND]);
         }
 
         var deviceDto = ObjectMapper.Mapper.Map<GetDeviceByIdQueryResult>(device);
 
-        return Result<GetDeviceByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], deviceDto);
+        return Result<GetDeviceByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ValidationErrorCodes.GENERAL_SUCCESS], deviceDto);
     }
 }
