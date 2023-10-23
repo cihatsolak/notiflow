@@ -13,7 +13,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             {
                 new(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>), ServiceLifetime.Singleton),
                 new(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>), ServiceLifetime.Scoped),
-                new(typeof(IPipelineBehavior<,>), typeof(LanguageBehaviour<,>), ServiceLifetime.Singleton),
                 new(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>), ServiceLifetime.Scoped),
                 new(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>), ServiceLifetime.Scoped),
             });
@@ -33,25 +32,10 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services
             .AddMassTransit()
+            .AddLocalize()
             .AddHttpContextAccessor()
             .AddFluentDesignValidation()
             .AddAutoMapper(Assembly.GetExecutingAssembly());
-
-        services.AddLocalization();
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
-
-            options.DefaultRequestCulture = new("tr-TR");
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-
-            options.ApplyCurrentCultureToResponseHeaders = true;
-        });
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();
 

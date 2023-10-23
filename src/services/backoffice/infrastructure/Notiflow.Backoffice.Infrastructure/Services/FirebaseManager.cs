@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿using Notiflow.Common.Exceptions;
+
+namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class FirebaseManager : IFirebaseService
 {

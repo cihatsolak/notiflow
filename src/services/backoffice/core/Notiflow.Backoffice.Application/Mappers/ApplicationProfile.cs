@@ -39,9 +39,6 @@ internal sealed class ApplicationProfile : Profile
 
     private void NotificationMaps()
     {
-        CreateMap<SendSingleNotificationCommand, NotificationDeliveredEvent>();
-        CreateMap<SendSingleNotificationCommand, NotificationNotDeliveredEvent>();
-
         CreateMap<NotificationHistory, GetNotificationHistoryByIdQueryResult>();
     }
 

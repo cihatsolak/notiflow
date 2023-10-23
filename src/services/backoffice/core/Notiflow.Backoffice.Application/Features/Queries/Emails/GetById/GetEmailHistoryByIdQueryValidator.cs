@@ -2,8 +2,8 @@
 
 public sealed class GetEmailHistoryByIdQueryValidator : AbstractValidator<GetEmailHistoryByIdQuery>
 {
-    public GetEmailHistoryByIdQueryValidator()
+    public GetEmailHistoryByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }

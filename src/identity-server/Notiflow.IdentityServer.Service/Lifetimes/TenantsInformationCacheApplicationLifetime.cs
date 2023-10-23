@@ -33,7 +33,7 @@ public static class TenantsInformationCacheApplicationLifetime
                 return;
 
             var transactionResults = await AddCacheAsync(response.Data);
-            if (transactionResults.All(transaction => transaction))
+            if (Array.TrueForAll(transactionResults, transaction => transaction))
             {
                 Logger.LogInformation("Tenant information has been added to the cache.");
                 return;
@@ -74,7 +74,7 @@ public static class TenantsInformationCacheApplicationLifetime
             tenantCachingTasks.Add(RedisService.SetAddAsync(CacheKeys.TENANT_TOKENS, tenant.Token));
         }
 
-        
+
 
         return await Task.WhenAll(tenantCachingTasks);
     }

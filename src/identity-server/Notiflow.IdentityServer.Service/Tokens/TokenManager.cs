@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Auth.Infrastructure;
-
-namespace Notiflow.IdentityServer.Service.Tokens;
+﻿namespace Notiflow.IdentityServer.Service.Tokens;
 
 internal sealed class TokenManager : ITokenService
 {
@@ -11,7 +9,7 @@ internal sealed class TokenManager : ITokenService
         _jwtTokenSetting = jwtTokenSetting.Value;
     }
 
-    public ApiResponse<TokenResponse> CreateToken(User user)
+    public TokenResponse CreateToken(User user)
     {
         DateTime accessTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.AccessTokenExpirationMinute);
         DateTime refreshTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.RefreshTokenExpirationMinute);
@@ -39,7 +37,7 @@ internal sealed class TokenManager : ITokenService
             RefreshTokenExpiration = refreshTokenExpiration
         };
 
-        return ApiResponse<TokenResponse>.Success(tokenResponse);
+        return tokenResponse;
     }
 
     private static IEnumerable<Claim> SetUserClaims(User user, IEnumerable<string> audiences)

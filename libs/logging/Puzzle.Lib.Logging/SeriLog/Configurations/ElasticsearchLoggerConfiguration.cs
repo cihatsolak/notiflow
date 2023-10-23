@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Configurations;
+﻿namespace Puzzle.Lib.Logging.SeriLog.Configurations;
 
 internal static class ElasticsearchLoggerConfiguration
 {
@@ -23,7 +23,7 @@ internal static class ElasticsearchLoggerConfiguration
             BufferLogShippingInterval = TimeSpan.FromSeconds(5),
             IndexFormat = $"{environmentName}-{applicationName}-logs{DateTime.Now:yyyy.MM.dd}"
         };
-        
+
         if (seriLogElasticSetting.IsRequiredAuthentication)
         {
             elasticsearchSinkOptions.ModifyConnectionSettings = (connection) => connection.BasicAuthentication(seriLogElasticSetting.Username, seriLogElasticSetting.Password);

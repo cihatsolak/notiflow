@@ -25,6 +25,7 @@ global using Notiflow.Backoffice.Persistence.Repositories.NotificationHistories;
 global using Notiflow.Backoffice.Persistence.Repositories.TextMessageHistories;
 global using Notiflow.Backoffice.Persistence.Seeds;
 global using Notiflow.Backoffice.Persistence.UnitOfWorks;
+global using Notiflow.Common.Exceptions;
 global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Database.Concrete;
 global using Puzzle.Lib.Database.Infrastructure;

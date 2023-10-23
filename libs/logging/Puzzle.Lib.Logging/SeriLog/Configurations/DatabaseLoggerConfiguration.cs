@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Configurations;
+﻿using Puzzle.Lib.Logging.SeriLog.ColumnWriters;
+
+namespace Puzzle.Lib.Logging.SeriLog.Configurations;
 
 internal static class DatabaseLoggerConfiguration
 {

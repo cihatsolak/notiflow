@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Enrichers;
+﻿namespace Puzzle.Lib.Logging.SeriLog.Enrichers;
 
 public class ApplicationNameEnricher : ILogEventEnricher
 {

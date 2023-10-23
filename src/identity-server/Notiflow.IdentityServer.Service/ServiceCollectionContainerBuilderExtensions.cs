@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.File.Infrastructure;
-
-namespace Notiflow.IdentityServer.Service;
+﻿namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
@@ -8,13 +6,6 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
         FtpSetting ftpSetting = configuration.GetRequiredSection(nameof(FtpSetting)).Get<FtpSetting>();
-
-        services.AddClaimService();           
-
-        services
-            .AddFluentDesignValidation()
-            .AddApiBehaviorOptions();
-
 
         services.AddRedisService(options =>
         {
@@ -38,13 +29,18 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.Domain = ftpSetting.Domain;
         });
 
-        services.AddHttpContextAccessor();
         services.TryAddSingleton<ITokenService, TokenManager>();
-
         services.TryAddScoped<IAuthService, AuthManager>();
         services.TryAddScoped<ITenantService, TenantManager>();
         services.TryAddScoped<ITenantPermissionService, TenantPermissionManager>();
         services.TryAddScoped<IUserService, UserManager>();
+
+        services
+           .AddLocalize()
+           .AddHttpContextAccessor()
+           .AddClaimService()
+           .AddFluentDesignValidation()
+           .AddApiBehaviorOptions();
 
         AddObservers(services);
 

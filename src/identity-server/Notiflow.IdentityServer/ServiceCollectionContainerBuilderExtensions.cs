@@ -10,9 +10,12 @@ internal static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
+        var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        
         services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;
+            options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
         });
 
         services.AddJwtAuthentication(options =>

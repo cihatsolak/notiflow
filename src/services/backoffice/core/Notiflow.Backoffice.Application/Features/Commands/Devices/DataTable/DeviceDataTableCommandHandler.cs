@@ -1,15 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.DataTable;
 
-public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, ApiResponse<DtResult<DeviceDataTableResult>>>
+public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Result<DtResult<DeviceDataTableResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
 
-    public DeviceDataTableCommandHandler(INotiflowUnitOfWork uow)
+    public DeviceDataTableCommandHandler(
+        INotiflowUnitOfWork uow, 
+        ILocalizerService<ResultState> localizer)
     {
         _uow = uow;
+        _localizer = localizer;
     }
 
-    public async Task<ApiResponse<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Result<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<Device> devices) = await _uow.DeviceRead.GetPageAsync(request.SortKey,
                                                                                      request.SearchKey,
@@ -20,7 +24,7 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
 
         if (devices.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<DeviceDataTableResult>>.Failure(ResponseCodes.Error.DEVICE_NOT_FOUND);
+            return Result<DtResult<DeviceDataTableResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.DEVICE_NOT_FOUND]);
         }
 
         DtResult<DeviceDataTableResult> deviceDataTable = new()
@@ -31,6 +35,6 @@ public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTa
             Data = ObjectMapper.Mapper.Map<List<DeviceDataTableResult>>(devices)
         };
 
-        return ApiResponse<DtResult<DeviceDataTableResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, deviceDataTable);
+        return Result<DtResult<DeviceDataTableResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], deviceDataTable);
     }
 }

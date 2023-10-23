@@ -4,20 +4,17 @@ public sealed class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IStringLocalizer<ValidationErrorLanguage> _validationErrorLocalizer;
-    private readonly IStringLocalizer<ResponseLanguage> _responseLocalizer;
+    private readonly IStringLocalizer<ResultState> _validationErrorLocalizer;
     private readonly ILogger<ExceptionMiddleware> _logger;
 
     public ExceptionMiddleware(
         RequestDelegate next,
-        IStringLocalizer<ValidationErrorLanguage> validationErrorLocalizer,
-        IStringLocalizer<ResponseLanguage> responseLocalizer,
+        IStringLocalizer<ResultState> validationErrorLocalizer,
         ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
         _jsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         _validationErrorLocalizer = validationErrorLocalizer;
-        _responseLocalizer = responseLocalizer;
         _logger = logger;
     }
 
@@ -29,36 +26,21 @@ public sealed class ExceptionMiddleware
         }
         catch (ValidationException exception)
         {
-            _logger.LogError(exception, exception.Message);
             await ValidationProblemAsync(httpContext, exception);
         }
-        catch (Exception exception)
+        catch
         {
-            _logger.LogError(exception, exception.Message);
             await InternalServerProblemAsync(httpContext);
         }
     }
 
-    private Task ValidationProblemAsync(HttpContext httpContext, Exception exception)
+    private Task ValidationProblemAsync(HttpContext httpContext, ValidationException validationException)
     {
-        ApiResponse<EmptyResponse> validationErrorResponse = null;
-
-        ValidationException validationException = exception as ValidationException;
-        if (!validationException.Errors.Any())
+        Result<EmptyResponse> validationErrorResponse = new()
         {
-            validationErrorResponse = ApiResponse<EmptyResponse>.Failure(FluentValidationErrorCodes.GENERAL_ERROR);
-            validationErrorResponse.Message = _validationErrorLocalizer[FluentValidationErrorCodes.GENERAL_ERROR.ToString()];
-        }
-        else
-        {
-            string errorCodeText = validationException.Errors.First().ErrorMessage;
-            validationErrorResponse = new ApiResponse<EmptyResponse>()
-            {
-                HttpStatusCode = int.Parse(errorCodeText),
-                Message = _validationErrorLocalizer[errorCodeText].Value,
-                Errors = validationException.Errors.Select(p => p.ErrorMessage)
-            };
-        }
+            Message = validationException.Errors.FirstOrDefault()?.ErrorMessage,
+            Errors = validationException.Errors.Select(p => p.ErrorMessage)
+        };
 
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
@@ -67,8 +49,9 @@ public sealed class ExceptionMiddleware
 
     private Task InternalServerProblemAsync(HttpContext httpContext)
     {
-        var serverErrorResponse = ApiResponse<EmptyResponse>.Failure(ResponseCodes.Error.GENERAL);
-        serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
+        var serverErrorResponse = Result<EmptyResponse>.Failure(ResultState.GENERAL_ERROR);
+        serverErrorResponse.Message = "";
+        //serverErrorResponse.Message = _responseLocalizer[$"{ResponseCodes.Error.GENERAL}"];
 
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
