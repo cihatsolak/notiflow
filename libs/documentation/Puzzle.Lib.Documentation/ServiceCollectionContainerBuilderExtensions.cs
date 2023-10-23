@@ -70,6 +70,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         options.OperationFilter<TenantTokenOperationFilter>();
         options.OperationFilter<CorrelationIdOperationFilter>();
+        options.OperationFilter<AcceptLanguageOperationFilter>();
     }
 
     /// <summary>

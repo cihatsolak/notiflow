@@ -2,9 +2,9 @@
 
 public sealed class ChangePhoneNumberRequestValidator : AbstractValidator<UpdateCustomerEmailCommand>
 {
-    public ChangePhoneNumberRequestValidator()
+    public ChangePhoneNumberRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
-        RuleFor(p => p.Email).Email(FluentValidationErrorCodes.EMAIL);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
+        RuleFor(p => p.Email).Email(localizer[ValidationErrorCodes.EMAIL]);
     }
 }

@@ -1,28 +1,31 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
-public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, ApiResponse<Unit>>
+public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly ILogger<DeleteCustomerCommandHandler> _logger;
 
     public DeleteCustomerCommandHandler(
         INotiflowUnitOfWork uow,
+         ILocalizerService<ResultState> localizer,
         ILogger<DeleteCustomerCommandHandler> logger)
     {
         _uow = uow;
         _logger = logger;
+        _localizer = localizer;
     }
 
-    public async Task<ApiResponse<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return ApiResponse<Unit>.Failure(ResponseCodes.Error.CUSTOMER_NOT_DELETED);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_DELETED]);
         }
 
         _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
-        return ApiResponse<Unit>.Success(ResponseCodes.Success.CUSTOMER_DELETED, Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.CUSTOMER_DELETED], Unit.Value);
     }
 }

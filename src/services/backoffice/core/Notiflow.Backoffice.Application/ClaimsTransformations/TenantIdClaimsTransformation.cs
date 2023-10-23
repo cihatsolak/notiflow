@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.ClaimsTransformations;
+﻿using Notiflow.Common.Exceptions;
+
+namespace Notiflow.Backoffice.Application.ClaimsTransformations;
 
 public sealed class TenantIdClaimsTransformation : IClaimsTransformation
 {

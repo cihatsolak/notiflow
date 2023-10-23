@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\auth\Puzzle.Lib.Auth\Puzzle.Lib.Auth.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\cache\Puzzle.Lib.Cache\Puzzle.Lib.Cache.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\database\Puzzle.Lib.Database\Puzzle.Lib.Database.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\schedule\Puzzle.Lib.Hangfire\Puzzle.Lib.Hangfire.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\security\Puzzle.Lib.Security\Puzzle.Lib.Security.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
+		<ProjectReference Include="..\..\..\..\libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
+		<ProjectReference Include="..\..\..\shared\Notiflow.Common\Notiflow.Common.csproj" />
+	</ItemGroup>
+
+</Project>

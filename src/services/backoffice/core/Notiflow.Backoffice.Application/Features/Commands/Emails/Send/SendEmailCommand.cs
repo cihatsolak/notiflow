@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
-public sealed record SendEmailCommand : IRequest<ApiResponse<Unit>>
+public sealed record SendEmailCommand : IRequest<Result<Unit>>
 {
     public required string Body { get; init; }
     public required string Subject { get; init; }

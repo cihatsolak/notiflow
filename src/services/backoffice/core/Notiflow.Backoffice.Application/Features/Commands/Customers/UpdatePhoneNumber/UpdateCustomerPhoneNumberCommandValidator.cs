@@ -2,9 +2,9 @@
 
 public sealed class UpdateCustomerPhoneNumberCommandValidator : AbstractValidator<UpdateCustomerPhoneNumberCommand>
 {
-    public UpdateCustomerPhoneNumberCommandValidator()
+    public UpdateCustomerPhoneNumberCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
-        RuleFor(p => p.PhoneNumber).MobilePhone(FluentValidationErrorCodes.PHONE_NUMBER);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
+        RuleFor(p => p.PhoneNumber).MobilePhone(localizer[ValidationErrorCodes.PHONE_NUMBER]);
     }
 }

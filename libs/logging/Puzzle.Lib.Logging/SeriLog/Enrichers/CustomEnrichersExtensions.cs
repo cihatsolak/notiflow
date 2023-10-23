@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.SeriLogConfigurations.Enrichers;
+﻿namespace Puzzle.Lib.Logging.SeriLog.Enrichers;
 
 /// <summary>
 /// The <c>CustomEnrichersExtensions</c> class provides extension methods for enhancing logging configuration.

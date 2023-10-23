@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Database.Infrastructure;
-
-namespace Notiflow.Backoffice.Persistence;
+﻿namespace Notiflow.Backoffice.Persistence;
 
 public static class ServiceCollectionContainerBuilderExtensions
 {

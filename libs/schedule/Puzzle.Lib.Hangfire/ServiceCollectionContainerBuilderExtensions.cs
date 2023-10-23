@@ -6,20 +6,20 @@
 public static class ServiceCollectionContainerBuilderExtensions
 {
     /// <summary>
-    /// Adds Hangfire services with SqlServer storage.
+    /// Adds Hangfire services with microsoft sql server storage.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static IServiceCollection AddHangfireWithSqlServerStorage(this IServiceCollection services, Action<HangfireSetting> configure)
+    public static IServiceCollection AddHangfireMsSql(this IServiceCollection services, Action<HangfireSetting> configure)
     {
         HangfireSetting hangfireSetting = new();
         configure?.Invoke(hangfireSetting);
 
         services.Configure(configure);
 
-        services.AddHangfire(config =>
+        services.AddHangfire((provider, options) =>
         {
-            config.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
+            options.UseSqlServerStorage(hangfireSetting.ConnectionString, new()
             {
                 PrepareSchemaIfNecessary = true,
                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(8),
@@ -27,27 +27,39 @@ public static class ServiceCollectionContainerBuilderExtensions
                 QueuePollInterval = TimeSpan.FromSeconds(30),
                 DisableGlobalLocks = true,
                 UseRecommendedIsolationLevel = true
-            })
-           .WithJobExpirationTimeout(TimeSpan.FromDays(15));
+            }).WithJobExpirationTimeout(TimeSpan.FromDays(10));
 
-            config.UseDashboardMetric(DashboardMetrics.ServerCount)
-                  .UseDashboardMetric(SqlServerStorage.ActiveConnections)
-                  .UseDashboardMetric(SqlServerStorage.TotalConnections)
-                  .UseDashboardMetric(DashboardMetrics.RecurringJobCount)
-                  .UseDashboardMetric(DashboardMetrics.RetriesCount)
-                  .UseDashboardMetric(DashboardMetrics.AwaitingCount)
-                  .UseDashboardMetric(DashboardMetrics.EnqueuedAndQueueCount)
-                  .UseDashboardMetric(DashboardMetrics.ScheduledCount)
-                  .UseDashboardMetric(DashboardMetrics.ProcessingCount)
-                  .UseDashboardMetric(DashboardMetrics.SucceededCount)
-                  .UseDashboardMetric(DashboardMetrics.FailedCount)
-                  .UseDashboardMetric(DashboardMetrics.DeletedCount)
-                  .UseSimpleAssemblyNameTypeSerializer()
-                  .UseRecommendedSerializerSettings()
-                  .UseSerilogLogProvider();
+            options.UseHeartbeatPage(TimeSpan.FromMinutes(1));
+
+            options.UseFilter(new AutomaticRetryAttribute() { Attempts = hangfireSetting.GlobalAutomaticRetryAttempts });
+
+            options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+            options.UseSimpleAssemblyNameTypeSerializer();
+            options.UseRecommendedSerializerSettings();
+            //config.UseSerilogLogProvider();
+            options.UseColouredConsoleLogProvider();
+            options.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
+            //options.UseActivator(new HangfireActivator(services.BuildServiceProvider()));
+
+            options.UseDashboardMetric(DashboardMetrics.ServerCount)
+                   .UseDashboardMetric(SqlServerStorage.ActiveConnections)
+                   .UseDashboardMetric(SqlServerStorage.TotalConnections)
+                   .UseDashboardMetric(DashboardMetrics.RecurringJobCount)
+                   .UseDashboardMetric(DashboardMetrics.RetriesCount)
+                   .UseDashboardMetric(DashboardMetrics.AwaitingCount)
+                   .UseDashboardMetric(DashboardMetrics.EnqueuedAndQueueCount)
+                   .UseDashboardMetric(DashboardMetrics.ScheduledCount)
+                   .UseDashboardMetric(DashboardMetrics.ProcessingCount)
+                   .UseDashboardMetric(DashboardMetrics.SucceededCount)
+                   .UseDashboardMetric(DashboardMetrics.FailedCount)
+                   .UseDashboardMetric(DashboardMetrics.DeletedCount);
+
         });
 
-        services.AddHangfireServer();
+        services.AddHangfireServer(options =>
+        {
+            options.ServerName = string.Format("{0}.{1}", Environment.MachineName, Random.Shared.Next(100000, 999999));
+        });
 
         return services;
     }

@@ -1,15 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 
-public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, ApiResponse<DtResult<TextMessageDataTableCommandResult>>>
+public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
+    private readonly ILocalizerService<ResultState> _localizer;
 
-    public TextMessageDataTableCommandHandler(INotiflowUnitOfWork uow)
+    public TextMessageDataTableCommandHandler(
+        INotiflowUnitOfWork uow,
+        ILocalizerService<ResultState> localizer)
     {
         _uow = uow;
+        _localizer = localizer;
     }
 
-    public async Task<ApiResponse<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
+    public async Task<Result<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         (int recordsTotal, List<TextMessageHistory> textMessageHistories) = await _uow.TextMessageHistoryRead.GetPageAsync(request.SortKey,
                                                                                                                            request.SearchKey,
@@ -20,7 +24,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Failure(ResponseCodes.Error.TEXT_MESSAGE_NOT_FOUND);
+            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TEXT_MESSAGE_NOT_FOUND]);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
@@ -31,6 +35,6 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
             Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return ApiResponse<DtResult<TextMessageDataTableCommandResult>>.Success(ResponseCodes.Success.OPERATION_SUCCESSFUL, textMessageHistoryDataTable);
+        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], textMessageHistoryDataTable);
     }
 }

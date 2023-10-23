@@ -1,13 +1,11 @@
 ﻿global using Microsoft.AspNetCore.Builder;
-global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.HttpLogging;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using NpgsqlTypes;
 global using Puzzle.Lib.Logging.Infrastructure;
-global using Puzzle.Lib.Logging.SeriLogConfigurations.ColumnWriters;
-global using Puzzle.Lib.Logging.SeriLogConfigurations.Configurations;
-global using Puzzle.Lib.Logging.SeriLogConfigurations.Enrichers;
+global using Puzzle.Lib.Logging.SeriLog.Configurations;
+global using Puzzle.Lib.Logging.SeriLog.Enrichers;
 global using Serilog;
 global using Serilog.Configuration;
 global using Serilog.Core;

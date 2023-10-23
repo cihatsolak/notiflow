@@ -2,8 +2,8 @@
 
 public sealed class DeleteDeviceCommandValidator : AbstractValidator<DeleteDeviceCommand>
 {
-    public DeleteDeviceCommandValidator()
+    public DeleteDeviceCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        RuleFor(p => p.Id).Id(FluentValidationErrorCodes.ID_NUMBER);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
     }
 }
