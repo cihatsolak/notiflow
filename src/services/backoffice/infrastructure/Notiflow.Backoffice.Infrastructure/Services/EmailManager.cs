@@ -1,6 +1,4 @@
-﻿
-
-namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class EmailManager : IEmailService
 {
@@ -24,7 +22,7 @@ internal sealed class EmailManager : IEmailService
         smtpClient.Host = tenantApplication.MailSmtpHost;
         smtpClient.Port = tenantApplication.MailSmtpPort;
         smtpClient.Timeout = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
-        smtpClient.EnableSsl = false;
+        smtpClient.EnableSsl = tenantApplication.MailSmtpIsUseSsl;
 
         using MailMessage mailMessage = new();
         mailMessage.From = new MailAddress(tenantApplication.MailFromAddress, tenantApplication.MailFromName, Encoding.UTF8);

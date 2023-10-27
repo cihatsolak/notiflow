@@ -43,6 +43,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
                     MailReplyAddress = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
                     MailSmtpHost = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
                     MailSmtpPort = table.Column<int>(type: "int", nullable: false),
+                    MailSmtpIsUseSsl = table.Column<bool>(type: "bit", nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")

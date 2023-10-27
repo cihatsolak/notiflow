@@ -14,8 +14,28 @@ public sealed record ScheduleEmailRequest
 
 public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>
 {
-    public ScheduleEmailRequestValidator()
+    public ScheduleEmailRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
     {
-        
+        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_BODY]);
+
+        RuleFor(p => p.Subject)
+          .NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_SUBJECT])
+          .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.EMAIL_SUBJECT]);
+
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
+
+        RuleForEach(p => p.CcAddresses)
+            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+
+        RuleForEach(p => p.BccAddresses)
+            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+
+        RuleFor(p => p.Date)
+            .Must(date => DateTime.TryParse(date, CultureInfo.CurrentCulture, out _))
+            .WithMessage(localizer[ValidationErrorCodes.DATE]);
+
+        RuleFor(p => p.Time)
+            .Must(date => TimeSpan.TryParse(date, CultureInfo.CurrentCulture, out _))
+            .WithMessage(localizer[ValidationErrorCodes.TIME]);
     }
 }

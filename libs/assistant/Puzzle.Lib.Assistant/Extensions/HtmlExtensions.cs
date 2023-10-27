@@ -34,7 +34,7 @@ public static partial class HtmlExtensions
 
 public static partial class HtmlExtensions
 {
-    [GeneratedRegex("<[^>]*>")]
+    [GeneratedRegex("<[^>]*>", RegexOptions.Compiled)]
     private static partial Regex CleanHtmlRegex();
 
     /// <summary>

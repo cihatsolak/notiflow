@@ -25,7 +25,8 @@ internal static class SeedData
                   .RuleFor(tenantApplication => tenantApplication.MailFromName, faker => faker.Internet.UserName())
                   .RuleFor(tenantApplication => tenantApplication.MailReplyAddress, faker => faker.Internet.Email())
                   .RuleFor(tenantApplication => tenantApplication.MailSmtpHost, faker => faker.Internet.DomainName())
-                  .RuleFor(tenantApplication => tenantApplication.MailSmtpPort, faker => faker.Random.Int(1024, 65535));
+                  .RuleFor(tenantApplication => tenantApplication.MailSmtpPort, faker => faker.Random.Int(1024, 65535))
+                  .RuleFor(tenantApplication => tenantApplication.MailSmtpIsUseSsl, faker => faker.Random.Bool(0.3F));
     }
 
     private static TenantPermission GenerateTenantPermission()

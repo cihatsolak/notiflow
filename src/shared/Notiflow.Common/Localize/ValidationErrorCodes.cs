@@ -26,4 +26,6 @@ public class ValidationErrorCodes
     public const int REFRESH_TOKEN = 1018;
     public const int USERNAME = 1019;
     public const int PASSWORD = 1020;
+    public const int DATE = 1021;
+    public const int TIME = 1022;
 };

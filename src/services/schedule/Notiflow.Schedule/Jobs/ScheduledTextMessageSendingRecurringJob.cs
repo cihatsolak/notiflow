@@ -19,7 +19,7 @@ public sealed class ScheduledTextMessageSendingRecurringJob
         _logger = logger;
     }
 
-    [JobDisplayName("[TEXT-MESSAGE] Sends scheduled text messages.")]
+    [JobDisplayName("[TEXT MESSAGE] Sends scheduled text messages.")]
     public async Task ExecuteAsync()
     {
         _logger.LogInformation("The text messages planned to be sent are started to be sent.");
@@ -32,22 +32,25 @@ public sealed class ScheduledTextMessageSendingRecurringJob
                                message.PlannedDeliveryDate <= DateTime.Now.AddMinutes(1))
             .ToListAsync();
 
-        if (!scheduledTextMessages.IsNullOrNotAny())
+        if (scheduledTextMessages.IsNullOrNotAny())
             return;
 
         foreach (var scheduledTextMessage in scheduledTextMessages)
         {
+            DateTime now = DateTime.Now;
+
             var response = await _client.GetResponse<ScheduledResponse>(scheduledTextMessage.Data.AsModel<ScheduledTextMessageEvent>());
             if (!response.Message.Succeeded)
             {
                 scheduledTextMessage.FailedAttempts += 1;
                 scheduledTextMessage.ErrorMessage = response.Message.ErrorMessage;
-                scheduledTextMessage.LastAttemptDate = DateTime.Now;
+                scheduledTextMessage.LastAttemptDate = now;
             }
             else
             {
                 scheduledTextMessage.IsSent = true;
-                scheduledTextMessage.SuccessDeliveryDate = DateTime.Now;
+                scheduledTextMessage.SuccessDeliveryDate = now;
+                scheduledTextMessage.LastAttemptDate = now;
             }
         }
 

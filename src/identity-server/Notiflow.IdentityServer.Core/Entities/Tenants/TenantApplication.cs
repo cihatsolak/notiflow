@@ -11,6 +11,7 @@ public class TenantApplication : BaseHistoricalEntity<int>
     public string MailReplyAddress { get; set; }
     public string MailSmtpHost { get; set; }
     public int MailSmtpPort { get; set; }
+    public bool MailSmtpIsUseSsl { get; set; }
 
     public int TenantId { get; set; }
     public Tenant Tenant { get; set; }

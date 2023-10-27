@@ -15,7 +15,7 @@ public sealed class NotificationPermissionAuthorizationHandler : AuthorizationHa
     {
         if (context?.User?.Identity is null)
         {
-            context.Fail();
+            context?.Fail();
             return;
         }
 

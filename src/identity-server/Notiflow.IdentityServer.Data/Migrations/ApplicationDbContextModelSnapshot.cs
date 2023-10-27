@@ -17,7 +17,7 @@ namespace Notiflow.IdentityServer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -127,6 +127,9 @@ namespace Notiflow.IdentityServer.Data.Migrations
                         .HasMaxLength(150)
                         .IsUnicode(false)
                         .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("MailSmtpIsUseSsl")
+                        .HasColumnType("bit");
 
                     b.Property<int>("MailSmtpPort")
                         .HasColumnType("int");
