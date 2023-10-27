@@ -2,31 +2,59 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7006
         }
       ],
-      "UpstreamPathTemplate": "/services/user/{everything}",
-      "UpstreamHttpMethod": [ "Get", "POST", "PUT", "DELETE" ],
-      "UpstreamScheme": "http",
+      "UpstreamPathTemplate": "/user-service/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https",
       "SwaggerKey": "User"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7139
         }
       ],
-      "UpstreamPathTemplate": "/services/backoffice/{everything}",
-      "UpstreamHttpMethod": [ "Get", "POST", "PUT", "DELETE" ],
-      "UpstreamScheme": "http",
+      "UpstreamPathTemplate": "/backoffice-service/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https",
       "SwaggerKey": "BackOffice"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7140
+        }
+      ],
+      "UpstreamPathTemplate": "/schedule-service/{everything}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamScheme": "https",
+      "SwaggerKey": "Scheduled"
+    },
+    {
+      "DownstreamPathTemplate": "/health",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7140
+        }
+      ],
+      "UpstreamPathTemplate": "/schedule-service/health",
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamScheme": "https",
+      "SwaggerKey": "Scheduled"
     }
   ]
 }

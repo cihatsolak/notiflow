@@ -19,6 +19,16 @@
           "Url": "https://localhost:7139/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "Scheduled",
+      "Config": [
+        {
+          "Name": "Scheduled API",
+          "Version": "v1",
+          "Url": "https://localhost:7140/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }

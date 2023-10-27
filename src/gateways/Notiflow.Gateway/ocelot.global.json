@@ -1,5 +1,6 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:4500"
+    "BaseUrl": "https://localhost:4500",
+    "RouteIsCaseSensitive": false
   }
 }
