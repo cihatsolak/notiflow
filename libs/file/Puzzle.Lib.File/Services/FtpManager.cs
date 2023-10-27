@@ -63,12 +63,12 @@ public sealed class FtpManager : IFileService
         return FileResult.Success($"{_ftpSetting.Url}{path}");
     }
 
-    public async Task<FileResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extention, CancellationToken cancellationToken)
+    public async Task<FileResult> AddAfterRenameIfAvailableAsync(byte[] fileData, string directory, string fileName, string extension, CancellationToken cancellationToken)
     {
-        CheckArguments(fileData, directory, fileName, extention);
+        CheckArguments(fileData, directory, fileName, extension);
 
         fileName = FileExtensions.CharacterRegulatory(fileName);
-        string path = await GenerateUniqueFileNameAsync(directory, fileName, extention, cancellationToken);
+        string path = await GenerateUniqueFileNameAsync(directory, fileName, extension, cancellationToken);
 
         FtpStatus ftpStatus = await _asyncFtpClient.UploadBytes(fileData, path, FtpRemoteExists.Skip, true, token: cancellationToken);
         if (ftpStatus != FtpStatus.Success)
@@ -125,9 +125,9 @@ public sealed class FtpManager : IFileService
         await _asyncFtpClient.DeleteFile(path, cancellationToken);
     }
 
-    private async Task<string> GenerateUniqueFileNameAsync(string directory, string fileName, string extention, CancellationToken cancellationToken)
+    private async Task<string> GenerateUniqueFileNameAsync(string directory, string fileName, string extension, CancellationToken cancellationToken)
     {
-        string path = $"{directory}/{fileName}{extention}";
+        string path = $"{directory}/{fileName}{extension}";
 
         bool isExists = await _asyncFtpClient.FileExists(path, cancellationToken);
         if (!isExists)
@@ -140,7 +140,7 @@ public sealed class FtpManager : IFileService
         do
         {
             index++;
-            path = $"{directory}/{fileName}-{index}{extention}";
+            path = $"{directory}/{fileName}-{index}{extension}";
 
         } while (await _asyncFtpClient.FileExists(path, cancellationToken));
 
@@ -159,11 +159,11 @@ public sealed class FtpManager : IFileService
         ArgumentException.ThrowIfNullOrEmpty(path);
     }
 
-    private static void CheckArguments(byte[] fileData, string directory, string fileName, string extention)
+    private static void CheckArguments(byte[] fileData, string directory, string fileName, string extension)
     {
         ArgumentNullException.ThrowIfNull(fileData);
         ArgumentException.ThrowIfNullOrEmpty(directory);
         ArgumentException.ThrowIfNullOrEmpty(fileName);
-        ArgumentException.ThrowIfNullOrEmpty(extention);
+        ArgumentException.ThrowIfNullOrEmpty(extension);
     }
 }

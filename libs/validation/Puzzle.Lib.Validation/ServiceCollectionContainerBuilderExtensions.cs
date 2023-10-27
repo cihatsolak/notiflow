@@ -15,7 +15,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.CurrentCulture;
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
-
+        
         return services;
     }
 

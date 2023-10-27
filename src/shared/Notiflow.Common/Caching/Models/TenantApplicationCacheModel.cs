@@ -14,4 +14,5 @@ public sealed record TenantApplicationCacheModel
     public string MailReplyAddress { get; set; }
     public string MailSmtpHost { get; set; }
     public int MailSmtpPort { get; set; }
+    public bool MailSmtpIsUseSsl { get; set; }
 }

@@ -15,7 +15,7 @@ public sealed class EmailPermissionAuthorizationHandler : AuthorizationHandler<E
     {
         if (context?.User?.Identity is null)
         {
-            context.Fail();
+            context?.Fail();
             return;
         }
 

@@ -39,7 +39,8 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
     /// <returns>A boolean value indicating whether the list of email addresses is valid.</returns>
     private static bool ValidateEmails(string emails, char parser)
     {
-        return emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .All(email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
+        var splittedEmails = emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email().IsMatch(email) && EmailValidateExtension.ValidateTld(email));
     }
 }

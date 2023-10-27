@@ -26,6 +26,7 @@ internal sealed class TenantApplicationConfiguration : BaseHistoricalEntityConfi
         builder.Property(p => p.MailReplyAddress).HasMaxLength(200).IsUnicode(false).IsRequired();
         builder.Property(p => p.MailSmtpHost).HasMaxLength(150).IsUnicode(false).IsRequired();
         builder.Property(p => p.MailSmtpPort).IsRequired();
+        builder.Property(p => p.MailSmtpIsUseSsl).IsRequired();.
 
         builder.HasOne(p => p.Tenant).WithOne(p => p.TenantApplication).HasForeignKey<TenantApplication>(p => p.TenantId).OnDelete(DeleteBehavior.Restrict);
     }
