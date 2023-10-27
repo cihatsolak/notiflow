@@ -37,17 +37,20 @@ public sealed class ScheduledEmailSendingRecurringJob
 
         foreach (var scheduledEmail in scheduledEmails)
         {
+            DateTime now = DateTime.Now;
+
             var response = await _client.GetResponse<ScheduledResponse>(scheduledEmail.Data.AsModel<ScheduledEmailEvent>());
             if (!response.Message.Succeeded)
             {
                 scheduledEmail.FailedAttempts += 1;
                 scheduledEmail.ErrorMessage = response.Message.ErrorMessage;
-                scheduledEmail.LastAttemptDate = DateTime.Now;
+                scheduledEmail.LastAttemptDate = now;
             }
             else
             {
                 scheduledEmail.IsSent = true;
                 scheduledEmail.SuccessDeliveryDate = DateTime.Now;
+                scheduledEmail.LastAttemptDate = now;
             }
         }
 

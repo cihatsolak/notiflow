@@ -37,17 +37,20 @@ public sealed class ScheduledNotificationSendingRecurringJob
 
         foreach (var scheduledNotification in scheduledNotifications)
         {
+            DateTime now = DateTime.Now;
+
             var response = await _client.GetResponse<ScheduledResponse>(scheduledNotification.Data.AsModel<ScheduledNotificationEvent>());
             if (!response.Message.Succeeded)
             {
                 scheduledNotification.FailedAttempts += 1;
                 scheduledNotification.ErrorMessage = response.Message.ErrorMessage;
-                scheduledNotification.LastAttemptDate = DateTime.Now;
+                scheduledNotification.LastAttemptDate = now;
             }
             else
             {
                 scheduledNotification.IsSent = true;
-                scheduledNotification.SuccessDeliveryDate = DateTime.Now;
+                scheduledNotification.SuccessDeliveryDate = now;
+                scheduledNotification.LastAttemptDate = now;
             }
         }
 

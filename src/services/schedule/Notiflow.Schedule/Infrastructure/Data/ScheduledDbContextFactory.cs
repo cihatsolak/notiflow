@@ -14,7 +14,7 @@ public class ScheduledDbContextFactory : IDesignTimeDbContextFactory<ScheduledDb
                            .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<ScheduledDbContext>();
-        optionsBuilder.UseSqlServer(configurationRoot.GetSection(nameof(ScheduledDbContext))["ConnectionString"]);
+        optionsBuilder.UseSqlServer(configurationRoot.GetSection(nameof(ScheduledDbContext))[nameof(SqlSetting.ConnectionString)]);
 
         return new ScheduledDbContext(optionsBuilder.Options);
     }
