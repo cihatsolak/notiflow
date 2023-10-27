@@ -25,8 +25,6 @@ app.UseHttpSecurityPrecautions(builder.Environment)
 
 app.UseLocalizationWithEndpoint();
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.MapControllers();
 
 await app.StartProjectAsync();

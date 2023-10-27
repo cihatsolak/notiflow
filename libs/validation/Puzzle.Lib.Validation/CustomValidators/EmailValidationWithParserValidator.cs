@@ -41,6 +41,6 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
     {
         var splittedEmails = emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email().IsMatch(email) && EmailValidateExtension.ValidateTld(email));
+        return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
     }
 }
