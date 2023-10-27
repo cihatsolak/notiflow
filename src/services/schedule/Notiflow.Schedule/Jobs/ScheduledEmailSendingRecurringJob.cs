@@ -32,7 +32,7 @@ public sealed class ScheduledEmailSendingRecurringJob
                                  message.PlannedDeliveryDate <= DateTime.Now.AddMinutes(1))
               .ToListAsync();
 
-        if (!scheduledEmails.IsNullOrNotAny())
+        if (scheduledEmails.IsNullOrNotAny())
             return;
 
         foreach (var scheduledEmail in scheduledEmails)

@@ -32,7 +32,7 @@ public sealed class ScheduledTextMessageSendingRecurringJob
                                message.PlannedDeliveryDate <= DateTime.Now.AddMinutes(1))
             .ToListAsync();
 
-        if (!scheduledTextMessages.IsNullOrNotAny())
+        if (scheduledTextMessages.IsNullOrNotAny())
             return;
 
         foreach (var scheduledTextMessage in scheduledTextMessages)
