@@ -19,7 +19,8 @@ public static class HangfireConnectionHealthCheck
         },
         name: "[Hangfire] - Scheduled Jobs",
         failureStatus: HealthStatus.Unhealthy,
-        tags: new[] { "Schedule Task", "Cron", "Jobs" });
+        tags: new[] { "Schedule Task", "Cron", "Jobs" },
+        timeout: TimeSpan.FromSeconds(30));
 
         return healthChecksBuilder;
     }
