@@ -3,12 +3,12 @@
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status500InternalServerError)]
-public sealed class SchedulesController : MainController
+public sealed class PlansController : MainController
 {
     private readonly ScheduledDbContext _context;
     private readonly ILocalizerService<ResultState> _localizer;
 
-    public SchedulesController(
+    public PlansController(
         ScheduledDbContext context,
         ILocalizerService<ResultState> localizer)
     {
