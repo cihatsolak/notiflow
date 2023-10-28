@@ -31,6 +31,8 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
    .UseResponseCompress()
+   .UseSerilogLogging()
+   .UseCustomHttpLogging()
    .UseHealthChecksConfiguration();
 
 app.UseLocalizationWithEndpoint();

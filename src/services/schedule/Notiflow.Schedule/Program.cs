@@ -35,6 +35,8 @@ app
    .UseMigrations(builder.Environment)
    .UseApiExceptionHandler()
    .UseResponseCompress()
+   .UseSerilogLogging()
+   .UseCustomHttpLogging()
    .UseHealthChecksConfiguration()
    .UseHangfire();
 

@@ -1,6 +1,4 @@
-﻿using Notiflow.Common.Exceptions;
-
-namespace Notiflow.Backoffice.Application.ClaimsTransformations;
+﻿namespace Notiflow.Backoffice.Application.ClaimsTransformations;
 
 public sealed class TenantIdClaimsTransformation : IClaimsTransformation
 {
@@ -19,7 +17,7 @@ public sealed class TenantIdClaimsTransformation : IClaimsTransformation
         }
 
         int tenantId = await _redisService.HashGetAsync<int>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_ID);
-        if (0 > tenantId)
+        if (0 >= tenantId)
         {
             throw new TenantException("No tenant identification information was found in the cache.");
         }

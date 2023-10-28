@@ -273,4 +273,7 @@
   <data name="1049" xml:space="preserve">
     <value>Kısa mesaj gönderimi başarıyla gerçekleşti.</value>
   </data>
+  <data name="1050" xml:space="preserve">
+    <value>Kiracı belirlenemedi.</value>
+  </data>
 </root>

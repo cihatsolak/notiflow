@@ -3,13 +3,16 @@
 public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
 {
     private readonly IRedisService _redisService;
+    private readonly ILocalizerService<ResultState> _localizer;
     private readonly ILogger<TenantTokenAuthenticationFilter> _logger;
 
     public TenantTokenAuthenticationFilter(
         IRedisService redisService,
+        ILocalizerService<ResultState> localizer,
         ILogger<TenantTokenAuthenticationFilter> logger)
     {
         _redisService = redisService;
+        _localizer = localizer;
         _logger = logger;
     }
 
@@ -18,14 +21,20 @@ public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
         bool isValidHeader = context.HttpContext.Request.Headers.TryGetValue("X-Tenant-Token", out StringValues headerTenantToken);
         if (!isValidHeader)
         {
-            context.Result = new UnauthorizedObjectResult(MissingErrorResponse);
+            context.Result = new UnauthorizedObjectResult(new
+            {
+                message = _localizer[ResultState.TENANT_COULD_NOT_BE_IDENTIFIED]
+            });
             return;
         }
 
-        bool isValidToken = Guid.TryParse(headerTenantToken.FirstOrDefault(), out Guid tenantToken);
+        bool isValidToken = Guid.TryParse(headerTenantToken[0], out Guid tenantToken);
         if (!isValidToken)
         {
-            context.Result = new UnauthorizedObjectResult(InvalidErrorResponse);
+            context.Result = new UnauthorizedObjectResult(new
+            {
+                message = _localizer[ResultState.TENANT_COULD_NOT_BE_IDENTIFIED]
+            });
             return;
         }
 
@@ -33,19 +42,10 @@ public sealed class TenantTokenAuthenticationFilter : IAsyncAuthorizationFilter
         if (!isExists)
         {
             _logger.LogInformation("A request was made with a valid tenant token: {tenantToken}.", tenantToken);
-            context.Result = new UnauthorizedObjectResult(InvalidErrorResponse);
+            context.Result = new UnauthorizedObjectResult(new
+            {
+                message = _localizer[ResultState.TENANT_COULD_NOT_BE_IDENTIFIED]
+            });
         }
     }
-
-    public static Result<EmptyResponse> InvalidErrorResponse => new()
-    {
-        StatusCode = 1,
-        Message = "Invalid X-Tenant-Token header."
-    };
-
-    public static Result<EmptyResponse> MissingErrorResponse => new()
-    {
-        StatusCode = 1,
-        Message = "Missing X-Tenant-Token header."
-    };
 }

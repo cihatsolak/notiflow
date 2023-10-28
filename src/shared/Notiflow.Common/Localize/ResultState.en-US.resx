@@ -273,4 +273,7 @@
   <data name="1049" xml:space="preserve">
     <value>Text message sending was successful.</value>
   </data>
+  <data name="1050" xml:space="preserve">
+    <value>Tenant could not be identified.</value>
+  </data>
 </root>
