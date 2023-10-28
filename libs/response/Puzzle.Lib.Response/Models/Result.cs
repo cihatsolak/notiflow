@@ -52,7 +52,7 @@ public record Result<TData>
     }
 
     /// <summary>
-    /// Creates a success response with the specified data.
+    /// Creates a success response with the specified data. | StatusCodes.Status200OK
     /// </summary>
     /// <param name="data">The data that the response model holds.</param>
     /// <returns>A success response with the specified data.</returns>
@@ -61,7 +61,7 @@ public record Result<TData>
         return new Result<TData>
         {
             Data = data,
-            StatusCode = 9001,
+            StatusCode = StatusCodes.Status200OK,
             Succeeded = true
         };
     }
