@@ -39,6 +39,7 @@ global using Puzzle.Lib.Performance;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Security;
+global using Puzzle.Lib.Validation;
 global using Puzzle.Lib.Validation.RuleBuilders;
 global using Puzzle.Lib.Version;
 global using Puzzle.Lib.Version.Infrastructure;

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notiflow.Backoffice.Persistence.Migrations
 {
     [DbContext(typeof(NotiflowDbContext))]
-    [Migration("20231027153400_InitialCommit")]
+    [Migration("20231028092430_InitialCommit")]
     partial class InitialCommit
     {
         /// <inheritdoc />

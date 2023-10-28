@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Validation.CustomValidators;
+﻿using Puzzle.Lib.Validation.Infrastructure;
+
+namespace Puzzle.Lib.Validation.CustomValidators;
 
 /// <summary>
 /// Validates an email address or a list of comma-separated email addresses with a specified parser character.
@@ -15,7 +17,7 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
         if (string.IsNullOrWhiteSpace(errorMessage))
             throw new ArgumentException("Invalid error message.");
 
-        if (char.IsLetter(parser) || !parsers.Any(p => p == parser))
+        if (char.IsLetter(parser) || Array.Exists(parsers, p => p == parser))
             throw new ArgumentException("Define a valid parser.");
 
         RuleFor(x => x)

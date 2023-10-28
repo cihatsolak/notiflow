@@ -22,14 +22,14 @@ public static class EmailRuleBuilderOptionsExtensions
     }
 
     /// <summary>
-    /// Adds a validation rule for a list of email addresses separated by semicolons.
+    /// Adds a validation rule for a list of email addresses separated by parser.
     /// </summary>
     /// <typeparam name="TElement">The type of the object being validated.</typeparam>
     /// <param name="ruleBuilder">The <see cref="IRuleBuilder{TElement, TProperty}"/> instance.</param>
     /// <param name="errorMessage">The error message to display if the validation fails.</param>
     /// <returns>The <see cref="IRuleBuilderOptions{TElement, TProperty}"/> instance.</returns>
-    public static IRuleBuilderOptions<TElement, string> EmailListWithSemicolon<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage) where TElement : class
+    public static IRuleBuilderOptions<TElement, string> EmailListWithParser<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, char parser, string errorMessage) where TElement : class
     {
-        return ruleBuilder.SetValidator(new EmailValidationWithParserValidator(';', errorMessage));
+        return ruleBuilder.SetValidator(new EmailValidationWithParserValidator(parser, errorMessage));
     }
 }

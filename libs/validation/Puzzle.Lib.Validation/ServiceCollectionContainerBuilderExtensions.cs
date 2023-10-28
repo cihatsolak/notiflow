@@ -13,6 +13,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddFluentDesignValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
+        services.AddFluentValidationAutoValidation();
         ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.CurrentCulture;
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
         
@@ -33,6 +34,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddFluentValidationClientsideAdapters();
 
         ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.CurrentCulture;
+        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
 
         return services;
     }
@@ -44,24 +46,23 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddApiBehaviorOptions(this IServiceCollection services)
     {
+        ILogger logger = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>().CreateLogger(nameof(FluentValidation));
+
         services.Configure<ApiBehaviorOptions>(options =>
         {
-            //options.SuppressInferBindingSourcesForParameters = true;
+            options.SuppressInferBindingSourcesForParameters = false;
+            options.SuppressModelStateInvalidFilter = false;
 
             options.InvalidModelStateResponseFactory = context =>
             {
-                IEnumerable<string> errors = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
+                IEnumerable<string> errorMessage = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
 
-                Log.Warning("-- Validation Error. ErrorCodes: {@errors} --", string.Join(",", errors));
+                logger.LogWarning("-- Validation Error. Error: {@errorMessage} --", errorMessage);
 
-                ValidationResponse validationResponse = new()
+                return new BadRequestObjectResult(new
                 {
-                    Code = 9004,
-                    Message = errors.First(),
-                    Errors = errors
-                };
-
-                return new BadRequestObjectResult(validationResponse);
+                    Message = errorMessage.First()
+                });
             };
         });
 

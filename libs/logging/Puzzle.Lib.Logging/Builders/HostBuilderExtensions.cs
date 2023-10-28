@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Logging.Builders;
+﻿using Microsoft.Extensions.Logging;
+
+namespace Puzzle.Lib.Logging.Builders;
 
 /// <summary>
 /// Provides extension methods for configuring logging in a web application.
@@ -15,8 +17,11 @@ public static class HostBuilderExtensions
         configure?.Invoke(seriLogElasticSetting);
 
         var logger = new LoggerConfiguration()
+           .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+           .MinimumLevel.Override("System", LogEventLevel.Information)
            .Filter.ByExcluding(Matching.FromSource("Microsoft"))
            .Filter.ByExcluding(Matching.FromSource("System"))
+           .Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.StaticFiles"))
            .Enrich.FromLogContext()
            .Enrich.WithMachineName()
            .Enrich.WithEnvironmentUserName()
@@ -31,6 +36,8 @@ public static class HostBuilderExtensions
            .WriteTo.Console()
            .WriteToElasticsearch(builder.Environment, seriLogElasticSetting)
            .CreateLogger();
+
+        builder.Logging.ClearProviders();
 
         return builder.Host.UseSerilog(logger);
     }

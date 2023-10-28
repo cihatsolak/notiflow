@@ -35,7 +35,7 @@ app.UseSwaggerForOcelotUI(options =>
     options.PathToSwaggerGenerator = "/swagger/docs";
 });
 
-app.UseHealthChecksConfiguration();
+app.UseHealthAndUIConfiguration();
 
 await app.UseOcelot();
 

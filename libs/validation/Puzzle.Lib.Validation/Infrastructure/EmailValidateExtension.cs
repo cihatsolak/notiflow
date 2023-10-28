@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Validation.Infrastructure.Extensions;
+﻿namespace Puzzle.Lib.Validation.Infrastructure;
 
 /// <summary>
 /// Provides extension methods for email validation.
@@ -17,6 +17,9 @@ internal static class EmailValidateExtension
     /// <returns>A boolean value indicating whether the TLD of the email address is valid.</returns>
     internal static bool ValidateTld(string email)
     {
-        return tlds.Any(tld => tld == email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last());
+        string[] emailParts = email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        int lastPartIndex = emailParts.Length - 1;
+
+        return Array.Exists(tlds, tld => tld == emailParts[lastPartIndex]);
     }
 }

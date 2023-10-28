@@ -118,18 +118,159 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="-1" xml:space="preserve">
-    <value>Belirlenemeyen doğrulama hatası meydana geldi.</value>
+    <value>Sistemsel bir hata meydana geldi.</value>
+  </data>
+  <data name="0" xml:space="preserve">
+    <value>İşlem başarıyla gerçekleşti.</value>
   </data>
   <data name="1000" xml:space="preserve">
-    <value>Geçersiz kimlik bilgileri, lütfen kontrol edin.</value>
+    <value>Müşteri bulunamadı.</value>
   </data>
   <data name="1001" xml:space="preserve">
-    <value>Geçerli bir isim giriniz.</value>
+    <value>Müşteri mevcutta kayıtlıdır.</value>
   </data>
   <data name="1002" xml:space="preserve">
-    <value>Geçerli bir soyisim giriniz.</value>
+    <value>Müşteri silinemedi.</value>
+  </data>
+  <data name="1003" xml:space="preserve">
+    <value>Müşteri engel durumu, güncellenmek istenen engel durumundan farklı olmalıdır.</value>
+  </data>
+  <data name="1004" xml:space="preserve">
+    <value>Müşterinin e-posta adresi, güncellenmek istenen e-posta adresten farklı olmalıdır.</value>
+  </data>
+  <data name="1005" xml:space="preserve">
+    <value>Müşterinin telefon numarası, güncellenmek istenen telefon numarasından farklı olmalıdır.</value>
+  </data>
+  <data name="1006" xml:space="preserve">
+    <value>Müşteriye ait mevcutta cihaz bulunmaktadır.</value>
+  </data>
+  <data name="1007" xml:space="preserve">
+    <value>Müşteriye ait cihaz silinemedi.</value>
+  </data>
+  <data name="1008" xml:space="preserve">
+    <value>Cihaz bulunamadı.</value>
+  </data>
+  <data name="1009" xml:space="preserve">
+    <value>Müşterilere ait e-posta adresleri bulunamadı.</value>
+  </data>
+  <data name="1010" xml:space="preserve">
+    <value>Kayıtlı e-posta adres sayısı ile istenilen e-posta adres sayısı eşit değildir.</value>
+  </data>
+  <data name="1011" xml:space="preserve">
+    <value>E-posta gönderimi başarısız olarak gerçekleşmiştir.</value>
+  </data>
+  <data name="1012" xml:space="preserve">
+    <value>Bildirim gönderimi başarısız olarak gerçekleşmiştir.</value>
+  </data>
+  <data name="1013" xml:space="preserve">
+    <value>Müşterilere ait telefon numaraları bulunamadı.</value>
+  </data>
+  <data name="1014" xml:space="preserve">
+    <value>Kayıtlı telefon numara sayısı ile istenilen telefon numara sayısı eşit değildir.</value>
+  </data>
+  <data name="1015" xml:space="preserve">
+    <value>Kısa mesaj gönderimi başarısız olarak gerçekleşmiştir.</value>
+  </data>
+  <data name="1016" xml:space="preserve">
+    <value>Desteklenen diller bulunamadı.</value>
+  </data>
+  <data name="1017" xml:space="preserve">
+    <value>Kısa mesaj bulunamadı.</value>
+  </data>
+  <data name="1018" xml:space="preserve">
+    <value>Bildirim bulunamadı.</value>
+  </data>
+  <data name="1019" xml:space="preserve">
+    <value>E-posta bulunamadı.</value>
   </data>
   <data name="1020" xml:space="preserve">
-    <value>Geçerli bir şifre giriniz.</value>
+    <value>Kısa mesaj gönderimi kabul edilmiştir.</value>
+  </data>
+  <data name="1021" xml:space="preserve">
+    <value>Bildirim gönderimi kabul edilmiştir.</value>
+  </data>
+  <data name="1022" xml:space="preserve">
+    <value>E-posta gönderimi kabul edilmiştir.</value>
+  </data>
+  <data name="1023" xml:space="preserve">
+    <value>Kullanıcı bulunamadı.</value>
+  </data>
+  <data name="1024" xml:space="preserve">
+    <value>Erişim jetonu üretilemedi.</value>
+  </data>
+  <data name="1025" xml:space="preserve">
+    <value>Yenileme jetonu bulunamadı.</value>
+  </data>
+  <data name="1026" xml:space="preserve">
+    <value>Yenileme jetonu silinemedi.</value>
+  </data>
+  <data name="1027" xml:space="preserve">
+    <value>Kullanıcı mevcutta kayıtlıdır.</value>
+  </data>
+  <data name="1028" xml:space="preserve">
+    <value>Kullanıcı eklendi.</value>
+  </data>
+  <data name="1029" xml:space="preserve">
+    <value>Kullanıcı güncellendi.</value>
+  </data>
+  <data name="1030" xml:space="preserve">
+    <value>Kullanıcı silinemedi.</value>
+  </data>
+  <data name="1031" xml:space="preserve">
+    <value>Kullanıcı silindi.</value>
+  </data>
+  <data name="1032" xml:space="preserve">
+    <value>Profil fotoğrafı güncellenemedi.</value>
+  </data>
+  <data name="1033" xml:space="preserve">
+    <value>Profil fotoğrafı güncellendi.</value>
+  </data>
+  <data name="1034" xml:space="preserve">
+    <value>Erişim jetonu üretildi.</value>
+  </data>
+  <data name="1035" xml:space="preserve">
+    <value>İşlem için  yetkiniz bulunmamaktadır.</value>
+  </data>
+  <data name="1036" xml:space="preserve">
+    <value>Yetki güncellenemedi.</value>
+  </data>
+  <data name="1037" xml:space="preserve">
+    <value>Müşteri eklendi.</value>
+  </data>
+  <data name="1038" xml:space="preserve">
+    <value>Müşteri silindi.</value>
+  </data>
+  <data name="1039" xml:space="preserve">
+    <value>Müşteri güncellendi.</value>
+  </data>
+  <data name="1040" xml:space="preserve">
+    <value>Müşteri engel durumu güncellendi.</value>
+  </data>
+  <data name="1041" xml:space="preserve">
+    <value>Müşteri e-posta adresi güncellendi.</value>
+  </data>
+  <data name="1042" xml:space="preserve">
+    <value>Müşteri telefon numarası güncellendi.</value>
+  </data>
+  <data name="1043" xml:space="preserve">
+    <value>Cihaz müşteri ilişkisi kuruldu.</value>
+  </data>
+  <data name="1044" xml:space="preserve">
+    <value>Cihaz silindi.</value>
+  </data>
+  <data name="1045" xml:space="preserve">
+    <value>Cihaz güncellendi.</value>
+  </data>
+  <data name="1046" xml:space="preserve">
+    <value>Cihaz jetonu güncellendi.</value>
+  </data>
+  <data name="1047" xml:space="preserve">
+    <value>E-posta gönderimi başarıyla gerçekleşti.</value>
+  </data>
+  <data name="1048" xml:space="preserve">
+    <value>Bildirim gönderimi başarıyla gerçekleşti.</value>
+  </data>
+  <data name="1049" xml:space="preserve">
+    <value>Kısa mesaj gönderimi başarıyla gerçekleşti.</value>
   </data>
 </root>
