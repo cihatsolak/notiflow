@@ -8,7 +8,7 @@ internal static class ElasticsearchLoggerConfiguration
         {
             AutoRegisterTemplate = true,
             AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-            IndexFormat = $"{EnvironmentName()}-{ApplicationName}-logs-" + "{0:yyyy.MM.dd}",
+            IndexFormat = $"{EnvironmentName()}-{ApplicationName}-logs-{DateTime.Now:yyyy.MM.dd}",
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true, inlineFields: true),
             MinimumLogEventLevel = LogEventLevel.Information,
             FailureCallback = logEvent => Console.WriteLine($"Unable to submit event {logEvent.MessageTemplate}")

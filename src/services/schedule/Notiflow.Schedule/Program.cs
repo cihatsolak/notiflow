@@ -24,7 +24,8 @@ builder.Services
     .AddLocalize()
     .AddGzipResponseFastestCompress()
     .AddFluentDesignValidation()
-    .AddHttpSecurityPrecautions(builder.Environment);
+    .AddHttpSecurityPrecautions(builder.Environment)
+    .AddCustomHttpLogging();
 
 var app = builder.Build();
 
