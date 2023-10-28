@@ -117,106 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="-1" xml:space="preserve">
-    <value>Sistemsel bir hata meydana geldi.</value>
-  </data>
   <data name="1000" xml:space="preserve">
-    <value>Müşteri bulunamadı.</value>
+    <value>Geçersiz kimlik numarası.</value>
   </data>
   <data name="1001" xml:space="preserve">
-    <value>Müşteri mevcutta kayıtlıdır.</value>
+    <value>Geçersiz müşteri adı.</value>
   </data>
   <data name="1002" xml:space="preserve">
-    <value>Müşteri silinemedi.</value>
+    <value>Geçersiz müşteri soyadı.</value>
   </data>
   <data name="1003" xml:space="preserve">
-    <value>Müşteri engel durumu, güncellenmek istenen engel durumundan farklı olmalıdır.</value>
+    <value>Geçersiz telefon numarası.</value>
   </data>
   <data name="1004" xml:space="preserve">
-    <value>Müşterinin e-posta adresi, güncellenmek istenen e-posta adresten farklı olmalıdır.</value>
+    <value>Geçersiz e-posta adresi.</value>
   </data>
   <data name="1005" xml:space="preserve">
-    <value>Müşterinin telefon numarası, güncellenmek istenen telefon numarasından farklı olmalıdır.</value>
+    <value>Geçersiz doğum tarihi.</value>
   </data>
   <data name="1006" xml:space="preserve">
-    <value>Müşteriye ait mevcutta cihaz bulunmaktadır.</value>
+    <value>Geçersiz cinsiyet bilgisi.</value>
   </data>
   <data name="1007" xml:space="preserve">
-    <value>Müşteriye ait cihaz silinemedi.</value>
+    <value>Geçersiz medeni durum bilgisi.</value>
   </data>
   <data name="1008" xml:space="preserve">
-    <value>Cihaz bulunamadı.</value>
+    <value>Geçersiz müşteri kimlik bilgisi.</value>
   </data>
   <data name="1009" xml:space="preserve">
-    <value>Müşterilere ait e-posta adresleri bulunamadı.</value>
+    <value>Geçersiz işletim sistemi sürümü.</value>
   </data>
   <data name="1010" xml:space="preserve">
-    <value>Kayıtlı e-posta adres sayısı ile istenilen e-posta adres sayısı eşit değildir.</value>
+    <value>Geçersiz cihaz kodu.</value>
   </data>
   <data name="1011" xml:space="preserve">
-    <value>E-posta gönderimi başarısız olarak gerçekleşmiştir.</value>
+    <value>Geçersiz cihaz belirteci.</value>
   </data>
   <data name="1012" xml:space="preserve">
-    <value>Bildirim gönderimi başarısız olarak gerçekleşmiştir.</value>
+    <value>Geçersiz bulut mesajlaşma platformu.</value>
   </data>
   <data name="1013" xml:space="preserve">
-    <value>Müşterilere ait telefon numaraları bulunamadı.</value>
+    <value>Geçersiz e-posta gövdesi.</value>
   </data>
   <data name="1014" xml:space="preserve">
-    <value>Kayıtlı telefon numara sayısı ile istenilen telefon numara sayısı eşit değildir.</value>
+    <value>Geçersiz e-posta konusu.</value>
   </data>
   <data name="1015" xml:space="preserve">
-    <value>Kısa mesaj gönderimi başarısız olarak gerçekleşmiştir.</value>
+    <value>Geçersiz bildirim başlığı.</value>
   </data>
   <data name="1016" xml:space="preserve">
-    <value>Desteklenen diller bulunamadı.</value>
+    <value>Geçersiz bildirim mesajı.</value>
   </data>
   <data name="1017" xml:space="preserve">
-    <value>Kısa mesaj bulunamadı.</value>
+    <value>Geçersiz bildirim resim URL'si.</value>
   </data>
   <data name="1018" xml:space="preserve">
-    <value>Bildirim bulunamadı.</value>
+    <value>Geçersiz metin mesajı.</value>
   </data>
-  <data name="8000" xml:space="preserve">
-    <value>İşlem başarılı.</value>
+  <data name="1019" xml:space="preserve">
+    <value>Geçersiz yenileme belirteci.</value>
   </data>
-  <data name="8001" xml:space="preserve">
-    <value>Yeni müşteri eklendi.</value>
+  <data name="1020" xml:space="preserve">
+    <value>Geçersiz kullanıcı adı.</value>
   </data>
-  <data name="8002" xml:space="preserve">
-    <value>Müşteri başarıyla silinmiştir.</value>
+  <data name="1021" xml:space="preserve">
+    <value>Geçersiz şifre.</value>
   </data>
-  <data name="8003" xml:space="preserve">
-    <value>Müşteri başarıyla güncellendi.</value>
+  <data name="1022" xml:space="preserve">
+    <value>Geçersiz tarih.</value>
   </data>
-  <data name="8004" xml:space="preserve">
-    <value>Müşteri engel durumu güncellenmiştir.</value>
-  </data>
-  <data name="8005" xml:space="preserve">
-    <value>Müşteri e-posta adresi güncellenmiştir.</value>
-  </data>
-  <data name="8006" xml:space="preserve">
-    <value>Müşteri telefon numarası güncellenmiştir.</value>
-  </data>
-  <data name="8007" xml:space="preserve">
-    <value>Müşteriyle ilişkili cihaz eklenmiştir.</value>
-  </data>
-  <data name="8008" xml:space="preserve">
-    <value>Cihaz silinmiştir.</value>
-  </data>
-  <data name="8009" xml:space="preserve">
-    <value>Cihaz güncellenmiştir.</value>
-  </data>
-  <data name="8010" xml:space="preserve">
-    <value>Cihaz tokenı güncellenmiştir.</value>
-  </data>
-  <data name="8011" xml:space="preserve">
-    <value>E-posta gönderimi başarıyla gerçekleşmiştir.</value>
-  </data>
-  <data name="8012" xml:space="preserve">
-    <value>Bildirim başarıyla gönderilmiştir.</value>
-  </data>
-  <data name="8013" xml:space="preserve">
-    <value>Kısa mesaj başarıyla gönderilmiştir.</value>
+  <data name="1023" xml:space="preserve">
+    <value>Geçersiz zaman.</value>
   </data>
 </root>

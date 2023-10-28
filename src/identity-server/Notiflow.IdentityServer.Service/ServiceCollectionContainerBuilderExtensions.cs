@@ -51,7 +51,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
     private static void AddObservers(IServiceCollection services)
     {
-        services.TryAddScoped<ITenantObserverSubject>(provider => //maybe singleton
+        services.TryAddScoped<ITenantObserverSubject>(provider =>
         {
             TenantObserverSubject tenantObserverSubject = new();
             tenantObserverSubject.RegisterObserver(new TenantObserverTransferTenantInfoToCache(provider));

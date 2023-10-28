@@ -11,6 +11,7 @@ internal static class ElasticsearchLoggerConfiguration
         {
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
             AutoRegisterTemplate = true,
+            DetectElasticsearchVersion = true,
             AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
             TemplateName = "serilog-events-template",
             TypeName = $"{applicationName}logevent",
@@ -21,7 +22,8 @@ internal static class ElasticsearchLoggerConfiguration
             BufferBaseFilename = "serilog-buffer",
             BufferFileSizeLimitBytes = 5242880,
             BufferLogShippingInterval = TimeSpan.FromSeconds(5),
-            IndexFormat = $"{environmentName}-{applicationName}-logs{DateTime.Now:yyyy.MM.dd}"
+            IndexFormat = $"{environmentName}-{applicationName}-logs{DateTime.Now:yyyy.MM.dd}",
+            FailureCallback = logEvent => Console.WriteLine("Unable to submit event " + logEvent.MessageTemplate),
         };
 
         if (seriLogElasticSetting.IsRequiredAuthentication)

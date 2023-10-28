@@ -3,7 +3,6 @@
 [SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "<Pending>")]
 public class ValidationErrorCodes
 {
-    public const int GENERAL_ERROR = -1;
     public const int ID_NUMBER = 1000;
     public const int CUSTOMER_NAME = 1001;
     public const int CUSTOMER_SURNAME = 1002;
@@ -22,10 +21,10 @@ public class ValidationErrorCodes
     public const int NOTIFICATION_TITLE = 1015;
     public const int NOTIFICATION_MESSAGE = 1016;
     public const int NOTIFICATION_IMAGE_URL = 1017;
-    public const int TEXT_MESSAGE = 1017;
-    public const int REFRESH_TOKEN = 1018;
-    public const int USERNAME = 1019;
-    public const int PASSWORD = 1020;
-    public const int DATE = 1021;
-    public const int TIME = 1022;
+    public const int TEXT_MESSAGE = 1018;
+    public const int REFRESH_TOKEN = 1019;
+    public const int USERNAME = 1020;
+    public const int PASSWORD = 1021;
+    public const int DATE = 1022;
+    public const int TIME = 1023;
 };

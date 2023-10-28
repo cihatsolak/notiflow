@@ -6,12 +6,14 @@ builder.Host
     .AddShutdownTimeOut();
 
 builder.AddDependencies();
+builder.AddConfigureHealthChecks();
 
 builder.Services
     .AddMassTransit()
     .AddLowercaseRouting()
     .AddLocalize()
     .AddGzipResponseFastestCompress()
+    .AddFluentDesignValidation()
     .AddHttpSecurityPrecautions(builder.Environment);
 
 var app = builder.Build();

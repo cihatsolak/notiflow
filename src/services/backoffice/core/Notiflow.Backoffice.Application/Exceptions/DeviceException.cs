@@ -1,6 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Exceptions;
 
 [Serializable]
+[ExcludeFromCodeCoverage]
 public sealed class DeviceException : Exception
 {
     public DeviceException()

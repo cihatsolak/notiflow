@@ -118,18 +118,159 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="-1" xml:space="preserve">
-    <value>An undetermined validation error occurred.</value>
+    <value>A system error has occurred.</value>
+  </data>
+  <data name="0" xml:space="preserve">
+    <value>The transaction was completed successfully.</value>
   </data>
   <data name="1000" xml:space="preserve">
-    <value>Invalid credentials, please check.</value>
+    <value>Customer not found.</value>
   </data>
   <data name="1001" xml:space="preserve">
-    <value>Please enter a valid name.</value>
+    <value>The customer is currently registered.</value>
   </data>
   <data name="1002" xml:space="preserve">
-    <value>Please enter a valid surname.</value>
+    <value>The customer could not be deleted.</value>
+  </data>
+  <data name="1003" xml:space="preserve">
+    <value>The customer's disability status must be different from the one to be updated.</value>
+  </data>
+  <data name="1004" xml:space="preserve">
+    <value>The customer's e-mail address must be different from the e-mail address to be updated.</value>
+  </data>
+  <data name="1005" xml:space="preserve">
+    <value>The customer's phone number must be different from the phone number to be updated.</value>
+  </data>
+  <data name="1006" xml:space="preserve">
+    <value>There is an existing device belonging to the customer.</value>
+  </data>
+  <data name="1007" xml:space="preserve">
+    <value>The customer's device could not be deleted.</value>
+  </data>
+  <data name="1008" xml:space="preserve">
+    <value>Device not found.</value>
+  </data>
+  <data name="1009" xml:space="preserve">
+    <value>Customer e-mail addresses could not be found.</value>
+  </data>
+  <data name="1010" xml:space="preserve">
+    <value>The number of registered e-mail addresses and the number of requested e-mail addresses are not equal.</value>
+  </data>
+  <data name="1011" xml:space="preserve">
+    <value>E-mail sending failed.</value>
+  </data>
+  <data name="1012" xml:space="preserve">
+    <value>Notification submission failed.</value>
+  </data>
+  <data name="1013" xml:space="preserve">
+    <value>Customer phone numbers could not be found.</value>
+  </data>
+  <data name="1014" xml:space="preserve">
+    <value>The number of registered phone numbers and the number of desired phone numbers are not equal.</value>
+  </data>
+  <data name="1015" xml:space="preserve">
+    <value>Sending a text message has failed.</value>
+  </data>
+  <data name="1016" xml:space="preserve">
+    <value>Supported languages not found.</value>
+  </data>
+  <data name="1017" xml:space="preserve">
+    <value>Text message not found.</value>
+  </data>
+  <data name="1018" xml:space="preserve">
+    <value>Notification not found.</value>
+  </data>
+  <data name="1019" xml:space="preserve">
+    <value>No email history found.</value>
   </data>
   <data name="1020" xml:space="preserve">
-    <value>test</value>
+    <value>Sending text messages is accepted.</value>
+  </data>
+  <data name="1021" xml:space="preserve">
+    <value>Notification submission has been accepted.</value>
+  </data>
+  <data name="1022" xml:space="preserve">
+    <value>Email sending is accepted.</value>
+  </data>
+  <data name="1023" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="1024" xml:space="preserve">
+    <value>Failed to generate access token.</value>
+  </data>
+  <data name="1025" xml:space="preserve">
+    <value>Refresh token not found.</value>
+  </data>
+  <data name="1026" xml:space="preserve">
+    <value>The refresh token could not be deleted.</value>
+  </data>
+  <data name="1027" xml:space="preserve">
+    <value>The user is currently registered.</value>
+  </data>
+  <data name="1028" xml:space="preserve">
+    <value>User added.</value>
+  </data>
+  <data name="1029" xml:space="preserve">
+    <value>User updated.</value>
+  </data>
+  <data name="1030" xml:space="preserve">
+    <value>The user could not be deleted.</value>
+  </data>
+  <data name="1031" xml:space="preserve">
+    <value>The user has been deleted.</value>
+  </data>
+  <data name="1032" xml:space="preserve">
+    <value>Profile photo could not be updated.</value>
+  </data>
+  <data name="1033" xml:space="preserve">
+    <value>Profile photo has been updated.</value>
+  </data>
+  <data name="1034" xml:space="preserve">
+    <value>Access token generated.</value>
+  </data>
+  <data name="1035" xml:space="preserve">
+    <value>You are not authorized for the transaction.</value>
+  </data>
+  <data name="1036" xml:space="preserve">
+    <value>The authorization could not be updated.</value>
+  </data>
+  <data name="1037" xml:space="preserve">
+    <value>Customer added.</value>
+  </data>
+  <data name="1038" xml:space="preserve">
+    <value>The customer has been deleted.</value>
+  </data>
+  <data name="1039" xml:space="preserve">
+    <value>Client updated.</value>
+  </data>
+  <data name="1040" xml:space="preserve">
+    <value>Customer disability status has been updated.</value>
+  </data>
+  <data name="1041" xml:space="preserve">
+    <value>Customer email address has been updated.</value>
+  </data>
+  <data name="1042" xml:space="preserve">
+    <value>Customer phone number has been updated.</value>
+  </data>
+  <data name="1043" xml:space="preserve">
+    <value>Device customer relationship has been established.</value>
+  </data>
+  <data name="1044" xml:space="preserve">
+    <value>The device has been deleted.</value>
+  </data>
+  <data name="1045" xml:space="preserve">
+    <value>The device has been updated.</value>
+  </data>
+  <data name="1046" xml:space="preserve">
+    <value>Device token has been updated.</value>
+  </data>
+  <data name="1047" xml:space="preserve">
+    <value>Email sending was successful.</value>
+  </data>
+  <data name="1048" xml:space="preserve">
+    <value>Notification sending was successful.</value>
+  </data>
+  <data name="1049" xml:space="preserve">
+    <value>Text message sending was successful.</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿namespace Notiflow.Common.Exceptions;
 
 [Serializable]
+[ExcludeFromCodeCoverage]
 public sealed class TenantException : Exception
 {
     public TenantException()

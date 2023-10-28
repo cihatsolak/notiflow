@@ -22,7 +22,7 @@ internal static class MassTransitContainerBuilderExtensions
                 {
                     hostConfigurator.Username(rabbitMqClusterSetting.Username);
                     hostConfigurator.Password(rabbitMqClusterSetting.Password);
-
+                    
                     hostConfigurator.UseCluster(rabbitMQClusterConfigurator =>
                     {
                         rabbitMqClusterSetting.NodeAddresses.ForEach(nodeAddress =>
