@@ -2,28 +2,16 @@
 
 internal static class ElasticsearchLoggerConfiguration
 {
-    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, IHostEnvironment hostEnvironment, SeriLogElasticSetting seriLogElasticSetting)
+    internal static LoggerConfiguration WriteToElasticsearch(this LoggerConfiguration loggerConfiguration, SeriLogElasticSetting seriLogElasticSetting)
     {
-        string applicationName = hostEnvironment.ApplicationName.Replace(".", "-").ToLowerInvariant();
-        string environmentName = hostEnvironment.EnvironmentName.Replace(".", "-").ToLowerInvariant();
-
         ElasticsearchSinkOptions elasticsearchSinkOptions = new(new Uri(seriLogElasticSetting.Address))
         {
-            CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
             AutoRegisterTemplate = true,
-            DetectElasticsearchVersion = true,
             AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-            TemplateName = "serilog-events-template",
-            TypeName = $"{applicationName}logevent",
-            BatchPostingLimit = 50,
-            Period = TimeSpan.FromSeconds(2),
-            InlineFields = true,
+            IndexFormat = $"{EnvironmentName()}-{ApplicationName}-logs-" + "{0:yyyy.MM.dd}",
+            CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true, inlineFields: true),
             MinimumLogEventLevel = LogEventLevel.Information,
-            BufferBaseFilename = "serilog-buffer",
-            BufferFileSizeLimitBytes = 5242880,
-            BufferLogShippingInterval = TimeSpan.FromSeconds(5),
-            IndexFormat = $"{environmentName}-{applicationName}-logs{DateTime.Now:yyyy.MM.dd}",
-            FailureCallback = logEvent => Console.WriteLine("Unable to submit event " + logEvent.MessageTemplate),
+            FailureCallback = logEvent => Console.WriteLine($"Unable to submit event {logEvent.MessageTemplate}")
         };
 
         if (seriLogElasticSetting.IsRequiredAuthentication)
@@ -31,6 +19,19 @@ internal static class ElasticsearchLoggerConfiguration
             elasticsearchSinkOptions.ModifyConnectionSettings = (connection) => connection.BasicAuthentication(seriLogElasticSetting.Username, seriLogElasticSetting.Password);
         }
 
-        return loggerConfiguration.WriteTo.Elasticsearch();
+        return loggerConfiguration.WriteTo.Elasticsearch(elasticsearchSinkOptions);
     }
+
+    private static string EnvironmentName()
+    {
+        string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        if (string.IsNullOrWhiteSpace(environmentName))
+        {
+            environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+        }
+
+        return environmentName.ToLowerInvariant();
+    }
+
+    private static string ApplicationName => Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant();
 }

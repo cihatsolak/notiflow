@@ -1,5 +1,6 @@
 ﻿global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.HttpLogging;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using NpgsqlTypes;
@@ -20,3 +21,4 @@ global using Serilog.Sinks.MSSqlServer;
 global using Serilog.Sinks.PostgreSQL;
 global using System.Collections.ObjectModel;
 global using System.Data;
+global using System.Reflection;
