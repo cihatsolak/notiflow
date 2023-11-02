@@ -1,6 +1,9 @@
-﻿namespace Notiflow.Schedule.Controllers;
+﻿using Asp.Versioning;
+
+namespace Notiflow.Schedule.Controllers;
 
 [Route("api/[controller]")]
+[ApiVersion("1.0")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status500InternalServerError)]
 public sealed class PlansController : MainController

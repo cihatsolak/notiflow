@@ -7,6 +7,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     private const string API_VERSION_HEADER_NAME = "x-api-version";
     private const string API_VERSION_QUERY_STRING_PARAMETER = "api-version";
+    private const string API_VERSION_MEDIA_TYPE_PARAMETER = "ver";
 
     /// <summary>
     /// Adds API versioning services to the specified <see cref="IServiceCollection"/>.
@@ -27,7 +28,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.ApiVersionReader = ApiVersionReader.Combine(
                 new HeaderApiVersionReader(API_VERSION_HEADER_NAME),
                 new QueryStringApiVersionReader(API_VERSION_QUERY_STRING_PARAMETER),
-                new UrlSegmentApiVersionReader()
+                new UrlSegmentApiVersionReader(),
+                new MediaTypeApiVersionReader(API_VERSION_MEDIA_TYPE_PARAMETER)
                 );
         });
 

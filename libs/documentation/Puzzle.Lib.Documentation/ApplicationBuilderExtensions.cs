@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Documentation;
+﻿using Asp.Versioning.ApiExplorer;
+
+namespace Puzzle.Lib.Documentation;
 
 /// <summary>
 /// Provides extension methods for configuring Swagger and ReDoc documentation in the application pipeline.
@@ -21,6 +23,16 @@ public static class ApplicationBuilderExtensions
             swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetEntryAssembly().GetName().Name);
             swaggerUIOptions.RoutePrefix = string.Empty;
             swaggerUIOptions.DefaultModelsExpandDepth(-1);
+        });
+
+        var apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+
+        app.UseSwaggerUI(options =>
+        {
+            foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+            {
+                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+            }
         });
 
         return app;

@@ -15,6 +15,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = new();
         configure?.Invoke(swaggerSetting);
 
+        services.ConfigureOptions<ConfigureSwaggerOptions>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
