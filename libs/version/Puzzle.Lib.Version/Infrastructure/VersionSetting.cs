@@ -14,4 +14,9 @@ public sealed record ApiVersionSetting
     /// Gets or sets the minor version number of the API.
     /// </summary>
     public int MinorVersion { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to enable versioned API exploration.
+    /// </summary>
+    public bool EnableVersionedApiExplorer { get; set; }
 }

@@ -55,6 +55,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         {
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
+            options.EnableVersionedApiExplorer = true;
         });
 
         return builder;

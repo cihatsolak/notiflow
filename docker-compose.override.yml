@@ -163,4 +163,5 @@ services:
 
 networks:
   notiflow_net:
+    name: notiflow_net
     driver: bridge
