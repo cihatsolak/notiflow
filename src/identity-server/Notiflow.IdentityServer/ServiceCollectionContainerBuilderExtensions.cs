@@ -48,8 +48,6 @@ internal static class ServiceCollectionContainerBuilderExtensions
             .AddHttpSecurityPrecautions(hostEnvironment)
             .AddCustomHttpLogging();
 
-        services.AddConfigureHealthChecks();
-
         return services;
     }
 }

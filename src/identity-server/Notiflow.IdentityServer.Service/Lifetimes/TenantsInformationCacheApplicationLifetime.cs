@@ -29,7 +29,7 @@ public static class TenantsInformationCacheApplicationLifetime
         try
         {
             var response = await tenantService.GetTenantsWithoutFilterAsync(CancellationToken.None);
-            if (!response.Succeeded)
+            if (!response.IsSuccess)
                 return;
 
             var transactionResults = await AddCacheAsync(response.Data);

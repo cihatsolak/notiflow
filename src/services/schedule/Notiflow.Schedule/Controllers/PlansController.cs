@@ -6,11 +6,11 @@
 public sealed class PlansController : MainController
 {
     private readonly ScheduledDbContext _context;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public PlansController(
         ScheduledDbContext context,
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _context = context;
         _localizer = localizer;
@@ -42,7 +42,7 @@ public sealed class PlansController : MainController
         await _context.ScheduledTextMessages.AddAsync(scheduledTextMessage, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.TEXT_MESSAGE_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.TEXT_MESSAGE_SENDING_ACCEPTED]);
         return CreateActionResultInstance(response);
     }
 
@@ -74,7 +74,7 @@ public sealed class PlansController : MainController
         await _context.ScheduledNotifications.AddAsync(scheduledNotification, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.NOTIFICATION_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.NOTIFICATION_SENDING_ACCEPTED]);
         return CreateActionResultInstance(response);
     }
 
@@ -108,7 +108,7 @@ public sealed class PlansController : MainController
         await _context.ScheduledEmails.AddAsync(scheduledEmail, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultState.EMAIL_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.EMAIL_SENDING_ACCEPTED]);
         return CreateActionResultInstance(response);
     }
 }

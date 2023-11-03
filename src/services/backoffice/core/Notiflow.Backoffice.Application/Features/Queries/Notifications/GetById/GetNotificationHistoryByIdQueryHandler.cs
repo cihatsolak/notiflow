@@ -3,11 +3,11 @@
 public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, Result<GetNotificationHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public GetNotificationHistoryByIdQueryHandler(
         INotiflowUnitOfWork uow, 
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -18,10 +18,10 @@ public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<Get
         var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
-            return Result<GetNotificationHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.NOTIFICATION_NOT_FOUND]);
+            return Result<GetNotificationHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.NOTIFICATION_NOT_FOUND]);
         }
 
         var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResult>(notificationHistory);
-        return Result<GetNotificationHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], notificationDto);
+        return Result<GetNotificationHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], notificationDto);
     }
 }

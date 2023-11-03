@@ -2,7 +2,7 @@
 
 internal static class SeedManager
 {
-    internal static async Task SeedAsync(this IServiceCollection services, CancellationToken cancellationToken = default)
+    internal static async Task SeedAsync(this IServiceCollection services, CancellationToken cancellationToken)
     {
         EnsureNotNull(services);
 

@@ -10,7 +10,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
        int pageIndex,
        int pageSize,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-       CancellationToken cancellationToken = default)
+       CancellationToken cancellationToken)
     {
         var query = TableNoTracking;
 
@@ -50,7 +50,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
         int pageSize,
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var query = TableNoTracking;
 
@@ -93,7 +93,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
     int pageSize,
     Expression<Func<TEntity, bool>> filter,
     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-    CancellationToken cancellationToken = default,
+    CancellationToken cancellationToken,
     params Expression<Func<TEntity, object>>[] includes)
     {
         var query = TableNoTrackingWithIdentityResolution;
@@ -146,7 +146,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         IQueryable<TEntity> query = Table;
 
@@ -162,7 +162,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default,
+        CancellationToken cancellationToken,
         params string[] includeProperties)
     {
         IQueryable<TEntity> query = TableNoTrackingWithIdentityResolution;
@@ -210,7 +210,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
         return await SelectRelationEntities(stopTracking).Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
     }
 
-    public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken)
     {
         return await _entities.FindAsync(new object[] { id }, cancellationToken);
     }

@@ -83,18 +83,18 @@ public interface IWriteRepository<TEntity> : IRepository<TEntity> where TEntity 
     Task<bool> ExecuteDeleteAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Deletes the entity with the specified ID.
-    /// </summary>
-    /// <param name="id">The ID of the entity to delete.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <exception cref="ArgumentException">Thrown when the ID is less than or equal to zero.</exception>
-    Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken) where TProperty : struct;
-
-    /// <summary>
     /// Deletes all entities that match the specified predicate from the database.
     /// </summary>
     /// <param name="predicate">The predicate to filter entities to be deleted.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the input predicate is null.</exception>
     Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Deletes the entity with the specified ID.
+    /// </summary>
+    /// <param name="id">The ID of the entity to delete.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <exception cref="ArgumentException">Thrown when the ID is less than or equal to zero.</exception>
+    Task<bool> ExecuteDeleteByIdAsync<TProperty>(TProperty id, CancellationToken cancellationToken) where TProperty : struct;
 }

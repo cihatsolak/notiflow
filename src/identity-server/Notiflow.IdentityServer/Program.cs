@@ -20,6 +20,8 @@ builder.Services
    .AddServiceDependencies(builder.Configuration)
    .AddDataDependencies(builder.Configuration);
 
+builder.Services.AddConfigureHealthChecks(builder.Configuration);
+
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 

@@ -4,14 +4,14 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly ITextMessageService _textMessageService;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<SendTextMessageCommandHandler> _logger;
 
     public SendTextMessageCommandHandler(
         INotiflowUnitOfWork uow,
         ITextMessageService textMessageService,
-        ILocalizerService<ResultState> localizer,
+        ILocalizerService<ResultMessage> localizer,
         IPublishEndpoint publishEndpoint,
         ILogger<SendTextMessageCommandHandler> logger)
     {
@@ -27,13 +27,13 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         List<string> phoneNumbers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
         if (phoneNumbers.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND]);
         }
 
         if (phoneNumbers.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match. Customer IDs: {CustomerIds}.", request.CustomerIds);
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultState.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL]);
+            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL]);
         }
 
         bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumbers, request.Message, cancellationToken);
@@ -41,11 +41,11 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         {
             await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
             
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultState.TEXT_MESSAGE_SENDING_FAILED]);
+            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.TEXT_MESSAGE_SENDING_FAILED]);
         }
 
         await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
         
-        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultState.TEXT_MESSAGES_SENDING_SUCCESSFUL], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.TEXT_MESSAGES_SENDING_SUCCESSFUL], Unit.Value);
     }
 }

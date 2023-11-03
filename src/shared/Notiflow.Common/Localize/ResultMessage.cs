@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Common.Localize;
 
-public record class ResultState
+public record class ResultMessage
 {
     public const int GENERAL_ERROR = -1;
     public const int GENERAL_SUCCESS = 0;
