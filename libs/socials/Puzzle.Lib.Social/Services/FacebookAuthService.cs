@@ -22,7 +22,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
         ArgumentException.ThrowIfNullOrEmpty(accessToken);
 
         var facebookTokenValidationUri = string.Format(_facebookAuthConfig.TokenValidationUrl, accessToken, _facebookAuthConfig.AppId, _facebookAuthConfig.AppSecret);
-        var httpResponseMessage = await _httpClient.GetAsync(facebookTokenValidationUri, cancellationToken);
+        var httpResponseMessage = await _httpClient.GetAsync(facebookTokenValidationUri, cancellationToken).ConfigureAwait(false);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
             return default;
         }
 
-        var facebookTokenValidationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<FacebookTokenValidationResponse>(cancellationToken: cancellationToken);
+        var facebookTokenValidationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<FacebookTokenValidationResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
         return facebookTokenValidationResponse.Data;
     }
 
@@ -39,7 +39,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
         ArgumentException.ThrowIfNullOrEmpty(accessToken);
 
         string facebookUserInfoUri = string.Format(_facebookAuthConfig.UserInfoUrl, accessToken);
-        var httpResponseMessage = await _httpClient.GetAsync(facebookUserInfoUri, cancellationToken);
+        var httpResponseMessage = await _httpClient.GetAsync(facebookUserInfoUri, cancellationToken).ConfigureAwait(false);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
@@ -47,6 +47,6 @@ internal sealed class FacebookAuthService : IFacebookAuthService
             return default;
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<FacebookUserInfoResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<FacebookUserInfoResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

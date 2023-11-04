@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Configurations.Devices;
 
-internal sealed class DeviceConfiguration : BaseHistoricalEntityConfiguration<Device>
+internal sealed class DeviceConfiguration : BaseHistoricalEntityConfiguration<Device, int>
 {
     public DeviceConfiguration() : base("now()", true)
     {

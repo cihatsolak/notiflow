@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Data.Configurations.Users;
 
-internal sealed class UserConfiguration : BaseHistoricalEntityConfiguration<User>
+internal sealed class UserConfiguration : BaseHistoricalEntityConfiguration<User, int>
 {
     public UserConfiguration() : base("getdate()")
     {

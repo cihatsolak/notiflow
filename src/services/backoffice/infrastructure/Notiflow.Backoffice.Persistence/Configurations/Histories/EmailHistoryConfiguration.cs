@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Configurations.Histories;
 
-internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailHistory>
+internal sealed class EmailHistoryConfiguration : BaseEntityConfiguration<EmailHistory, int>
 {
     public EmailHistoryConfiguration() : base(true)
     {

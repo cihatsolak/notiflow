@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Entities;
 
-public sealed class ScheduledTextMessageEntityConfiguration : BaseEntityConfiguration<ScheduledTextMessage>
+public sealed class ScheduledTextMessageEntityConfiguration : BaseEntityConfiguration<ScheduledTextMessage, int>
 {
     public ScheduledTextMessageEntityConfiguration() : base()
     {

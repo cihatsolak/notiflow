@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Data.Configurations.Users;
 
-internal sealed class RefreshTokenConfiguration : BaseEntityConfiguration<RefreshToken>
+internal sealed class RefreshTokenConfiguration : BaseEntityConfiguration<RefreshToken, int>
 {
     public RefreshTokenConfiguration() : base()
     {

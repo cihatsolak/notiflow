@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Entities;
 
-public sealed class ScheduledNotificationEntityConfiguration : BaseEntityConfiguration<ScheduledNotification>
+public sealed class ScheduledNotificationEntityConfiguration : BaseEntityConfiguration<ScheduledNotification, int>
 {
     public ScheduledNotificationEntityConfiguration() : base()
     {
