@@ -1,6 +1,4 @@
-﻿using Notiflow.IdentityServer.Service.Models.Users;
-
-namespace Notiflow.IdentityServer.Service.Auth;
+﻿namespace Notiflow.IdentityServer.Service.Auth;
 
 public interface IAuthService
 {
