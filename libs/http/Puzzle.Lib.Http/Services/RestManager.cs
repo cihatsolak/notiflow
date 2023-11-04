@@ -17,13 +17,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> GetResponseAsync<TResponse>(
@@ -41,13 +41,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(routeUrl, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
@@ -56,13 +56,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, default(TResponse), cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, default(TResponse), cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostResponseAsync<TResponse>(
@@ -75,13 +75,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostResponseAsync<TResponse>(
@@ -100,13 +100,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
@@ -119,13 +119,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostMultipartDataResponseAsync<TResponse>(
@@ -144,13 +144,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(routeUrl, multipartFormDataContent, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostEncodedResponseAsync<TResponse>(
@@ -166,13 +166,13 @@ internal sealed class RestManager : IRestService
         using FormUrlEncodedContent content = new(keyValuePairs);
         HttpRequestMessage request = new(HttpMethod.Post, routeUrl) { Content = content };
 
-        HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PostEncodedResponseAsync<TResponse>(
@@ -194,13 +194,13 @@ internal sealed class RestManager : IRestService
         using FormUrlEncodedContent content = new(keyValuePairs);
         HttpRequestMessage request = new(HttpMethod.Post, routeUrl) { Content = content };
 
-        HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PatchResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
@@ -209,13 +209,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, default(TResponse), cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, default(TResponse), cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PatchResponseAsync<TResponse>(
@@ -228,13 +228,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PatchResponseAsync<TResponse>(
@@ -253,13 +253,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PatchAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PutApiResponseAsync<TResponse>(
@@ -272,13 +272,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> PutApiResponseAsync<TResponse>(
@@ -297,13 +297,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.PutAsJsonAsync(routeUrl, parameters, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> DeleteApiResponseAsync<TResponse>(string clientName, string routeUrl, CancellationToken cancellationToken) where TResponse : class, new()
@@ -312,13 +312,13 @@ internal sealed class RestManager : IRestService
 
         HttpClient httpClient = _httpClientFactory.CreateClient(clientName);
 
-        HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResponse> DeleteApiResponseAsync<TResponse>(
@@ -336,13 +336,13 @@ internal sealed class RestManager : IRestService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, nameValueCollection[key]);
         }
 
-        HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken);
+        HttpResponseMessage httpResponseMessage = await httpClient.DeleteAsync(routeUrl, cancellationToken).ConfigureAwait(false);
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogWarning("Request sent to {@routeUrl} but no positive response. {@httpResponseMessage}", routeUrl, httpResponseMessage);
         }
 
-        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
+        return await httpResponseMessage.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     private static void CheckArguments(string clientName, string routeUrl)
