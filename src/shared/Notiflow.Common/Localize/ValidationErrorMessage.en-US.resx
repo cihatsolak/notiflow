@@ -195,4 +195,7 @@
   <data name="1025" xml:space="preserve">
     <value>Invalid user surname.</value>
   </data>
+  <data name="1026" xml:space="preserve">
+    <value>Invalid file.</value>
+  </data>
 </root>

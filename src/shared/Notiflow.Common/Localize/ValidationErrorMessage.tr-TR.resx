@@ -195,4 +195,7 @@
   <data name="1025" xml:space="preserve">
     <value>Geçersiz kullanıcı soyadı.</value>
   </data>
+  <data name="1026" xml:space="preserve">
+    <value>Geçersiz dosya.</value>
+  </data>
 </root>
