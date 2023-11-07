@@ -2,22 +2,22 @@
 
 public sealed class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {
-    public SendNotificationCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public SendNotificationCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Title)
-            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_TITLE])
-            .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_TITLE]);
+            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
+            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_TITLE]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_MESSAGE]);
+           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE]);
 
         RuleFor(p => p.ImageUrl)
-         .NotNullAndNotEmpty(localizer[ValidationErrorCodes.NOTIFICATION_IMAGE_URL])
-         .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_IMAGE_URL])
-         .Must(BeAValidUrl).WithMessage(localizer[ValidationErrorCodes.NOTIFICATION_IMAGE_URL]);
+         .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
+         .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
+         .Must(BeAValidUrl).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL]);
     }
 
     private bool BeAValidUrl(string url)

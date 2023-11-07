@@ -22,6 +22,7 @@ public sealed class ClaimManager : IClaimService
     public string GivenName => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
     public DateTime Iat => GetIat();
     public DateTime BirthDate => GetBirthDate();
+    public string GroupSid => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GroupSid))?.Value;
 
     private int GetNameIdentifier()
     {
@@ -39,7 +40,7 @@ public sealed class ClaimManager : IClaimService
     private DateTime GetIat()
     {
         string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
-        if (!DateTime.TryParse(issuedAtValue, out DateTime issuedAt))
+        if (!DateTime.TryParse(issuedAtValue, CultureInfo.CurrentCulture, out DateTime issuedAt))
             throw new JwtClaimException(nameof(issuedAtValue));
 
         return issuedAt;
@@ -48,7 +49,7 @@ public sealed class ClaimManager : IClaimService
     private DateTime GetBirthDate()
     {
         string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
-        if (!DateTime.TryParse(birthDateValue, out DateTime birthDate))
+        if (!DateTime.TryParse(birthDateValue, CultureInfo.CurrentCulture, out DateTime birthDate))
             throw new JwtClaimException(nameof(birthDate));
 
         return birthDate;

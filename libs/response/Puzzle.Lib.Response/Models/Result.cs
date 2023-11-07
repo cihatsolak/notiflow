@@ -18,7 +18,7 @@ public record Result<TData>
     /// <summary>
     /// Gets or sets the data that the response model holds.
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public TData Data { get; init; }
 
     /// <summary>

@@ -14,28 +14,28 @@ public sealed record ScheduleEmailRequest
 
 public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>
 {
-    public ScheduleEmailRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public ScheduleEmailRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_BODY]);
+        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_BODY]);
 
         RuleFor(p => p.Subject)
-          .NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_SUBJECT])
-          .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.EMAIL_SUBJECT]);
+          .NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
+          .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
 
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleForEach(p => p.CcAddresses)
-            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
 
         RuleForEach(p => p.BccAddresses)
-            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
 
         RuleFor(p => p.Date)
             .Must(date => DateTime.TryParse(date, CultureInfo.CurrentCulture, out _))
-            .WithMessage(localizer[ValidationErrorCodes.DATE]);
+            .WithMessage(localizer[ValidationErrorMessage.DATE]);
 
         RuleFor(p => p.Time)
             .Must(date => TimeSpan.TryParse(date, CultureInfo.CurrentCulture, out _))
-            .WithMessage(localizer[ValidationErrorCodes.TIME]);
+            .WithMessage(localizer[ValidationErrorMessage.TIME]);
     }
 }

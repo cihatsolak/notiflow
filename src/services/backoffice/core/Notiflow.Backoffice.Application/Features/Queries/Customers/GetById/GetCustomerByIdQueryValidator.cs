@@ -2,8 +2,8 @@
 
 public sealed class GetCustomerByIdQueryValidator : AbstractValidator<GetCustomerByIdQuery>
 {
-    public GetCustomerByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public GetCustomerByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
     }
 }

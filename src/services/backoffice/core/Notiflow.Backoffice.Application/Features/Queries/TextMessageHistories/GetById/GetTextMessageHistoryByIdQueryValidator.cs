@@ -2,8 +2,8 @@
 
 public sealed class GetTextMessageHistoryByIdQueryValidator : AbstractValidator<GetTextMessageHistoryByIdQuery>
 {
-    public GetTextMessageHistoryByIdQueryValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public GetTextMessageHistoryByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
     }
 }

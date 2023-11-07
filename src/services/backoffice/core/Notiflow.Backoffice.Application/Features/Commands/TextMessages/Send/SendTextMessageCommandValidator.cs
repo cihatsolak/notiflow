@@ -2,12 +2,12 @@
 
 public sealed class SendTextMessageCommandValidator : AbstractValidator<SendTextMessageCommand>
 {
-    public SendTextMessageCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public SendTextMessageCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorCodes.TEXT_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.TEXT_MESSAGE]);
+           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.TEXT_MESSAGE])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
     }
 }

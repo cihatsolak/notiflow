@@ -189,4 +189,10 @@
   <data name="1023" xml:space="preserve">
     <value>Invalid time.</value>
   </data>
+  <data name="1024" xml:space="preserve">
+    <value>Invalid name.</value>
+  </data>
+  <data name="1025" xml:space="preserve">
+    <value>Invalid user surname.</value>
+  </data>
 </root>

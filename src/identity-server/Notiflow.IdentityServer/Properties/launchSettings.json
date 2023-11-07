@@ -36,6 +36,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Local IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost/NotiflowIdentityServer",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

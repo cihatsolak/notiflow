@@ -1,7 +1,7 @@
 ﻿namespace Notiflow.Common.Localize;
 
 [SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "<Pending>")]
-public class ValidationErrorCodes
+public class ValidationErrorMessage
 {
     public const int ID_NUMBER = 1000;
     public const int CUSTOMER_NAME = 1001;
@@ -27,4 +27,7 @@ public class ValidationErrorCodes
     public const int PASSWORD = 1021;
     public const int DATE = 1022;
     public const int TIME = 1023;
+    public const int USER_NAME = 1024;
+    public const int USER_SURNAME = 1025;
+    public const int FILE = 1026;
 };

@@ -27,6 +27,7 @@ global using Notiflow.IdentityServer.Service.TenantPermissions;
 global using Notiflow.IdentityServer.Service.Tenants;
 global using Notiflow.IdentityServer.Service.Tokens;
 global using Notiflow.IdentityServer.Service.Users;
+global using Puzzle.Lib.Assistant.Constants;
 global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Auth.Infrastructure;

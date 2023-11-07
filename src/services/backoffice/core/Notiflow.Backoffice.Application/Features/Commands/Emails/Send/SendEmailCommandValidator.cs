@@ -2,20 +2,20 @@
 
 public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailCommand>
 {
-    public SendEmailCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public SendEmailCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorCodes.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleForEach(p => p.CcAddresses)
-            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
 
         RuleForEach(p => p.BccAddresses)
-            .Email(localizer[ValidationErrorCodes.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
 
-        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_BODY]);
+        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_BODY]);
 
         RuleFor(p => p.Subject)
-            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.EMAIL_SUBJECT])
-            .MaximumLength(300).WithMessage(localizer[ValidationErrorCodes.EMAIL_SUBJECT]);
+            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
+            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
     }
 }

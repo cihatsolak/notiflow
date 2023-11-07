@@ -2,18 +2,23 @@
 
 internal sealed class UserManager : IUserService
 {
+    private const string PLACEHOLDER_AVATAR_URL = "https://via.placeholder.com/250";
+
     private readonly ApplicationDbContext _context;
     private readonly IFileService _fileService;
+    private readonly IClaimService _claimService;
     private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly ILogger<UserManager> _logger;
 
     public UserManager(
         ApplicationDbContext context, 
         IFileService fileService,
+        IClaimService claimService,
         ILocalizerService<ResultMessage> localizer,
         ILogger<UserManager> logger)
     {
         _context = context;
+        _claimService = claimService;
         _fileService = fileService;
         _localizer = localizer;
         _logger = logger;
@@ -41,7 +46,8 @@ internal sealed class UserManager : IUserService
         }
 
         var user = request.Adapt<User>();
-        user.TenantId = 1;
+        user.TenantId = int.Parse(_claimService.GroupSid);
+        user.Avatar = PLACEHOLDER_AVATAR_URL;
 
         await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
