@@ -15,18 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddOcelot(builder.Configuration);
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
-List<HealthCheckEndpointSetting> healthCheckEndpointSetting =
-    builder.Configuration.GetRequiredSection(nameof(HealthCheckEndpointSetting)).Get<List<HealthCheckEndpointSetting>>();
-
-builder.Services.AddHealthChecks();
-builder.Services.AddHealthChecksUI(settings =>
-{
-    foreach (var endpoint in healthCheckEndpointSetting.OrEmptyIfNull())
-    {
-        settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
-    }
-})
-.AddSqlServerStorage(builder.Configuration.GetConnectionString("NotiflowHealthCheckDB"));
+builder.AddConfigureHealthChecks();
 
 var app = builder.Build();
 
