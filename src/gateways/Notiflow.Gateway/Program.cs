@@ -26,7 +26,7 @@ builder.Services.AddHealthChecksUI(settings =>
         settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
     }
 })
-.AddInMemoryStorage(databaseName: Guid.NewGuid().ToString());
+.AddSqlServerStorage(builder.Configuration.GetConnectionString("NotiflowHealthCheckDB"));
 
 var app = builder.Build();
 
