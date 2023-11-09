@@ -1,0 +1,16 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@inject INotificationHubSetting notificationHubSetting
+@{
+    string accessToken = await httpContextAccessor.HttpContext.GetTokenAsync(AuthenticationParameters.AccessToken);
+}
+
+<script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@3.1.0/dist/browser/signalr.min.js"></script>
+<script type="text/javascript">
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl('@notificationHubSetting.Address', { accessTokenFactory: () => '@accessToken' })
+        .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect(1000, 1000, 3000, 3000)
+        .build();
+</script>
+<script asp-src-include="/js/hubs/app.js"></script>
+<script asp-src-include="/js/hubs/subscriptions.js"></script>
