@@ -41,6 +41,7 @@ global using Notiflow.Backoffice.Domain.Entities.Devices;
 global using Notiflow.Backoffice.Domain.Entities.Histories;
 global using Notiflow.Backoffice.Domain.Enums;
 global using Notiflow.Common.Caching;
+global using Notiflow.Common.Exceptions;
 global using Notiflow.Common.Extensions;
 global using Notiflow.Common.Localize;
 global using Notiflow.Common.MessageBroker;

@@ -27,7 +27,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
         
-        services.SeedAsync().Wait();
+        services.SeedAsync(CancellationToken.None).Wait();
 
         return services;
     }

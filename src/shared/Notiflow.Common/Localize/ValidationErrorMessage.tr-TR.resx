@@ -189,4 +189,13 @@
   <data name="1023" xml:space="preserve">
     <value>Geçersiz zaman.</value>
   </data>
+  <data name="1024" xml:space="preserve">
+    <value>Geçersiz isim.</value>
+  </data>
+  <data name="1025" xml:space="preserve">
+    <value>Geçersiz kullanıcı soyadı.</value>
+  </data>
+  <data name="1026" xml:space="preserve">
+    <value>Geçersiz dosya.</value>
+  </data>
 </root>

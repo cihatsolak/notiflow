@@ -45,9 +45,8 @@ internal static class ServiceCollectionContainerBuilderExtensions
         services
             .AddLowercaseRouting()
             .AddGzipResponseFastestCompress()
-            .AddHttpSecurityPrecautions(hostEnvironment);
-        
-        services.AddConfigureHealthChecks();
+            .AddHttpSecurityPrecautions(hostEnvironment)
+            .AddCustomHttpLogging();
 
         return services;
     }

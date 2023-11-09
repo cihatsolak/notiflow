@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Configurations.Histories;
 
-internal class TextMessageHistoryConfiguration : BaseEntityConfiguration<TextMessageHistory>
+internal class TextMessageHistoryConfiguration : BaseEntityConfiguration<TextMessageHistory, int>
 {
     public TextMessageHistoryConfiguration() : base(true)
     {

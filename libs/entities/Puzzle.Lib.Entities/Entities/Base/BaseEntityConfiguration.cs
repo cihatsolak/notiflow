@@ -1,6 +1,7 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.Base;
 
-public class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<int>
+public class BaseEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<TPrimaryKey> 
+                                                                                               where TPrimaryKey : notnull
 {
     private readonly bool _useLowerTableName;
 

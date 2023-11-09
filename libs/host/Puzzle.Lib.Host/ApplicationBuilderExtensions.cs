@@ -5,6 +5,8 @@
 /// </summary>
 public static class ApplicationBuilderExtensions
 {
+    private const string DEFAULT_ERROR_MESSAGE = "We are unable to process your transaction at this time.";
+
     /// <summary>
     /// Adds exception handling middleware to the pipeline to handle and log exceptions in a production environment, or displays detailed exception information for developers in a non-production environment.
     /// </summary>
@@ -30,8 +32,9 @@ public static class ApplicationBuilderExtensions
     /// Registers an API exception handler middleware that catches unhandled exceptions during API requests and returns a JSON error response.
     /// </summary>
     /// <param name="app">The IApplicationBuilder instance used to configure the middleware pipeline.</param>
+    /// <param name="errorMessage"></param>
     /// <returns>The IApplicationBuilder instance after the middleware has been registered.</returns>
-    public static IApplicationBuilder UseApiExceptionHandler(this IApplicationBuilder app)
+    public static IApplicationBuilder UseApiExceptionHandler(this IApplicationBuilder app, string errorMessage = null)
     {
         ILogger logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(UseApiExceptionHandler));
 
@@ -50,15 +53,12 @@ public static class ApplicationBuilderExtensions
                     _ => StatusCodes.Status500InternalServerError
                 };
 
-                logger.LogError(exceptionHandlerFeature.Error, "-- HTTP {@httpStatusCode} -- {@message}", httpContext.Response.StatusCode, exceptionHandlerFeature.Error?.Message);
+                logger.LogError(exceptionHandlerFeature.Error, "{message}", exceptionHandlerFeature.Error?.Message);
 
-                ErrorHandlerResponse errorHandlerResponse = new()
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(new
                 {
-                    Code = 9000,
-                    Message = "We are unable to process your transaction at this time."
-                };
-
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(errorHandlerResponse));
+                    Message = errorMessage ?? DEFAULT_ERROR_MESSAGE
+                }));
             });
         });
 

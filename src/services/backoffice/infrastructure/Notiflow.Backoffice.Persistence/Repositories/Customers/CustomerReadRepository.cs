@@ -46,14 +46,14 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
         return (recordsTotal, customers);
     }
 
-    public async Task<bool> IsExistsByPhoneNumberOrEmailAsync(string phoneNumber, string email, CancellationToken cancellationToken = default)
+    public async Task<bool> IsExistsByPhoneNumberOrEmailAsync(string phoneNumber, string email, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .TagWith("The existence of the customer's phone number or e-mail address is checked.")
             .AnyAsync(p => p.PhoneNumber == phoneNumber || p.Email == email, cancellationToken);
     }
 
-    public async Task<List<string>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
+    public async Task<List<string>> GetPhoneNumbersByIdsAsync(List<int> ids, CancellationToken cancellationToken)
     {
         return await TableNoTracking
                     .TagWith("Queries the phone numbers of the customer IDs.")
@@ -62,7 +62,7 @@ public sealed class CustomerReadRepository : ReadRepository<Customer>, ICustomer
                     .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<string>> GetEmailAddressesByIdsAsync(List<int> ids, CancellationToken cancellationToken = default)
+    public async Task<List<string>> GetEmailAddressesByIdsAsync(List<int> ids, CancellationToken cancellationToken)
     {
         return await TableNoTracking
                     .TagWith("Queries the phone numbers of the customer IDs.")

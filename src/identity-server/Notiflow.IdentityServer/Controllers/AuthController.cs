@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Notiflow.IdentityServer.Controllers;
+﻿namespace Notiflow.IdentityServer.Controllers;
 
 [AllowAnonymous]
 public sealed class AuthController : BaseApiController

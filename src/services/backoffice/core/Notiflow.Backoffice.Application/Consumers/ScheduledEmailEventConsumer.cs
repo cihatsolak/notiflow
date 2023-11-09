@@ -23,8 +23,8 @@ public sealed class ScheduledEmailEventConsumer : IConsumer<ScheduledEmailEvent>
 
         await context.RespondAsync(new ScheduledResponse
         {
-            Succeeded = response.Succeeded,
-            ErrorMessage = response.Succeeded ? default : response.Message
+            Succeeded = response.IsSuccess,
+            ErrorMessage = response.IsSuccess ? default : response.Message
         });
     }
 }

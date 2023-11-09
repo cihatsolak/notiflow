@@ -130,6 +130,37 @@ services:
     networks:
       - notiflow_net
 
+  elasticsearch:
+    container_name: elasticsearch
+    hostname: elasticsearch
+    restart: on-failure
+    ports:
+     - 9200:9200
+    environment:
+     - TZ=Europe/Istanbul
+     - xpack.security.enabled=false
+     - "discovery.type=single-node"
+     - ELASTIC_USERNAME=notiflow-elastic
+     - ELASTIC_PASSWORD=6If4nbU56pLPaoMJ
+    volumes:
+     - elastic_volume:/usr/share/elasticsearch/data
+    networks:
+      - notiflow_net
+
+  kibana:
+    container_name: kibana
+    hostname: kibana
+    restart: on-failure
+    ports:
+     - 5601:5601
+    environment:
+     - TZ=Europe/Istanbul
+     - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+     - elasticsearch
+    networks:
+      - notiflow_net
+
 networks:
   notiflow_net:
     driver: bridge

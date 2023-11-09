@@ -3,11 +3,11 @@
 public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Result<DtResult<CustomerDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public CustomerDataTableCommandHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -24,7 +24,7 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
 
         if (customers.IsNullOrNotAny())
         {
-            return Result<DtResult<CustomerDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_FOUND]);
+            return Result<DtResult<CustomerDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.CUSTOMER_NOT_FOUND]);
         }
 
         DtResult<CustomerDataTableCommandResult> customerDataTable = new()
@@ -35,6 +35,6 @@ public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDa
             Data = ObjectMapper.Mapper.Map<List<CustomerDataTableCommandResult>>(customers)
         };
 
-        return Result<DtResult<CustomerDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], customerDataTable);
+        return Result<DtResult<CustomerDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], customerDataTable);
     }
 }

@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
     <ProjectReference Include="..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
     <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
+    <ProjectReference Include="..\..\..\libs\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj" />
     <ProjectReference Include="..\..\..\libs\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj" />
     <ProjectReference Include="..\..\..\libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj" />

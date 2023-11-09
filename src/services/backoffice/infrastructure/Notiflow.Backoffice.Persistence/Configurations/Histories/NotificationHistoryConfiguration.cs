@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Configurations.Histories;
 
-internal sealed class NotificationHistoryConfiguration : BaseEntityConfiguration<NotificationHistory>
+internal sealed class NotificationHistoryConfiguration : BaseEntityConfiguration<NotificationHistory, int>
 {
     public NotificationHistoryConfiguration() : base(true)
     {

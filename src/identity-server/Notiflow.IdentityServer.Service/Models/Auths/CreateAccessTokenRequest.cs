@@ -1,23 +1,17 @@
 ﻿namespace Notiflow.IdentityServer.Service.Models.Auths;
 
-//public sealed record CreateAccessTokenRequest(string Username, string Password);
-
-public sealed record CreateAccessTokenRequest
-{
-    public string Username { get; init; }
-    public string Password { get; init; }
-}
+public sealed record CreateAccessTokenRequest(string Username, string Password);
 
 public sealed class CreateAccessTokenRequestValidator : AbstractValidator<CreateAccessTokenRequest>
 {
-    public CreateAccessTokenRequestValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public CreateAccessTokenRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Username)
-            .NotNullAndNotEmpty(localizer[ValidationErrorCodes.USERNAME])
-            .Length(5, 100).WithMessage(localizer[ValidationErrorCodes.PASSWORD]);
+            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USERNAME])
+            .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
 
         RuleFor(p => p.Password)
-            .StrongPassword(localizer[ValidationErrorCodes.PASSWORD])
-            .MaximumLength(100).WithMessage(localizer[ValidationErrorCodes.PASSWORD]);
+            .StrongPassword(localizer[ValidationErrorMessage.PASSWORD])
+            .MaximumLength(100).WithMessage(localizer[ValidationErrorMessage.PASSWORD]);
     }
 }

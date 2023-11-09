@@ -17,7 +17,7 @@ internal sealed class GoogleAuthService : IGoogleAuthService
         {
             Audience = new[] { _googleAuthConfig.ClientId },
             IssuedAtClockTolerance = TimeSpan.FromSeconds(1)
-        });
+        }).ConfigureAwait(false);
 
         GoogleUserResponse googleUserResponse = new()
         {

@@ -10,7 +10,7 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The application builder instance.</param>
     /// <returns>The updated application builder instance.</returns>
-    public static IApplicationBuilder UseSerilog(this IApplicationBuilder app)
+    public static IApplicationBuilder UseSerilogLogging(this IApplicationBuilder app)
     {
         return app.UseSerilogRequestLogging();
     }

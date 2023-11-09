@@ -69,15 +69,15 @@ public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TE
         return numberOfRowsDeleted > 0;
     }
 
-    public virtual async Task<bool> ExecuteDeleteAsync<TProperty>(TProperty id, CancellationToken cancellationToken) where TProperty : struct
-    {
-        int numberOfRowsDeleted = await _entities.Where(p => EF.Property<TProperty>(p, "Id").Equals(id)).ExecuteDeleteAsync(cancellationToken);
-        return numberOfRowsDeleted > 0;
-    }
-
     public virtual async Task<bool> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
     {
         int numberOfRowsDeleted = await _entities.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+        return numberOfRowsDeleted > 0;
+    }
+
+    public virtual async Task<bool> ExecuteDeleteByIdAsync<TProperty>(TProperty id, CancellationToken cancellationToken) where TProperty : struct
+    {
+        int numberOfRowsDeleted = await _entities.Where(p => EF.Property<TProperty>(p, "Id").Equals(id)).ExecuteDeleteAsync(cancellationToken);
         return numberOfRowsDeleted > 0;
     }
 

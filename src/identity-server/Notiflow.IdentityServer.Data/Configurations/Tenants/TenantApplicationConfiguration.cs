@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Data.Configurations.Tenants;
 
-internal sealed class TenantApplicationConfiguration : BaseHistoricalEntityConfiguration<TenantApplication>
+internal sealed class TenantApplicationConfiguration : BaseHistoricalEntityConfiguration<TenantApplication, int>
 {
     public TenantApplicationConfiguration() : base("getdate()")
     {

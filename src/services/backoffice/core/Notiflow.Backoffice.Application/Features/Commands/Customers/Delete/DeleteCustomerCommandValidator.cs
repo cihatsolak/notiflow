@@ -2,8 +2,8 @@
 
 public sealed class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
 {
-    public DeleteCustomerCommandValidator(ILocalizerService<ValidationErrorCodes> localizer)
+    public DeleteCustomerCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorCodes.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
     }
 }

@@ -40,14 +40,19 @@ internal static class SeedData
     private static List<User> GenerateUsers()
     {
         return new Faker<User>("tr")
-            .RuleFor(user => user.Name, faker => faker.Person.FirstName)
-            .RuleFor(user => user.Surname, faker => faker.Person.LastName)
-            .RuleFor(user => user.Email, (faker, user) => faker.Internet.Email(user.Name, user.Surname))
-            .RuleFor(user => user.Username, (faker, user) => faker.Internet.UserName(user.Name, user.Surname))
-            .RuleFor(user => user.Password, faker => faker.Internet.Password())
-            .RuleFor(user => user.Avatar, faker => faker.Internet.Avatar())
-            .RuleFor(user => user.RefreshToken, faker => GenerateRefreshToken())
-            .Generate(10);
+           .StrictMode(false)
+           .RuleFor(user => user.Name, faker => faker.Person.FirstName)
+           .RuleFor(user => user.Surname, faker => faker.Person.LastName)
+           .RuleFor(user => user.Email, (faker, user) => faker.Internet.Email(user.Name, user.Surname))
+           .RuleFor(user => user.Username, (faker, user) => faker.Internet.UserName(user.Name, user.Surname))
+           .RuleFor(user => user.Password, faker => "123DxvcbWER@@##")
+           .RuleFor(user => user.Avatar, faker => faker.Internet.Avatar())
+           .RuleFor(user => user.RefreshToken, faker => GenerateRefreshToken())
+           .FinishWith((faker, user) =>
+           {
+               Console.WriteLine("User Created! Name={0}", user.Name);
+           })
+           .Generate(10);
     }
 
     private static RefreshToken GenerateRefreshToken()

@@ -39,7 +39,7 @@ public sealed class UsersController : BaseApiController
     [HttpPost("add")]
     [ProducesResponseType(typeof(Result<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add(CreateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.AddAsync(request, cancellationToken);
         return CreateActionResultInstance(response);
@@ -56,6 +56,7 @@ public sealed class UsersController : BaseApiController
     /// <response code="400">invalid request</response>
     /// <response code="401">unauthorized user</response>
     [HttpPut("{id:int:min(1):max(2147483647)}")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)

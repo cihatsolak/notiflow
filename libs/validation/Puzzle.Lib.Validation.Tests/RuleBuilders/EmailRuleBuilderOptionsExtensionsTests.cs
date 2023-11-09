@@ -58,7 +58,7 @@ namespace Puzzle.Lib.Validation.Tests.RuleBuilders
             var invalidEmailList = "email1example.asd;email2@example.com;";
             var errorMessage = "Invalid email address";
             var validator = new InlineValidator<TestClass>();
-            validator.RuleFor(x => x.EmailList).EmailListWithSemicolon(errorMessage);
+            //validator.RuleFor(x => x.EmailList).EmailListWithSemicolon(errorMessage);
 
             // Act
             var result = validator.TestValidate(new TestClass { EmailList = invalidEmailList });

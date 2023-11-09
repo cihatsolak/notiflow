@@ -46,11 +46,12 @@ internal sealed class TokenManager : ITokenService
         claims.AddJti();
         claims.AddIat();
 
-        claims.AddNameIdentifier(user.Id.ToString());
+        claims.AddNameIdentifier($"{user.Id}");
         claims.AddName(user.Name);
         claims.AddFamilyName(user.Surname);
         claims.AddEmail(user.Email);
         claims.AddAudiences(audiences);
+        claims.AddGroupSid($"{user.TenantId}");
 
         return claims;
     }

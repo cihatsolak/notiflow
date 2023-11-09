@@ -3,11 +3,11 @@
 public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Result<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public GetTextMessageHistoryByIdQueryHandler(
         INotiflowUnitOfWork uow, 
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -18,11 +18,11 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
-            return Result<GetTextMessageHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TEXT_MESSAGE_NOT_FOUND]);
+            return Result<GetTextMessageHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TEXT_MESSAGE_NOT_FOUND]);
         }
 
         var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResult>(textMessageHistory);
 
-        return Result<GetTextMessageHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], textMessageHistoryDto);
+        return Result<GetTextMessageHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], textMessageHistoryDto);
     }
 }

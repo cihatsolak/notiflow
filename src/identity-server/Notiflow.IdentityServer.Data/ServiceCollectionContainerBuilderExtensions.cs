@@ -13,7 +13,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
         });
 
-        services.SeedAsync().Wait();
+        services.SeedAsync(CancellationToken.None).Wait();
 
         return services;
     }

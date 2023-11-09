@@ -16,6 +16,7 @@ public static class HostBuilderExtensions
         {
             configurationBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             configurationBuilder.AddJsonFile($"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            configurationBuilder.AddEnvironmentVariables();
         });
 
         return hostBuilder;
@@ -52,7 +53,7 @@ public static class HostBuilderExtensions
     {
         hostBuilder.ConfigureHostOptions(configureOptions =>
         {
-            configureOptions.ShutdownTimeout = TimeSpan.FromMinutes(5);
+            configureOptions.ShutdownTimeout = TimeSpan.FromMinutes(2);
         });
 
         return hostBuilder;

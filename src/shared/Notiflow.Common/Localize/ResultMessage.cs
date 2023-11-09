@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Common.Localize;
 
-public record class ResultState
+public record class ResultMessage
 {
     public const int GENERAL_ERROR = -1;
     public const int GENERAL_SUCCESS = 0;
@@ -29,7 +29,6 @@ public record class ResultState
     public const int TEXT_MESSAGE_SENDING_ACCEPTED = 1020;
     public const int NOTIFICATION_SENDING_ACCEPTED = 1021;
     public const int EMAIL_SENDING_ACCEPTED = 1022;
-
 
     public const int USER_NOT_FOUND = 1023;
     public const int ACCESS_TOKEN_NOT_PRODUCED = 1024;
@@ -62,4 +61,6 @@ public record class ResultState
     public const int EMAIL_SENDING_SUCCESSFUL = 1047;
     public const int NOTIFICATION_SENDING_SUCCESSFUL = 1048;
     public const int TEXT_MESSAGES_SENDING_SUCCESSFUL = 1049;
+
+    public const int TENANT_COULD_NOT_BE_IDENTIFIED = 1050;
 }

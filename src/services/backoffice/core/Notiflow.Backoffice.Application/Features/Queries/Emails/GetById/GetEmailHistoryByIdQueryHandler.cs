@@ -3,11 +3,11 @@
 public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, Result<GetEmailHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public GetEmailHistoryByIdQueryHandler(
         INotiflowUnitOfWork uow, 
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _uow = uow;
         _localizer = localizer;
@@ -18,10 +18,10 @@ public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHi
         var emailHistory = await _uow.EmailHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (emailHistory is null)
         {
-            return Result<GetEmailHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.EMAIL_HISTORY_NOT_FOUND]);
+            return Result<GetEmailHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.EMAIL_HISTORY_NOT_FOUND]);
         }
 
         var emailHistoryDto = ObjectMapper.Mapper.Map<GetEmailHistoryByIdQueryResult>(emailHistory);
-        return Result<GetEmailHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], emailHistoryDto);
+        return Result<GetEmailHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], emailHistoryDto);
     }
 }

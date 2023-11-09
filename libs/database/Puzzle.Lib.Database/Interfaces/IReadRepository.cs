@@ -22,7 +22,7 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
         int pageIndex,
         int pageSize,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
 
     /// <summary>
     /// Retrieves a paginated list of entities that satisfy a given filtering criterion from the database, ordered by the given sorting function.
@@ -39,7 +39,7 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
        int pageSize,
        Expression<Func<TEntity, bool>> filter,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-       CancellationToken cancellationToken = default);
+       CancellationToken cancellationToken);
 
     /// <summary>
     /// Returns a paged result of entities based on the provided filter and ordering criteria.
@@ -56,7 +56,7 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
         int pageSize,
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default,
+        CancellationToken cancellationToken,
         params Expression<Func<TEntity, object>>[] includes);
 
     /// <summary>
@@ -83,7 +83,7 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
     Task<IEnumerable<TEntity>> GetAllAsync(
        Expression<Func<TEntity, bool>> filter,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-       CancellationToken cancellationToken = default);
+       CancellationToken cancellationToken);
 
     /// <summary>
     /// Retrieves all the entities that match the given filter, orders them using the given ordering function, and includes the specified related entities.
@@ -97,7 +97,7 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
     Task<IEnumerable<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
-        CancellationToken cancellationToken = default,
+        CancellationToken cancellationToken,
         params string[] includeProperties);
 
     /// <summary>
@@ -152,5 +152,5 @@ public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity :
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <exception cref="ArgumentNullException">Thrown when the id is null or empty.</exception>
     /// <returns>The entity with the specified id.</returns>
-    Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default);
+    Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken);
 }

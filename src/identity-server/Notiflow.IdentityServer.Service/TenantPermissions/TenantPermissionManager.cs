@@ -28,10 +28,10 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
             .SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
-            return Result<TenantPermissionResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
+            return Result<TenantPermissionResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TENANT_PERMISSION_NOT_FOUND]);
         }
 
-        return Result<TenantPermissionResponse>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], tenantPermission);
+        return Result<TenantPermissionResponse>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], tenantPermission);
     }
 
     public async Task<Result<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
@@ -41,7 +41,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
             .SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
-            return Result<EmptyResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
+            return Result<EmptyResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TENANT_PERMISSION_NOT_FOUND]);
         }
 
         List<Task<bool>> permissionCachingTasks = new();
@@ -70,6 +70,6 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
 
         _logger.LogInformation("Permission information for {tenantId} tenant with ID has been updated.", tenantPermission.TenantId);
 
-        return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultState.TENANT_PERMISSION_NOT_FOUND]);
+        return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.TENANT_PERMISSION_NOT_FOUND]);
     }
 }

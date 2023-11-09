@@ -3,11 +3,11 @@
 public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, Result<GetCustomerByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultState> _localizer;
+    private readonly ILocalizerService<ResultMessage> _localizer;
 
     public GetCustomerByIdQueryHandler(
         INotiflowUnitOfWork notiflowUnitOfWork, 
-        ILocalizerService<ResultState> localizer)
+        ILocalizerService<ResultMessage> localizer)
     {
         _uow = notiflowUnitOfWork;
         _localizer = localizer;
@@ -18,10 +18,10 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<GetCustomerByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultState.CUSTOMER_NOT_FOUND]);
+            return Result<GetCustomerByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.CUSTOMER_NOT_FOUND]);
         }
 
         var customerDto = ObjectMapper.Mapper.Map<GetCustomerByIdQueryResult>(customer);
-        return Result<GetCustomerByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultState.GENERAL_SUCCESS], customerDto);
+        return Result<GetCustomerByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], customerDto);
     }
 }

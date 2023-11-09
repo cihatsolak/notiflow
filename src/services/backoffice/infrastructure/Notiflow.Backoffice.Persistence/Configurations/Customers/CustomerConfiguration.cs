@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Configurations.Customers;
 
-internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConfiguration<Customer>
+internal sealed class CustomerConfiguration : BaseHistoricalSoftDeleteEntityConfiguration<Customer, int>
 {
     public CustomerConfiguration() : base("now()", true)
     {

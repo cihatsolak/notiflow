@@ -8,7 +8,7 @@ internal sealed class AcceptLanguageOperationFilter : IOperationFilter
 
         operation.Parameters.Add(new OpenApiParameter
         {
-            Name = "Accept-Language",
+            Name = "accept-language",
             In = ParameterLocation.Header,
             Required = false,
             Schema = new OpenApiSchema

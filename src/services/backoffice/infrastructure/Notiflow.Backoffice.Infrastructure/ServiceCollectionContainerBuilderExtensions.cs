@@ -10,7 +10,6 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.TryAddSingleton<ITextMessageService, TextMessageManager>();
 
         services
-            .AddLowercaseRouting()
             .AddRestApiService()
             .AddFirebaseService(configuration)
             .AddHuaweiService(configuration);

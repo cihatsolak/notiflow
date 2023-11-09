@@ -11,12 +11,10 @@ internal static class CustomEnrichersExtensions
     /// <param name="enrich">The <see cref="LoggerEnrichmentConfiguration"/> instance to extend.</param>
     /// <param name="applicationName">The name of the application to include in log entries.</param>
     /// <returns>A <see cref="LoggerConfiguration"/> instance with the "ApplicationName" property added.</returns>
-    internal static LoggerConfiguration WithApplicationName(this LoggerEnrichmentConfiguration enrich, string applicationName)
+    internal static LoggerConfiguration WithApplicationName(this LoggerEnrichmentConfiguration enrich)
     {
         ArgumentNullException.ThrowIfNull(enrich);
-        ArgumentException.ThrowIfNullOrEmpty(applicationName);
-
-        return enrich.WithProperty("ApplicationName", applicationName);
+        return enrich.WithProperty("ApplicationName", Assembly.GetCallingAssembly().GetName().Name);
     }
 }
 

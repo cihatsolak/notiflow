@@ -19,5 +19,7 @@ public sealed class SecurityHeadersMiddleware
         context.Response.Headers.Add("X-Frame-Options", "DENY");
 
         await _next.Invoke(context);
+
+        context.Response.Headers.Remove("Server");
     }
 }

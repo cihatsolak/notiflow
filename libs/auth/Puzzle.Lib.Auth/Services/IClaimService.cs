@@ -72,4 +72,6 @@ public interface IClaimService
     /// </summary>
     /// <exception cref="JwtClaimException">If there is no birtdate value in the claims, it is thrown</exception>
     DateTime BirthDate { get; }
+
+    string GroupSid { get; }
 }

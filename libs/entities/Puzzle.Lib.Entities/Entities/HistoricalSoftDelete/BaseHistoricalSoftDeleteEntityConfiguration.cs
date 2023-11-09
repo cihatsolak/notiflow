@@ -1,6 +1,7 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.HistoricalSoftDelete;
 
-public class BaseHistoricalSoftDeleteEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalSoftDeleteEntity<int>
+public class BaseHistoricalSoftDeleteEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfiguration<TEntity> where TEntity : BaseHistoricalSoftDeleteEntity<TPrimaryKey> 
+                                                                                                                   where TPrimaryKey : notnull
 {
     private readonly string _defaultDateValueSql;
     private readonly bool _useLowerTableName;
