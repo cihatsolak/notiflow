@@ -3,6 +3,9 @@
 internal static class HealthChecksContainerBuilderExtensions
 {
     private static HealthCheckSetting healthCheckSetting;
+    private const int MAXIMUM_NUMBER_OF_HISTORY_ENTRIES_TO_BE_STORED = 250;
+    private const int MAXIMUM_NUMBER_OF_API_REQUESTS = 20;
+    private const int TIMEOUT_PERIOD_SECOND = 60;
 
     internal static void AddConfigureHealthChecks(this WebApplicationBuilder builder)
     {
@@ -15,6 +18,10 @@ internal static class HealthChecksContainerBuilderExtensions
             {
                 settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
             }
+
+            settings.SetEvaluationTimeInSeconds(TIMEOUT_PERIOD_SECOND); //Sağlık kontrolünün her bir öğesinin 60 saniyede bir değerlendirileceği bir zaman aşımı süresi belirler.
+            settings.SetApiMaxActiveRequests(MAXIMUM_NUMBER_OF_API_REQUESTS); //Aynı anda işlenebilecek maksimum API isteği sayısını 50 olarak sınırlar.
+            settings.MaximumHistoryEntriesPerEndpoint(MAXIMUM_NUMBER_OF_HISTORY_ENTRIES_TO_BE_STORED); //Her bir sağlık kontrolü sonucu için saklanacak maksimum geçmiş giriş sayısını 250 olarak ayarlar.
 
             settings.AddWebhookNotification(builder.Environment.ApplicationName,
              uri: healthCheckSetting.SlackWebHookSetting.Uri,
