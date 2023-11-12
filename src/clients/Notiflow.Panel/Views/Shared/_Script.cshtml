@@ -1,11 +1,9 @@
-﻿@inject ICdnSetting cdnSetting
-
-<script src="@(cdnSetting.Url)/themes/admin/plugins/global/plugins.bundle-2.js?v=@(cdnSetting.Version)"></script>
-<script src="@(cdnSetting.Url)/themes/admin/js/scripts.bundle-2.js?v=@(cdnSetting.Version)"></script>
-<script src="@(cdnSetting.Url)/themes/admin/plugins/custom/datatables/datatables.bundle-2.js?v=@(cdnSetting.Version)"></script>
+﻿<script src="~/lib/plugins/global/plugins.bundle-2.js" asp-append-version="true"></script>
+<script src="~/lib/theme/scripts.bundle-2.js" asp-append-version="true"></script>
+<script src="~/lib/plugins/custom/datatables/datatables.bundle-2.js" asp-append-version="true"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js" integrity="sha256-TAzGN4WNZQPLqSYvi+dXQMKehTYFoVOnveRqbi42frA=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js" integrity="sha256-H8OdhvNWpxCHXd9Osw8R7yOsWj9CQKGDMlujYVBsYMw=" crossorigin="anonymous"></script>
-<script src="@(cdnSetting.Url)/themes/common/global.js?v=@(cdnSetting.Version)"></script>
+<script src="~/js/shared/global.js" asp-append-version="true"></script>
 <script type="text/javascript">
     var settings = {
         validClass: "is-valid",

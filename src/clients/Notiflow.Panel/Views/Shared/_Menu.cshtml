@@ -208,10 +208,10 @@
 </div>
 
 @functions {
-    public string IsActiveMenu(string actionName, bool checkAction = false)
+    public string IsActiveMenu(string actionName)
     {
         string existingName = Context.Request.RouteValues.Values.ToArray()[0].ToString();
-        if (existingName.OrdinalIgnoreCase(actionName))
+        if (string.Equals(actionName, existingName, StringComparison.OrdinalIgnoreCase))
             return "active";
 
         return string.Empty;

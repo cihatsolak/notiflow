@@ -2,18 +2,18 @@
     <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
         <div class="d-flex align-items-center me-3">
             <h1 class="d-flex align-items-center text-dark fw-bolder my-1 fs-3">
-                @ViewData[ViewParameters.Title]
+                @ViewData["Title"]
 
-                @if (ViewData[ViewParameters.ToolbarText] is not null)
+                @if (ViewData["ToolbarText"] is not null)
                 {
                     <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                    <a asp-action="list" class="text-muted fs-7 fw-bold my-1 ms-1">@ViewData[ViewParameters.ToolbarText].ToString()</a>
+                    <a asp-action="list" class="text-muted fs-7 fw-bold my-1 ms-1">@ViewData["ToolbarText"].ToString()</a>
                 }
 
-                @if (ViewData[ViewParameters.ToolbarList] is not null)
+                @if (ViewData["ToolbarList"] is not null)
                 {
                     <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                    <a href="javascript:void(0)" class="text-muted fs-7 fw-bold my-1 ms-1">@ViewData[ViewParameters.ToolbarList].ToString()</a>
+                    <a href="javascript:void(0)" class="text-muted fs-7 fw-bold my-1 ms-1">@ViewData["ToolbarList"].ToString()</a>
                 }
             </h1>
         </div>

@@ -1,6 +1,4 @@
-﻿@inject ICdnSetting cdnSetting
-
-<div id="kt_header" style="" class="header align-items-stretch">
+﻿<div id="kt_header" style="" class="header align-items-stretch">
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show aside menu">
             <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
@@ -14,11 +12,11 @@
         </div>
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="javascript:void(0)" class="d-lg-none">
-                <img alt="Logo" src="@(cdnSetting.Url)/themes/admin/img/dogus-oto-logo-light.png" class="h-40px">
+                <img alt="Logo" src="/themes/admin/img/test.png" class="h-40px">
             </a>
         </div>
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-            <partial name="@PartialName.Navbar" />
+            <partial name="_Navbar" />
             <div class="d-flex align-items-stretch flex-shrink-0">
                 <div class="d-flex align-items-stretch flex-shrink-0">
                     <div class="d-flex align-items-center ms-1 ms-lg-3">
@@ -33,7 +31,7 @@
                             <span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink"></span>
                         </div>
                     </div>
-                    <partial name="@PartialName.User" />
+                    <partial name="_User" />
                     <div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">
                         <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_header_menu_mobile_toggle">
                             <span class="svg-icon svg-icon-1">

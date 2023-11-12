@@ -1,4 +1,4 @@
-﻿@inject IHttpContextAccessor httpContextAccessor
+﻿@* @inject IHttpContextAccessor httpContextAccessor
 @inject INotificationHubSetting notificationHubSetting
 @{
     string accessToken = await httpContextAccessor.HttpContext.GetTokenAsync(AuthenticationParameters.AccessToken);
@@ -13,4 +13,4 @@
         .build();
 </script>
 <script asp-src-include="/js/hubs/app.js"></script>
-<script asp-src-include="/js/hubs/subscriptions.js"></script>
+<script asp-src-include="/js/hubs/subscriptions.js"></script> *@

@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Yetkisiz Kullanıcı";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <partial name="_Head" />
+</head>
+<body id="kt_body" class="auth-bg">
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-column-fluid">
+            <div class="d-flex flex-column flex-column-fluid text-center p-10 py-lg-15">
+                <environment include="Development">
+                    <a href="https://test.dogusoto.com.tr/" class="mb-10 pt-lg-10">
+                        <img alt="Logo" src="/themes/admin/img/test.png" class="h-70px mb-5" />
+                    </a>
+                </environment>
+                <environment include="Staging, Production">
+                    <a href="https://dogusoto.com.tr/" class="mb-10 pt-lg-10">
+                        <img alt="Logo" src="/themes/admin/img/test.png" class="h-70px mb-5" />
+                    </a>
+                </environment>
+                <div class="pt-lg-10 mb-10">
+                    <h1 class="fw-bolder fs-2qx text-gray-800 mb-10">Yetkisiz Giriş</h1>
+                    <div class="fw-bold fs-3 text-muted mb-15">
+                        Yapmak istediğiniz işlem için yetkiniz bulunmamaktadır.
+                        <br />Lütfen daha sonra tekrar deneyiniz.
+                    </div>
+                    <div class="text-center">
+                        <a id="return-previous-page" class="btn btn-lg btn-primary fw-bolder">Geri Dön</a>
+                    </div>
+                </div>
+                <div class="d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(/lib/media/illustrations/sketchy-1/17.png)"></div>
+            </div>
+            <div class="d-flex flex-center flex-column-auto p-10">
+                <div class="d-flex align-items-center fw-bold fs-6">
+                    <a asp-controller="Home" asp-action="Index" class="text-muted text-hover-primary px-2">Ana sayfa</a>
+                    <a asp-controller="Dealer" asp-action="List" class="text-muted text-hover-primary px-2">Hizmet Noktaları</a>
+                    <a asp-controller="TransactionGuide" asp-action="List" class="text-muted text-hover-primary px-2">İşlem Rehberi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="_Script" />
+    <script type="text/javascript">
+        $("#return-previous-page").click(() => {
+            history.back();
+        });
+    </script>
+</body>
+</html>
