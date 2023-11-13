@@ -1,6 +1,7 @@
-﻿@model SignInInput
+﻿@inject IViewLocalizer Localizer
+@model SignInInput
 @{
-    ViewData["Title"] = "Yönetim Paneli";
+    ViewData["Title"] = Localizer["page.title"];
     Layout = null;
 }
 
@@ -44,7 +45,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-lg btn-primary btn-block fw-bolder me-3 my-2">
-                                <span class="indicator-label">Giriş</span>
+                                <span class="indicator-label">@Localizer["signin.button.text"]</span>
                             </button>
                         </div>
                     </form>

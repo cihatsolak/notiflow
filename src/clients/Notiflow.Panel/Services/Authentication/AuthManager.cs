@@ -15,13 +15,14 @@ public sealed class AuthManager : IAuthService
 
     public async Task<bool> SignInAsync(SignInInput signInInput, CancellationToken cancellationToken)
     {
-        var tokenResult = await _restService.PostResponseAsync<Response<Token>>("notiflow.api", "/user-service/auth/create-access-token", signInInput, cancellationToken);
+        var tokenResult = await _restService.PostResponseAsync<Response<Token>>(nameof(AuthManager), "/user-service/auth/create-access-token", signInInput, cancellationToken);
         if (tokenResult.IsFailure)
         {
             return default;
         }
 
-        var userResult = await _restService.GetResponseAsync<Response<User>>("notiflow.api", "/user-service/auth/user", cancellationToken);
+        var credentialCollection = HttpClientHeaderExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
+        var userResult = await _restService.GetResponseAsync<Response<User>>(nameof(AuthManager), "/user-service/auth/user", credentialCollection, cancellationToken);
         if (userResult.IsFailure)
         {
             return default;
@@ -74,7 +75,7 @@ public sealed class AuthManager : IAuthService
             throw new UnauthorizedAccessException();
         }
 
-        var tokenResult = await _restService.PostResponseAsync<Result<Token>>("notiflow.api", "/user-service/auth/create-refresh-token", new { token = refreshToken }, cancellationToken);
+        var tokenResult = await _restService.PostResponseAsync<Response<Token>>("notiflow.api", "/user-service/auth/create-refresh-token", new { token = refreshToken }, cancellationToken);
         if (tokenResult.IsFailure)
         {
             throw new UnauthorizedAccessException();

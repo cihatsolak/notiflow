@@ -1,3 +1,8 @@
+
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -15,6 +20,8 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 })
 .AddRazorRuntimeCompilation();
+
+builder.Services.AddMultiLanguage();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
@@ -37,6 +44,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.UseCookiePolicy(new CookiePolicyOptions
 {

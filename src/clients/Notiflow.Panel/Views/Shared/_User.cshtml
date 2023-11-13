@@ -1,4 +1,17 @@
-﻿<div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
+﻿@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> localizationOptions
+
+@{
+    var requestCultureFeature = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = localizationOptions.Value.SupportedUICultures
+        .Select(culture => new SelectListItem { Value = culture.Name, Text = culture.DisplayName })
+        .ToList();
+
+    string cookieCulture = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+    string selectedCulture = cookieCulture.Split("=")[^1];
+}
+
+<div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
         <img src="https://icones.pro/wp-content/uploads/2021/03/avatar-de-personne-icone-homme.png" alt="user">
     </div>
@@ -10,10 +23,10 @@
                 </div>
                 <div class="d-flex flex-column">
                     <div class="fw-bolder d-flex align-items-center fs-5">
-                        @* @User.Name() @User.Surname() *@ cihat solak
+                        @User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value @User.Claims.First(p => p.Type == ClaimTypes.Surname).Value
                         <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">@* @User.Role() *@ admin</span>
                     </div>
-                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">@* @User.Email() *@ cihat@hotmail.com</a>
+                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">@User.Claims.First(p => p.Type == ClaimTypes.Email).Value</a>
                 </div>
             </div>
         </div>
@@ -33,6 +46,33 @@
             <a href="#" class="menu-link px-5">Durumlar</a>
         </div>
         <div class="separator my-2"></div>
+        <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
+            <a href="#" class="menu-link px-5">
+                <span class="menu-title position-relative">
+                    @Localizer["Language"]
+
+                    <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">
+                        @Localizer[selectedCulture] <img class="w-15px h-15px rounded-1 ms-2" src="/lib/media/flags/@(selectedCulture).svg" alt="@Localizer[selectedCulture]">
+                    </span>
+                </span>
+            </a>
+
+            <!--begin::Menu sub-->
+            <div class="menu-sub menu-sub-dropdown w-175px py-4" style="">
+                @foreach(var culture in cultureItems)
+                {
+                    <div class="menu-item px-3">
+                        <a class="select-culture menu-link d-flex px-5 @(string.Equals(selectedCulture,culture.Value) ? "active" : string.Empty)" onclick="postSelectedCulture('@culture.Value')">
+                            <span class="symbol symbol-20px me-4">
+                                <img class="rounded-1" src="/lib/media/flags/@(culture.Value).svg" alt="@culture.Text">
+                            </span>
+                            @Localizer[culture.Value]
+                        </a>
+                    </div>
+                }
+            </div>
+            <!--end::Menu sub-->
+        </div>
         <div class="menu-item px-5 my-1">
             <a href="#" class="menu-link px-5">Hesap Ayarları</a>
         </div>
@@ -44,3 +84,27 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function postSelectedCulture(selectedCulture) {
+        $.ajax({
+            url: '/Language/Change',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            cache: false,
+            data: {
+                culture: selectedCulture,
+                returnUrl: '@Context.Request.Path'
+            },
+            beforeSend: function (request) {
+                request.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val())
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function (xhr, error, code) {
+            },
+            complete: function () { },
+        });
+    }
+</script>
