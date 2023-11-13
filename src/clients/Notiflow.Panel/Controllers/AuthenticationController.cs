@@ -4,9 +4,14 @@
 public sealed class AuthenticationController : Controller
 {
     private readonly IAuthService _authService;
-    public AuthenticationController(IAuthService authService)
+    private readonly IStringLocalizer<AuthenticationController> _localizer;
+
+    public AuthenticationController(
+        IAuthService authService, 
+        IStringLocalizer<AuthenticationController> localizer)
     {
         _authService = authService;
+        _localizer = localizer;
     }
 
     [HttpGet]
@@ -30,14 +35,14 @@ public sealed class AuthenticationController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ModelState.AddModelError(string.Empty, "Giriş işlemi başarısız.");
+            ModelState.AddModelError(string.Empty, _localizer["login.error.message"]);
             return View(signInInput);
         }
 
         bool succeeded = await _authService.SignInAsync(signInInput, cancellationToken);
         if (!succeeded)
         {
-            ModelState.AddModelError(string.Empty, "Giriş işlemi başarısız.");
+            ModelState.AddModelError(string.Empty, _localizer["login.error.message"]);
             return View(signInInput);
         }
 

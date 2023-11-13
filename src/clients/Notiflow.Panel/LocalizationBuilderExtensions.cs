@@ -17,7 +17,7 @@ internal static class LocalizationBuilderExtensions
         {
             options.DataAnnotationLocalizerProvider = (type, localizerFactory) =>
             {
-                return localizerFactory.Create(typeof(SharedResource));
+                return localizerFactory.Create(typeof(AuthManager));
             };
         });
 
