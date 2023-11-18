@@ -14,11 +14,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.13" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\..\..\libs\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj" />
+    <ProjectReference Include="..\..\..\libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj" />
+    <ProjectReference Include="..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
+    <ProjectReference Include="..\..\shared\Notiflow.Common\Notiflow.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -36,7 +36,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.TryAddScoped<IUserService, UserManager>();
 
         services
-           .AddLocalize()
+           .AddWebApiLocalize()
            .AddHttpContextAccessor()
            .AddClaimService()
            .AddFluentDesignValidation()

@@ -19,8 +19,13 @@ builder.Services.AddControllersWithViews(options =>
 })
 .AddRazorRuntimeCompilation();
 
-builder.Services.AddMultiLanguage();
+builder.Services.AddWebUILocalize(opt =>
+{
+    opt.ResourcesPath = "Resources";
+    opt.ResourcesSource = typeof(TextMessageInput);
+});
 
+builder.Services.AddFluentDesignAutoValidation();
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
 
@@ -42,7 +47,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+app.UseLocalization();
 
 app.UseCookiePolicy(new CookiePolicyOptions
 {

@@ -21,7 +21,7 @@ builder.AddConfigureHealthChecks();
 builder.Services
     .AddMassTransit()
     .AddLowercaseRouting()
-    .AddLocalize()
+    .AddWebApiLocalize()
     .AddGzipResponseFastestCompress()
     .AddFluentDesignValidation()
     .AddHttpSecurityPrecautions(builder.Environment)

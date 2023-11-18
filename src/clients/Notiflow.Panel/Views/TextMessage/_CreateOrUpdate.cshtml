@@ -1,0 +1,51 @@
+﻿@model TextMessageInput
+@{
+    ViewData["ToolbarText"] = ">içerik listesine dön";
+    string actionName = ViewContext.RouteData.Values["action"].ToString();
+}
+<div class="card-body p-9">
+   @*  @if (actionName.Equals("Create"))
+    {
+        <div class="row mb-8">
+            <div class="col-xl-3">
+                <div class="fs-6 fw-bold mt-2 mb-3">
+                    <label asp-for="Id" class="required"></label>
+                </div>
+            </div>
+            <div class="col-xl-9 fv-row">
+                <input asp-for="Id" class="form-control form-control-solid" />
+                <span asp-validation-for="Id"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    } *@
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="SelectedCustomerIds" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <div class="form-group">
+                <select asp-for="SelectedCustomerIds" asp-items="Model.AvailableCustomers" class="form-select form-select-lg form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="Müşteri Seçiniz" data-allow-clear="true" multiple="multiple">
+                    <option value="0" hidden disabled>Müşteri Seçiniz</option>
+                </select>
+                <span asp-validation-for="SelectedCustomerIds"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Message" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <textarea asp-for="Message" class="form-control form-control-solid"></textarea>
+            <span asp-validation-for="Message"></span>
+            <valid-feedback />
+        </div>
+    </div>
+</div>
+<form-action-buttons />

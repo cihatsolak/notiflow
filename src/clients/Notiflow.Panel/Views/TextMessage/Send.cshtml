@@ -1,0 +1,17 @@
+﻿@model TextMessageInput
+@{
+    ViewData["Title"] = "Send";
+}
+
+<div id="kt_content_container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <page-title />
+        </div>
+        <form asp-action="Create" method="post" class="form">
+           @*  <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div> *@
+            <partial name="_CreateOrUpdate" />
+        </form>
+    </div>
+</div>
+
