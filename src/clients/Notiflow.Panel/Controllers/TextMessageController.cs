@@ -7,4 +7,16 @@ public sealed class TextMessageController : Controller
     {
         return View();
     }
+
+    [HttpGet]
+    public IActionResult Send()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Send()
+    {
+
+    }
 }

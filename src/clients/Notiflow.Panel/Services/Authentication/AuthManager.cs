@@ -32,7 +32,7 @@ public sealed class AuthManager : IAuthService
         {
             new Claim(ClaimTypes.NameIdentifier, $"{userResult.Data.Id}", ClaimValueTypes.Integer),
             new Claim(ClaimTypes.Name, userResult.Data.Name, ClaimValueTypes.String),
-            new Claim(ClaimTypes.GivenName, userResult.Data.Surname, ClaimValueTypes.String),
+            new Claim(ClaimTypes.Surname, userResult.Data.Surname, ClaimValueTypes.String),
             new Claim(ClaimTypes.Email, userResult.Data.Email, ClaimValueTypes.String)
         };
 

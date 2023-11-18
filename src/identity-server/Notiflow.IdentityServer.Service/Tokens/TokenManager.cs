@@ -48,7 +48,7 @@ internal sealed class TokenManager : ITokenService
 
         claims.AddNameIdentifier($"{user.Id}");
         claims.AddName(user.Name);
-        claims.AddFamilyName(user.Surname);
+        claims.AddSurname(user.Surname);
         claims.AddEmail(user.Email);
         claims.AddAudiences(audiences);
         claims.AddGroupSid($"{user.TenantId}");

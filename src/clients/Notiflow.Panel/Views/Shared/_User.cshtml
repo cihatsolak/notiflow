@@ -8,7 +8,15 @@
         .ToList();
 
     string cookieCulture = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+    if (string.IsNullOrWhiteSpace(cookieCulture))
+    {
+        cookieCulture = "asdasd=tr-TR";
+    }
+
     string selectedCulture = cookieCulture.Split("=")[^1];
+
+    var asd = User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+    var as2d = User.Claims.First(claim => claim.Type == ClaimTypes.Surname).Value;
 }
 
 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">

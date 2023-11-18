@@ -1,4 +1,6 @@
-﻿<div class="aside-menu flex-column-fluid">
+﻿@inject IViewLocalizer Localizer
+
+<div class="aside-menu flex-column-fluid">
     <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
         <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
             <div class="menu-item">
@@ -6,200 +8,64 @@
                     <span class="menu-icon">
                         <i class="fas fa-tachometer-alt fs-3"></i>
                     </span>
-                    <span class="menu-title">Dashboard</span>
+                    <span class="menu-title">@Localizer["menu.dashboard"]</span>
                 </a>
             </div>
             <div class="menu-item">
                 <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">İçerik Yönetimi</span>
+                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Profil/Cihaz Yönetimi</span>
                 </div>
             </div>
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                 <div class="menu-item">
-                    <a href="@Url.Action("List", "Faq")" class="menu-link @IsActiveMenu("Faq")">
+                    <a href="@Url.Action(nameof(CustomerController.Index), "Customer")" class="menu-link @IsActiveMenu("Customer")">
                         <span class="menu-icon">
-                            <i class="fas fa-question-circle fs-3"></i>
+                            <i class="fa-solid fa-users fs-3"></i>
                         </span>
-                        <span class="menu-title">Sıkça Sorulan Sorular</span>
+                        <span class="menu-title">@Localizer["menu.customers"]</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="@Url.Action("List", "Slider")" class="menu-link @IsActiveMenu("Slider")">
+                    <a href="@Url.Action(nameof(DeviceController.Index), "Device")" class="menu-link @IsActiveMenu("Device")">
                         <span class="menu-icon">
-                            <i class="fas fa-sliders-h fs-3"></i>
+                            <i class="fa-solid fa-mobile-screen-button fs-2 mx-1"></i>
                         </span>
-                        <span class="menu-title">Slider</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "TransactionGuide")" class="menu-link @IsActiveMenu("TransactionGuide")">
-                        <span class="menu-icon">
-                            <i class="fas fa-book fs-3"></i>
-                        </span>
-                        <span class="menu-title">İşlem Rehberi</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Content")" class="menu-link @IsActiveMenu("Content")">
-                        <span class="menu-icon">
-                            <i class="fas fa-file-alt fs-3"></i>
-                        </span>
-                        <span class="menu-title">Statik Sayfalar</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Dealer")" class="menu-link @IsActiveMenu("Dealer")">
-                        <span class="menu-icon">
-                            <i class="fas fa-map-marker-alt fs-3"></i>
-                        </span>
-                        <span class="menu-title">Hizmet Noktaları</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Blog")" class="menu-link @IsActiveMenu("Blog")">
-                        <span class="menu-icon">
-                            <i class="fas fa-blog fs-3"></i>
-                        </span>
-                        <span class="menu-title">Blog</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Campaign")" class="menu-link @IsActiveMenu("Campaign")">
-                        <span class="menu-icon">
-                            <i class="fas fa-gift fs-3"></i>
-                        </span>
-                        <span class="menu-title">Kampanya</span>
+                        <span class="menu-title">@Localizer["menu.devices"]</span>
                     </a>
                 </div>
             </div>
             <div class="menu-item">
                 <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Lastik Yönetimi</span>
+                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">İletişim Yönetimi</span>
                 </div>
             </div>
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                 <div class="menu-item">
-                    <a href="@Url.Action("List", "TyreBrand")" class="menu-link @IsActiveMenu("TyreBrand")">
+                    <a href="@Url.Action(nameof(TextMessageController.Index), "TextMessage")" class="menu-link @IsActiveMenu("TextMessage")">
                         <span class="menu-icon">
-                            <span class="svg-icon svg-icon-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <path d="M12,19 C15.8659932,19 19,15.8659932 19,12 C19,8.13400675 15.8659932,5 12,5 C8.13400675,5 5,8.13400675 5,12 C5,15.8659932 8.13400675,19 12,19 Z M12,21 C7.02943725,21 3,16.9705627 3,12 C3,7.02943725 7.02943725,3 12,3 C16.9705627,3 21,7.02943725 21,12 C21,16.9705627 16.9705627,21 12,21 Z" fill="#000000" fill-rule="nonzero" />
-                                        <path d="M12,9.66666667 C11.3333333,8.64514991 11,7.88126102 11,7.375 C11,6.61560847 11.4477153,6 12,6 C12.5522847,6 13,6.61560847 13,7.375 C13,7.88126102 12.6666667,8.64514991 12,9.66666667 Z M12,14 C12.6666667,15.0215168 13,15.7854056 13,16.2916667 C13,17.0510582 12.5522847,17.6666667 12,17.6666667 C11.4477153,17.6666667 11,17.0510582 11,16.2916667 C11,15.7854056 11.3333333,15.0215168 12,14 Z M14.3333333,12 C15.3548501,11.3333333 16.118739,11 16.625,11 C17.3843915,11 18,11.4477153 18,12 C18,12.5522847 17.3843915,13 16.625,13 C16.118739,13 15.3548501,12.6666667 14.3333333,12 Z M10,12 C8.97848324,12.6666667 8.21459435,13 7.70833333,13 C6.9489418,13 6.33333333,12.5522847 6.33333333,12 C6.33333333,11.4477153 6.9489418,11 7.70833333,11 C8.21459435,11 8.97848324,11.3333333 10,12 Z M13.6499158,10.3500842 C13.9008327,9.15635823 14.2052815,8.38050496 14.5632621,8.02252436 C15.100233,7.48555345 15.8521164,7.36683502 16.2426407,7.75735931 C16.633165,8.1478836 16.5144465,8.89976702 15.9774756,9.43673792 C15.619495,9.79471852 14.8436418,10.0991673 13.6499158,10.3500842 Z M10.5857864,13.4142136 C10.3348695,14.6079395 10.0304208,15.3837928 9.67244018,15.7417734 C9.13546928,16.2787443 8.38358587,16.3974627 7.99306157,16.0069384 C7.60253728,15.6164141 7.72125572,14.8645307 8.25822662,14.3275598 C8.61620722,13.9695792 9.39206049,13.6651305 10.5857864,13.4142136 Z M13.6499158,13.6499158 C14.8436418,13.9008327 15.619495,14.2052815 15.9774756,14.5632621 C16.5144465,15.100233 16.633165,15.8521164 16.2426407,16.2426407 C15.8521164,16.633165 15.100233,16.5144465 14.5632621,15.9774756 C14.2052815,15.619495 13.9008327,14.8436418 13.6499158,13.6499158 Z M10.5857864,10.5857864 C9.39206049,10.3348695 8.61620722,10.0304208 8.25822662,9.67244018 C7.72125572,9.13546928 7.60253728,8.38358587 7.99306157,7.99306157 C8.38358587,7.60253728 9.13546928,7.72125572 9.67244018,8.25822662 C10.0304208,8.61620722 10.3348695,9.39206049 10.5857864,10.5857864 Z" fill="#000000" opacity="0.3" />
-                                    </g>
-                                </svg>
-                            </span>
+                            <i class="fa-solid fa-comment-sms fs-2"></i>
                         </span>
-                        <span class="menu-title">Marka</span>
+                        <span class="menu-title">@Localizer["menu.text.message"]</span>
                     </a>
                 </div>
             </div>
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                 <div class="menu-item">
-                    <a href="@Url.Action("List", "Pattern")" class="menu-link @IsActiveMenu("Pattern")">
+                    <a href="@Url.Action(nameof(EmailController.Index), "Email")" class="menu-link @IsActiveMenu("Email")">
                         <span class="menu-icon">
-                            <i class="fas fa-brush fs-3"></i>
+                            <i class="fa-solid fa-envelope fs-3"></i>
                         </span>
-                        <span class="menu-title">Desen</span>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Araç Yönetimi</span>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "VehicleBrand")" class="menu-link @IsActiveMenu("VehicleBrand")">
-                        <span class="menu-icon">
-                            <i class="fas fa-car fs-3"></i>
-                        </span>
-                        <span class="menu-title">Marka</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "VehicleModel")" class="menu-link @IsActiveMenu("VehicleModel")">
-                        <span class="menu-icon">
-                            <i class="fa-solid fa-droplet fs-3"></i>
-                        </span>
-                        <span class="menu-title">Model</span>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Satış İşlemleri</span>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Order")" class="menu-link @IsActiveMenu("Order")">
-                        <span class="menu-icon">
-                            <i class="fa-solid fa-receipt fs-3"></i>
-                        </span>
-                        <span class="menu-title">Siparişler</span>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Reklam Yönetimi</span>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Banner")" class="menu-link @IsActiveMenu("Banner")">
-                        <span class="menu-icon">
-                            <i class="fas fa-sign fs-3"></i>
-                        </span>
-                        <span class="menu-title">Afiş</span>
+                        <span class="menu-title">@Localizer["menu.email"]</span>
                     </a>
                 </div>
             </div>
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                 <div class="menu-item">
-                    <a href="@Url.Action("List", "Notification")" class="menu-link @IsActiveMenu("Notification")">
+                    <a href="@Url.Action(nameof(NotificationController.Index), "Notification")" class="menu-link @IsActiveMenu("Notification")">
                         <span class="menu-icon">
-                            <i class="fas fa-bell fs-3"></i>
+                            <i class="fa-solid fa-bell fs-2"></i>
                         </span>
-                        <span class="menu-title">Bildirimler</span>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-content pt-8 pb-2">
-                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Sistem Yönetimi</span>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "User")" class="menu-link @IsActiveMenu("User")">
-                        <span class="menu-icon">
-                            <i class="fas fa-users fs-3"></i>
-                        </span>
-                        <span class="menu-title">Kullanıcılar</span>
-                    </a>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Calendar")" class="menu-link @IsActiveMenu("Calendar")">
-                        <span class="menu-icon">
-                            <i class="fa-solid fa-calendar-days fs-3"></i>
-                        </span>
-                        <span class="menu-title">Takvim</span>
-                    </a>
-                </div>
-            </div>
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <div class="menu-item">
-                    <a href="@Url.Action("List", "Form")" class="menu-link @IsActiveMenu("Form")">
-                        <span class="menu-icon">
-                            <i class="fa-solid fa-rectangle-list fs-3"></i>
-                        </span>
-                        <span class="menu-title">Form Kayıtları</span>
+                        <span class="menu-title">@Localizer["menu.notification"]</span>
                     </a>
                 </div>
             </div>

@@ -3,8 +3,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCookieAuthentication();
 
-var authorizationPolicy = new AuthorizationPolicyBuilder()
+var authorizationPolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
                             .RequireAuthenticatedUser()
+                            .RequireClaim(ClaimTypes.NameIdentifier)
+                            .RequireClaim(ClaimTypes.Name)
+                            .RequireClaim(ClaimTypes.Surname)
                             .RequireClaim(ClaimTypes.NameIdentifier)
                             .RequireClaim(ClaimTypes.Email)
                             .Build();
