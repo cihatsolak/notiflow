@@ -48,7 +48,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         {
             options.DataAnnotationLocalizerProvider = (type, localizerFactory) =>
             {
-                return localizerFactory.Create(localizeSetting.ResourcesSource);
+                return localizerFactory.Create(localizeSetting.SharedDataAnnotationBaseName, localizeSetting.SharedDataAnnotationLocation);
             };
         });
 

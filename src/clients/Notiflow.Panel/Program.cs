@@ -1,3 +1,5 @@
+using Notiflow.Panel.Resources;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -22,7 +24,8 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddWebUILocalize(opt =>
 {
     opt.ResourcesPath = "Resources";
-    opt.ResourcesSource = typeof(TextMessageInput);
+    opt.SharedDataAnnotationBaseName = nameof(SharedDataAnnotationResource);
+    opt.SharedDataAnnotationLocation = Assembly.GetExecutingAssembly().GetName().Name;
 });
 
 builder.Services.AddFluentDesignAutoValidation();

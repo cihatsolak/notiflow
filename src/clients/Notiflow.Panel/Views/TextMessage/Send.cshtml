@@ -1,6 +1,7 @@
 ﻿@model TextMessageInput
 @{
     ViewData["Title"] = "Send";
+    ViewData["ToolbarText"] = ">içerik listesine dön";
 }
 
 <div id="kt_content_container" class="container">
@@ -8,9 +9,34 @@
         <div class="card-header">
             <page-title />
         </div>
-        <form asp-action="Create" method="post" class="form">
-           @*  <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div> *@
-            <partial name="_CreateOrUpdate" />
+        <form asp-action="Send" method="post" class="form">
+            <div class="card-body p-9">
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="CustomerIds"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <input asp-for="CustomerIds" class="form-control form-control-solid" />
+                        <span asp-validation-for="CustomerIds"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="Message" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <textarea asp-for="Message" class="form-control form-control-solid"></textarea>
+                        <span asp-validation-for="Message"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+            </div>
+            <form-action-buttons />
         </form>
     </div>
 </div>

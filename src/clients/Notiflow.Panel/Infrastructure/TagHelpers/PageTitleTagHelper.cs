@@ -3,6 +3,8 @@
 [HtmlTargetElement("page-title")]
 public sealed class PageTitleTagHelper : TagHelper
 {
+    private const string PAGE_TITLE = "Title";
+
     [ViewContext]
     public ViewContext ViewContext { get; set; }
 
@@ -10,6 +12,6 @@ public sealed class PageTitleTagHelper : TagHelper
     {
         output.TagMode = TagMode.StartTagAndEndTag;
         output.TagName = null;
-        output.Content.SetHtmlContent($"<div class='card-title fs-3 fw-bolder'>{ViewContext.ViewData["Title"]}</div>");
+        output.Content.SetHtmlContent($"<div class='card-title fs-3 fw-bolder'>{ViewContext.ViewData[PAGE_TITLE]}</div>");
     }
 }
