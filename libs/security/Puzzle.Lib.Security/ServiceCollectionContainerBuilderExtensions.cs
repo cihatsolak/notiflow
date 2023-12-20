@@ -16,15 +16,18 @@ public static class ServiceCollectionContainerBuilderExtensions
     }
 
     /// <summary>
-    /// Adds protocol service functionality to the specified <see cref="IServiceCollection"/>.
+    /// Configures the services to handle forwarded headers in the application.
     /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/> to add the protocol service functionality to.</param>
+    /// <param name="services">The <see cref="IServiceCollection"/> to configure.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtocolService(this IServiceCollection services, Action<HostingSetting> configure)
+    public static IServiceCollection AddForwardedHeadersConfigure(this IServiceCollection services)
     {
-        services.Configure(configure);
-        services.TryAddSingleton<IProtocolService, ProtocolManager>();
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
 
         return services;
     }

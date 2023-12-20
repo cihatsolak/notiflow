@@ -42,4 +42,17 @@ public static class ApplicationBuilderExtensions
     {
         return app.UseCors(Assembly.GetCallingAssembly().GetName().Name);
     }
+
+    /// <summary>
+    /// Configures the application to use forwarded headers for processing client information.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> to configure.</param>
+    /// <returns>The modified <see cref="IApplicationBuilder"/>.</returns>
+    public static IApplicationBuilder UseForwardedHeader(IApplicationBuilder app)
+    {
+        return app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
+    }
 }
