@@ -30,11 +30,11 @@ builder.Services
 var app = builder.Build();
 
 app
+   .UseApiExceptionHandler()
    .UseHttpSecurityPrecautions(builder.Environment)
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
-   .UseApiExceptionHandler()
    .UseResponseCompress()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
