@@ -27,7 +27,6 @@ global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Logging;
 global using Puzzle.Lib.Logging.Builders;
 global using Puzzle.Lib.Logging.Infrastructure;
-global using Puzzle.Lib.Performance;
 global using Puzzle.Lib.Response.Controllers;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Security;
