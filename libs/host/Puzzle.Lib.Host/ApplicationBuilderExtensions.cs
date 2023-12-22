@@ -13,19 +13,18 @@ public static class ApplicationBuilderExtensions
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance to add the middleware to.</param>
     /// <param name="errorHandlingPath">The route to redirect to in the event of an exception in a production environment.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseUIExceptionHandler(this IApplicationBuilder app, string errorHandlingPath = null)
+    public static IApplicationBuilder UseUIExceptionHandler(this WebApplication webApplication, string errorHandlingPath = null)
     {
-        var hostEnvironment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        if (hostEnvironment.IsProduction())
+        if (webApplication.Environment.IsProduction())
         {
-            app.UseExceptionHandler(errorHandlingPath);
+            webApplication.UseExceptionHandler(errorHandlingPath);
         }
         else
         {
-            app.UseDeveloperExceptionPage();
+            webApplication.UseDeveloperExceptionPage();
         }
 
-        return app;
+        return webApplication;
     }
 
     /// <summary>

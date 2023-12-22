@@ -1,14 +1,7 @@
 ﻿namespace Notiflow.IdentityServer.Controllers;
 
-public sealed class UsersController : BaseApiController
+public sealed class UsersController(IUserService userService) : BaseApiController
 {
-    private readonly IUserService _userService;
-
-    public UsersController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     /// <summary>
     /// Retrieves detailed information about a user based on the provided ID.
     /// </summary>
@@ -23,7 +16,7 @@ public sealed class UsersController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetail(int id, CancellationToken cancellationToken)
     {
-        var response = await _userService.GetDetailAsync(id, cancellationToken);
+        var response = await userService.GetDetailAsync(id, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -41,7 +34,7 @@ public sealed class UsersController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var response = await _userService.AddAsync(request, cancellationToken);
+        var response = await userService.AddAsync(request, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -61,7 +54,7 @@ public sealed class UsersController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
-        var response = await _userService.UpdateAsync(id, request, cancellationToken);
+        var response = await userService.UpdateAsync(id, request, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -79,7 +72,7 @@ public sealed class UsersController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var response = await _userService.DeleteAsync(id, cancellationToken);
+        var response = await userService.DeleteAsync(id, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -98,7 +91,7 @@ public sealed class UsersController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfilePhoto(int id, [FromForm] IFormFile profilePhoto, CancellationToken cancellationToken)
     {
-        var response = await _userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
+        var response = await userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
         return CreateActionResultInstance(response);
     }
 }

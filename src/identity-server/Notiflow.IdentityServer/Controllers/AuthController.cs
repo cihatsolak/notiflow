@@ -1,14 +1,8 @@
 ﻿namespace Notiflow.IdentityServer.Controllers;
 
 [AllowAnonymous]
-public sealed class AuthController : BaseApiController
+public sealed class AuthController(IAuthService authService) : BaseApiController
 {
-    private readonly IAuthService _authService;
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
-
     /// <summary>
     /// Creates an access token based on the provided request.
     /// </summary>
@@ -22,7 +16,7 @@ public sealed class AuthController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
-        var response = await _authService.CreateAccessTokenAsync(request, cancellationToken);
+        var response = await authService.CreateAccessTokenAsync(request, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -39,7 +33,7 @@ public sealed class AuthController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var response = await _authService.CreateAccessTokenAsync(request, cancellationToken);
+        var response = await authService.CreateAccessTokenAsync(request, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -57,7 +51,7 @@ public sealed class AuthController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
     {
-        var response = await _authService.RevokeRefreshTokenAsync(refreshToken, cancellationToken);
+        var response = await authService.RevokeRefreshTokenAsync(refreshToken, cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -75,7 +69,7 @@ public sealed class AuthController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)
     {
-        var response = await _authService.GetAuthenticatedUserAsync(cancellationToken);
+        var response = await authService.GetAuthenticatedUserAsync(cancellationToken);
         return CreateActionResultInstance(response);
     }
 }
