@@ -1,5 +1,3 @@
-using Notiflow.Panel.Resources;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -28,7 +26,7 @@ builder.Services.AddWebUILocalize(opt =>
     opt.SharedDataAnnotationLocation = Assembly.GetExecutingAssembly().GetName().Name;
 });
 
-builder.Services.AddFluentDesignAutoValidation();
+builder.Services.AddClientSideFluentValidation();
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
 

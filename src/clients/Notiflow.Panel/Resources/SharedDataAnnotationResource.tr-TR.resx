@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="input.customer.numbers" xml:space="preserve">
+  <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Müşteri Numaraları</value>
   </data>
-  <data name="input.message" xml:space="preserve">
+  <data name="input.message.resource" xml:space="preserve">
     <value>Mesaj</value>
   </data>
 </root>

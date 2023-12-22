@@ -55,4 +55,15 @@ public sealed class AuthenticationController : Controller
 
         return Redirect(redirectUrl);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> SignOut(CancellationToken cancellationToken)
+    {
+        if (!User.Identity.IsAuthenticated)
+            return RedirectToAction(nameof(SignIn));
+
+        await _authService.SignOutAsync(cancellationToken);
+
+        return RedirectToAction(nameof(SignIn));
+    }
 }

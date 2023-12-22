@@ -34,7 +34,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddMassTransit()
             .AddWebApiLocalize()
             .AddHttpContextAccessor()
-            .AddFluentDesignValidation()
+            .AddServerSideFluentValidation()
             .AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();

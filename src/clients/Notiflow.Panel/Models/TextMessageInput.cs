@@ -2,11 +2,11 @@
 
 public sealed record TextMessageInput
 {
-    [Display(Name = SharedDataAnnotationResource.INPUT_MESSAGE)]
+    [Display(Name = "input.message.resource")]
     [DataType(DataType.MultilineText)]
     public string Message { get; init; }
 
-    [Display(Name = SharedDataAnnotationResource.INPUT_CUSTOMER_NUMBERS)]
+    [Display(Name = "input.customer.numbers.resource")]
     [DataType(DataType.Text)]
     public List<int> CustomerIds { get; init; }
 }

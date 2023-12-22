@@ -25,7 +25,7 @@ builder.Services
     .AddLowercaseRouting()
     .AddWebApiLocalize()
     .AddResponseCompression()
-    .AddFluentDesignValidation()
+    .AddServerSideFluentValidation()
     .AddHttpSecurityPrecautions(builder.Environment)
     .AddCustomHttpLogging();
 

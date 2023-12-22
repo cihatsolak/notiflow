@@ -38,6 +38,8 @@ public static class ServiceCollectionContainerBuilderExtensions
                 RoleClaimType = ClaimTypes.Role
             };
 
+            configureOptions.IncludeErrorDetails = true;
+
             configureOptions.Events = new JwtBearerEvents
             {
                 OnTokenValidated = context =>

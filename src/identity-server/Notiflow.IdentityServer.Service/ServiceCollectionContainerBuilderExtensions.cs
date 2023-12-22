@@ -39,7 +39,7 @@ public static class ServiceCollectionContainerBuilderExtensions
            .AddWebApiLocalize()
            .AddHttpContextAccessor()
            .AddClaimService()
-           .AddFluentDesignValidation()
+           .AddServerSideFluentValidation()
            .AddApiBehaviorOptions();
 
         AddObservers(services);

@@ -8,7 +8,7 @@ internal static class CookieAuthenticationBuilderExtensions
                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configure =>
                    {
                        configure.LoginPath = new("/Authentication/SignIn");
-                       configure.LogoutPath = new("/Authentication/Logout");
+                       configure.LogoutPath = new("/Authentication/SignOut");
                        configure.AccessDeniedPath = new PathString("/Authentication/Forbidden");
                        configure.ExpireTimeSpan = TimeSpan.FromHours(2);
                        configure.SlidingExpiration = false;

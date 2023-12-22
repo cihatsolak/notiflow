@@ -25,10 +25,11 @@ builder.Services.AddConfigureHealthChecks(builder.Configuration);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
+app.UseAuth();
+
 app
    .UseApiExceptionHandler()
    .UseHttpSecurityPrecautions(builder.Environment)
-   .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
    .UseResponseCompression()

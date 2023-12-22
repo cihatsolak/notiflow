@@ -187,8 +187,8 @@ public static class ClaimExtensions
     public static void AddIat(this ICollection<Claim> claims)
     {
         ArgumentNullException.ThrowIfNull(claims);
-
-        claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString(), ClaimValueTypes.DateTime));
+        
+        claims.Add(new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64));
     }
 
     /// <summary>

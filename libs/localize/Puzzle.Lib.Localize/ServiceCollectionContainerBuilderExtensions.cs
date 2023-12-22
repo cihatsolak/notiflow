@@ -56,9 +56,9 @@ public static class ServiceCollectionContainerBuilderExtensions
         {
             var supportedCultures = new List<CultureInfo>
             {
-                new CultureInfo(TURKISH_CULTURE),
-                new CultureInfo(ENGLISH_CULTURE),
-                new CultureInfo(FRANCE_CULTURE),
+                new(TURKISH_CULTURE),
+                new(ENGLISH_CULTURE),
+                new(FRANCE_CULTURE),
             };
 
             options.DefaultRequestCulture = new RequestCulture(TURKISH_CULTURE);

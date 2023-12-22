@@ -46,7 +46,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
     /// <response code="401">unauthorized user</response>
-    [HttpDelete("revoke-refresh-token/{refreshToken:length(44)}")]
+    [HttpDelete("revoke-refresh-token/{refreshToken:minlength(35)}")]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
