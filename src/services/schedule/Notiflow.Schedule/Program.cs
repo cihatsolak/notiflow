@@ -1,3 +1,5 @@
+using Puzzle.Lib.Response;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
@@ -22,7 +24,7 @@ builder.Services
     .AddMassTransit()
     .AddLowercaseRouting()
     .AddWebApiLocalize()
-    .AddGzipResponseFastestCompress()
+    .AddResponseCompression()
     .AddFluentDesignValidation()
     .AddHttpSecurityPrecautions(builder.Environment)
     .AddCustomHttpLogging();
@@ -35,7 +37,7 @@ app
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
-   .UseResponseCompress()
+   .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
    .UseHealthChecksConfiguration()

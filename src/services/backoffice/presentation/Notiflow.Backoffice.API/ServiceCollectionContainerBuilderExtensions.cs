@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.API;
+﻿using Puzzle.Lib.Response;
+
+namespace Notiflow.Backoffice.API;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
@@ -66,7 +68,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
 
         services
             .AddLowercaseRouting()
-            .AddGzipResponseFastestCompress()
+            .AddCompressResponse()
             .AddHttpSecurityPrecautions(hostEnvironment)
             .AddCustomHttpLogging();
 

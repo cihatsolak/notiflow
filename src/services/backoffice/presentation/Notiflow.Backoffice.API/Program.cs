@@ -1,3 +1,5 @@
+using Puzzle.Lib.Response;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
@@ -30,7 +32,7 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
-   .UseResponseCompress()
+   .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
    .UseHealthChecksConfiguration();
