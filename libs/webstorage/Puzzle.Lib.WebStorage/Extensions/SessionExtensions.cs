@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines methods to interact with the session data.
 /// </summary>
-public static class SessionExtension
+public static class SessionExtensions
 {
     /// <summary>
     /// Retrieves data of type <typeparamref name="TData"/> from the current session based on the specified key.
@@ -12,7 +12,7 @@ public static class SessionExtension
     /// <param name="httpContext">The current HttpContext.</param>
     /// <param name="key">The key used to identify the data in the session.</param>
     /// <returns>The retrieved data, or the default value for the type if the key is not found.</returns>
-    public static TData Get<TData>(this HttpContext httpContext, string key)
+    public static TData GetSession<TData>(this HttpContext httpContext, string key)
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
 
@@ -30,7 +30,7 @@ public static class SessionExtension
     /// <param name="httpContext">The current HttpContext.</param>
     /// <param name="key">The key to associate with the stored data in the session.</param>
     /// <param name="data">The data to store in the session.</param>
-    public static void Set<TData>(this HttpContext httpContext, string key, TData data)
+    public static void SetSession<TData>(this HttpContext httpContext, string key, TData data)
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
         ArgumentNullException.ThrowIfNull(data);
@@ -43,7 +43,7 @@ public static class SessionExtension
     /// </summary>
     /// <param name="httpContext">The current HttpContext.</param>
     /// <param name="key">The key used to identify the data in the session.</param>
-    public static void Remove(this HttpContext httpContext, string key)
+    public static void RemoveSession(this HttpContext httpContext, string key)
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
 

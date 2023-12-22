@@ -35,9 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "version", "version", "{0015
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Version", "libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj", "{89BFEFE7-7382-452B-8104-AB0B62FBD7EF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cookie", "cookie", "{3A572FCD-08D2-4122-A042-A507A33607FE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webstorage", "webstorage", "{3A572FCD-08D2-4122-A042-A507A33607FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cookie", "libs\cookie\Puzzle.Lib.Cookie\Puzzle.Lib.Cookie.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.WebStorage", "libs\webstorage\Puzzle.Lib.WebStorage\Puzzle.Lib.WebStorage.csproj", "{9B65148F-A788-4EB6-997D-77B5D4E41E2C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{68C8B345-22B8-4C86-B6F9-39B2DC97E252}"
 EndProject
@@ -118,7 +118,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Auth.Tests", "li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cache.Tests", "libs\cache\Puzzle.Lib.Cache.Tests\Puzzle.Lib.Cache.Tests.csproj", "{82192188-3AB8-4CA8-9F4D-059127BAF498}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Cookie.Tests", "libs\cookie\Puzzle.Lib.Cookie.Tests\Puzzle.Lib.Cookie.Tests.csproj", "{DFB8355D-B006-4239-9308-45E40A758F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.WebStorage.Tests", "libs\webstorage\Puzzle.Lib.WebStorage.Tests\Puzzle.Lib.WebStorage.Tests.csproj", "{DFB8355D-B006-4239-9308-45E40A758F35}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.Lib.Documentation.Tests", "libs\documentation\Puzzle.Lib.Documentation.Tests\Puzzle.Lib.Documentation.Tests.csproj", "{E657EF56-E155-4E98-89C4-DCEA53077207}"
 EndProject

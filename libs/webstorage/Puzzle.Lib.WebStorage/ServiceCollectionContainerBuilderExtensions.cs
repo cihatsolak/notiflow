@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Cookie.Settings;
-
-namespace Puzzle.Lib.Cookie;
+﻿namespace Puzzle.Lib.Cookie;
 
 /// <summary>
 /// Provides extension methods for configuring cookie authentication and cookie policy for an IServiceCollection.
@@ -12,17 +10,13 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection instance to add the authentication services to.</param>
     /// <returns>The IServiceCollection instance with the authentication services added.</returns>
-    public static IServiceCollection AddCookieAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddCookieAuthentication(this WebApplicationBuilder webApplicationBuilder)
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection configurationSection = configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
-        services.Configure<CookieAuthenticationSetting>(configurationSection);
+        IConfigurationSection configurationSection = webApplicationBuilder.Configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
+        webApplicationBuilder.Services.Configure<CookieAuthenticationSetting>(configurationSection);
         CookieAuthenticationSetting cookieAuthenticationSetting = configurationSection.Get<CookieAuthenticationSetting>();
 
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        webApplicationBuilder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configure =>
                 {
                     configure.LoginPath = new(cookieAuthenticationSetting.LoginPath);
@@ -39,8 +33,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                     };
                 });
 
-
-        return services;
+        return webApplicationBuilder.Services;
     }
 
     /// <summary>
@@ -56,19 +49,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.HttpOnly = HttpOnlyPolicy.Always;
             options.MinimumSameSitePolicy = SameSiteMode.Strict;
         });
-
-        return services;
-    }
-
-    /// <summary>
-    /// Adds a cookie service to the IServiceCollection for managing cookies.
-    /// </summary>
-    /// <param name="services">The IServiceCollection instance to add the cookie service to.</param>
-    /// <returns>The IServiceCollection instance with the cookie service added.</returns>
-    public static IServiceCollection AddCookieService(this IServiceCollection services)
-    {
-        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.TryAddSingleton<ICookieService, CookieManager>();
 
         return services;
     }
