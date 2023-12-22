@@ -3,12 +3,12 @@
 /// <summary>
 /// Represents the settings for encryption, including the encryption key.
 /// </summary>
-public sealed record EncryptionSetting
+public sealed record AesCipherSetting
 {
     /// <summary>
     /// Gets or initializes the encryption key.
     /// </summary>
     [JsonRequired]
-    public string Key { get; set; }
+    public string RgbKey { get; set; }
 }
 

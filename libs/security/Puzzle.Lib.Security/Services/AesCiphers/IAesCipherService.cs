@@ -1,9 +1,9 @@
-﻿namespace Puzzle.Lib.Security.Services.Encryptions;
+﻿namespace Puzzle.Lib.Security.Services.AesCiphers;
 
 /// <summary>
 /// Defines an interface for encryption and decryption services.
 /// </summary>
-public interface IEncryptionService
+public interface IAesCipherService
 {
     /// <summary>
     /// Encrypts the provided flat data using a default encryption method.

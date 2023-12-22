@@ -20,7 +20,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to configure.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-    public static IServiceCollection AddForwardedHeadersConfigure(this IServiceCollection services)
+    public static IServiceCollection AddForwardedHeaders(this IServiceCollection services)
     {
         services.Configure<ForwardedHeadersOptions>(options =>
         {
@@ -37,10 +37,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which the encryption service will be added.</param>
     /// <returns>The modified <see cref="IServiceCollection"/>.</returns>
-    public static IServiceCollection AddEncryptionService(this IServiceCollection services, Action<EncryptionSetting> configure)
+    public static IServiceCollection AddAesCipherService(this IServiceCollection services, Action<AesCipherSetting> configure)
     {
         services.Configure(configure);
-        services.TryAddSingleton<IEncryptionService, EncryptionManager>();
+        services.TryAddSingleton<IAesCipherService, AesCipherManager>();
 
         return services;
     }
@@ -76,17 +76,19 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddProtectorServiceWithRedisStore(this IServiceCollection services, Action<RedisProtectorSetting> configure)
+    public static IServiceCollection AddMicrosoftProtectorService(this IServiceCollection services, Action<RedisProtectorSetting> configure)
     {
         RedisProtectorSetting redisProtectorSetting = new();
         configure?.Invoke(redisProtectorSetting);
 
+        IDatabase database = ConnectionMultiplexer.Connect(redisProtectorSetting.ConnectionString).GetDatabase(redisProtectorSetting.DatabaseNumber);
+
         services.AddDataProtection()
             .SetApplicationName(Assembly.GetCallingAssembly().FullName)
             .SetDefaultKeyLifetime(TimeSpan.FromDays(redisProtectorSetting.ExpirationDays))
-            .PersistKeysToStackExchangeRedis(() => ConnectionMultiplexer.Connect(redisProtectorSetting.ConnectionString).GetDatabase(redisProtectorSetting.DatabaseNumber), redisProtectorSetting.Key);
+            .PersistKeysToStackExchangeRedis(() => database, redisProtectorSetting.Key);
 
-        services.TryAddSingleton<IProtectorService, ProtectorManager>();
+        services.TryAddSingleton<IMicrosoftProtectorService, MicrosoftProtectorManager>();
 
         return services;
     }
@@ -98,18 +100,15 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection interface used to register services with the application's dependency injection container.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddCustomCors(this IServiceCollection services, Action<CorsSetting> configure)
+    public static IServiceCollection AddCustomCors(this IServiceCollection services, params string[] origins)
     {
-        CorsSetting corsSetting = new();
-        configure?.Invoke(corsSetting);
-
         services.AddCors(options =>
         {
             options.AddPolicy(Assembly.GetCallingAssembly().GetName().Name, builder => builder
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .WithOrigins(corsSetting.Origins));
+            .WithOrigins(origins));
         });
 
         return services;

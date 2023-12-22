@@ -1,22 +1,20 @@
-﻿namespace Puzzle.Lib.Security.Services.Encryptions;
+﻿namespace Puzzle.Lib.Security.Services.AesCiphers;
 
-internal sealed class EncryptionManager : IEncryptionService
+internal sealed class AesCipherManager : IAesCipherService
 {
-    private readonly EncryptionSetting _encryptionSetting;
+    private readonly byte[] _rgbKey;
 
-    public EncryptionManager(IOptions<EncryptionSetting> encryptionSetting)
+    public AesCipherManager(IOptions<AesCipherSetting> aesCipherSetting)
     {
-        _encryptionSetting = encryptionSetting.Value;
+        _rgbKey = Encoding.UTF8.GetBytes(aesCipherSetting.Value.RgbKey);
     }
 
     public string Encrypt(string flatData)
     {
         ArgumentException.ThrowIfNullOrEmpty(flatData);
 
-        byte[] rgbKey = Encoding.UTF8.GetBytes(_encryptionSetting.Key);
-
         using Aes aes = Aes.Create();
-        using ICryptoTransform cryptoTransform = aes.CreateEncryptor(rgbKey, aes.IV);
+        using ICryptoTransform cryptoTransform = aes.CreateEncryptor(_rgbKey, aes.IV);
         using MemoryStream memoryStream = new();
         using CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
         using (StreamWriter streamWriter = new(cryptoStream))
@@ -39,10 +37,8 @@ internal sealed class EncryptionManager : IEncryptionService
         ArgumentException.ThrowIfNullOrEmpty(flatData);
         ArgumentException.ThrowIfNullOrEmpty(key);
 
-        byte[] rgbKey = Encoding.UTF8.GetBytes(key);
-
         using Aes aes = Aes.Create();
-        using ICryptoTransform cryptoTransform = aes.CreateEncryptor(rgbKey, aes.IV);
+        using ICryptoTransform cryptoTransform = aes.CreateEncryptor(_rgbKey, aes.IV);
         using MemoryStream memoryStream = new();
         using CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
         using (StreamWriter streamWriter = new(cryptoStream))
@@ -71,10 +67,8 @@ internal sealed class EncryptionManager : IEncryptionService
         Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
         Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, fullCipher.Length - iv.Length);
 
-        byte[] rgbKey = Encoding.UTF8.GetBytes(_encryptionSetting.Key);
-
         using Aes aes = Aes.Create();
-        using ICryptoTransform cryptoTransform = aes.CreateDecryptor(rgbKey, iv);
+        using ICryptoTransform cryptoTransform = aes.CreateDecryptor(_rgbKey, iv);
 
         string flatData;
         using (MemoryStream memoryStream = new(cipher))
@@ -99,10 +93,8 @@ internal sealed class EncryptionManager : IEncryptionService
         Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
         Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, fullCipher.Length - iv.Length);
 
-        byte[] rgbKey = Encoding.UTF8.GetBytes(key);
-
         using Aes aes = Aes.Create();
-        using ICryptoTransform cryptoTransform = aes.CreateDecryptor(rgbKey, iv);
+        using ICryptoTransform cryptoTransform = aes.CreateDecryptor(_rgbKey, iv);
 
         string flatData;
         using (MemoryStream memoryStream = new(cipher))
