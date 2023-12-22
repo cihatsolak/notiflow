@@ -2,6 +2,8 @@
 
 public sealed class CorrelationIdHandler : DelegatingHandler
 {
+    private const string X_CORRELATION_ID = "x-correlation-id";
+
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<CorrelationIdHandler> _logger;
 
@@ -13,10 +15,10 @@ public sealed class CorrelationIdHandler : DelegatingHandler
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        string correlationId = _httpContextAccessor.HttpContext.Request.Headers["x-correlation-id"];
+        string correlationId = _httpContextAccessor.HttpContext.Request.Headers[X_CORRELATION_ID];
         if (!string.IsNullOrWhiteSpace(correlationId))
         {
-            request.Headers.Add("x-correlation-id", correlationId);
+            request.Headers.Add(X_CORRELATION_ID, correlationId);
         }
         else
         {

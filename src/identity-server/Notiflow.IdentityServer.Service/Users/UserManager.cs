@@ -5,14 +5,14 @@ internal sealed class UserManager : IUserService
     private const string PLACEHOLDER_AVATAR_URL = "https://via.placeholder.com/250";
 
     private readonly ApplicationDbContext _context;
-    private readonly IFileService _fileService;
+    private readonly IFtpService _fileService;
     private readonly IClaimService _claimService;
     private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly ILogger<UserManager> _logger;
 
     public UserManager(
         ApplicationDbContext context, 
-        IFileService fileService,
+        IFtpService fileService,
         IClaimService claimService,
         ILocalizerService<ResultMessage> localizer,
         ILogger<UserManager> logger)

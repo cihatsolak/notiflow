@@ -2,6 +2,8 @@
 
 public sealed class CorrelationIdMiddleware
 {
+    private const string X_CORRELATION_ID = "x-correlation-id";
+
     private readonly RequestDelegate _next;
     private readonly IHttpContextAccessor _httpContextAccesor;
 
@@ -15,23 +17,23 @@ public sealed class CorrelationIdMiddleware
     {
         string correlationId;
 
-        bool isCorrelationIdExists = httpContext.Request.Headers.TryGetValue("x-correlation-id", out var values);
+        bool isCorrelationIdExists = httpContext.Request.Headers.TryGetValue(X_CORRELATION_ID, out var values);
         if (isCorrelationIdExists)
         {
-            correlationId = values.First();
+            correlationId = values[0];
         }
         else
         {
             correlationId = Guid.NewGuid().ToString();
         }
 
-        _httpContextAccesor.HttpContext.Request.Headers.TryAdd("x-correlation-id", correlationId);
+        _httpContextAccesor.HttpContext.Request.Headers.TryAdd(X_CORRELATION_ID, correlationId);
 
         await _next(httpContext);
 
-        if (!httpContext.Response.Headers.ContainsKey("x-correlation-id"))
+        if (!httpContext.Response.Headers.ContainsKey(X_CORRELATION_ID))
         {
-            httpContext.Response.Headers.Add("x-correlation-id", correlationId);
+            httpContext.Response.Headers.Append(X_CORRELATION_ID, correlationId);
         }
     }
 }

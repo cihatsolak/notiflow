@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines a set of methods for handling file operations such as adding, updating, and deleting files.
 /// </summary>
-public interface IFileService
+public interface IFtpService
 {
     /// <summary>
     /// Adds a file if it does not already exist at the specified path.
