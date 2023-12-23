@@ -3,7 +3,7 @@
 /// <summary>
 /// A record that contains parameter names used in authentication.
 /// </summary>
-public record struct AuthenticationParameters
+public record struct AuthParameterNames
 {
     /// <summary>
     /// The parameter name for the access token.

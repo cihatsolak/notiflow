@@ -22,8 +22,12 @@ public sealed class TextMessageController(IRestService restService) : Controller
             return View(input);
         }
 
-        await restService.PostResponseAsync<>
+        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/text-messages/send", input, cancellationToken);
+        if (result.IsFailure)
+        {
+            return View(input);
+        }
 
-        return View();
+        return RedirectToAction(nameof(Send));
     }
 }

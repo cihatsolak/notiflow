@@ -33,17 +33,17 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             {
                 new AuthenticationToken
                 {
-                    Name = "access_token",
+                    Name = AuthParameterNames.AccessToken,
                     Value = tokenResult.Data.AccessToken
                 },
                 new AuthenticationToken
                 {
-                    Name = "refresh_token",
+                    Name = AuthParameterNames.RefreshToken,
                     Value = tokenResult.Data.RefreshToken
                 },
                 new AuthenticationToken
                 {
-                    Name = "expires_in",
+                    Name = AuthParameterNames.ExpiresIn,
                     Value = DateTime.Now.AddSeconds(tokenResult.Data.ExpiresIn).ToString("o", CultureInfo.InvariantCulture) //2023-11-11T09:48:58.3048790+00:00
                 }
             });
@@ -74,17 +74,17 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
         {
             new AuthenticationToken
             {
-                Name = "access_token",
+                Name = AuthParameterNames.AccessToken,
                 Value = tokenResult.Data.AccessToken
             },
             new AuthenticationToken
             {
-                Name = "refresh_token",
+                Name = AuthParameterNames.RefreshToken,
                 Value = tokenResult.Data.RefreshToken
             },
             new AuthenticationToken
             {
-                Name = "expires_in",
+                Name = AuthParameterNames.ExpiresIn,
                 Value = DateTime.Now.AddSeconds(tokenResult.Data.ExpiresIn).ToString("o", CultureInfo.InvariantCulture) //2023-11-11T09:48:58.3048790+00:00
             }
         };

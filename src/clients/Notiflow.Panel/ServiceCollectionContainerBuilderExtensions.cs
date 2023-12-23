@@ -4,7 +4,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
 {
     internal static IServiceCollection AddHttpServices(this IServiceCollection services)
     {
-        services.TryAddScoped<TenantHandler>();
+        services.TryAddScoped<ApplicationBearerTokenHandler>();
 
         services.AddRestApiService();
 
@@ -12,7 +12,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         {
             cfg.BaseAddress = new Uri("https://localhost:7282");
             cfg.DefaultRequestHeaders.Add("x-tenant-token", "F50C77DB-6C3B-43E6-BEE2-2142A71E04E4");
-        }).AddHttpMessageHandler<TenantHandler>();
+        }).AddHttpMessageHandler<ApplicationBearerTokenHandler>();
 
         services.AddHttpClient(nameof(AuthManager), cfg =>
         {
