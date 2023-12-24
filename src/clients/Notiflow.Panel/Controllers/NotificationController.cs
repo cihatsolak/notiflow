@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Panel.Controllers;
 
-public sealed class NotificationController(IRestService restService) : Controller
+public sealed class NotificationController(IRestService restService) : BaseController
 {
     [HttpGet]
     public IActionResult Index()
@@ -15,17 +15,17 @@ public sealed class NotificationController(IRestService restService) : Controlle
     }
 
     [HttpPost]
-    public async Task<IActionResult> Send(NotificationInput input, CancellationToken cancellationToken)
+    public async Task<IActionResult> Send(NotificationInput notificationInput, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
-            return View(input);
+            return View(notificationInput);
         }
 
-        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/notifications/send", input, cancellationToken);
+        var result = await restService.PostResponseAsync<Response>(NOTIFLOW_API, "/backoffice-service/notifications/send", notificationInput, cancellationToken);
         if (result.IsFailure)
         {
-            return View(input);
+            return View(notificationInput);
         }
 
         return RedirectToAction(nameof(Send));

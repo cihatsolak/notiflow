@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Panel.Controllers;
 
-public sealed class EmailController(IRestService restService) : Controller
+public sealed class EmailController(IRestService restService) : BaseController
 {
     [HttpGet]
     public IActionResult Index()
@@ -22,7 +22,7 @@ public sealed class EmailController(IRestService restService) : Controller
             return View(input);
         }
 
-        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/emails/send", input, cancellationToken);
+        var result = await restService.PostResponseAsync<Response>(NOTIFLOW_API, "/backoffice-service/emails/send", input, cancellationToken);
         if (result.IsFailure)
         {
             return View(input);

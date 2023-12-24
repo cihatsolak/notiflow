@@ -1,18 +1,10 @@
 ﻿namespace Notiflow.Panel.Controllers;
 
 [AllowAnonymous]
-public sealed class AuthenticationController : Controller
+public sealed class AuthenticationController(
+    IAuthService authService,
+    IStringLocalizer<AuthenticationController> localizer) : Controller
 {
-    private readonly IAuthService _authService;
-    private readonly IStringLocalizer<AuthenticationController> _localizer;
-
-    public AuthenticationController(
-        IAuthService authService, 
-        IStringLocalizer<AuthenticationController> localizer)
-    {
-        _authService = authService;
-        _localizer = localizer;
-    }
 
     [HttpGet]
     public IActionResult SignIn(string returnUrl, CancellationToken cancellationToken)
@@ -35,14 +27,14 @@ public sealed class AuthenticationController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ModelState.AddModelError(string.Empty, _localizer["login.error.message"]);
+            ModelState.AddModelError(string.Empty, localizer["login.error.message"]);
             return View(signInInput);
         }
 
-        bool succeeded = await _authService.SignInAsync(signInInput, cancellationToken);
+        bool succeeded = await authService.SignInAsync(signInInput, cancellationToken);
         if (!succeeded)
         {
-            ModelState.AddModelError(string.Empty, _localizer["login.error.message"]);
+            ModelState.AddModelError(string.Empty, localizer["login.error.message"]);
             return View(signInInput);
         }
 
@@ -62,7 +54,7 @@ public sealed class AuthenticationController : Controller
         if (!User.Identity.IsAuthenticated)
             return RedirectToAction(nameof(SignIn));
 
-        await _authService.SignOutAsync(cancellationToken);
+        await authService.SignOutAsync(cancellationToken);
 
         return RedirectToAction(nameof(SignIn));
     }

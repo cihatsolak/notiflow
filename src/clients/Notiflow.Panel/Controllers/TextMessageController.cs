@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Panel.Controllers;
 
-public sealed class TextMessageController(IRestService restService) : Controller
+public sealed class TextMessageController(IRestService restService) : BaseController
 {
     [HttpGet]
     public IActionResult Index()
@@ -15,17 +15,17 @@ public sealed class TextMessageController(IRestService restService) : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Send(TextMessageInput input, CancellationToken cancellationToken)
+    public async Task<IActionResult> Send(TextMessageInput textMessageInput, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
-            return View(input);
+            return View(textMessageInput);
         }
 
-        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/text-messages/send", input, cancellationToken);
+        var result = await restService.PostResponseAsync<Response>(NOTIFLOW_API, "/backoffice-service/text-messages/send", textMessageInput, cancellationToken);
         if (result.IsFailure)
         {
-            return View(input);
+            return View(textMessageInput);
         }
 
         return RedirectToAction(nameof(Send));

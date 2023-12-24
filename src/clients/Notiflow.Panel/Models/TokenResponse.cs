@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Panel.Models.Auths;
+﻿namespace Notiflow.Panel.Models;
 
-public sealed record Token
+public sealed record TokenResponse
 {
     [JsonRequired]
     public required string AccessToken { get; init; }

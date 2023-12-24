@@ -1,0 +1,101 @@
+﻿@model CustomerInput
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card-body p-9">
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Name" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="Name" class="form-control form-control-solid" />
+            <span asp-validation-for="Name"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Surname" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="Surname" class="form-control form-control-solid" />
+            <span asp-validation-for="Surname"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="PhoneNumber" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="PhoneNumber" class="form-control form-control-solid" />
+            <span asp-validation-for="PhoneNumber"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Email" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="Email" class="form-control form-control-solid" />
+            <span asp-validation-for="Email"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="BirthDate" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="BirthDate" class="form-control form-control-solid" />
+            <span asp-validation-for="BirthDate"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Gender" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <div class="form-group">
+                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control form-control-solid">
+                    <option value="0" hidden disabled>İşletim Sistemi Seçiniz</option>
+                </select>
+                <span asp-validation-for="Gender"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="MarriageStatus" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <div class="form-group">
+                <select asp-for="MarriageStatus" asp-items="Html.GetEnumSelectList<MarriageStatus>()" class="form-control form-control-solid">
+                    <option value="0" hidden disabled>İşletim Sistemi Seçiniz</option>
+                </select>
+                <span asp-validation-for="MarriageStatus"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    </div>
+</div>
+<form-action-buttons />
+

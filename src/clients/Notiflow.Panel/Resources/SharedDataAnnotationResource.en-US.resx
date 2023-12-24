@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="input.birthdate.resource" xml:space="preserve">
+    <value>Birthdate</value>
+  </data>
   <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Customer Numbers</value>
   </data>
@@ -147,14 +150,32 @@
   <data name="input.email.isbodyhtml.resource" xml:space="preserve">
     <value>Contains HTML</value>
   </data>
+  <data name="input.email.resource" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="input.gender.resource" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="input.marriage.status.resource" xml:space="preserve">
+    <value>Marriage Status</value>
+  </data>
   <data name="input.message.resource" xml:space="preserve">
     <value>Message</value>
+  </data>
+  <data name="input.name.resource" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="input.notification.imageurl.resource" xml:space="preserve">
     <value>Image Address</value>
   </data>
+  <data name="input.phonenumber.resource" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
   <data name="input.subject.resource" xml:space="preserve">
     <value>Subject</value>
+  </data>
+  <data name="input.surname.resource" xml:space="preserve">
+    <value>Surname</value>
   </data>
   <data name="input.title.resource" xml:space="preserve">
     <value>Title</value>

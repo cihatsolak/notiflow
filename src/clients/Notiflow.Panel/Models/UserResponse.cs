@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Panel.Models.Auths;
+﻿namespace Notiflow.Panel.Models;
 
-internal sealed record User
+internal sealed record UserResponse
 {
     public int Id { get; init; }
     public string Name { get; init; }

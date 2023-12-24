@@ -14,7 +14,7 @@ public sealed class CustomerController(IRestService restService) : BaseControlle
         return View();
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> Create(CustomerInput customerInput, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="input.birthdate.resource" xml:space="preserve">
+    <value>Doğum Tarihi</value>
+  </data>
   <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Müşteri Numaraları</value>
   </data>
@@ -147,14 +150,32 @@
   <data name="input.email.isbodyhtml.resource" xml:space="preserve">
     <value>HTML İçerir</value>
   </data>
+  <data name="input.email.resource" xml:space="preserve">
+    <value>Posta Adresi</value>
+  </data>
+  <data name="input.gender.resource" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="input.marriage.status.resource" xml:space="preserve">
+    <value>Medeni Durum</value>
+  </data>
   <data name="input.message.resource" xml:space="preserve">
     <value>Mesaj</value>
+  </data>
+  <data name="input.name.resource" xml:space="preserve">
+    <value>Ad</value>
   </data>
   <data name="input.notification.imageurl.resource" xml:space="preserve">
     <value>Görsel Adresi</value>
   </data>
+  <data name="input.phonenumber.resource" xml:space="preserve">
+    <value>Telefon Numarası</value>
+  </data>
   <data name="input.subject.resource" xml:space="preserve">
     <value>Konu</value>
+  </data>
+  <data name="input.surname.resource" xml:space="preserve">
+    <value>Soyad</value>
   </data>
   <data name="input.title.resource" xml:space="preserve">
     <value>Başlık</value>

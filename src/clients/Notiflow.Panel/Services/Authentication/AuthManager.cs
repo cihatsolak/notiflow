@@ -4,14 +4,14 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
 {
     public async Task<bool> SignInAsync(SignInInput signInInput, CancellationToken cancellationToken)
     {
-        var tokenResult = await restService.PostResponseAsync<Response<Token>>(nameof(AuthManager), "/user-service/auth/create-access-token", signInInput, cancellationToken);
+        var tokenResult = await restService.PostResponseAsync<Response<TokenResponse>>(nameof(AuthManager), "/user-service/auth/create-access-token", signInInput, cancellationToken);
         if (tokenResult.IsFailure)
         {
             return default;
         }
 
         var credentialCollection = HttpClientHeaderExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
-        var userResult = await restService.GetResponseAsync<Response<User>>(nameof(AuthManager), "/user-service/auth/user", credentialCollection, cancellationToken);
+        var userResult = await restService.GetResponseAsync<Response<UserResponse>>(nameof(AuthManager), "/user-service/auth/user", credentialCollection, cancellationToken);
         if (userResult.IsFailure)
         {
             return default;
@@ -56,7 +56,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
         return true;
     }
 
-    public async Task<Token> GetAccessTokenByRefreshTokenAsync(CancellationToken cancellationToken)
+    public async Task<TokenResponse> GetAccessTokenByRefreshTokenAsync(CancellationToken cancellationToken)
     {
         string refreshToken = await httpContextAccessor.HttpContext.GetTokenAsync("refresh_token");
         if (string.IsNullOrEmpty(refreshToken))
@@ -64,7 +64,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             throw new UnauthorizedAccessException();
         }
 
-        var tokenResult = await restService.PostResponseAsync<Response<Token>>("notiflow.api", "/user-service/auth/create-refresh-token", new { token = refreshToken }, cancellationToken);
+        var tokenResult = await restService.PostResponseAsync<Response<TokenResponse>>("notiflow.api", "/user-service/auth/create-refresh-token", new { token = refreshToken }, cancellationToken);
         if (tokenResult.IsFailure)
         {
             throw new UnauthorizedAccessException();
