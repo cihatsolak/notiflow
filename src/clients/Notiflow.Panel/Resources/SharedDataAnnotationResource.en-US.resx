@@ -120,6 +120,21 @@
   <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Customer Numbers</value>
   </data>
+  <data name="input.customerid.resource" xml:space="preserve">
+    <value>Customer No</value>
+  </data>
+  <data name="input.device.cloudmessageplatform.resource" xml:space="preserve">
+    <value>Cloud Message Platform</value>
+  </data>
+  <data name="input.device.code.resource" xml:space="preserve">
+    <value>Device Code</value>
+  </data>
+  <data name="input.device.osversion.resource" xml:space="preserve">
+    <value>Operating System</value>
+  </data>
+  <data name="input.device.token.resource" xml:space="preserve">
+    <value>Device Token</value>
+  </data>
   <data name="input.email.bccaddress.resource" xml:space="preserve">
     <value>BCC Address</value>
   </data>

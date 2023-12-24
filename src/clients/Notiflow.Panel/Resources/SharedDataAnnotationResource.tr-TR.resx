@@ -120,6 +120,21 @@
   <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Müşteri Numaraları</value>
   </data>
+  <data name="input.customerid.resource" xml:space="preserve">
+    <value>Müşteri No</value>
+  </data>
+  <data name="input.device.cloudmessageplatform.resource" xml:space="preserve">
+    <value>Bulut Mesaj Platformu</value>
+  </data>
+  <data name="input.device.code.resource" xml:space="preserve">
+    <value>Cihaz Kodu</value>
+  </data>
+  <data name="input.device.osversion.resource" xml:space="preserve">
+    <value>İşletim Sistemi</value>
+  </data>
+  <data name="input.device.token.resource" xml:space="preserve">
+    <value>Cihaz Kimliği</value>
+  </data>
   <data name="input.email.bccaddress.resource" xml:space="preserve">
     <value>Gizli Bilgilendirilecek Kişiler</value>
   </data>
