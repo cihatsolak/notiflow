@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Panel.Controllers;
 
-public sealed class DeviceController(IRestService restService) : Controller
+public sealed class DeviceController(IRestService restService) : BaseController
 {
     [HttpGet]
     public IActionResult Index()
@@ -22,7 +22,7 @@ public sealed class DeviceController(IRestService restService) : Controller
             return View(deviceInput);
         }
 
-        var response = await restService.PostResponseAsync<Response<int>>("notiflow.api", "/backoffice-service/devices/add", deviceInput, cancellationToken);
+        var response = await restService.PostResponseAsync<Response<int>>(NOTIFLOW_API, "/backoffice-service/devices/add", deviceInput, cancellationToken);
         if (response.IsFailure)
         {
             return View(deviceInput);
@@ -34,7 +34,7 @@ public sealed class DeviceController(IRestService restService) : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
     {
-        var response = await restService.GetResponseAsync<Response<DeviceInput>>("notiflow.api", $"/backoffice-service/devices/{id}/detail", cancellationToken);
+        var response = await restService.GetResponseAsync<Response<DeviceInput>>(NOTIFLOW_API, $"/backoffice-service/devices/{id}/detail", cancellationToken);
         if (response.IsFailure)
         {
             return RedirectToAction(nameof(Index));
@@ -51,7 +51,7 @@ public sealed class DeviceController(IRestService restService) : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var response = await restService.PutApiResponseAsync<Response>("notiflow.api", "/backoffice-service/devices/update", deviceInput, cancellationToken);
+        var response = await restService.PutApiResponseAsync<Response>(NOTIFLOW_API, "/backoffice-service/devices/update", deviceInput, cancellationToken);
         if (response.IsFailure)
         {
             ModelState.AddModelError(string.Empty, response.Message);
@@ -63,7 +63,7 @@ public sealed class DeviceController(IRestService restService) : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var response = await restService.DeleteApiResponseAsync<Response>("notiflow.api", $"/backoffice-service/devices/delete/{id}", cancellationToken);
+        var response = await restService.DeleteApiResponseAsync<Response>(NOTIFLOW_API, $"/backoffice-service/devices/delete/{id}", cancellationToken);
         if (response.IsFailure)
         {
             ModelState.AddModelError(string.Empty, response.Message);

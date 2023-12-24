@@ -6,11 +6,15 @@ public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailComma
     {
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
-        RuleForEach(p => p.CcAddresses)
-            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+        When(p => !p.CcAddresses.IsNullOrNotAny(), () =>
+        {
+            RuleForEach(p => p.CcAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+        });
 
-        RuleForEach(p => p.BccAddresses)
-            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+        When(p => !p.BccAddresses.IsNullOrNotAny(), () =>
+        {
+            RuleForEach(p => p.BccAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+        });
 
         RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_BODY]);
 

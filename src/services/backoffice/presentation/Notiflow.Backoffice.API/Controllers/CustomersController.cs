@@ -20,16 +20,16 @@ public sealed class CustomersController : BaseApiController
         return CreateActionResultInstance(response);
     }
 
-   /// <summary>
-   /// Retrieves detailed information about a customer based on its ID.
-   /// </summary>
-   /// <param name="request">The request containing the customer ID.</param>
-   /// <param name="cancellationToken">Cancellation token.</param>
-   /// <returns>The response containing the detailed customer information.</returns>
-   /// <response code="200">Operation successful</response>
-   /// <response code="401">Unauthorized action</response>
-   /// <response code="404">Customer information not found</response>
-   [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
+    /// <summary>
+    /// Retrieves detailed information about a customer based on its ID.
+    /// </summary>
+    /// <param name="request">The request containing the customer ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The response containing the detailed customer information.</returns>
+    /// <response code="200">Operation successful</response>
+    /// <response code="401">Unauthorized action</response>
+    /// <response code="404">Customer information not found</response>
+    [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<GetCustomerByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
