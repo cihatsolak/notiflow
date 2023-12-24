@@ -5,7 +5,7 @@ public sealed class EmailsController : BaseApiController
     /// <summary>
     /// Retrieves detailed information about an email history item based on its ID.
     /// </summary>
-    /// <param name="request">The request containing the email history ID.</param>
+    /// <param name="id">The request containing the email history ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response containing the email history details.</returns>
     /// <response code="200">Operation successful</response>
@@ -14,9 +14,9 @@ public sealed class EmailsController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<GetEmailHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] GetEmailHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request, cancellationToken);
+        var response = await Sender.Send(new GetEmailHistoryByIdQuery(id), cancellationToken);
         return CreateActionResultInstance(response);
     }
 

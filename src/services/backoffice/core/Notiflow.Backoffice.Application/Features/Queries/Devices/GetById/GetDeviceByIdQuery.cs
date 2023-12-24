@@ -2,5 +2,10 @@
 
 public sealed record GetDeviceByIdQuery : IRequest<Result<GetDeviceByIdQueryResult>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public GetDeviceByIdQuery(int id)
+    {
+        Id = id;
+    }
 }

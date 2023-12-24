@@ -2,5 +2,10 @@
 
 public sealed record GetTextMessageHistoryByIdQuery : IRequest<Result<GetTextMessageHistoryByIdQueryResult>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public GetTextMessageHistoryByIdQuery(int id)
+    {
+        Id = id;
+    }
 }

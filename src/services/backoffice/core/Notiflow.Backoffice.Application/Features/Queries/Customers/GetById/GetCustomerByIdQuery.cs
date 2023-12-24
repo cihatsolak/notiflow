@@ -2,6 +2,11 @@
 
 public sealed record GetCustomerByIdQuery : IRequest<Result<GetCustomerByIdQueryResult>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public GetCustomerByIdQuery(int id)
+    {
+        Id = id;
+    }
 }
 

@@ -2,5 +2,10 @@
 
 public sealed record DeleteCustomerCommand : IRequest<Result<Unit>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public DeleteCustomerCommand(int id)
+    {
+        Id = id;
+    }
 }

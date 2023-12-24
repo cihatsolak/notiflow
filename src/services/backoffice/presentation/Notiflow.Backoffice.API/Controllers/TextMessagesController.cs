@@ -24,7 +24,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <summary>
     /// Retrieves text message history based on the provided ID.
     /// </summary>
-    /// <param name="request">The request containing the text message history ID.</param>
+    /// <param name="id">The request containing the text message history ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response containing the text message history details.</returns>
     /// <response code="200">Operation successful</response>
@@ -33,9 +33,9 @@ public sealed class TextMessagesController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(Result<GetTextMessageHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request, cancellationToken);
+        var response = await Sender.Send(new GetTextMessageHistoryByIdQuery(id), cancellationToken);
         return CreateActionResultInstance(response);
     }
 
