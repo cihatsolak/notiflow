@@ -6,6 +6,7 @@ public sealed record NotificationNotDeliveredEvent
     {
         SentDate = DateTime.Now;
         ErrorMessage = "The notification could not be sent for an unknown reason.";
+        CustomerId = Random.Shared.Next(1, 50);
     }
 
     public required int CustomerId { get; init; }

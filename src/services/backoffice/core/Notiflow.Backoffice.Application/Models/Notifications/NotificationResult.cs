@@ -11,6 +11,12 @@ public class NotificationResult
         SecretIdentity = Guid.Empty;
     }
 
+    public NotificationResult(string errorMessage) : this()
+    {
+        ErrorMessage = errorMessage;
+        Succeeded = false;
+    }
+
     public NotificationResult(bool succeeded, string errorMessage) : this()
     {
         ErrorMessage = errorMessage;

@@ -1,8 +1,6 @@
-﻿using Puzzle.Lib.Http.Services;
+﻿namespace Notiflow.Panel.Controllers;
 
-namespace Notiflow.Panel.Controllers;
-
-public sealed class NotificationController : Controller
+public sealed class NotificationController(IRestService restService) : Controller
 {
     [HttpGet]
     public IActionResult Index()
@@ -17,14 +15,14 @@ public sealed class NotificationController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Send(TextMessageInput input, CancellationToken cancellationToken)
+    public async Task<IActionResult> Send(NotificationInput input, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
             return View(input);
         }
 
-        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/text-messages/send", input, cancellationToken);
+        var result = await restService.PostResponseAsync<Response>("notiflow.api", "/backoffice-service/notifications/send", input, cancellationToken);
         if (result.IsFailure)
         {
             return View(input);

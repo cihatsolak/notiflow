@@ -19,6 +19,7 @@ global using Notiflow.Panel.Models.Auths;
 global using Notiflow.Panel.Resources;
 global using Notiflow.Panel.Services.Authentication;
 global using Puzzle.Lib.Assistant.Constants;
+global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Host;
 global using Puzzle.Lib.Http;
 global using Puzzle.Lib.Http.Infrastructure;

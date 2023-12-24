@@ -120,7 +120,28 @@
   <data name="input.customer.numbers.resource" xml:space="preserve">
     <value>Customer Numbers</value>
   </data>
+  <data name="input.email.bccaddress.resource" xml:space="preserve">
+    <value>BCC Address</value>
+  </data>
+  <data name="input.email.body.resource" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="input.email.ccaddress.resource" xml:space="preserve">
+    <value>CC Address</value>
+  </data>
+  <data name="input.email.isbodyhtml.resource" xml:space="preserve">
+    <value>Contains HTML</value>
+  </data>
   <data name="input.message.resource" xml:space="preserve">
     <value>Message</value>
+  </data>
+  <data name="input.notification.imageurl.resource" xml:space="preserve">
+    <value>Image Address</value>
+  </data>
+  <data name="input.subject.resource" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="input.title.resource" xml:space="preserve">
+    <value>Title</value>
   </data>
 </root>

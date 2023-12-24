@@ -1,0 +1,100 @@
+﻿@model EmailInput
+@{
+    ViewData["Title"] = "Send";
+    ViewData["ToolbarText"] = ">içerik listesine dön";
+}
+
+@section styles {
+    <partial name="~/Views/Shared/Trumbowyg/_StyleCdn.cshtml" />
+}
+
+<div id="kt_content_container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <page-title />
+        </div>
+        <form asp-action="Send" method="post" class="form">
+            <div class="card-body p-9">
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="CustomerIds" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <input asp-for="CustomerIds" class="form-control form-control-solid" />
+                        <span asp-validation-for="CustomerIds"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="CcAddresses" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <input asp-for="CcAddresses" class="form-control form-control-solid" />
+                        <span asp-validation-for="CcAddresses"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="BccAddresses" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <input asp-for="BccAddresses" class="form-control form-control-solid" />
+                        <span asp-validation-for="BccAddresses"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="Subject" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <input asp-for="Subject" class="form-control form-control-solid" />
+                        <span asp-validation-for="Subject"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="Body" class="required"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 fv-row">
+                        <textarea asp-for="Body" class="form-control form-control-solid"></textarea>
+                        <span asp-validation-for="Body"></span>
+                        <valid-feedback />
+                    </div>
+                </div>
+                <div class="row mb-8">
+                    <div class="col-xl-3">
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label asp-for="IsBodyHtml"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-9">
+                        <div class="form-check form-switch form-check-custom form-check-solid">
+                            <input asp-for="IsBodyHtml" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label fw-bold text-gray-400 ms-3">Markaya ait tedarikçi liste fiyatı görünsün mü?</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form-action-buttons />
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <partial name="~/Views/Shared/Trumbowyg/_ScriptCdn.cshtml" />
+    <script asp-src-include="/js/pages/email.js"></script>
+}
