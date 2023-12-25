@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Response;
-
-namespace Notiflow.Backoffice.API;
+﻿namespace Notiflow.Backoffice.API;
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
@@ -12,7 +10,10 @@ internal static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
         ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
-        var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        var authorizationPolicy = new AuthorizationPolicyBuilder()
+                                    .RequireAuthenticatedUser()
+                                    .RequireClaim(ClaimTypes.NameIdentifier)
+                                    .Build();
 
         services.AddControllers(options =>
         {
@@ -72,6 +73,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
             .AddHttpSecurityPrecautions(hostEnvironment)
             .AddCustomHttpLogging();
 
+        services.AddSignalConfiguration(configuration);
         services.AddBackofficeHealthChecks();
 
         return services;

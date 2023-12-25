@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\core\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
     <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj" />
     <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj" />
+    <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.SignalR\Notiflow.Backoffice.SignalR.csproj" />
   </ItemGroup>
 
 </Project>

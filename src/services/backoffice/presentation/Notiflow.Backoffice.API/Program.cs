@@ -38,5 +38,6 @@ app.UseHttpSecurityPrecautions(builder.Environment)
 app.UseLocalizationWithEndpoint();
 
 app.MapControllers();
+app.MapHubs();
 
 await app.StartProjectAsync();

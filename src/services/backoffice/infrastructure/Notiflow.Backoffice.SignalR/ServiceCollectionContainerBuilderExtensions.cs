@@ -4,10 +4,9 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     private static readonly ILogger<NotificationHub> _logger = null;
 
-    public static IServiceCollection AddSignalConfiguration(this WebApplicationBuilder builder)
+    public static IServiceCollection AddSignalConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-
-        RedisServerSetting redisServerSetting = builder.Configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
+        RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
 
         ConfigurationOptions config = new()
         {
@@ -21,22 +20,28 @@ public static class ServiceCollectionContainerBuilderExtensions
             AllowAdmin = redisServerSetting.AllowAdmin
         };
 
-        builder.Services.AddSignalR(hubOptions =>
+        services.AddSignalR(hubOptions =>
         {
-            hubOptions.EnableDetailedErrors = true;
-            hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(3);
-            hubOptions.ClientTimeoutInterval = TimeSpan.FromSeconds(3);
-        })
+            //detaylı hata mesajlarının istemcilere gönderilip gönderilmeyeceğini belirler. Detaylı hata mesajları, sunucuda oluşan istisna detaylarını içerir.
+            hubOptions.EnableDetailedErrors = false;
 
+            //istemcilerin bağlantı başlatma işlemi sırasında sunucuya karşı zaman aşımına uğramasına izin verilen süreyi belirler. Varsayılan değeri 15 saniyedir.
+            hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(30);
+
+            //client, bir mesaj gönderme işlemi başlatmadan 25 saniye boyunca herhangi bir eylemde bulunmazsa, bağlantı otomatik olarak kapanır.
+            hubOptions.ClientTimeoutInterval = TimeSpan.FromSeconds(25);
+
+            //sunucunun bağlı istemcilere periyodik olarak "keep-alive" ping'leri gönderme aralığını belirler. Varsayılan aralık 15 saniyedir.
+            hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(20);
+        })
         .AddStackExchangeRedis(redisOptions =>
         {
             redisOptions.Configuration = config;
 
             redisOptions.ConnectionFactory = async writer =>
             {
-                config.EndPoints.Add(IPAddress.Loopback, 0);
-                config.SetDefaultPorts();
-
+                config.EndPoints.Add(redisServerSetting.ConnectionString);
+                
                 var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                 
                 connection.ConnectionFailed += Connection_ConnectionFailed;
@@ -51,9 +56,9 @@ public static class ServiceCollectionContainerBuilderExtensions
             };
         });
 
-        builder.Services.AddScoped<IHubDispatcher, HubDispatcher>();
+        services.AddScoped<IHubDispatcher, HubDispatcher>();
 
-        return builder.Services;
+        return services;
     }
 
     private static void Connection_ConnectionFailed(object sender, ConnectionFailedEventArgs e)
