@@ -8,15 +8,15 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <summary>
     /// Adds cookie authentication to the IServiceCollection using the specified configuration settings.
     /// </summary>
-    /// <param name="services">The IServiceCollection instance to add the authentication services to.</param>
+    /// <param name="builder">The IServiceCollection instance to add the authentication services to.</param>
     /// <returns>The IServiceCollection instance with the authentication services added.</returns>
-    public static IServiceCollection AddCookieAuthentication(this WebApplicationBuilder webApplicationBuilder)
+    public static IServiceCollection AddCookieAuthentication(this WebApplicationBuilder builder)
     {
-        IConfigurationSection configurationSection = webApplicationBuilder.Configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
-        webApplicationBuilder.Services.Configure<CookieAuthenticationSetting>(configurationSection);
+        IConfigurationSection configurationSection = builder.Configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
+        builder.Services.Configure<CookieAuthenticationSetting>(configurationSection);
         CookieAuthenticationSetting cookieAuthenticationSetting = configurationSection.Get<CookieAuthenticationSetting>();
 
-        webApplicationBuilder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configure =>
                 {
                     configure.LoginPath = new(cookieAuthenticationSetting.LoginPath);
@@ -33,7 +33,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                     };
                 });
 
-        return webApplicationBuilder.Services;
+        return builder.Services;
     }
 
     /// <summary>

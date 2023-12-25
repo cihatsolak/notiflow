@@ -90,7 +90,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 OnMessageReceived = context =>
                 {
                     string token = context.Request.Query["access_token"];
-                    if (!string.IsNullOrWhiteSpace(token) && context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
+                    if (!string.IsNullOrWhiteSpace(token))
                     {
                         context.Token = token;
                     }

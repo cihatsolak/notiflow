@@ -196,6 +196,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clients", "clients", "{A965
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Panel", "src\clients\Notiflow.Panel\Notiflow.Panel.csproj", "{916A2B4F-A531-4DF9-8438-3248965E1E9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.SignalR", "src\services\backoffice\infrastructure\Notiflow.Backoffice.SignalR\Notiflow.Backoffice.SignalR.csproj", "{42F9508A-3703-4DA3-949A-AC50911197D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -406,6 +408,10 @@ Global
 		{916A2B4F-A531-4DF9-8438-3248965E1E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{916A2B4F-A531-4DF9-8438-3248965E1E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{916A2B4F-A531-4DF9-8438-3248965E1E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42F9508A-3703-4DA3-949A-AC50911197D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42F9508A-3703-4DA3-949A-AC50911197D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42F9508A-3703-4DA3-949A-AC50911197D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42F9508A-3703-4DA3-949A-AC50911197D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,6 +499,7 @@ Global
 		{995F0DCF-AF42-47C8-8368-61043713BB9B} = {2463C29D-A271-4573-BA36-9E29BD93A578}
 		{A9658EA6-EE21-4476-ABF4-61A961F20BDA} = {EEA12CDE-AA95-4F62-98B0-1235C054E19F}
 		{916A2B4F-A531-4DF9-8438-3248965E1E9D} = {A9658EA6-EE21-4476-ABF4-61A961F20BDA}
+		{42F9508A-3703-4DA3-949A-AC50911197D7} = {97AD861A-A36D-4CFF-AF79-63C4E4351896}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BCB82ED-4986-4999-ABBE-C3F916452DA9}

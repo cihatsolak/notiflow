@@ -1,5 +1,3 @@
-using Puzzle.Lib.Response;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
