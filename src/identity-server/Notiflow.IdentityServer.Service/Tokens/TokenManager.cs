@@ -1,4 +1,7 @@
-﻿namespace Notiflow.IdentityServer.Service.Tokens;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text;
+
+namespace Notiflow.IdentityServer.Service.Tokens;
 
 internal sealed class TokenManager : ITokenService
 {
@@ -14,8 +17,8 @@ internal sealed class TokenManager : ITokenService
         DateTime accessTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.AccessTokenExpirationMinute);
         DateTime refreshTokenExpiration = DateTime.Now.AddHours(_jwtTokenSetting.RefreshTokenExpirationMinute);
 
-        SecurityKey securityKey = JwtTokenExtensions.CreateSecurityKey(_jwtTokenSetting.SecurityKey);
-        SigningCredentials signingCredentials = JwtTokenExtensions.CreateSigningCredentials(securityKey);
+        SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtTokenSetting.SecurityKey));
+        SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
         JwtSecurityToken jwtSecurityToken = new(
             issuer: _jwtTokenSetting.Issuer,
@@ -24,7 +27,7 @@ internal sealed class TokenManager : ITokenService
             claims: SetUserClaims(user, _jwtTokenSetting.Audiences),
             signingCredentials: signingCredentials
         );
-
+        
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
         string accessToken = jwtSecurityTokenHandler.WriteToken(jwtSecurityToken);
 
@@ -40,15 +43,15 @@ internal sealed class TokenManager : ITokenService
         return tokenResponse;
     }
 
-    private static IEnumerable<Claim> SetUserClaims(User user, IEnumerable<string> audiences)
+    private static List<Claim> SetUserClaims(User user, IEnumerable<string> audiences)
     {
-        List<Claim> claims = new();
+        List<Claim> claims = [];
         claims.AddJti();
         claims.AddIat();
 
         claims.AddNameIdentifier($"{user.Id}");
         claims.AddName(user.Name);
-        claims.AddFamilyName(user.Surname);
+        claims.AddSurname(user.Surname);
         claims.AddEmail(user.Email);
         claims.AddAudiences(audiences);
         claims.AddGroupSid($"{user.TenantId}");

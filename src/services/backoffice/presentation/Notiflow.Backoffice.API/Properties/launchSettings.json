@@ -1,37 +1,22 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:21437",
-      "sslPort": 44331
-    },
-    "iis": {
-      "applicationUrl": "https://localhost/NotiflowBackofficeAPI",
-      "sslPort": 0
-    }
-  },
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5029"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "launchUrl": "",
-      "applicationUrl": "https://localhost:7139;http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7139;http://localhost:5029"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -43,11 +28,26 @@
     },
     "Local IIS": {
       "commandName": "IIS",
+      "workingDirectory": "C:\\Users\\cihat\\source\\repos\\cihatsolak\\notiflow\\src\\services\\backoffice\\presentation\\Notiflow.Backoffice.API",
       "launchBrowser": true,
-      "launchUrl": "https://localhost/NotiflowBackofficeAPI",
+      "launchUrl": "http://localhost/NotiflowBackofficeAPI",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "nativeDebugging": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/NotiflowBackofficeAPI",
+      "sslPort": 0
+    },
+    "iisExpress": {
+      "applicationUrl": "http://localhost:21437",
+      "sslPort": 44331
     }
   }
 }

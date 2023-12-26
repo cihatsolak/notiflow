@@ -2,5 +2,10 @@
 
 public sealed record GetEmailHistoryByIdQuery : IRequest<Result<GetEmailHistoryByIdQueryResult>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public GetEmailHistoryByIdQuery(int id)
+    {
+        Id = id;
+    }
 }

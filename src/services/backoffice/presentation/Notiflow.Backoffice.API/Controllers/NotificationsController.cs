@@ -5,7 +5,7 @@ public sealed class NotificationsController : BaseApiController
     /// <summary>
     /// Retrieves notification history based on the provided ID.
     /// </summary>
-    /// <param name="request">The request containing the notification history ID.</param>
+    /// <param name="id">The request containing the notification history ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response containing the notification history details.</returns>
     /// <response code="200">Operation successful</response>
@@ -14,9 +14,9 @@ public sealed class NotificationsController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(Result<GetNotificationHistoryByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request, cancellationToken);
+        var response = await Sender.Send(new GetNotificationHistoryByIdQuery(id), cancellationToken);
         return CreateActionResultInstance(response);
     }
 

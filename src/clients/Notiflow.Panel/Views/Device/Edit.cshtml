@@ -1,0 +1,18 @@
+﻿@model DeviceInput
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div id="kt_content_container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <page-title />
+        </div>
+
+        <form asp-action="Edit" method="post" class="form">
+            <div asp-validation-summary="ModelOnly"></div>
+            <partial name="_CreateOrUpdate" />
+        </form>
+    </div>
+</div>
+

@@ -66,26 +66,21 @@ public static class HostBuilderExtensions
     /// <seealso cref="IHost"/>
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task StartProjectAsync(this IHost host)
+    public static async Task StartProjectAsync(this WebApplication webApplication)
     {
-        ILogger logger = host.Services.GetRequiredService<ILoggerFactory>()
-            .CreateLogger(nameof(HostBuilderExtensions));
-
-        IHostEnvironment hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
-       
         try
         {
-            logger.LogInformation("-- Starting web host: {@applicationName} --", hostEnvironment.ApplicationName);
-            await host.RunAsync();
+            webApplication.Logger.LogInformation("-- Starting web host: {applicationName} --", webApplication.Environment.ApplicationName);
+            await webApplication.RunAsync();
         }
         catch (Exception exception)
         {
-            logger.LogCritical(exception, "-- Host terminated unexpectedly. {@applicationName} -- ", hostEnvironment.ApplicationName);
-            await host.StopAsync();
+            webApplication.Logger.LogCritical(exception, "-- Host terminated unexpectedly. {applicationName} -- ", webApplication.Environment.ApplicationName);
+            await webApplication.StopAsync();
         }
         finally
         {
-            await ((IAsyncDisposable)host).DisposeAsync();
+            await webApplication.DisposeAsync();
         }
     }
 }

@@ -23,17 +23,17 @@ internal sealed class HuaweiManager : IHuaweiService
         var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
-        List<KeyValuePair<string, string>> credentials = new()
-        {
+        List<KeyValuePair<string, string>> credentials =
+        [
             new KeyValuePair<string, string>("grant_type", tenantApplication.HuaweiGrandType),
             new KeyValuePair<string, string>("client_secret", tenantApplication.HuaweiClientSecret),
             new KeyValuePair<string, string>("client_id", tenantApplication.HuaweiClientId)
-        };
+        ];
 
         var authenticationResponse = await _restService.PostEncodedResponseAsync<HuaweiAuthenticationResponse>(nameof(HuaweiManager), _huaweiSetting.AuthTokenServiceUrl, credentials, cancellationToken);
-        if (authenticationResponse is null)
+        if (string.IsNullOrEmpty(authenticationResponse?.AccessToken))
         {
-            return notificationResult;
+            return new NotificationResult(authenticationResponse?.ErrorMessage);
         }
 
         var auhorizationCollection = HttpClientHeaderExtensions

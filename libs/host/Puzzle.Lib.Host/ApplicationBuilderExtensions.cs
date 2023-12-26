@@ -13,32 +13,28 @@ public static class ApplicationBuilderExtensions
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance to add the middleware to.</param>
     /// <param name="errorHandlingPath">The route to redirect to in the event of an exception in a production environment.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseUIExceptionHandler(this IApplicationBuilder app, string errorHandlingPath = null)
+    public static IApplicationBuilder UseUIExceptionHandler(this WebApplication webApplication, string errorHandlingPath = null)
     {
-        var hostEnvironment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        if (hostEnvironment.IsProduction())
+        if (webApplication.Environment.IsProduction())
         {
-            app.UseExceptionHandler(errorHandlingPath);
+            webApplication.UseExceptionHandler(errorHandlingPath);
         }
         else
         {
-            app.UseDeveloperExceptionPage();
+            webApplication.UseDeveloperExceptionPage();
         }
 
-        return app;
+        return webApplication;
     }
 
     /// <summary>
     /// Registers an API exception handler middleware that catches unhandled exceptions during API requests and returns a JSON error response.
     /// </summary>
     /// <param name="app">The IApplicationBuilder instance used to configure the middleware pipeline.</param>
-    /// <param name="errorMessage"></param>
     /// <returns>The IApplicationBuilder instance after the middleware has been registered.</returns>
-    public static IApplicationBuilder UseApiExceptionHandler(this IApplicationBuilder app, string errorMessage = null)
+    public static IApplicationBuilder UseApiExceptionHandler(this WebApplication webApplication)
     {
-        ILogger logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(UseApiExceptionHandler));
-
-        app.UseExceptionHandler(applicationBuilder =>
+        webApplication.UseExceptionHandler(applicationBuilder =>
         {
             applicationBuilder.Run(async httpContext =>
             {
@@ -53,15 +49,50 @@ public static class ApplicationBuilderExtensions
                     _ => StatusCodes.Status500InternalServerError
                 };
 
-                logger.LogError(exceptionHandlerFeature.Error, "{message}", exceptionHandlerFeature.Error?.Message);
+                webApplication.Logger.LogError(exceptionHandlerFeature.Error, "{message}", exceptionHandlerFeature.Error?.Message);
 
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(new
                 {
-                    Message = errorMessage ?? DEFAULT_ERROR_MESSAGE
+                    Message = DEFAULT_ERROR_MESSAGE
                 }));
             });
         });
 
-        return app;
+        return webApplication;
+    }
+
+    /// <summary>
+    /// Registers an API exception handler middleware that catches unhandled exceptions during API requests and returns a JSON error response.
+    /// </summary>
+    /// <param name="app">The IApplicationBuilder instance used to configure the middleware pipeline.</param>
+    /// <param name="errorMessage"></param>
+    /// <returns>The IApplicationBuilder instance after the middleware has been registered.</returns>
+    public static IApplicationBuilder UseApiExceptionHandler(this WebApplication webApplication, string errorMessage)
+    {
+        webApplication.UseExceptionHandler(applicationBuilder =>
+        {
+            applicationBuilder.Run(async httpContext =>
+            {
+                IExceptionHandlerFeature exceptionHandlerFeature = httpContext.Features.Get<IExceptionHandlerFeature>();
+                if (exceptionHandlerFeature is null)
+                    return;
+
+                httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+                httpContext.Response.StatusCode = exceptionHandlerFeature.Error switch
+                {
+                    OperationCanceledException => StatusCodes.Status503ServiceUnavailable,
+                    _ => StatusCodes.Status500InternalServerError
+                };
+
+                webApplication.Logger.LogError(exceptionHandlerFeature.Error, "{message}", exceptionHandlerFeature.Error?.Message);
+
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(new
+                {
+                    Message = errorMessage
+                }));
+            });
+        });
+
+        return webApplication;
     }
 }

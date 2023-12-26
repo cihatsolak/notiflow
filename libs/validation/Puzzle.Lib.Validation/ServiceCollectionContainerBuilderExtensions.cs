@@ -10,10 +10,11 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to configure.</param>
     /// <returns>The configured service collection.</returns>
-    public static IServiceCollection AddFluentDesignValidation(this IServiceCollection services)
+    public static IServiceCollection AddServerSideFluentValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         services.AddFluentValidationAutoValidation();
+
         ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.CurrentCulture;
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
         
@@ -27,7 +28,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection to configure Fluent Design Auto Validation for.</param>
     /// <returns>The modified IServiceCollection.</returns>
-    public static IServiceCollection AddFluentDesignAutoValidation(this IServiceCollection services)
+    public static IServiceCollection AddClientSideFluentValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         services.AddFluentValidationAutoValidation();

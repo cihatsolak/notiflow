@@ -1,0 +1,29 @@
+﻿@model CustomerInput
+@{
+    ViewData["Title"] = "Edit";
+
+    string minDate = DateTime.Now.AddMinutes(2).ToString("dd/MM/yyyy HH:mm");
+    string maxDate = DateTime.Now.AddYears(50).ToString("dd/MM/yyyy HH:mm");
+}
+
+<div id="kt_content_container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <page-title />
+        </div>
+
+        <form asp-action="Create" method="post" class="form">
+            <div asp-validation-summary="ModelOnly"></div>
+            <partial name="_CreateOrUpdate" />
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(() => {
+            inputConvertToDateRangePicker('@Html.IdFor(p => p.BirthDate)', '@minDate', '@maxDate');
+        });
+    </script>
+    <script asp-src-include="/js/pages/customer.js"></script>
+}

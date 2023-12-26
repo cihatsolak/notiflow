@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Auths\" />
+    <Folder Include="Resources\Models\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\extensions\" />
+    <Folder Include="wwwroot\js\shared\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
+    <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
+    <ProjectReference Include="..\..\..\libs\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj" />
+    <ProjectReference Include="..\..\..\libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj" />
+    <ProjectReference Include="..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
+    <ProjectReference Include="..\..\shared\Notiflow.Common\Notiflow.Common.csproj" />
+  </ItemGroup>
+
+</Project>

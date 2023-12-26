@@ -23,7 +23,7 @@ public sealed class CustomersController : BaseApiController
     /// <summary>
     /// Retrieves detailed information about a customer based on its ID.
     /// </summary>
-    /// <param name="request">The request containing the customer ID.</param>
+    /// <param name="id">The request containing the customer ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response containing the detailed customer information.</returns>
     /// <response code="200">Operation successful</response>
@@ -32,9 +32,9 @@ public sealed class CustomersController : BaseApiController
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<GetCustomerByIdQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] GetCustomerByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request, cancellationToken);
+        var response = await Sender.Send(new GetCustomerByIdQuery(id), cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -77,7 +77,7 @@ public sealed class CustomersController : BaseApiController
     /// <summary>
     /// Deletes a customer based on the provided command.
     /// </summary>
-    /// <param name="request">The command containing the customer ID to delete.</param>
+    /// <param name="id">The command containing the customer ID to delete.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response indicating the result of the customer deletion operation.</returns>
     /// <response code="204">Operation successful</response>
@@ -86,9 +86,9 @@ public sealed class CustomersController : BaseApiController
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete([FromRoute] DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var response = await Sender.Send(request, cancellationToken);
+        var response = await Sender.Send(new DeleteCustomerCommand(id), cancellationToken);
         return CreateActionResultInstance(response);
     }
 

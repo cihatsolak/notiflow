@@ -2,5 +2,9 @@
 
 public sealed record GetNotificationHistoryByIdQuery : IRequest<Result<GetNotificationHistoryByIdQueryResult>>
 {
-    public required int Id { get; init; }
+    public  int Id { get; init; }
+    public GetNotificationHistoryByIdQuery(int id)
+    {
+        Id = id;
+    }
 }

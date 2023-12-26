@@ -7,7 +7,10 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseLocalization(this IApplicationBuilder app) => app.UseRequestLocalization();
+    public static IApplicationBuilder UseLocalization(this IApplicationBuilder app)
+    {
+        return app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+    }
 
 
     /// <summary>
@@ -41,6 +44,6 @@ public static class ApplicationBuilderExtensions
         .Produces(StatusCodes.Status500InternalServerError, typeof(SupportedCulturesResponse), MediaTypeNames.Application.Json)
         .WithTags("Languages");
 
-        return app.UseRequestLocalization();
+        return app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
     }
 }

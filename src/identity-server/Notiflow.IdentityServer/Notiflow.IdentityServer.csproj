@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -24,7 +24,6 @@
     <ProjectReference Include="..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
     <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\..\..\libs\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj" />
-    <ProjectReference Include="..\..\..\libs\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj" />
     <ProjectReference Include="..\..\..\libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
     <ProjectReference Include="..\Notiflow.IdentityServer.Service\Notiflow.IdentityServer.Service.csproj" />
   </ItemGroup>

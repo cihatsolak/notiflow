@@ -1,15 +1,8 @@
 ﻿namespace Notiflow.IdentityServer.Controllers;
 
 [Route("api/tenant-permissions")]
-public sealed class TenantPermissionsController : BaseApiController
+public sealed class TenantPermissionsController(ITenantPermissionService tenantPermissionService) : BaseApiController
 {
-    private readonly ITenantPermissionService _tenantPermissionService;
-
-    public TenantPermissionsController(ITenantPermissionService tenantPermissionService)
-    {
-        _tenantPermissionService = tenantPermissionService;
-    }
-
     /// <summary>
     /// Retrieves the permissions for the current tenant.
     /// </summary>
@@ -23,7 +16,7 @@ public sealed class TenantPermissionsController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPermissions(CancellationToken cancellationToken)
     {
-        var response = await _tenantPermissionService.GetPermissionsAsync(cancellationToken);
+        var response = await tenantPermissionService.GetPermissionsAsync(cancellationToken);
         return CreateActionResultInstance(response);
     }
 
@@ -41,7 +34,7 @@ public sealed class TenantPermissionsController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdatePreferences([FromBody] TenantPermissionRequest request, CancellationToken cancellationToken)
     {
-        var response = await _tenantPermissionService.UpdateAsync(request, cancellationToken);
+        var response = await tenantPermissionService.UpdateAsync(request, cancellationToken);
         return CreateActionResultInstance(response);
     }
 }

@@ -41,6 +41,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             if (!firebaseNotificationResult.Succeeded)
             {
                 var notificationNotDeliveredEvent = ObjectMapper.Mapper.Map<NotificationNotDeliveredEvent>(request);
+
                 notificationNotDeliveredEvent.SenderIdentity = firebaseNotificationResult.SecretIdentity;
                 notificationNotDeliveredEvent.ErrorMessage = firebaseNotificationResult.ErrorMessage;
 
@@ -60,7 +61,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
                                  .Select(p => p.Token)
                                  .ToList();
 
-        if (huaweiDeviceTokens.IsNullOrNotAny())
+        if (!huaweiDeviceTokens.IsNullOrNotAny())
         {
             var huaweiNotificationResult = await SendHuaweiNotifyAsync(request, huaweiDeviceTokens, cancellationToken);
             if (!huaweiNotificationResult.Succeeded)

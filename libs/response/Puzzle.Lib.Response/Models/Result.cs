@@ -24,7 +24,6 @@ public record Result<TData>
     /// <summary>
     /// Gets or sets the status statusCode of the response.
     /// </summary>
-    [JsonIgnore]
     public int StatusCode { get; set; }
 
     /// <summary>

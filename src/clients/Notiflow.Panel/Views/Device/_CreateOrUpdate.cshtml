@@ -1,0 +1,77 @@
+﻿@model DeviceInput
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card-body p-9">
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="CustomerId" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="CustomerId" class="form-control form-control-solid" />
+            <span asp-validation-for="CustomerId"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="OSVersion" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <div class="form-group">
+                <select asp-for="OSVersion" asp-items="Html.GetEnumSelectList<OSVersion>()" class="form-control form-control-solid">
+                    <option value="0" hidden disabled>İşletim Sistemi Seçiniz</option>
+                </select>
+                <span asp-validation-for="OSVersion"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Code" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="Code" class="form-control form-control-solid" />
+            <span asp-validation-for="Code"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="Token" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9 fv-row">
+            <input asp-for="Token" class="form-control form-control-solid" />
+            <span asp-validation-for="Token"></span>
+            <valid-feedback />
+        </div>
+    </div>
+    <div class="row mb-8">
+        <div class="col-xl-3">
+            <div class="fs-6 fw-bold mt-2 mb-3">
+                <label asp-for="CloudMessagePlatform" class="required"></label>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <div class="form-group">
+                <select asp-for="CloudMessagePlatform" asp-items="Html.GetEnumSelectList<CloudMessagePlatform>()" class="form-control form-control-solid">
+                    <option value="0" hidden disabled>Bulut Sistemi Seçiniz</option>
+                </select>
+                <span asp-validation-for="CloudMessagePlatform"></span>
+                <valid-feedback />
+            </div>
+        </div>
+    </div>
+</div>
+<form-action-buttons />
+

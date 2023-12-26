@@ -43,8 +43,8 @@ public static class SecurityExtensions
     {
         ArgumentException.ThrowIfNullOrEmpty(text);
 
-        var byteValue = Encoding.UTF8.GetBytes(text);
-        var byteHash = SHA512.HashData(byteValue);
+        byte[] byteValue = Encoding.UTF8.GetBytes(text);
+        byte[] byteHash = SHA512.HashData(byteValue);
         return Convert.ToBase64String(byteHash);
     }
 }

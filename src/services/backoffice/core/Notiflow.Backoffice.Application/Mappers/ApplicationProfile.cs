@@ -40,6 +40,8 @@ internal sealed class ApplicationProfile : Profile
     private void NotificationMaps()
     {
         CreateMap<NotificationHistory, GetNotificationHistoryByIdQueryResult>();
+        CreateMap<SendNotificationCommand, NotificationNotDeliveredEvent>();
+        CreateMap<SendNotificationCommand, NotificationDeliveredEvent>();
     }
 
     private void EmailMaps()

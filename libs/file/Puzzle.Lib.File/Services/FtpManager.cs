@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.File.Services;
 
-public sealed class FtpManager : IFileService
+public sealed class FtpManager : IFtpService
 {
     private readonly AsyncFtpClient _asyncFtpClient;
     private readonly FtpSetting _ftpSetting;

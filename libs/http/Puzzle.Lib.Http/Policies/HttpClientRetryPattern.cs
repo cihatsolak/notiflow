@@ -33,8 +33,14 @@ public static class HttpClientRetryPattern
     /// </remarks>
     private static void OnRetry(DelegateResult<HttpResponseMessage> httpResponseMessage, TimeSpan timeSpan, int retryAttempt, Context context)
     {
-        Logger.LogError(httpResponseMessage.Exception, "Request to {@RequestUri} failed with code {@StatusCode}. Waiting for {@timeSpan} before next attempt. Retry attempt: {retryAttempt}. Context: {@context}",
-            httpResponseMessage?.Result?.RequestMessage?.RequestUri, httpResponseMessage?.Result?.StatusCode, timeSpan, retryAttempt, context);
+        var requestUri = httpResponseMessage?.Result?.RequestMessage?.RequestUri;
+        var statusCode = httpResponseMessage?.Result?.StatusCode;
+
+        Logger.LogError(
+            httpResponseMessage?.Exception,
+            "Request to {@RequestUri} failed with code {@StatusCode}. Waiting for {@timeSpan} before next attempt. Retry attempt: {retryAttempt}. Context: {@context}",
+            requestUri, statusCode, timeSpan, retryAttempt, context
+        );
     }
 
     /// <summary>

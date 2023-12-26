@@ -15,6 +15,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         RedisServerSetting redisServerSetting = new();
         configure?.Invoke(redisServerSetting);
 
+        services.Configure(configure);
+
         services.TryAddSingleton<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect(new ConfigurationOptions
         {
             EndPoints = { redisServerSetting.ConnectionString },

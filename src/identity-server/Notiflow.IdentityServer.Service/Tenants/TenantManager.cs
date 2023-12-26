@@ -13,7 +13,7 @@ internal class TenantManager : ITenantService
         _localizer = localizer;
     }
 
-    public async Task<Result<List<Tenant>>> GetTenantsWithoutFilterAsync(CancellationToken cancellationToken)
+    public async Task<Result<List<Tenant>>> GetTenantsAsync(CancellationToken cancellationToken)
     {
         var tenants = await  _context.Tenants
                                 .TagWith("Lists existing tenants unfiltered.")

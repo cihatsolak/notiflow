@@ -12,7 +12,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.Configure(configure);
 
-        services.TryAddScoped<IFileService>(provider =>
+        services.TryAddScoped<IFtpService>(provider =>
         {
             AsyncFtpClient asyncFtpClient = new(
                 ftpSetting.Ip,

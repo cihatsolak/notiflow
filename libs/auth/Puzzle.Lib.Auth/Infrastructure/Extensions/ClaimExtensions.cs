@@ -51,18 +51,18 @@ public static class ClaimExtensions
     }
 
     /// <summary>
-    /// Adds a family name claim to a collection of claims.
+    /// Adds a surname claim to a collection of claims.
     /// </summary>
     /// <param name="claims">The collection of claims.</param>
-    /// <param name="familyName">The family name to add as a claim.</param>
+    /// <param name="surname">The family name to add as a claim.</param>
     /// <exception cref="ArgumentNullException">Thrown when the claims collection is null.</exception>
     /// <exception cref="ArgumentException">Thrown when the family name is null or empty.</exception>
-    public static void AddFamilyName(this ICollection<Claim> claims, string familyName)
+    public static void AddSurname(this ICollection<Claim> claims, string surname)
     {
         ArgumentNullException.ThrowIfNull(claims);
-        ArgumentException.ThrowIfNullOrEmpty(familyName);
+        ArgumentException.ThrowIfNullOrEmpty(surname);
 
-        claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, familyName, ClaimValueTypes.String));
+        claims.Add(new Claim(ClaimTypes.Surname, surname, ClaimValueTypes.String));
     }
 
     /// <summary>
@@ -187,8 +187,8 @@ public static class ClaimExtensions
     public static void AddIat(this ICollection<Claim> claims)
     {
         ArgumentNullException.ThrowIfNull(claims);
-
-        claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString(), ClaimValueTypes.DateTime));
+        
+        claims.Add(new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64));
     }
 
     /// <summary>

@@ -30,7 +30,7 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseAuth()
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)
-   .UseResponseCompress()
+   .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
    .UseHealthChecksConfiguration();
@@ -38,5 +38,6 @@ app.UseHttpSecurityPrecautions(builder.Environment)
 app.UseLocalizationWithEndpoint();
 
 app.MapControllers();
+app.MapHubs();
 
 await app.StartProjectAsync();

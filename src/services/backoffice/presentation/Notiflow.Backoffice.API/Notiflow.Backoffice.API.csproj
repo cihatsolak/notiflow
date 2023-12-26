@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -19,12 +19,12 @@
     <ProjectReference Include="..\..\..\..\..\libs\documentation\Puzzle.Lib.Documentation\Puzzle.Lib.Documentation.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj" />
-    <ProjectReference Include="..\..\..\..\..\libs\performance\Puzzle.Lib.Performance\Puzzle.Lib.Performance.csproj" />
     <ProjectReference Include="..\..\..\..\..\libs\version\Puzzle.Lib.Version\Puzzle.Lib.Version.csproj" />
     <ProjectReference Include="..\..\core\Notiflow.Backoffice.Application\Notiflow.Backoffice.Application.csproj" />
     <ProjectReference Include="..\..\core\Notiflow.Backoffice.Domain\Notiflow.Backoffice.Domain.csproj" />
     <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.Infrastructure\Notiflow.Backoffice.Infrastructure.csproj" />
     <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.Persistence\Notiflow.Backoffice.Persistence.csproj" />
+    <ProjectReference Include="..\..\infrastructure\Notiflow.Backoffice.SignalR\Notiflow.Backoffice.SignalR.csproj" />
   </ItemGroup>
 
 </Project>
