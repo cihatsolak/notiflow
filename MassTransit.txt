@@ -1,0 +1,27 @@
+e.UseCircuitBreaker(cbConfiguration =>
+{
+    cbConfiguration.TripThreshold = 25;
+    cbConfiguration.ActiveThreshold = 5;
+    cbConfiguration.TrackingPeriod = TimeSpan.FromMinutes(5);
+    cbConfiguration.ResetInterval = TimeSpan.FromMinutes(10);
+});
+
+Yukarýda görüldüðü üzere sistemde bir hata, kesinti olmasý durumunda alýnan taleplerden yüzde 25’inin hatalý olmasý ya da 5 tanesinin 
+hatayla karþýlaþmasý durumunda sistem 10 dakika bekleyip 5 dakika takipte kalacak. Tekrar hata alýnmasý durumunda 
+TripTreshold ve ActiveTreshold gözardý edilerek belirtilen süre kadar bekleyip takipte kalacaktýr.
+
+---
+
+MassTransit, uygulamanýzýn exceptionlardan kurtulmasýna ve bunlarla baþa çýkmasýna yardýmcý olacak bir dizi özellik saðlar.
+
+Retry Configuration, Exception oluþmasý durumunda mesajýn tekrar gönderilmesi için konfigürasyon ayarlarý;
+None: Tekrar yok.
+Immediate: Hemen bir daha dene.
+Interval: Sabit bir süre sonra tekrar dene.
+Intervals: Farklý süreler bekle ve dene.
+Exponential: Üstel artan aralýklar ile dene.
+Incremental: Sabit artan aralýklar ile dene.
+Exception Filters, bazý durumlarda oluþan tüm exceptionlar için iþlem yapmak istemeyebiliriz. Bu durumlarda Ignore ve Handle metodlarý yardýmý ile ayarlamalarýmýzý yapabiliriz.
+Redelivery, sistemde oluþan hatalar her zaman kýsa süreli problemlerden meydana gelmez. Uzak sunucu, SQL serverin çökmesi gibi durumlarda retry süremizi daha uzun vermek isteyebiliriz. Bu gibi durumlarda message scheduler kullanmamýz gerekir. Scheduler yapýsýyla daha uzun aralýklý süreler ile retry mekanizmasý kurabiliriz.
+Outbox, uzun süren hata durumlarýnda message scheduler’a alternatif olarak InMemoryOutbox kullanýlabilir. Bu yapýda mesaj consume edilene kadar Outbox (Giden Kutusu) mesajý kendi bünyesinde barýndýrýr ve uzun süren aralýklar ile retry imkaný saðlar.
+Faults, belirli bir mesaj için oluþturulan consumer’larda fýrlatýlan exceptionlarý yönetmek amacýyla ilgili consumer’a özel fault-consumer oluþturulabilir. Bu fault-consumer da exception’ý yakalayýp gerekli iþlemleri gerçekleþtirebiliriz.
