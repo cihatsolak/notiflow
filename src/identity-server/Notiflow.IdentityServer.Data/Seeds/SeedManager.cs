@@ -4,8 +4,6 @@ internal static class SeedManager
 {
     internal static async Task SeedAsync(this IServiceCollection services, CancellationToken cancellationToken)
     {
-        EnsureNotNull(services);
-
         var applicationDbContext = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
 
         bool isConnected = await applicationDbContext.Database.CanConnectAsync(cancellationToken);
@@ -15,7 +13,7 @@ internal static class SeedManager
             return;
         }
 
-        bool isExists = await applicationDbContext.Tenants.AnyAsync();
+        bool isExists = await applicationDbContext.Tenants.AnyAsync(cancellationToken);
         if (isExists)
         {
             Debug.WriteLine("[SeedManager] There is no need for migration as there is tenant information in the database.");
@@ -24,10 +22,5 @@ internal static class SeedManager
 
         await applicationDbContext.Tenants.AddRangeAsync(SeedData.GenerateFakeTenants(), cancellationToken);
         await applicationDbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    private static void EnsureNotNull(IServiceCollection services)
-    {
-        ArgumentNullException.ThrowIfNull(services);
     }
 }

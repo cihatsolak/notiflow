@@ -24,7 +24,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         })
         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, configureOptions =>
         {
-            configureOptions.TokenValidationParameters = new TokenValidationParameters()
+            configureOptions.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = jwtTokenSetting.Issuer,
                 ValidAudience = jwtTokenSetting.Audiences.First(),
@@ -33,6 +33,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 ValidateAudience = true,
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = true,
+                //RequireExpirationTime = true
                 ClockSkew = TimeSpan.FromMinutes(1),
                 NameClaimType = ClaimTypes.Name,
                 RoleClaimType = ClaimTypes.Role
@@ -69,7 +70,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                     if (context.AuthenticateFailure is SecurityTokenExpiredException)
                     {
                         var authenticationException = context.AuthenticateFailure as SecurityTokenExpiredException;
-                        context.Response.Headers.Add("x-token-expired", authenticationException.Expires.ToString("o"));
+                        context.Response.Headers.Append("x-token-expired", authenticationException.Expires.ToString("o"));
                         context.ErrorDescription = $"The token expired on {authenticationException.Expires:o}";
                     }
 

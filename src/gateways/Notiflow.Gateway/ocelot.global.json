@@ -1,6 +1,7 @@
 {
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:4500",
-    "RouteIsCaseSensitive": false
+    "RouteIsCaseSensitive": false,
+    "RequestIdKey": "x-correlation-id"
   }
 }
