@@ -1,6 +1,6 @@
 ﻿namespace Puzzle.Lib.Auth.Infrastructure;
 
-[Serializable]
+[ExcludeFromCodeCoverage]
 public sealed class JwtClaimException : Exception
 {
     public JwtClaimException()
@@ -8,10 +8,6 @@ public sealed class JwtClaimException : Exception
     }
 
     public JwtClaimException(string parameterName) : base($"{parameterName} claim type not found.")
-    {
-    }
-
-    private JwtClaimException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 

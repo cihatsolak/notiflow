@@ -1,6 +1,5 @@
 ﻿namespace Notiflow.Common.Exceptions;
 
-[Serializable]
 [ExcludeFromCodeCoverage]
 public sealed class TenantException : Exception
 {
@@ -9,10 +8,6 @@ public sealed class TenantException : Exception
     }
 
     public TenantException(string message) : base(message)
-    {
-    }
-
-    private TenantException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 
