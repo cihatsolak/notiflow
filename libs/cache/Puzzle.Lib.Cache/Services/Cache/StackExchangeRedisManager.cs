@@ -413,7 +413,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            await _server.FlushDatabaseAsync(_defaultDatabase, CommandFlags.DemandMaster);
+            await _server.FlushDatabaseAsync(_redisServerSetting.DefaultDatabase, CommandFlags.DemandMaster);
         });
     }
 
