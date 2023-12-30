@@ -12,3 +12,4 @@ global using StackExchange.Redis;
 global using System.ComponentModel;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
+global using Microsoft.Extensions.Options;

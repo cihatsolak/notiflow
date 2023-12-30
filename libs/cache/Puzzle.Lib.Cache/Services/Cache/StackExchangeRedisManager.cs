@@ -5,18 +5,17 @@ internal sealed class StackExchangeRedisManager : IRedisService
     private readonly IDatabase _database;
     private readonly IServer _server;
     private readonly ILogger<StackExchangeRedisManager> _logger;
-    private readonly int _defaultDatabase;
+    private readonly RedisServerSetting _redisServerSetting;
 
     public StackExchangeRedisManager(
-         IDatabase database,
-         IServer server,
-         ILogger<StackExchangeRedisManager> logger,
-         int defaultDatabase)
+        IConnectionMultiplexer connectionMultiplexer,
+        IOptions<RedisServerSetting> redisServerSetting,
+        ILogger<StackExchangeRedisManager> logger)
     {
-        _database = database;
-        _server = server;
+        _database = connectionMultiplexer.GetDatabase(redisServerSetting.Value.DefaultDatabase);
+        _server = connectionMultiplexer.GetServer(redisServerSetting.Value.ConnectionString);
         _logger = logger;
-        _defaultDatabase = defaultDatabase;
+        _redisServerSetting = redisServerSetting.Value;
     }
 
     public async Task<bool> ExistsAsync(string cacheKey)
@@ -79,7 +78,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var hashEntries = await _database.HashGetAllAsync(cacheKey, CommandFlags.PreferReplica);
-            if (!hashEntries.Any())
+            if (hashEntries.Length == 0)
             {
                 _logger.LogWarning("Data for key {@cacheKey} not found.", cacheKey);
                 return Enumerable.Empty<KeyValuePair<string, string>>();
@@ -164,7 +163,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                 return Enumerable.Empty<TData>();
@@ -181,7 +180,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                 return Enumerable.Empty<TData>();
@@ -225,7 +224,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SetMembersAsync(cacheKey, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
                 _logger.LogWarning("The list of {@cacheKey} key could not be found.", cacheKey);
             }
@@ -383,8 +382,8 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 _ => $"*{searchKey}*",
             };
 
-            var redisKeys = _server.Keys(_defaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
-            if (!redisKeys.Any())
+            var redisKeys = _server.Keys(_redisServerSetting.DefaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
+            if (redisKeys.Length == 0)
             {
                 _logger.LogInformation("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
                 return default;

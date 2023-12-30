@@ -37,15 +37,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         RedisRetryPolicies.Logger = services.BuildServiceProvider().GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
-        services.TryAddSingleton<IRedisService>(provider =>
-        {
-            IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
-            IDatabase database = connectionMultiplexer.GetDatabase(redisServerSetting.DefaultDatabase);
-            IServer server = connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
-            ILogger<StackExchangeRedisManager> logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
-
-            return new StackExchangeRedisManager(database, server, logger, redisServerSetting.DefaultDatabase);
-        });
+        services.TryAddSingleton<IRedisService, StackExchangeRedisManager>();
 
         return services;
     }
