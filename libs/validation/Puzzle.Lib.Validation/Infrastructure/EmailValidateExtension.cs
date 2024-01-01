@@ -5,7 +5,7 @@
 /// </summary>
 internal static class EmailValidateExtension
 {
-    static readonly string[] tlds = new string[] { "com", "net", "org", "edu", "gov", "us", "uk", "ca", "au", "fr" };
+    static readonly string[] TLDS = ["com", "net", "org", "edu", "gov", "us", "uk", "ca", "au", "fr"];
 
     /// <summary>
     /// Validates the top-level domain (TLD) of an email address.
@@ -20,6 +20,6 @@ internal static class EmailValidateExtension
         string[] emailParts = email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         int lastPartIndex = emailParts.Length - 1;
 
-        return Array.Exists(tlds, tld => tld == emailParts[lastPartIndex]);
+        return Array.Exists(TLDS, tld => tld == emailParts[lastPartIndex]);
     }
 }

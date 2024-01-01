@@ -1,3 +1,4 @@
+using Puzzle.Lib.Host.Infrastructure;
 using Puzzle.Lib.Response;
 
 var builder = WebApplication.CreateBuilder(args);

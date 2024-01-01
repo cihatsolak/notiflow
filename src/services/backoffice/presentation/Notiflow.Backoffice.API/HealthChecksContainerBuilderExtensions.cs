@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.API;
+﻿using Puzzle.Lib.HealthCheck.Infrastructure;
+
+namespace Notiflow.Backoffice.API;
 
 internal static class HealthChecksContainerBuilderExtensions
 {

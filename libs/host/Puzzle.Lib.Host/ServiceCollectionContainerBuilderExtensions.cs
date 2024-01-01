@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Host;
+﻿using Puzzle.Lib.Host.Infrastructure;
+
+namespace Puzzle.Lib.Host;
 
 /// <summary>
 /// This class provides a set of extension methods for adding additional functionality to the IServiceCollection and ContainerBuilder instances.
