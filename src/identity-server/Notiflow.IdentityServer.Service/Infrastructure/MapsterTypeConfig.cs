@@ -1,6 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Infrastructure.Mapster;
+﻿namespace Notiflow.IdentityServer.Service.Infrastructure;
 
-internal class TypeConfig : IRegister
+internal class MapsterTypeConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

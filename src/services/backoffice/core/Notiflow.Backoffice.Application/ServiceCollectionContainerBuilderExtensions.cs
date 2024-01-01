@@ -6,10 +6,10 @@ public static class ServiceCollectionContainerBuilderExtensions
     {
         RedisServerSetting redisServerSetting = configuration.GetRequiredSection(nameof(RedisServerSetting)).Get<RedisServerSetting>();
 
-        services.AddMediatR(opt =>
+        services.AddMediatR(options =>
         {
-            opt.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            opt.BehaviorsToRegister.AddRange(new List<ServiceDescriptor>
+            options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            options.BehaviorsToRegister.AddRange(new List<ServiceDescriptor>
             {
                 new(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>), ServiceLifetime.Singleton),
                 new(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>), ServiceLifetime.Scoped),
@@ -34,7 +34,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddMassTransit()
             .AddWebApiLocalize()
             .AddHttpContextAccessor()
-            .AddServerSideFluentValidation()
+            .AddServerSideValidation()
             .AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddScoped<IClaimsTransformation, TenantIdClaimsTransformation>();

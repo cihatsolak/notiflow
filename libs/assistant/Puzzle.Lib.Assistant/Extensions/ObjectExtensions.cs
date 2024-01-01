@@ -74,7 +74,7 @@ public static class ObjectExtensions
 
         if (type.IsGenericType)
         {
-            var genericTypes = string.Join(",", type.GetGenericArguments().Select(t => t.Name).ToArray());
+            var genericTypes = string.Join(PunctuationChars.Comma, type.GetGenericArguments().Select(t => t.Name).ToArray());
             return $"{type.Name.Remove(type.Name.IndexOf('`'))}<{genericTypes}>";
         }
 

@@ -11,7 +11,6 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Net.Mime;
-global using System.Runtime.Serialization;
 global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using System.Text;

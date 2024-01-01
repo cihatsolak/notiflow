@@ -15,6 +15,5 @@ global using Serilog.Filters;
 global using Serilog.Formatting.Elasticsearch;
 global using Serilog.Sinks.Elasticsearch;
 global using Serilog.Sinks.MicrosoftTeams;
-global using System.Collections.ObjectModel;
-global using System.Data;
+global using System.ComponentModel.DataAnnotations;
 global using System.Reflection;

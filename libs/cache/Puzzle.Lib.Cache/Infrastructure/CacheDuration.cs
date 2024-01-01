@@ -1,9 +1,9 @@
-﻿namespace Puzzle.Lib.Cache.Infrastructure.Enums;
+﻿namespace Puzzle.Lib.Cache.Infrastructure;
 
 /// <summary>
 /// Specifies the duration for which an item should be cached in minutes.
 /// </summary>
-public enum CacheDuration 
+public enum CacheDuration
 {
     /// <summary>
     /// Cache item for 1 minute.

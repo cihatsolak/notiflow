@@ -27,6 +27,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.EnableForHttps = true;
             options.Providers.Add<BrotliCompressionProvider>();
             options.Providers.Add<GzipCompressionProvider>();
+            options.MimeTypes = ResponseCompressionDefaults.MimeTypes;
         });
 
         return services;

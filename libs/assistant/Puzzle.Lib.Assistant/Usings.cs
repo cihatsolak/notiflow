@@ -1,4 +1,5 @@
-﻿global using Puzzle.Lib.Assistant.Enums;
+﻿global using Puzzle.Lib.Assistant.Constants;
+global using Puzzle.Lib.Assistant.Enums;
 global using Puzzle.Lib.Assistant.Extensions;
 global using System.ComponentModel;
 global using System.Diagnostics;

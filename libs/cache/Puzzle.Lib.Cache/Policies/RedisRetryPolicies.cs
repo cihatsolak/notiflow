@@ -33,7 +33,7 @@ internal static class RedisRetryPolicies
     /// <param name="context">The context of the retry attempt.</param>
     private static void OnRedisRetry(Exception exception, TimeSpan timeSpan, int retryAttempt, Context context)
     {
-        Logger.LogError(exception, "An error occurred in redis communication. Waiting for {@timeSpan} before next attempt. Retry attempt: {@retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
+        Logger.LogError(exception, "An error occurred in redis communication. Waiting for {timeSpan} before next attempt. Retry attempt: {retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
     }
 
     /// <summary>

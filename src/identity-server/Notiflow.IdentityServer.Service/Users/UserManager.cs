@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Users;
+﻿using Notiflow.IdentityServer.Service.Infrastructure;
+
+namespace Notiflow.IdentityServer.Service.Users;
 
 internal sealed class UserManager : IUserService
 {
@@ -71,7 +73,7 @@ internal sealed class UserManager : IUserService
             return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.USER_UPTATED]);
         }
 
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, FilePaths.PROFILE_PHOTOS, cancellationToken);
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
         if (!fileProcessResult.Succeeded)
         {
             _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
@@ -107,7 +109,7 @@ internal sealed class UserManager : IUserService
             return Result<string>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.USER_NOT_FOUND]);
         }
         
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, FilePaths.PROFILE_PHOTOS, cancellationToken);
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
         if (!fileProcessResult.Succeeded)
         {
             _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
