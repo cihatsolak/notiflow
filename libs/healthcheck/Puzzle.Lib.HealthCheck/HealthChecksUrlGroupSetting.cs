@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.HealthCheck.Settings;
+﻿namespace Puzzle.Lib.HealthCheck;
 
 /// <summary>
 /// Represents a setting that contains a list of URL groups to be used in health checks.

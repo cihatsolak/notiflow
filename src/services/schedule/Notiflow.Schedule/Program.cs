@@ -22,7 +22,7 @@ builder.AddConfigureHealthChecks();
 
 builder.Services
     .AddMassTransit()
-    .AddLowercaseRouting()
+    .AddLowercaseRoute()
     .AddWebApiLocalize()
     .AddResponseCompression()
     .AddServerSideValidation()
@@ -40,7 +40,7 @@ app
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
-   .UseHealthChecksConfiguration()
+   .UseHealth()
    .UseHangfire();
 
 app.UseLocalizationWithEndpoint();

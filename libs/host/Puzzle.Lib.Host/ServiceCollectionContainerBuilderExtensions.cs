@@ -24,7 +24,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection instance to which the route settings are added.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
-    public static IServiceCollection AddLowercaseRouting(this IServiceCollection services)
+    public static IServiceCollection AddLowercaseRoute(this IServiceCollection services)
     {
         services.AddRouting(options =>
         {

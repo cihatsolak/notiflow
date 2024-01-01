@@ -35,7 +35,7 @@ app
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
-   .UseHealthChecksConfiguration();
+   .UseHealth();
 
 app.UseLocalizationWithEndpoint();
 app.UseApplicationLifetimes();

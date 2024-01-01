@@ -51,9 +51,9 @@ public static class HostBuilderExtensions
     /// <returns>The modified IHostBuilder instance.</returns>
     public static IHostBuilder AddShutdownTimeOut(this IHostBuilder hostBuilder)
     {
-        hostBuilder.ConfigureHostOptions(configureOptions =>
+        hostBuilder.ConfigureHostOptions(options =>
         {
-            configureOptions.ShutdownTimeout = TimeSpan.FromMinutes(2);
+            options.ShutdownTimeout = TimeSpan.FromMinutes(2);
         });
 
         return hostBuilder;

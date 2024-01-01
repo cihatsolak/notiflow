@@ -33,7 +33,7 @@ app.UseHttpSecurityPrecautions(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
-   .UseHealthChecksConfiguration();
+   .UseHealth();
 
 app.UseLocalizationWithEndpoint();
 

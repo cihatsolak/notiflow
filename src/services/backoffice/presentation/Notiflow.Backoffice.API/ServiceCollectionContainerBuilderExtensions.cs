@@ -68,7 +68,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         });
 
         services
-            .AddLowercaseRouting()
+            .AddLowercaseRoute()
             .AddCompressResponse()
             .AddHttpSecurityPrecautions(hostEnvironment)
             .AddCustomHttpLogging();
