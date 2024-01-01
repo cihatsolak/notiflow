@@ -1,5 +1,14 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Update;
 
+public sealed record UpdateDeviceCommand(
+    int Id,
+    OSVersion OSVersion,
+    string Code,
+    string Token,
+    CloudMessagePlatform CloudMessagePlatform
+    )
+    : IRequest<Result<Unit>>;
+
 public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

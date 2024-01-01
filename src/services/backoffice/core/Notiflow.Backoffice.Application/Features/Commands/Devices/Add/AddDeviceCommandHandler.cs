@@ -1,5 +1,13 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Add;
 
+public sealed record AddDeviceCommand(
+    int CustomerId,
+    OSVersion OSVersion,
+    string Code,
+    string Token,
+    CloudMessagePlatform CloudMessagePlatform
+    ) : IRequest<Result<int>>;
+
 public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, Result<int>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
@@ -28,7 +36,7 @@ public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, 
         await _notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
         await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new device with ID {@deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
+        _logger.LogInformation("A new device with ID {deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
 
         return Result<int>.Success(StatusCodes.Status201Created, _localizer[ResultMessage.DEVICE_ASSOCIATED_CUSTOMER_ADDED], device.Id);
     }

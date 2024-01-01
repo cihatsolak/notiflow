@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers.GetById;
 
+public sealed record GetCustomerByIdQuery(int Id) : IRequest<Result<GetCustomerByIdQueryResult>>;
+
 public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, Result<GetCustomerByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;

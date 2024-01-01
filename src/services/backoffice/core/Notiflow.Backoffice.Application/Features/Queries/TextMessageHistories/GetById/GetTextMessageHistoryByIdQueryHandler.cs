@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories.GetById;
 
+public sealed record GetTextMessageHistoryByIdQuery(int Id) : IRequest<Result<GetTextMessageHistoryByIdQueryResult>>;
+
 public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Result<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;

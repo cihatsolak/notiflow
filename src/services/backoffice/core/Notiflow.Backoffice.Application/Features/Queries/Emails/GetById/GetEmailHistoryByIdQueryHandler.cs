@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Emails.GetById;
 
+public sealed record GetEmailHistoryByIdQuery(int Id) : IRequest<Result<GetEmailHistoryByIdQueryResult>>;
+
 public sealed class GetEmailHistoryByIdQueryHandler : IRequestHandler<GetEmailHistoryByIdQuery, Result<GetEmailHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;

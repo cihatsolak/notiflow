@@ -1,5 +1,16 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Add;
 
+public sealed record AddCustomerCommand(
+    string Name,
+    string Surname,
+    string PhoneNumber,
+    string Email,
+    DateTime BirthDate,
+    Gender Gender,
+    MarriageStatus MarriageStatus
+    )
+    : IRequest<Result<int>>;
+
 public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerCommand, Result<int>>
 {
     private readonly INotiflowUnitOfWork _uow;

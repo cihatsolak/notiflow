@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateBlocking;
 
+public sealed record UpdateCustomerBlockingCommand(int Id, bool IsBlocked) : IRequest<Result<Unit>>;
+
 public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<UpdateCustomerBlockingCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

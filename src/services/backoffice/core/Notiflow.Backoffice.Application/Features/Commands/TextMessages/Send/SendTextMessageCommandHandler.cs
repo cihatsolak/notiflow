@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Send;
 
+public sealed record SendTextMessageCommand(List<int> CustomerIds, string Message) : IRequest<Result<Unit>>;
+
 public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMessageCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
