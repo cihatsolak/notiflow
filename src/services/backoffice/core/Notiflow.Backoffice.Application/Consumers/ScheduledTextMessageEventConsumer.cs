@@ -11,11 +11,7 @@ public sealed class ScheduledTextMessageEventConsumer : IConsumer<ScheduledTextM
 
     public async Task Consume(ConsumeContext<ScheduledTextMessageEvent> context)
     {
-        var response = await _mediator.Send(new SendTextMessageCommand
-        {
-            CustomerIds = context.Message.CustomerIds,
-            Message = context.Message.Message
-        });
+        var response = await _mediator.Send(new SendTextMessageCommand(context.Message.CustomerIds, context.Message.Message));
 
         await context.RespondAsync(new ScheduledResponse
         {
