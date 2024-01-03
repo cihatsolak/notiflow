@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Models.Users;
+﻿namespace Notiflow.IdentityServer.Service.Models;
 
 public sealed record CreateUserRequest(string Name, string Surname, string Email, string Username, string Password);
 

@@ -1,5 +1,3 @@
-using Puzzle.Lib.Host.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
@@ -27,10 +25,10 @@ builder.Services.AddConfigureHealthChecks(builder.Configuration);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
-app.UseAuth();
 
 app
    .UseApiExceptionHandler()
+   .UseAuth()
    .UseHttpSecurityPrecautions(builder.Environment)
    .UseSwaggerWithRedoclyDoc(builder.Environment)
    .UseMigrations(builder.Environment)

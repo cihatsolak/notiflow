@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.HealthCheck.Infrastructure;
-
-namespace Notiflow.IdentityServer;
+﻿namespace Notiflow.IdentityServer;
 
 internal static class HealthChecksContainerBuilderExtensions
 {

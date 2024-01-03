@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Models.Auths;
+﻿namespace Notiflow.IdentityServer.Service.Models;
 
 public sealed record CreateAccessTokenRequest(string Username, string Password);
 

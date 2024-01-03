@@ -2,9 +2,11 @@
 
 internal static class SeedData
 {
+    private const string TURKEY_LOCALE = "tr";
+
     internal static List<Tenant> GenerateFakeTenants()
     {
-        return new Faker<Tenant>("tr")
+        return new Faker<Tenant>(TURKEY_LOCALE)
              .RuleFor(tenant => tenant.Name, faker => faker.Company.CompanyName())
              .RuleFor(tenant => tenant.Token, faker => Guid.NewGuid())
              .RuleFor(tenant => tenant.Definition, faker => faker.Company.CatchPhrase())
@@ -16,7 +18,7 @@ internal static class SeedData
 
     private static TenantApplication GenerateTenantApplication()
     {
-        return new Faker<TenantApplication>("tr")
+        return new Faker<TenantApplication>(TURKEY_LOCALE)
                   .RuleFor(tenantApplication => tenantApplication.FirebaseServerKey, faker => $"AAA{faker.Random.AlphaNumeric(149)}")
                   .RuleFor(tenantApplication => tenantApplication.FirebaseSenderId, faker => faker.Random.AlphaNumeric(11))
                   .RuleFor(tenantApplication => tenantApplication.HuaweiServerKey, faker => $"AAA{faker.Random.AlphaNumeric(41)}")
@@ -31,7 +33,7 @@ internal static class SeedData
 
     private static TenantPermission GenerateTenantPermission()
     {
-        return new Faker<TenantPermission>("tr")
+        return new Faker<TenantPermission>(TURKEY_LOCALE)
                   .RuleFor(tenantPermission => tenantPermission.IsSendMessagePermission, faker => faker.Random.Bool())
                   .RuleFor(tenantPermission => tenantPermission.IsSendNotificationPermission, faker => faker.Random.Bool())
                   .RuleFor(tenantPermission => tenantPermission.IsSendEmailPermission, faker => faker.Random.Bool());
@@ -39,7 +41,7 @@ internal static class SeedData
 
     private static List<User> GenerateUsers()
     {
-        return new Faker<User>("tr")
+        return new Faker<User>(TURKEY_LOCALE)
            .StrictMode(false)
            .RuleFor(user => user.Name, faker => faker.Person.FirstName)
            .RuleFor(user => user.Surname, faker => faker.Person.LastName)
@@ -57,7 +59,7 @@ internal static class SeedData
 
     private static RefreshToken GenerateRefreshToken()
     {
-        return new Faker<RefreshToken>("tr")
+        return new Faker<RefreshToken>(TURKEY_LOCALE)
             .RuleFor(refreshToken => refreshToken.Token, faker => faker.Random.AlphaNumeric(50))
             .RuleFor(refreshToken => refreshToken.ExpirationDate, faker => faker.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now.AddDays(100)));
     }

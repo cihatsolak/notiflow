@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Service.Models.Users;
+﻿namespace Notiflow.IdentityServer.Service.Models;
 
 public sealed record UpdateUserRequest(string Name, string Surname, string Email, string Username, IFormFile Avatar);
 

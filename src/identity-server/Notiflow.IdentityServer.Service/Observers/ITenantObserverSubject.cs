@@ -11,7 +11,7 @@ internal sealed class TenantObserverSubject : ITenantObserverSubject
 
     public TenantObserverSubject()
     {
-        _tenantObservers = new List<ITenantObserver>();
+        _tenantObservers = [];
     }
 
     public void RegisterObserver(ITenantObserver tenantObserver)

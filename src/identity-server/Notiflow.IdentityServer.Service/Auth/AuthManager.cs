@@ -6,20 +6,17 @@ internal class AuthManager : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IClaimService _claimService;
     private readonly ILocalizerService<ResultMessage> _localizer;
-    private readonly ILogger<AuthManager> _logger;
 
     public AuthManager(
         ApplicationDbContext context,
         ITokenService tokenService,
         IClaimService claimService,
-        ILocalizerService<ResultMessage> localizer,
-        ILogger<AuthManager> logger)
+        ILocalizerService<ResultMessage> localizer)
     {
         _context = context;
         _tokenService = tokenService;
         _claimService = claimService;
         _localizer = localizer;
-        _logger = logger;
     }
 
     public async Task<Result<TokenResponse>> CreateAccessTokenAsync(CreateAccessTokenRequest request, CancellationToken cancellationToken)
@@ -37,7 +34,6 @@ internal class AuthManager : IAuthService
         var token = _tokenService.CreateToken(user);
         if (token is null)
         {
-            _logger.LogWarning("Failed to generate access token for {username} user.", request.Username);
             return Result<TokenResponse>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.ACCESS_TOKEN_NOT_PRODUCED]);
         }
 
@@ -84,7 +80,6 @@ internal class AuthManager : IAuthService
         var token = _tokenService.CreateToken(refreshToken.User);
         if (token is null)
         {
-            _logger.LogWarning("Failed to generate access token for {username} user.", refreshToken.User.Username);
             return Result<TokenResponse>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.ACCESS_TOKEN_NOT_PRODUCED]);
         }
 
@@ -108,7 +103,7 @@ internal class AuthManager : IAuthService
         }
 
         int numberOfRowsDeleted = await _context.RefreshTokens.Where(p => p.Token == refreshToken.Token).ExecuteDeleteAsync(cancellationToken);
-        if (numberOfRowsDeleted != 1)
+        if (0 >= numberOfRowsDeleted)
         {
             return Result<EmptyResponse>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.REFRESH_TOKEN_COULD_NOT_BE_DELETED]);
         }
@@ -121,7 +116,6 @@ internal class AuthManager : IAuthService
         var user = await _context.Users.FindAsync(new object[] { _claimService.NameIdentifier }, cancellationToken);
         if (user is null)
         {
-            _logger.LogInformation("No authorized user found.");
             return Result<UserResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.USER_NOT_FOUND]);
         }
 

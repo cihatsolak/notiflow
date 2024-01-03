@@ -1,4 +1,4 @@
-﻿namespace Notiflow.IdentityServer.Middlewares;
+﻿namespace Notiflow.IdentityServer;
 
 internal static class ApplicationBuilderExtensions
 {

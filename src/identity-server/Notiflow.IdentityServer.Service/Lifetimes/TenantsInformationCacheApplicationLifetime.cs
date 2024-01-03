@@ -29,7 +29,7 @@ public static class TenantsInformationCacheApplicationLifetime
         try
         {
             var response = await tenantService.GetTenantsAsync(CancellationToken.None);
-            if (!response.IsSuccess)
+            if (response.IsFailure)
                 return;
 
             var transactionResults = await AddCacheAsync(response.Data);
@@ -50,7 +50,7 @@ public static class TenantsInformationCacheApplicationLifetime
 
     private static async Task<bool[]> AddCacheAsync(List<Tenant> tenants)
     {
-        List<Task<bool>> tenantCachingTasks = new();
+        List<Task<bool>> tenantCachingTasks = [];
 
         foreach (var tenant in tenants)
         {

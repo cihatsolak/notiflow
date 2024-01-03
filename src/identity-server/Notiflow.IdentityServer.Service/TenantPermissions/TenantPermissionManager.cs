@@ -44,7 +44,7 @@ internal sealed class TenantPermissionManager : ITenantPermissionService
             return Result<EmptyResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TENANT_PERMISSION_NOT_FOUND]);
         }
 
-        List<Task<bool>> permissionCachingTasks = new();
+        List<Task<bool>> permissionCachingTasks = [];
         string cacheKey = TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO);
 
         if (tenantPermission.IsSendMessagePermission != request.IsSendMessagePermission)
