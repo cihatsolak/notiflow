@@ -1,26 +1,11 @@
-using Puzzle.Lib.Host.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host
-    .AddAppConfiguration()
-    .AddServiceValidateScope()
-    .AddShutdownTimeOut();
-
-SeriLogElasticSetting seriLogElasticSetting = builder.Configuration.GetRequiredSection(nameof(SeriLogElasticSetting)).Get<SeriLogElasticSetting>();
-
-builder.Host.AddSeriLogWithElasticSearch(options =>
-{
-    options.Address = seriLogElasticSetting.Address;
-    options.Username = seriLogElasticSetting.Username;
-    options.Password = seriLogElasticSetting.Password;
-    options.IsRequiredAuthentication = seriLogElasticSetting.IsRequiredAuthentication;
-});
+builder.Host.Configured(builder.Configuration);
 
 builder.Services
     .AddWebDependencies(builder.Configuration)
     .AddApplication(builder.Configuration)
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddPersistence(builder.Configuration);
 
 // Configure the HTTP request pipeline.
