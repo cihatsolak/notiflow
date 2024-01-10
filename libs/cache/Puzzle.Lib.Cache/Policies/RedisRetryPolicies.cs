@@ -17,30 +17,12 @@ internal static class RedisRetryPolicies
     /// <summary>
     /// Gets an asynchronous retry policy for Redis.
     /// </summary>
-    internal static AsyncRetryPolicy AsyncRetryPolicy => RedisRetryAsyncPolicy();
+    internal static AsyncRetryPolicy AsyncRetryPolicy => Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry);
 
     /// <summary>
     /// Gets a retry policy for Redis.
     /// </summary>
-    internal static RetryPolicy RetryPolicy => RedisRetryPolicy();
-
-    /// <summary>
-    /// Returns an asynchronous retry policy for Redis.
-    /// </summary>
-    /// <returns>An asynchronous retry policy.</returns>
-    private static AsyncRetryPolicy RedisRetryAsyncPolicy()
-    {
-        return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry);
-    }
-
-    /// <summary>
-    /// Returns a retry policy for Redis.
-    /// </summary>
-    /// <returns>A retry policy.</returns>
-    private static RetryPolicy RedisRetryPolicy()
-    {
-        return Policy.Handle<Exception>().WaitAndRetry(RETRY_COUNT, ComputeDuration, OnRedisRetry);
-    }
+    internal static RetryPolicy RetryPolicy => Policy.Handle<Exception>().WaitAndRetry(RETRY_COUNT, ComputeDuration, OnRedisRetry);
 
     /// <summary>
     /// Logs an error message when a Redis communication error occurs during a retry attempt.
@@ -51,7 +33,7 @@ internal static class RedisRetryPolicies
     /// <param name="context">The context of the retry attempt.</param>
     private static void OnRedisRetry(Exception exception, TimeSpan timeSpan, int retryAttempt, Context context)
     {
-        Logger.LogError(exception, "An error occurred in redis communication. Waiting for {@timeSpan} before next attempt. Retry attempt: {@retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
+        Logger.LogError(exception, "An error occurred in redis communication. Waiting for {timeSpan} before next attempt. Retry attempt: {retryAttempt}. Context : {@context}", timeSpan, retryAttempt, context);
     }
 
     /// <summary>

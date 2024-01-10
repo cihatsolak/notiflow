@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Text;
-
-namespace Notiflow.IdentityServer.Service.Tokens;
+﻿namespace Notiflow.IdentityServer.Service.Tokens;
 
 internal sealed class TokenManager : ITokenService
 {

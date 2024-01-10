@@ -1,3 +1,5 @@
+using Puzzle.Lib.Host.Infrastructure;
+
 namespace Puzzle.Lib.Host.Tests
 {
     public class HostBuilderExtensionsTests

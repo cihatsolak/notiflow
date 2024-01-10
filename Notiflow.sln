@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F5D8B786-D
 	ProjectSection(SolutionItems) = preProject
 		docs\hangfire.txt = docs\hangfire.txt
 		docs\project-host-information.txt = docs\project-host-information.txt
+		MassTransit.txt = MassTransit.txt
 		docs\tokens.txt = docs\tokens.txt
 	EndProjectSection
 EndProject
@@ -196,7 +197,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clients", "clients", "{A965
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Panel", "src\clients\Notiflow.Panel\Notiflow.Panel.csproj", "{916A2B4F-A531-4DF9-8438-3248965E1E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notiflow.Backoffice.SignalR", "src\services\backoffice\infrastructure\Notiflow.Backoffice.SignalR\Notiflow.Backoffice.SignalR.csproj", "{42F9508A-3703-4DA3-949A-AC50911197D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notiflow.Backoffice.SignalR", "src\services\backoffice\infrastructure\Notiflow.Backoffice.SignalR\Notiflow.Backoffice.SignalR.csproj", "{42F9508A-3703-4DA3-949A-AC50911197D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

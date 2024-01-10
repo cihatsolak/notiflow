@@ -17,7 +17,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.Configure(configure);
 
-        services.TryAddSingleton<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect(new ConfigurationOptions
+        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
         {
             EndPoints = { redisServerSetting.ConnectionString },
             AbortOnConnectFail = redisServerSetting.AbortOnConnectFail,
@@ -26,26 +26,19 @@ public static class ServiceCollectionContainerBuilderExtensions
             User = redisServerSetting.Username,
             Password = redisServerSetting.Password,
             DefaultDatabase = redisServerSetting.DefaultDatabase,
-            AllowAdmin = redisServerSetting.AllowAdmin
-        }));
-
-        services.TryAddSingleton(provider =>
-        {
-            IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
-            return connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
+            AllowAdmin = redisServerSetting.AllowAdmin,
+            ChannelPrefix = new RedisChannel($"{Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant()}:", RedisChannel.PatternMode.Auto)
         });
 
-        RedisRetryPolicies.Logger = services.BuildServiceProvider().GetRequiredService<ILogger<StackExchangeRedisManager>>();
-
-        services.TryAddSingleton<IRedisService>(provider =>
+        services.TryAddSingleton<IConnectionMultiplexer>(provider =>
         {
-            IConnectionMultiplexer connectionMultiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
-            IDatabase database = connectionMultiplexer.GetDatabase(redisServerSetting.DefaultDatabase);
-            IServer server = connectionMultiplexer.GetServer(redisServerSetting.ConnectionString);
-            ILogger<StackExchangeRedisManager> logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+            RedisRetryPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
-            return new StackExchangeRedisManager(database, server, logger, redisServerSetting.DefaultDatabase);
+            return connectionMultiplexer;
         });
+
+        services.TryAddSingleton(connectionMultiplexer.GetServer(redisServerSetting.ConnectionString));
+        services.TryAddSingleton<IRedisService, StackExchangeRedisManager>();
 
         return services;
     }

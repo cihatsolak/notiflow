@@ -11,15 +11,12 @@ public sealed class ScheduledEmailEventConsumer : IConsumer<ScheduledEmailEvent>
 
     public async Task Consume(ConsumeContext<ScheduledEmailEvent> context)
     {
-        var response = await _mediator.Send(new SendEmailCommand
-        {
-            Body = context.Message.Body,
-            Subject = context.Message.Subject,
-            CustomerIds = context.Message.CustomerIds,
-            CcAddresses = context.Message.CcAddresses,
-            BccAddresses = context.Message.BccAddresses,
-            IsBodyHtml = context.Message.IsBodyHtml
-        });
+        var response = await _mediator.Send(new SendEmailCommand(context.Message.Body,
+                                                                 context.Message.Subject,
+                                                                 context.Message.CustomerIds,
+                                                                 context.Message.CcAddresses,
+                                                                 context.Message.BccAddresses,
+                                                                 context.Message.IsBodyHtml));
 
         await context.RespondAsync(new ScheduledResponse
         {

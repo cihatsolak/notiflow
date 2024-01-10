@@ -1,5 +1,13 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails.Send;
 
+public sealed record SendEmailCommand(
+    string Body,
+    string Subject,
+    List<int> CustomerIds,
+    List<string> CcAddresses,
+    List<string> BccAddresses,
+    bool IsBodyHtml) : IRequest<Result<Unit>>;
+
 public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

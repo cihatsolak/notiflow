@@ -10,7 +10,7 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthChecksConfiguration(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealth(this IApplicationBuilder app)
     {
         app.UseHealthChecks("/health", new HealthCheckOptions
         {
@@ -33,15 +33,15 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthUIConfiguration(this IApplicationBuilder app, string customCssPath = null)
+    public static IApplicationBuilder UseHealthUI(this IApplicationBuilder app, string customCssPath = null)
     {
-        app.UseHealthChecksUI(setup =>
+        app.UseHealthChecksUI(options =>
         {
-            setup.UIPath = "/health-ui";
+            options.UIPath = "/health-ui";
 
             if (!string.IsNullOrWhiteSpace(customCssPath))
             {
-                setup.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), customCssPath));
+                options.AddCustomStylesheet(Path.Combine(Directory.GetCurrentDirectory(), customCssPath));
             }
         });
 
@@ -53,8 +53,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthAndUIConfiguration(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealthWithUIChecks(this IApplicationBuilder app)
     {
-        return app.UseHealthChecksConfiguration().UseHealthUIConfiguration();
+        return app.UseHealth().UseHealthUI();
     }
 }

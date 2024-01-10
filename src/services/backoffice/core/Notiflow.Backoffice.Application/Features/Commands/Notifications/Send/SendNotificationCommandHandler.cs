@@ -1,5 +1,12 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Notifications.Send;
 
+public sealed record SendNotificationCommand(
+    List<int> CustomerIds,
+    string Title,
+    string Message,
+    string ImageUrl
+    ) : IRequest<Result<Unit>>;
+
 public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;

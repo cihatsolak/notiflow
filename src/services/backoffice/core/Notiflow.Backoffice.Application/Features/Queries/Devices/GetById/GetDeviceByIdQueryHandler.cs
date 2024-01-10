@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices.GetById;
 
+public sealed record GetDeviceByIdQuery(int Id) : IRequest<Result<GetDeviceByIdQueryResult>>;
+
 public sealed class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, Result<GetDeviceByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;

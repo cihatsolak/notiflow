@@ -2,10 +2,8 @@
 
 public static class ServiceCollectionContainerBuilderExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        IConfiguration configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-
         services.TryAddSingleton<IEmailService, EmailManager>();
         services.TryAddSingleton<ITextMessageService, TextMessageManager>();
 

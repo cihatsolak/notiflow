@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.Delete;
 
+public sealed record DeleteDeviceCommand(int Id) : IRequest<Result<Unit>>;
+
 public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

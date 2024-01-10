@@ -1,5 +1,17 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Update;
 
+public sealed record UpdateCustomerCommand(
+    int Id,
+    string Name,
+    string Surname,
+    string PhoneNumber,
+    string Email,
+    DateTime BirthDate,
+    Gender Gender,
+    MarriageStatus MarriageStatus
+    )
+    : IRequest<Result<Unit>>;
+
 public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

@@ -1,3 +1,5 @@
+using Puzzle.Lib.Host.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -26,7 +28,7 @@ builder.Services.AddWebUILocalize(opt =>
     opt.SharedDataAnnotationLocation = Assembly.GetExecutingAssembly().GetName().Name;
 });
 
-builder.Services.AddClientSideFluentValidation();
+builder.Services.AddClientSideValidation();
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
 

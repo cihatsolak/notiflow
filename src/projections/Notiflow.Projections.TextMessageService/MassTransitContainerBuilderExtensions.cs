@@ -21,6 +21,14 @@ internal static class MassTransitContainerBuilderExtensions
                     hostConfigurator.Password(rabbitMqStandaloneSetting.Password);
                 });
 
+                rabbitMqBusFactoryConfigurator.UseMessageRetry(retryCfg =>
+                {
+                    retryCfg.Interval(3, TimeSpan.FromSeconds(10));
+                });
+
+                //1 dk içerisinde 1000 request yapabilecek şekilde sınırlandırılmıştır.
+                rabbitMqBusFactoryConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
+
                 rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_DELIVERED_EVENT_QUEUE, options =>
                 {
                     options.ConfigureConsumer<TextMessageDeliveredEventConsumer>(busRegistrationContext);

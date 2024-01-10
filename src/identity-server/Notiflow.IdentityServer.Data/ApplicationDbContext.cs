@@ -2,18 +2,26 @@
 
 public sealed class ApplicationDbContext : DbContext
 {
+    private const string TENANT_TOKEN_HEADER = "x-tenant-token";
     private readonly Guid _tenantToken;
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options, 
+        IHttpContextAccessor httpContextAccessor) : base(options)
+    {
+        _tenantToken = GetTenantToken(httpContextAccessor);
+    }
+
+    private static Guid GetTenantToken(IHttpContextAccessor httpContextAccessor)
     {
         if (httpContextAccessor.HttpContext is null)
-            return;
+            return Guid.Empty;
 
-        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue("x-tenant-token", out StringValues tenantToken);
-        if (isExists)
-        {
-            _tenantToken = Guid.Parse(tenantToken.Single());
-        }
+        bool isExists = httpContextAccessor.HttpContext.Request.Headers.TryGetValue(TENANT_TOKEN_HEADER, out StringValues tenantToken);
+        if (!isExists)
+            return Guid.Empty;
+
+        return Guid.Parse(tenantToken.Single());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

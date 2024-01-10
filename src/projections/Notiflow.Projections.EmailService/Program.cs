@@ -1,3 +1,5 @@
+using Puzzle.Lib.Host.Infrastructure;
+
 IHost host = Host.CreateDefaultBuilder(args)
     .AddAppConfiguration()
     .AddServiceValidateScope()
@@ -9,7 +11,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.AddHostedService<EmailServiceWorker>();
     })
-    .UseSerilog(Puzzle.Lib.Logging.Builders.HostBuilderExtensions.ConfigureLogging)
+    .UseSerilog(Puzzle.Lib.Logging.HostBuilderExtensions.ConfigureLogging)
     .Build();
 
 var logger = host.Services.GetRequiredService<ILogger<EmailServiceWorker>>();

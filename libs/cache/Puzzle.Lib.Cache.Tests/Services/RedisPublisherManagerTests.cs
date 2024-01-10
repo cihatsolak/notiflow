@@ -17,7 +17,7 @@
 
             // Assert
             subscriberMock.Verify(
-                x => x.PublishAsync(channelName, testEventJson, CommandFlags.FireAndForget),
+                x => x.PublishAsync(new RedisChannel(channelName, RedisChannel.PatternMode.Literal), testEventJson, CommandFlags.FireAndForget),
                 Times.Once);
         }
 

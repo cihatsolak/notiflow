@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Devices.UpdateToken;
 
+public sealed record UpdateDeviceTokenCommand(int Id, string Token) : IRequest<Result<Unit>>;
+
 public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDeviceTokenCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

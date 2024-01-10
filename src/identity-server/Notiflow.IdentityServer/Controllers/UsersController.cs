@@ -5,7 +5,7 @@ public sealed class UsersController(IUserService userService) : BaseApiControlle
     /// <summary>
     /// Retrieves detailed information about a user based on the provided ID.
     /// </summary>
-    /// <param name="id">The ID of the user to retrieve details for.</param>
+    /// <param name="id">The ID of the user to retrieve details for.</param>s
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The response containing detailed information about the user.</returns>
     /// <response code="200">operation successful</response>

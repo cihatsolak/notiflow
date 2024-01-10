@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Schedule;
+﻿using Puzzle.Lib.HealthCheck.Infrastructure;
+
+namespace Notiflow.Schedule;
 
 internal static class HealthChecksContainerBuilderExtensions
 {

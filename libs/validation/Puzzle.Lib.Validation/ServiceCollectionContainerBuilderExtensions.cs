@@ -10,7 +10,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to configure.</param>
     /// <returns>The configured service collection.</returns>
-    public static IServiceCollection AddServerSideFluentValidation(this IServiceCollection services)
+    public static IServiceCollection AddServerSideValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         services.AddFluentValidationAutoValidation();
@@ -28,7 +28,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection to configure Fluent Design Auto Validation for.</param>
     /// <returns>The modified IServiceCollection.</returns>
-    public static IServiceCollection AddClientSideFluentValidation(this IServiceCollection services)
+    public static IServiceCollection AddClientSideValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
         services.AddFluentValidationAutoValidation();

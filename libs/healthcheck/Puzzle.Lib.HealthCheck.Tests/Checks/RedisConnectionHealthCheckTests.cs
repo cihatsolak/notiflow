@@ -1,3 +1,5 @@
+using Puzzle.Lib.HealthCheck.Infrastructure;
+
 namespace Puzzle.Lib.HealthCheck.Tests.Checks
 {
     public class RedisConnectionHealthCheckTests

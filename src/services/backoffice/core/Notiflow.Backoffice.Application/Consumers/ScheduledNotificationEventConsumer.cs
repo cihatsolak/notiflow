@@ -11,13 +11,12 @@ public sealed class ScheduledNotificationEventConsumer : IConsumer<ScheduledNoti
 
     public async Task Consume(ConsumeContext<ScheduledNotificationEvent> context)
     {
-        var response = await _mediator.Send(new SendNotificationCommand
-        {
-            CustomerIds = context.Message.CustomerIds,
-            ImageUrl = context.Message.ImageUrl,
-            Message = context.Message.Message,
-            Title = context.Message.Title
-        });
+        var response = await _mediator.Send(new SendNotificationCommand(
+            context.Message.CustomerIds,
+            context.Message.ImageUrl,
+            context.Message.Message,
+            context.Message.Title
+            ));
 
         await context.RespondAsync(new ScheduledResponse
         {

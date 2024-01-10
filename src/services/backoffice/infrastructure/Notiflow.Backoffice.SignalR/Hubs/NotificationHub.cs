@@ -10,6 +10,14 @@ public sealed class NotificationHub : Hub<INotificationHub>
     private readonly IRedisService _redisService;
     private readonly ILogger<NotificationHub> _logger;
 
+    public NotificationHub(
+        IRedisService redisService,
+        ILogger<NotificationHub> logger)
+    {
+        _redisService = redisService;
+        _logger = logger;
+    }
+
     public override async Task OnConnectedAsync()
     {
         await _redisService.HashSetAsync(HubExtensions.HUB_USERS, Context.User.Id(), Context.ConnectionId);
@@ -29,6 +37,4 @@ public sealed class NotificationHub : Hub<INotificationHub>
 
         await base.OnDisconnectedAsync(exception);
     }
-
-
 }

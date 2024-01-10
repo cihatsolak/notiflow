@@ -5,18 +5,17 @@ internal sealed class StackExchangeRedisManager : IRedisService
     private readonly IDatabase _database;
     private readonly IServer _server;
     private readonly ILogger<StackExchangeRedisManager> _logger;
-    private readonly int _defaultDatabase;
+    private readonly RedisServerSetting _redisServerSetting;
 
     public StackExchangeRedisManager(
-         IDatabase database,
-         IServer server,
-         ILogger<StackExchangeRedisManager> logger,
-         int defaultDatabase)
+        IConnectionMultiplexer connectionMultiplexer,
+        IOptions<RedisServerSetting> redisServerSetting,
+        ILogger<StackExchangeRedisManager> logger)
     {
-        _database = database;
-        _server = server;
+        _database = connectionMultiplexer.GetDatabase(redisServerSetting.Value.DefaultDatabase);
+        _server = connectionMultiplexer.GetServer(redisServerSetting.Value.ConnectionString);
         _logger = logger;
-        _defaultDatabase = defaultDatabase;
+        _redisServerSetting = redisServerSetting.Value;
     }
 
     public async Task<bool> ExistsAsync(string cacheKey)
@@ -38,7 +37,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             long result = await _database.StringIncrementAsync(cacheKey, increment, CommandFlags.DemandMaster);
             if (0 >= result)
             {
-                _logger.LogWarning("The key value {@cacheKey} could not be incremented by {@increment}.", cacheKey, increment);
+                _logger.LogWarning("The key value {cacheKey} could not be incremented by {increment}.", cacheKey, increment);
             }
 
             return result;
@@ -54,7 +53,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             long result = await _database.StringDecrementAsync(cacheKey, decrement, CommandFlags.DemandMaster);
             if (0 >= result)
             {
-                _logger.LogWarning("The {@cacheKey} key value has been reduced by {@increment}.", cacheKey, decrement);
+                _logger.LogWarning("The {cacheKey} key value has been reduced by {increment}.", cacheKey, decrement);
             }
 
             return result;
@@ -79,9 +78,9 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var hashEntries = await _database.HashGetAllAsync(cacheKey, CommandFlags.PreferReplica);
-            if (!hashEntries.Any())
+            if (hashEntries.Length == 0)
             {
-                _logger.LogWarning("Data for key {@cacheKey} not found.", cacheKey);
+                _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
                 return Enumerable.Empty<KeyValuePair<string, string>>();
             }
 
@@ -99,7 +98,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             var hashEntry = await _database.HashGetAsync(cacheKey, hashField, CommandFlags.PreferReplica);
             if (!hashEntry.HasValue)
             {
-                _logger.LogWarning("Data for key {@cacheKey} not found.", cacheKey);
+                _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
                 return default;
             }
 
@@ -116,7 +115,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.HashSetAsync(cacheKey, hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("The data for the {@cacheKey} key value could not be transferred to the redis.", cacheKey);
+                _logger.LogWarning("The data for the {cacheKey} key value could not be transferred to the redis.", cacheKey);
             }
 
             return succeeded;
@@ -133,7 +132,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.HashDeleteAsync(cacheKey, hashField, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Unable to delete data for key value {@cacheKey}.", cacheKey);
+                _logger.LogWarning("Unable to delete data for key value {cacheKey}.", cacheKey);
             }
 
             return succeeded;
@@ -150,7 +149,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             double result = await _database.SortedSetIncrementAsync(cacheKey, memberKey, increment, CommandFlags.DemandMaster);
             if (result == 0)
             {
-                _logger.LogWarning("Could not update member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
+                _logger.LogWarning("Could not update member {@memberKey} in the ordered list of key value {cacheKey}.", cacheKey, memberKey);
             }
 
             return (int)result;
@@ -164,9 +163,9 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
-                _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                 return Enumerable.Empty<TData>();
             }
 
@@ -181,9 +180,9 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
-                _logger.LogWarning("No data found in the ordered list of key value {@cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
+                _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
                 return Enumerable.Empty<TData>();
             }
 
@@ -201,7 +200,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.SortedSetRemoveAsync(cacheKey, memberKey, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not delete member {@memberKey} in the ordered list of key value {@cacheKey}.", cacheKey, memberKey);
+                _logger.LogWarning("Could not delete member {@memberKey} in the ordered list of key value {cacheKey}.", cacheKey, memberKey);
             }
 
             return succeeded;
@@ -225,9 +224,9 @@ internal sealed class StackExchangeRedisManager : IRedisService
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
             var redisValues = await _database.SetMembersAsync(cacheKey, CommandFlags.PreferReplica);
-            if (!redisValues.Any())
+            if (redisValues.Length == 0)
             {
-                _logger.LogWarning("The list of {@cacheKey} key could not be found.", cacheKey);
+                _logger.LogWarning("The list of {cacheKey} key could not be found.", cacheKey);
             }
 
             return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
@@ -243,7 +242,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.SetAddAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
             }
 
             return succeeded;
@@ -259,7 +258,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.SetRemoveAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Unable to delete element in unique list belonging to {@cacheKey} key.", cacheKey);
+                _logger.LogWarning("Unable to delete element in unique list belonging to {cacheKey} key.", cacheKey);
             }
 
             return succeeded;
@@ -289,7 +288,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
             }
 
             return succeeded;
@@ -305,7 +304,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDuration.GetHashCode()), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
             }
 
             return succeeded;
@@ -321,7 +320,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not transfer data {@cacheKey} to redis.", cacheKey);
+                _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
             }
 
             return succeeded;
@@ -337,7 +336,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(cacheKey, CommandFlags.PreferReplica);
             if (currentExpiration is null)
             {
-                _logger.LogWarning("The key {@cacheKey} could not be found.", cacheKey);
+                _logger.LogWarning("The key {cacheKey} could not be found.", cacheKey);
                 return default;
             }
 
@@ -346,7 +345,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             bool succeeded = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not extend {@cacheKey} key {@minute} minutes.", cacheKey, cacheDuration.GetHashCode());
+                _logger.LogWarning("Could not extend {cacheKey} key {@minute} minutes.", cacheKey, cacheDuration.GetHashCode());
             }
 
             return succeeded;
@@ -361,7 +360,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         {
             if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.DemandMaster))
             {
-                _logger.LogWarning("Failed to delete key {@cacheKey} in Redis.", cacheKey);
+                _logger.LogWarning("Failed to delete key {cacheKey} in Redis.", cacheKey);
                 return default;
             }
 
@@ -383,8 +382,8 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 _ => $"*{searchKey}*",
             };
 
-            var redisKeys = _server.Keys(_defaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
-            if (!redisKeys.Any())
+            var redisKeys = _server.Keys(_redisServerSetting.DefaultDatabase, searchKey, flags: CommandFlags.PreferReplica).ToArray();
+            if (redisKeys.Length == 0)
             {
                 _logger.LogInformation("Key(s) for {@searchKey} searched in Redis could not be found.", searchKey);
                 return default;
@@ -414,7 +413,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            await _server.FlushDatabaseAsync(_defaultDatabase, CommandFlags.DemandMaster);
+            await _server.FlushDatabaseAsync(_redisServerSetting.DefaultDatabase, CommandFlags.DemandMaster);
         });
     }
 

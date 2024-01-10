@@ -1,6 +1,23 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/auth/user",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7006
+        }
+      ],
+      "UpstreamPathTemplate": "/user-service/auth/user",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "https",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -26,6 +43,13 @@
       "UpstreamPathTemplate": "/backoffice-service/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "UpstreamScheme": "https",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      //"RouteClaimsRequirement": {
+      //  "iat": "employee"
+      //},
       "SwaggerKey": "BackOffice"
     },
     {
@@ -40,6 +64,10 @@
       "UpstreamPathTemplate": "/schedule-service/{everything}",
       "UpstreamHttpMethod": [ "POST" ],
       "UpstreamScheme": "https",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "SwaggerKey": "Scheduled"
     },
     {

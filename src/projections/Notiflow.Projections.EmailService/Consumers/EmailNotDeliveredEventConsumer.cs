@@ -5,6 +5,7 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
     private readonly IDbConnection _connection;
     private readonly ILogger<EmailNotDeliveredEventConsumer> _logger;
 
+
     public EmailNotDeliveredEventConsumer(
         IDbConnection connection,
         ILogger<EmailNotDeliveredEventConsumer> logger)

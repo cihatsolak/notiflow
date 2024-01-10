@@ -1,4 +1,4 @@
-using Puzzle.Lib.Http.Infrastructure;
+using Puzzle.Lib.Http.Infrastructure.Extensions;
 
 namespace Puzzle.Lib.Http.Tests
 {
@@ -11,7 +11,7 @@ namespace Puzzle.Lib.Http.Tests
             var token = "abc123";
 
             // Act
-            var result = HttpClientHeaderExtensions.CreateCollectionForBearerToken(token);
+            var result = HttpHeaderExtensions.CreateCollectionForBearerToken(token);
 
             // Assert
             Assert.NotNull(result);
@@ -21,13 +21,13 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void CreateCollectionForBearerToken_ShouldThrowArgumentNullException_WhenTokenIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.CreateCollectionForBearerToken(null));
+            Assert.Throws<ArgumentNullException>(() => HttpHeaderExtensions.CreateCollectionForBearerToken(null));
         }
 
         [Fact]
         public void CreateCollectionForBearerToken_ShouldThrowArgumentException_WhenTokenIsEmpty()
         {
-            Assert.Throws<ArgumentException>(() => HttpClientHeaderExtensions.CreateCollectionForBearerToken(""));
+            Assert.Throws<ArgumentException>(() => HttpHeaderExtensions.CreateCollectionForBearerToken(""));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void AddBearerTokenToHeader_ShouldThrowArgumentNullException_WhenNameValueCollectionIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.AddBearerToken(null, "token"));
+            Assert.Throws<ArgumentNullException>(() => HttpHeaderExtensions.AddBearerToken(null, "token"));
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Puzzle.Lib.Http.Tests
             var value = "application/json";
 
             // Act
-            var result = HttpClientHeaderExtensions.Generate(name, value);
+            var result = HttpHeaderExtensions.Generate(name, value);
 
             // Assert
             Assert.NotNull(result);
@@ -76,13 +76,13 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void GenerateHeader_ShouldThrowArgumentNullException_WhenNameIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.Generate(null, "value"));
+            Assert.Throws<ArgumentNullException>(() => HttpHeaderExtensions.Generate(null, "value"));
         }
 
         [Fact]
         public void GenerateHeader_ShouldThrowArgumentNullException_WhenValueIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.Generate("name", null));
+            Assert.Throws<ArgumentNullException>(() => HttpHeaderExtensions.Generate("name", null));
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace Puzzle.Lib.Http.Tests
         [Fact]
         public void AddHeaderItem_ShouldThrowArgumentNullException_WhenNameValueCollectionIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => HttpClientHeaderExtensions.AddItem(null, "name", "value"));
+            Assert.Throws<ArgumentNullException>(() => HttpHeaderExtensions.AddItem(null, "name", "value"));
         }
 
         [Fact]

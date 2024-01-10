@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.Delete;
 
+public sealed record DeleteCustomerCommand(int Id) : IRequest<Result<Unit>>;
+
 public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

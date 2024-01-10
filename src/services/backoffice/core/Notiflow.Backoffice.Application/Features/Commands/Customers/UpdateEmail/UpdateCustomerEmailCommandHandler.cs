@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers.UpdateEmail;
 
+public sealed record UpdateCustomerEmailCommand(int Id, string Email) : IRequest<Result<Unit>>;
+
 public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCustomerEmailCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;

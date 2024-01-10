@@ -1,3 +1,4 @@
+using Puzzle.Lib.Host.Infrastructure;
 using Puzzle.Lib.Response;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,10 +23,10 @@ builder.AddConfigureHealthChecks();
 
 builder.Services
     .AddMassTransit()
-    .AddLowercaseRouting()
+    .AddLowercaseRoute()
     .AddWebApiLocalize()
     .AddResponseCompression()
-    .AddServerSideFluentValidation()
+    .AddServerSideValidation()
     .AddHttpSecurityPrecautions(builder.Environment)
     .AddCustomHttpLogging();
 
@@ -40,7 +41,7 @@ app
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
-   .UseHealthChecksConfiguration()
+   .UseHealth()
    .UseHangfire();
 
 app.UseLocalizationWithEndpoint();

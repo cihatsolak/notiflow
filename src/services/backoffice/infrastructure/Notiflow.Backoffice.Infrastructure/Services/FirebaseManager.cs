@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿using Puzzle.Lib.Http.Infrastructure.Extensions;
+
+namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class FirebaseManager : IFirebaseService
 {
@@ -23,7 +25,7 @@ internal sealed class FirebaseManager : IFirebaseService
         var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
-        var credentials = HttpClientHeaderExtensions
+        var credentials = HttpHeaderExtensions
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 
@@ -41,7 +43,7 @@ internal sealed class FirebaseManager : IFirebaseService
         var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(CacheKeys.TENANT_INFO, CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
-        var credentials = HttpClientHeaderExtensions
+        var credentials = HttpHeaderExtensions
                            .Generate(HeaderNames.Authorization, $"key={tenantApplication.FirebaseServerKey}")
                            .AddItem("Sender", $"id={tenantApplication.FirebaseSenderId}");
 

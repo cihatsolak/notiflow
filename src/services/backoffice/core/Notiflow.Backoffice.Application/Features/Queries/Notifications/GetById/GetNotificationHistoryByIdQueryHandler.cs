@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 
+public sealed record GetNotificationHistoryByIdQuery(int Id) : IRequest<Result<GetNotificationHistoryByIdQueryResult>>;
+
 public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, Result<GetNotificationHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;

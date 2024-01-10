@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Host;
+﻿using Puzzle.Lib.Host.Infrastructure;
+
+namespace Puzzle.Lib.Host;
 
 /// <summary>
 /// This class provides a set of extension methods for adding additional functionality to the IServiceCollection and ContainerBuilder instances.
@@ -24,7 +26,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection instance to which the route settings are added.</param>
     /// <returns>The modified IServiceCollection instance.</returns>
-    public static IServiceCollection AddLowercaseRouting(this IServiceCollection services)
+    public static IServiceCollection AddLowercaseRoute(this IServiceCollection services)
     {
         services.AddRouting(options =>
         {

@@ -1,5 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.TextMessages.Datatable;
 
+public sealed record TextMessageDataTableCommand : DtParameters, IRequest<Result<DtResult<TextMessageDataTableCommandResult>>>;
+
 public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;

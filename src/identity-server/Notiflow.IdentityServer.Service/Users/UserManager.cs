@@ -2,26 +2,21 @@
 
 internal sealed class UserManager : IUserService
 {
-    private const string PLACEHOLDER_AVATAR_URL = "https://via.placeholder.com/250";
-
     private readonly ApplicationDbContext _context;
     private readonly IFtpService _fileService;
     private readonly IClaimService _claimService;
     private readonly ILocalizerService<ResultMessage> _localizer;
-    private readonly ILogger<UserManager> _logger;
 
     public UserManager(
-        ApplicationDbContext context, 
+        ApplicationDbContext context,
         IFtpService fileService,
         IClaimService claimService,
-        ILocalizerService<ResultMessage> localizer,
-        ILogger<UserManager> logger)
+        ILocalizerService<ResultMessage> localizer)
     {
         _context = context;
         _claimService = claimService;
         _fileService = fileService;
         _localizer = localizer;
-        _logger = logger;
     }
 
     public async Task<Result<UserResponse>> GetDetailAsync(int id, CancellationToken cancellationToken)
@@ -37,9 +32,9 @@ internal sealed class UserManager : IUserService
 
     public async Task<Result<int>> AddAsync(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        bool isExists = _context.Users
-            .TagWith("Checks whether a user exists based on email or username.")
-            .Any(p => p.Username.Equals(request.Username) || p.Email.Equals(request.Email));
+        bool isExists = await _context.Users
+                .TagWith("Checks whether a user exists based on email or username.")
+                .AnyAsync(p => p.Username.Equals(request.Username) || p.Email.Equals(request.Email), cancellationToken);
         if (isExists)
         {
             return Result<int>.Failure(StatusCodes.Status400BadRequest, _localizer[ResultMessage.USER_EXISTS]);
@@ -47,7 +42,7 @@ internal sealed class UserManager : IUserService
 
         var user = request.Adapt<User>();
         user.TenantId = int.Parse(_claimService.GroupSid);
-        user.Avatar = PLACEHOLDER_AVATAR_URL;
+        user.Avatar = AppFilePaths.PLACEHOLDER_AVATAR_URL;
 
         await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -71,17 +66,14 @@ internal sealed class UserManager : IUserService
             return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.USER_UPTATED]);
         }
 
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, FilePaths.PROFILE_PHOTOS, cancellationToken);
-        if (!fileProcessResult.Succeeded)
-        {
-            _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
-        }
-        else
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (fileProcessResult.Succeeded)
         {
             user.Avatar = fileProcessResult.Url;
         }
 
         await _context.SaveChangesAsync(cancellationToken);
+
         return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.USER_UPTATED]);
     }
 
@@ -91,7 +83,7 @@ internal sealed class UserManager : IUserService
             .TagWith("Deletes the user based on user ID.")
             .Where(p => p.Id == id)
             .ExecuteDeleteAsync(cancellationToken);
-        if (numberOfRowsDeleted != 1)
+        if (0 >= numberOfRowsDeleted)
         {
             return Result<EmptyResponse>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.USER_NOT_DELETED]);
         }
@@ -106,11 +98,10 @@ internal sealed class UserManager : IUserService
         {
             return Result<string>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.USER_NOT_FOUND]);
         }
-        
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, FilePaths.PROFILE_PHOTOS, cancellationToken);
+
+        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
         if (!fileProcessResult.Succeeded)
         {
-            _logger.LogWarning("Failed to upload profile photo of user with ID {@userId}.", id);
             return Result<string>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.USER_PROFILE_PHOTO_NOT_UPDATED]);
         }
 
