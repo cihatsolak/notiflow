@@ -5,7 +5,17 @@
 /// </summary>
 public static class AuthorizationHeaderExtensions
 {
+    // <summary>
+    /// Constant representing the "Bearer" authentication schema commonly used in OAuth 2.0.
+    /// This schema is often employed for token-based authentication.
+    /// </summary>
     private const string BEARER_SCHEMA = "Bearer";
+
+    /// <summary>
+    /// Constant representing the "Basic" authentication schema, a simple authentication scheme
+    /// that involves sending a base64-encoded combination of username and password.
+    /// </summary>
+    private const string BASIC_SCHEMA = "Basic";
 
     /// <summary>
     /// Sets a basic authentication header.
@@ -15,7 +25,7 @@ public static class AuthorizationHeaderExtensions
     /// <param name="password">The password.</param>
     public static void SetBasicAuthentication(this HttpClient client, string userName, string password)
     {
-        client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(userName, password);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BASIC_SCHEMA, EncodeCredential(userName, password));
     }
 
     /// <summary>
@@ -26,7 +36,7 @@ public static class AuthorizationHeaderExtensions
     /// <param name="password">The password.</param>
     public static void SetBasicAuthentication(this HttpRequestMessage request, string userName, string password)
     {
-        request.Headers.Authorization = new BasicAuthenticationHeaderValue(userName, password);
+        request.Headers.Authorization = new AuthenticationHeaderValue(BASIC_SCHEMA, EncodeCredential(userName, password));
     }
 
     /// <summary>
@@ -69,5 +79,15 @@ public static class AuthorizationHeaderExtensions
     public static void SetBearerToken(this HttpClient client, string token)
     {
         client.SetToken(BEARER_SCHEMA, token);
+    }
+
+    private static string EncodeCredential(string userName, string password)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userName);
+
+        Encoding encoding = Encoding.UTF8;
+        string credential = string.Format("{0}:{1}", userName, password ?? string.Empty);
+
+        return Convert.ToBase64String(encoding.GetBytes(credential));
     }
 }
