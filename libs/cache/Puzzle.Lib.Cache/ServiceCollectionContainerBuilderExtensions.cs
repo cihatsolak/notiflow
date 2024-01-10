@@ -30,11 +30,15 @@ public static class ServiceCollectionContainerBuilderExtensions
             ChannelPrefix = new RedisChannel($"{Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant()}:", RedisChannel.PatternMode.Auto)
         });
 
-        services.TryAddSingleton<IConnectionMultiplexer>(connectionMultiplexer);
+        services.TryAddSingleton<IConnectionMultiplexer>(provider =>
+        {
+            RedisRetryPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+
+            return connectionMultiplexer;
+        });
+
         services.TryAddSingleton(connectionMultiplexer.GetServer(redisServerSetting.ConnectionString));
         services.TryAddSingleton<IRedisService, StackExchangeRedisManager>();
-
-        RedisRetryPolicies.Logger = services.BuildServiceProvider().GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
         return services;
     }

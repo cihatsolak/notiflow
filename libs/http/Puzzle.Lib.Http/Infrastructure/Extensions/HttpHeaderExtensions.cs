@@ -1,9 +1,9 @@
-﻿namespace Puzzle.Lib.Http.Infrastructure;
+﻿namespace Puzzle.Lib.Http.Infrastructure.Extensions;
 
 /// <summary>
 /// Provides extension methods for HttpClient objects.
 /// </summary>
-public static class HttpClientHeaderExtensions
+public static class HttpHeaderExtensions
 {
     /// <summary>
     /// Add authentication and authorization token to http request

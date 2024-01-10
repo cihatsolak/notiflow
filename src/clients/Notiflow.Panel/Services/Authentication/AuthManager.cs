@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Panel.Services.Authentication;
+﻿using Puzzle.Lib.Http.Infrastructure.Extensions;
+
+namespace Notiflow.Panel.Services.Authentication;
 
 public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestService restService) : IAuthService
 {
@@ -10,7 +12,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             return default;
         }
 
-        var credentialCollection = HttpClientHeaderExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
+        var credentialCollection = HttpHeaderExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
         var userResult = await restService.GetResponseAsync<Response<UserResponse>>(nameof(AuthManager), "/user-service/auth/user", credentialCollection, cancellationToken);
         if (userResult.IsFailure)
         {
@@ -107,7 +109,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             throw new UnauthorizedAccessException();
         }
 
-        var credentials = HttpClientHeaderExtensions.CreateCollectionForBearerToken(accessToken);
+        var credentials = HttpHeaderExtensions.CreateCollectionForBearerToken(accessToken);
         var revokeRefrestToken = await restService.DeleteApiResponseAsync<Response>("notiflow.api", $"/user-service/auth/revoke-refresh-token/{refreshToken}", credentials, cancellationToken);
         if (revokeRefrestToken.IsFailure)
         {

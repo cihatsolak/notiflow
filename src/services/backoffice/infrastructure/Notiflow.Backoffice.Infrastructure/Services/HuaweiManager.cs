@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿using Puzzle.Lib.Http.Infrastructure.Extensions;
+
+namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class HuaweiManager : IHuaweiService
 {
@@ -36,7 +38,7 @@ internal sealed class HuaweiManager : IHuaweiService
             return new NotificationResult(authenticationResponse?.ErrorMessage);
         }
 
-        var auhorizationCollection = HttpClientHeaderExtensions
+        var auhorizationCollection = HttpHeaderExtensions
                                       .Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
 
         string sendServiceUrl = _huaweiSetting.SendServiceUrl.Replace("{ClientId}", tenantApplication.HuaweiClientId);
