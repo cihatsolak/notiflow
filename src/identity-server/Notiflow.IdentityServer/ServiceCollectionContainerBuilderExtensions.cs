@@ -2,23 +2,21 @@
 
 internal static class ServiceCollectionContainerBuilderExtensions
 {
-    internal static IServiceCollection AddWebDependencies(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddWebDependencies(this WebApplicationBuilder builder)
     {
-        IHostEnvironment hostEnvironment = services.BuildServiceProvider().GetRequiredService<IHostEnvironment>();
-
-        JwtTokenSetting jwtTokenSetting = configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
-        SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
-        ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
+        JwtTokenSetting jwtTokenSetting = builder.Configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
+        SwaggerSetting swaggerSetting = builder.Configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
+        ApiVersionSetting apiVersionSetting = builder.Configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
         var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
         
-        services.AddControllers(options =>
+        builder.Services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;
             options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
         });
 
-        services.AddJwtAuthentication(options =>
+        builder.Services.AddJwtAuthentication(options =>
         {
             options.Audiences = jwtTokenSetting.Audiences;
             options.Issuer = jwtTokenSetting.Issuer;
@@ -26,8 +24,8 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.RefreshTokenExpirationMinute = jwtTokenSetting.RefreshTokenExpirationMinute;
             options.SecurityKey = jwtTokenSetting.SecurityKey;
         });
-        
-        services.AddSwagger(options =>
+
+        builder.Services.AddSwagger(options =>
         {
             options.Title = swaggerSetting.Title;
             options.Description = swaggerSetting.Description;
@@ -36,22 +34,20 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.ContactEmail = swaggerSetting.ContactEmail;
         });
 
-        services.AddApiVersion(options =>
+        builder.Services.AddApiVersion(options =>
         {
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services
+        builder.Services
             .AddLowercaseRoute()
             .AddResponseCompress()
             .AddCustomHttpLogging();
 
-        if (!hostEnvironment.IsProduction())
+        if (!builder.Environment.IsProduction())
         {
-            services.AddHttpSecurityPrecautions();
+            builder.Services.AddHttpSecurityPrecautions();
         }
-
-        return services;
     }
 }

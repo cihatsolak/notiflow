@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Auth;
+﻿using System.Security.Authentication;
+
+namespace Puzzle.Lib.Auth;
 
 /// <summary>
 /// Provides extension methods to add JWT authentication and claim services to the <see cref="IServiceCollection"/> container.
@@ -45,6 +47,12 @@ public static class ServiceCollectionContainerBuilderExtensions
             {
                 OnTokenValidated = context =>
                 {
+                    string name = context?.Principal?.Identity?.Name;
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        context?.Fail("Unauthorized. Please re-login");
+                    }
+                    
                     return Task.CompletedTask;
                 },
                 OnAuthenticationFailed = context =>

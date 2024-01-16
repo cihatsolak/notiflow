@@ -20,6 +20,9 @@ public sealed class SecurityHeadersMiddleware
 
         await _next.Invoke(context);
 
-        context.Response.Headers.Remove("Server");
+        if (!context.Response.HasStarted)
+        {
+            context.Response.Headers.Remove("Server");
+        }
     }
 }

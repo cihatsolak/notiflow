@@ -2,13 +2,12 @@
 
 internal static class HealthChecksContainerBuilderExtensions
 {
-    internal static IServiceCollection AddConfigureHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddConfigureHealthChecks(this WebApplicationBuilder builder)
     {
-        services.AddHealthChecks()
-                .AddMsSqlDatabaseCheck(configuration[$"{nameof(ApplicationDbContext)}:{nameof(SqlSetting.ConnectionString)}"])
-                .AddRedisCheck(configuration[$"{nameof(RedisServerSetting)}:{nameof(RedisServerSetting.ConnectionString)}"])
-                .AddSystemCheck();
-
-        return services;
+        builder.Services
+               .AddHealthChecks()
+               .AddMsSqlDatabaseCheck(builder.Configuration[$"{nameof(ApplicationDbContext)}:{nameof(SqlSetting.ConnectionString)}"])
+               .AddRedisCheck(builder.Configuration[$"{nameof(RedisServerSetting)}:{nameof(RedisServerSetting.ConnectionString)}"])
+               .AddSystemCheck();
     }
 }

@@ -103,7 +103,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         {
             options.AddPolicy(Assembly.GetCallingAssembly().GetName().Name, builder => builder
             .AllowAnyHeader()
-            .AllowAnyMethod()
+            .WithMethods(HttpMethod.Get.Method, HttpMethod.Put.Method, HttpMethod.Post.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method)
             .AllowCredentials()
             .WithOrigins(origins));
         });
