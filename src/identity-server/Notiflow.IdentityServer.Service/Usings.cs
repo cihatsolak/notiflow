@@ -29,8 +29,6 @@ global using Puzzle.Lib.Assistant.Constants;
 global using Puzzle.Lib.Assistant.Extensions;
 global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Auth.Infrastructure;
-global using Puzzle.Lib.Auth.Infrastructure.Extensions;
-global using Puzzle.Lib.Auth.Models;
 global using Puzzle.Lib.Auth.Services;
 global using Puzzle.Lib.Cache;
 global using Puzzle.Lib.Cache.Infrastructure;

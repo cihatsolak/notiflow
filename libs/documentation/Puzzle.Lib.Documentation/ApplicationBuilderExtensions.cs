@@ -15,11 +15,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
     {
-        if (hostEnvironment.IsProduction())
-            return app;
-
         app.UseSwagger();
         app.UseSwaggerUI(swaggerUIOptions =>
         {
@@ -36,11 +33,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
     {
-        if (hostEnvironment.IsProduction())
-            return app;
-
         SwaggerSetting swaggerSetting = app.ApplicationServices.GetRequiredService<IOptions<SwaggerSetting>>().Value;
 
         app.UseReDoc(options =>
@@ -57,9 +51,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerRedocly(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseSwaggerRedocly(this IApplicationBuilder app)
     {
-        return app.UseSwaggerDoc(hostEnvironment).UseRedoclyDoc(hostEnvironment);
+        return app.UseSwaggerDoc().UseRedoclyDoc();
     }
 
     /// <summary>

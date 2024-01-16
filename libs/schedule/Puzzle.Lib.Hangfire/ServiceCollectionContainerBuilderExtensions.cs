@@ -39,8 +39,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             //config.UseSerilogLogProvider();
             options.UseColouredConsoleLogProvider();
             options.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
-            //options.UseActivator(new HangfireActivator(services.BuildServiceProvider()));
-
+            
             options.UseDashboardMetric(DashboardMetrics.ServerCount)
                    .UseDashboardMetric(SqlServerStorage.ActiveConnections)
                    .UseDashboardMetric(SqlServerStorage.TotalConnections)

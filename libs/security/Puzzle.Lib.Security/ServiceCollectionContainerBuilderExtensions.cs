@@ -51,11 +51,8 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services, IHostEnvironment hostEnvironment)
+    public static IServiceCollection AddHttpSecurityPrecautions(this IServiceCollection services)
     {
-        if (!hostEnvironment.IsProduction())
-            return services;
-
         services.AddHttpsRedirection(options =>
         {
             options.HttpsPort = 443;
@@ -76,7 +73,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <param name="services">The IServiceCollection instance.</param>
     /// <returns>The IServiceCollection instance.</returns>
     /// <exception cref="ArgumentNullException">Thrown if the <see cref="IServiceProvider"/> instance obtained from the specified <see cref="IServiceCollection"/> is null.</exception>
-    public static IServiceCollection AddMicrosoftProtectorService(this IServiceCollection services, Action<RedisProtectorSetting> configure)
+    public static IServiceCollection AddProtectorService(this IServiceCollection services, Action<RedisProtectorSetting> configure)
     {
         RedisProtectorSetting redisProtectorSetting = new();
         configure?.Invoke(redisProtectorSetting);
@@ -88,7 +85,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .SetDefaultKeyLifetime(TimeSpan.FromDays(redisProtectorSetting.ExpirationDays))
             .PersistKeysToStackExchangeRedis(() => database, redisProtectorSetting.Key);
 
-        services.TryAddSingleton<IMicrosoftProtectorService, MicrosoftProtectorManager>();
+        services.TryAddSingleton<IProtectorService, ProtectorManager>();
 
         return services;
     }

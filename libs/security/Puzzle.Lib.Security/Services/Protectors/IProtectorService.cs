@@ -3,7 +3,7 @@
 /// <summary>
 /// Interface for a service that provides encryption and decryption functionality for sensitive data.
 /// </summary>
-public interface IMicrosoftProtectorService
+public interface IProtectorService
 {
     /// <summary>
     /// Encrypts the provided plaintext using a secure encryption algorithm and returns the resulting cipher text as a string.

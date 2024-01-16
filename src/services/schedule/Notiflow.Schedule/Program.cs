@@ -1,6 +1,3 @@
-using Puzzle.Lib.Host.Infrastructure;
-using Puzzle.Lib.Response;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
@@ -27,17 +24,28 @@ builder.Services
     .AddWebApiLocalize()
     .AddResponseCompression()
     .AddServerSideValidation()
-    .AddHttpSecurityPrecautions(builder.Environment)
     .AddCustomHttpLogging();
+
+if (!builder.Environment.IsProduction())
+{
+    builder.Services.AddHttpSecurityPrecautions();
+}
 
 var app = builder.Build();
 
-app
-   .UseApiExceptionHandler()
-   .UseHttpSecurityPrecautions(builder.Environment)
+bool isProduction = app.Environment.IsProduction();
+if (isProduction)
+{
+    app.UseHttpSecurityPrecautions();
+}
+else
+{
+    app.UseSwaggerRedocly()
+       .UseMigrations();
+}
+
+app.UseApiExceptionHandler()
    .UseAuth()
-   .UseSwaggerRedocly(builder.Environment)
-   .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()

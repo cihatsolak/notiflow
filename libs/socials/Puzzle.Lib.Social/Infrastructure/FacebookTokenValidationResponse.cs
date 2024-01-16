@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Social.Infrastructure.Models;
+﻿namespace Puzzle.Lib.Social.Infrastructure;
 
 internal class FacebookTokenValidationResponse
 {

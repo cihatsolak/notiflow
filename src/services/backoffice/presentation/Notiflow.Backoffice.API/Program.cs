@@ -10,13 +10,21 @@ builder.Services
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
-
 TenantCacheKeyFactory.Configure(app);
 
-app.UseHttpSecurityPrecautions(builder.Environment)
+bool isProduction = app.Environment.IsProduction();
+if (isProduction)
+{
+    app.UseHttpSecurityPrecautions();
+}
+else
+{
+    app.UseSwaggerRedocly()
+       .UseMigrations();
+}
+
+app
    .UseAuth()
-   .UseSwaggerRedocly(builder.Environment)
-   .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()

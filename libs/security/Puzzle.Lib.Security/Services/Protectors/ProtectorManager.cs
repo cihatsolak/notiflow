@@ -1,11 +1,11 @@
 ﻿namespace Puzzle.Lib.Security.Services.MicrosoftProtectors;
 
-internal sealed class MicrosoftProtectorManager : IMicrosoftProtectorService
+internal sealed class ProtectorManager : IProtectorService
 {
     private readonly IDataProtector _dataProtector;
     private readonly ITimeLimitedDataProtector _timeLimitedDataProtector;
 
-    public MicrosoftProtectorManager(IDataProtectionProvider dataProtectionProvider)
+    public ProtectorManager(IDataProtectionProvider dataProtectionProvider)
     {
         _dataProtector = dataProtectionProvider.CreateProtector(GetType().FullName);
         _timeLimitedDataProtector = dataProtectionProvider.CreateProtector(GetType().FullName).ToTimeLimitedDataProtector();

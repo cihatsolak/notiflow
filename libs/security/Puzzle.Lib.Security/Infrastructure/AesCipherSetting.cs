@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Security.Infrastructure.Settings;
+﻿namespace Puzzle.Lib.Security.Infrastructure;
 
 /// <summary>
 /// Represents the settings for encryption, including the encryption key.

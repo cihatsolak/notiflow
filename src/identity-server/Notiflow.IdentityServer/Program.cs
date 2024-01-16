@@ -25,13 +25,19 @@ builder.Services.AddConfigureHealthChecks(builder.Configuration);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
+bool isProduction = app.Environment.IsProduction();
+if (isProduction)
+{
+    app.UseHttpSecurityPrecautions();
+}
+else
+{
+    app.UseSwaggerRedocly()
+       .UseMigrations();
+}
 
-app
-   .UseApiExceptionHandler()
+app.UseApiExceptionHandler()
    .UseAuth()
-   .UseHttpSecurityPrecautions(builder.Environment)
-   .UseSwaggerRedocly(builder.Environment)
-   .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()

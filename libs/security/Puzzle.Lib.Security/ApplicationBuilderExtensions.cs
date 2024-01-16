@@ -21,11 +21,8 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHttpSecurityPrecautions(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseHttpSecurityPrecautions(this IApplicationBuilder app)
     {
-        if (!hostEnvironment.IsProduction())
-            return app;
-
         app.UseHttpsRedirection();
         app.UseHsts();
         app.UseMiddleware<SecurityHeadersMiddleware>();
