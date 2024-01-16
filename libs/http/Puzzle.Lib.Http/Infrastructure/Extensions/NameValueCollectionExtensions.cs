@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides extension methods for HttpClient objects.
 /// </summary>
-public static class HttpHeaderExtensions
+public static class NameValueCollectionExtensions
 {
     /// <summary>
     /// Add authentication and authorization token to http request

@@ -30,7 +30,7 @@ app
    .UseApiExceptionHandler()
    .UseAuth()
    .UseHttpSecurityPrecautions(builder.Environment)
-   .UseSwaggerWithRedoclyDoc(builder.Environment)
+   .UseSwaggerRedocly(builder.Environment)
    .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()

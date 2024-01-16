@@ -17,7 +17,7 @@ public sealed class SwaggerBasicAuthenticationMiddleware
     {
         if (context.Request.Path.StartsWithSegments("/swagger"))
         {
-            string authenticationHader = context.Request.Headers["Authorization"];
+            string authenticationHader = context.Request.Headers[HeaderNames.Authorization];
 
             if (authenticationHader is not null && authenticationHader.StartsWith("Basic "))
             {
@@ -34,7 +34,7 @@ public sealed class SwaggerBasicAuthenticationMiddleware
                 }
             }
 
-            context.Response.Headers["WWW-Authenticate"] = "Basic";
+            context.Response.Headers.WWWAuthenticate = "Basic";
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
         }
         else

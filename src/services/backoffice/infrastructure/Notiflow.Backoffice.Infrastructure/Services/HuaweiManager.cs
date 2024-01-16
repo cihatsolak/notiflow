@@ -38,7 +38,7 @@ internal sealed class HuaweiManager : IHuaweiService
             return new NotificationResult(authenticationResponse?.ErrorMessage);
         }
 
-        var auhorizationCollection = HttpHeaderExtensions
+        var auhorizationCollection = NameValueCollectionExtensions
                                       .Generate(HeaderNames.Authorization, $"{authenticationResponse.TokenType} {authenticationResponse.AccessToken}");
 
         string sendServiceUrl = _huaweiSetting.SendServiceUrl.Replace("{ClientId}", tenantApplication.HuaweiClientId);

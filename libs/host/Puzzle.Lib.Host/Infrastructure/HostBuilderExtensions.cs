@@ -31,14 +31,8 @@ public static class HostBuilderExtensions
     {
         hostBuilder.UseDefaultServiceProvider((hostBuilderContext, serviceProviderOptions) =>
         {
-            if (hostBuilderContext.HostingEnvironment.IsProduction())
-            {
-                serviceProviderOptions.ValidateScopes = false;
-            }
-            else
-            {
-                serviceProviderOptions.ValidateScopes = true;
-            }
+            serviceProviderOptions.ValidateScopes = !hostBuilderContext.HostingEnvironment.IsProduction();
+
         });
 
         return hostBuilder;

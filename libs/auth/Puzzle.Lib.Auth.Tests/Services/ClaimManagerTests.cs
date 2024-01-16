@@ -43,7 +43,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Email);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Email);
         }
 
         [Theory]
@@ -78,7 +78,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Name);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Name);
         }
 
         [Theory]
@@ -112,7 +112,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.FamilyName);
+            Assert.Throws<SecurityTokenException>(() => claimManager.FamilyName);
         }
 
         [Theory]
@@ -147,7 +147,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.NameIdentifier);
+            Assert.Throws<SecurityTokenException>(() => claimManager.NameIdentifier);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.NameIdentifier);
+            Assert.Throws<SecurityTokenException>(() => claimManager.NameIdentifier);
         }
 
         [Theory]
@@ -197,7 +197,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Role);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Role);
         }
 
         [Theory]
@@ -231,7 +231,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Roles);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Roles);
         }
 
         [Theory]
@@ -265,7 +265,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Jti);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Jti);
         }
 
         [Theory]
@@ -299,7 +299,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Audience);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Audience);
         }
 
         [Theory]
@@ -333,7 +333,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Audiences);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Audiences);
         }
 
         [Theory]
@@ -367,7 +367,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.GivenName);
+            Assert.Throws<SecurityTokenException>(() => claimManager.GivenName);
         }
 
         [Theory]
@@ -403,7 +403,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Iat);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Iat);
         }
 
 
@@ -420,7 +420,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.Iat);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Iat);
         }
 
         //cihat
@@ -458,7 +458,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.BirthDate);
+            Assert.Throws<SecurityTokenException>(() => claimManager.BirthDate);
         }
 
 
@@ -475,7 +475,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<JwtClaimException>(() => claimManager.BirthDate);
+            Assert.Throws<SecurityTokenException>(() => claimManager.BirthDate);
         }
     }
 }

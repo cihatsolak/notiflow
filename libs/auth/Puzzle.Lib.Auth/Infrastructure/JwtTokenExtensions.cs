@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Auth.Infrastructure.Extensions;
+﻿namespace Puzzle.Lib.Auth.Infrastructure;
 
 /// <summary>
 /// Contains extension methods for creating and managing JWT tokens.

@@ -26,3 +26,4 @@ public sealed class SlowQueryInterceptor : DbCommandInterceptor
         return base.ReaderExecutedAsync(command, eventData, result, cancellationToken);
     }
 }
+

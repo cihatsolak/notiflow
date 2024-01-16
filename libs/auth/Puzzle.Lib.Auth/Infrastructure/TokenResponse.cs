@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Auth.Models;
+﻿namespace Puzzle.Lib.Auth.Infrastructure;
 
 /// <summary>
 /// Represents a response containing access and refresh tokens along with their expiration information.

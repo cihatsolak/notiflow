@@ -15,6 +15,11 @@ public static class JsonExtensions
         if (value is null)
             return default;
 
+        if (value is string stringValue && string.IsNullOrWhiteSpace(stringValue))
+        {
+            return default;
+        }
+
         return JsonSerializer.Serialize(value);
     }
 
@@ -43,10 +48,10 @@ public static class JsonExtensions
             return default;
 
         text = text.Trim();
-        if (!(text.StartsWith(PunctuationChars.LeftCurlyBracket) && 
-            text.EndsWith(PunctuationChars.RightCurlyBracket)) && 
-            !(text.StartsWith(PunctuationChars.LeftSquareBracket) && 
-            text.EndsWith(PunctuationChars.RightSquareBracket)))
+        bool isJsonObject = (text.StartsWith(PunctuationChars.LeftCurlyBracket) && text.EndsWith(PunctuationChars.RightCurlyBracket))
+                            || (text.StartsWith(PunctuationChars.LeftSquareBracket) && text.EndsWith(PunctuationChars.RightSquareBracket));
+
+        if (!isJsonObject)
             return default;
 
         try

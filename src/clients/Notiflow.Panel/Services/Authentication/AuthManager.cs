@@ -12,7 +12,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             return default;
         }
 
-        var credentialCollection = HttpHeaderExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
+        var credentialCollection = NameValueCollectionExtensions.CreateCollectionForBearerToken(tokenResult.Data.AccessToken);
         var userResult = await restService.GetResponseAsync<Response<UserResponse>>(nameof(AuthManager), "/user-service/auth/user", credentialCollection, cancellationToken);
         if (userResult.IsFailure)
         {
@@ -109,7 +109,7 @@ public sealed class AuthManager(IHttpContextAccessor httpContextAccessor, IRestS
             throw new UnauthorizedAccessException();
         }
 
-        var credentials = HttpHeaderExtensions.CreateCollectionForBearerToken(accessToken);
+        var credentials = NameValueCollectionExtensions.CreateCollectionForBearerToken(accessToken);
         var revokeRefrestToken = await restService.DeleteApiResponseAsync<Response>("notiflow.api", $"/user-service/auth/revoke-refresh-token/{refreshToken}", credentials, cancellationToken);
         if (revokeRefrestToken.IsFailure)
         {

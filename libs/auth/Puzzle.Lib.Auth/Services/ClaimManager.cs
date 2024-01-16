@@ -28,20 +28,20 @@ public sealed class ClaimManager : IClaimService
     {
         string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
         if (string.IsNullOrWhiteSpace(nameIdentifier))
-            throw new JwtClaimException(nameof(nameIdentifier));
+            throw new SecurityTokenException("No name identifier was found in the token. token is invalid.");
 
         bool succeeded = int.TryParse(nameIdentifier, out int identifier);
         if (!succeeded || 0 >= identifier)
-            throw new JwtClaimException(nameof(nameIdentifier));
+            throw new SecurityTokenException("No name identifier was found in the token. token is invalid.");
 
         return identifier;
-    }
+    } 
 
     private DateTime GetIat()
     {
         string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
         if (!DateTime.TryParse(issuedAtValue, CultureInfo.CurrentCulture, out DateTime issuedAt))
-            throw new JwtClaimException(nameof(issuedAtValue));
+            throw new SecurityTokenException("No issued at value was found in the token. token is invalid.");
 
         return issuedAt;
     }
@@ -50,7 +50,7 @@ public sealed class ClaimManager : IClaimService
     {
         string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
         if (!DateTime.TryParse(birthDateValue, CultureInfo.CurrentCulture, out DateTime birthDate))
-            throw new JwtClaimException(nameof(birthDate));
+            throw new SecurityTokenException("No date of birth was found in the token. token is invalid.");
 
         return birthDate;
     }

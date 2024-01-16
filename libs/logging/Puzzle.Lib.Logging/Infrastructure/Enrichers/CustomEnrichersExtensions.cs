@@ -13,7 +13,6 @@ internal static class CustomEnrichersExtensions
     /// <returns>A <see cref="LoggerConfiguration"/> instance with the "ApplicationName" property added.</returns>
     internal static LoggerConfiguration WithApplicationName(this LoggerEnrichmentConfiguration enrich)
     {
-        ArgumentNullException.ThrowIfNull(enrich);
         return enrich.WithProperty("ApplicationName", Assembly.GetCallingAssembly().GetName().Name);
     }
 }

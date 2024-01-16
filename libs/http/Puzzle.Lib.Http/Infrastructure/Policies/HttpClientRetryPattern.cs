@@ -13,7 +13,7 @@ public static class HttpClientRetryPattern
     /// <remarks>Retry Pattern</remarks>
     /// <param name="retryCount">total number of attempts. If no value is specified, it is treated as three.</param>
     /// <returns>type of async policy interface</returns>
-    public static IAsyncPolicy<HttpResponseMessage> RetryPolicy(int retryCount = 3)
+    public static IAsyncPolicy<HttpResponseMessage> DefaultPolicy(int retryCount = 3)
     {
         return HttpPolicyExtensions
               .HandleTransientHttpError()
