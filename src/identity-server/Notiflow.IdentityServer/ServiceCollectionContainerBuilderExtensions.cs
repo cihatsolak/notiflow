@@ -9,7 +9,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
         ApiVersionSetting apiVersionSetting = builder.Configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
         var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-        
+
         builder.Services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;

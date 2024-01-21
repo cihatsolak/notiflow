@@ -24,7 +24,6 @@ internal class AuthManager : IAuthService
         var user = await _context.Users
             .TagWith("Get tenant and user information by username and password.")
             .AsNoTracking()
-            .Include(p => p.Tenant)
             .SingleOrDefaultAsync(p => p.Username == request.Username && p.Password == request.Password, cancellationToken);
         if (user is null)
         {

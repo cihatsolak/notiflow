@@ -32,7 +32,7 @@ public static class ClaimExtensions
         ArgumentNullException.ThrowIfNull(claims);
         ArgumentException.ThrowIfNullOrEmpty(username);
 
-        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, username, ClaimValueTypes.String));
+        claims.Add(new Claim(ClaimTypes.Upn, username, ClaimValueTypes.String));
     }
 
     /// <summary>
@@ -201,7 +201,7 @@ public static class ClaimExtensions
     {
         ArgumentNullException.ThrowIfNull(claims);
 
-        claims.Add(new Claim(JwtRegisteredClaimNames.Birthdate, birthDate.ToString(), ClaimValueTypes.DateTime));
+        claims.Add(new Claim(ClaimTypes.DateOfBirth, birthDate.ToString(), ClaimValueTypes.DateTime));
     }
 
     /// <summary>

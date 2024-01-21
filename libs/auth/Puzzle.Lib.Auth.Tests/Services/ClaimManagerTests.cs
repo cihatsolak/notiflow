@@ -96,7 +96,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Equal(familyName, claimManager.FamilyName);
+            Assert.Equal(familyName, claimManager.Surname);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
             var claimManager = new ClaimManager(_httpContextAccessorMock.Object);
 
             // Act & Assert
-            Assert.Throws<SecurityTokenException>(() => claimManager.FamilyName);
+            Assert.Throws<SecurityTokenException>(() => claimManager.Surname);
         }
 
         [Theory]
@@ -432,7 +432,7 @@ namespace Puzzle.Lib.Auth.Tests.Services
         {
             // Arrange
             DateTime sampleBirthDate = new(year, month, day);
-            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Birthdate, sampleBirthDate.ToString()) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.DateOfBirth, sampleBirthDate.ToString()) };
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
