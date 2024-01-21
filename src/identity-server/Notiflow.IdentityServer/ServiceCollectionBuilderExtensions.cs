@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer;
 
-internal static class ServiceCollectionContainerBuilderExtensions
+internal static class ServiceCollectionBuilderExtensions
 {
     internal static void AddWebDependencies(this WebApplicationBuilder builder)
     {
@@ -49,5 +49,14 @@ internal static class ServiceCollectionContainerBuilderExtensions
         {
             builder.Services.AddHttpSecurityPrecautions();
         }
+    }
+
+    internal static void AddConfigureHealthChecks(this WebApplicationBuilder builder)
+    {
+        builder.Services
+               .AddHealthChecks()
+               .AddMsSqlDatabaseCheck(builder.Configuration[$"{nameof(ApplicationDbContext)}:{nameof(SqlSetting.ConnectionString)}"])
+               .AddRedisCheck(builder.Configuration[$"{nameof(RedisServerSetting)}:{nameof(RedisServerSetting.ConnectionString)}"])
+               .AddSystemCheck();
     }
 }

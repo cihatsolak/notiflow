@@ -66,10 +66,10 @@ internal sealed class UserManager : IUserService
             return Result<EmptyResponse>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.USER_UPTATED]);
         }
 
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
-        if (fileProcessResult.Succeeded)
+        var fileResult = await _fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (fileResult.Succeeded)
         {
-            user.Avatar = fileProcessResult.Url;
+            user.Avatar = fileResult.Url;
         }
 
         await _context.SaveChangesAsync(cancellationToken);
@@ -99,13 +99,13 @@ internal sealed class UserManager : IUserService
             return Result<string>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.USER_NOT_FOUND]);
         }
 
-        var fileProcessResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
-        if (!fileProcessResult.Succeeded)
+        var fileResult = await _fileService.AddAfterRenameIfAvailableAsync(profilePhoto, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
+        if (!fileResult.Succeeded)
         {
             return Result<string>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.USER_PROFILE_PHOTO_NOT_UPDATED]);
         }
 
-        user.Avatar = fileProcessResult.Url;
+        user.Avatar = fileResult.Url;
         await _context.SaveChangesAsync(cancellationToken);
 
         return Result<string>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.USER_PROFILE_PHOTO_UPDATED], user.Avatar);

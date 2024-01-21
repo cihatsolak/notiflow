@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Projections.EmailService;
 
-internal static class MassTransitContainerBuilderExtensions
+internal static class ServiceCollectionBuilderExtensions
 {
     internal static IServiceCollection AddCustomMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
@@ -9,7 +9,7 @@ internal static class MassTransitContainerBuilderExtensions
         services.AddMassTransit(serviceCollectionBusConfigurator =>
         {
             serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
-
+            
             serviceCollectionBusConfigurator.AddConsumer<EmailDeliveredEventConsumer>();
             serviceCollectionBusConfigurator.AddConsumer<EmailNotDeliveredEventConsumer>();
 

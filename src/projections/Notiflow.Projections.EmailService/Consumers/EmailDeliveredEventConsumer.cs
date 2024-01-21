@@ -21,9 +21,9 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
         {
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
-                recipients = CombineWithComma(context.Message.Recipients),
-                cc = CombineWithComma(context.Message.CcAddresses),
-                bcc = CombineWithComma(context.Message.BccAddresses),
+                recipients = context.Message.Recipients.ToJoinWithSeparator(PunctuationChars.Comma),
+                cc = context.Message.CcAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
+                bcc = context.Message.BccAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
                 subject = context.Message.Subject,
                 body = context.Message.Body,
                 is_sent = true,
@@ -51,6 +51,4 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
             throw;
         }
     }
-
-    private static string CombineWithComma(List<string> list) => string.Join(";", list);
 }

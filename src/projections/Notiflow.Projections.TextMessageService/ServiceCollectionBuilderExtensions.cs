@@ -1,6 +1,6 @@
-﻿namespace Notiflow.Projections.NotificationService;
+﻿namespace Notiflow.Projections.TextMessageService;
 
-internal static class MassTransitContainerBuilderExtensions
+internal static class ServiceCollectionBuilderExtensions
 {
     internal static IServiceCollection AddCustomMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
@@ -10,8 +10,8 @@ internal static class MassTransitContainerBuilderExtensions
         {
             serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
 
-            serviceCollectionBusConfigurator.AddConsumer<NotificationDeliveredEventConsumer>();
-            serviceCollectionBusConfigurator.AddConsumer<NotificationNotDeliveredEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<TextMessageDeliveredEventConsumer>();
+            serviceCollectionBusConfigurator.AddConsumer<TextMessageNotDeliveredEventConsumer>();
 
             serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
             {
@@ -29,14 +29,14 @@ internal static class MassTransitContainerBuilderExtensions
                 //1 dk içerisinde 1000 request yapabilecek şekilde sınırlandırılmıştır.
                 rabbitMqBusFactoryConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.NOTIFICATION_DELIVERED_EVENT_QUEUE, options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_DELIVERED_EVENT_QUEUE, options =>
                 {
-                    options.ConfigureConsumer<NotificationDeliveredEventConsumer>(busRegistrationContext);
+                    options.ConfigureConsumer<TextMessageDeliveredEventConsumer>(busRegistrationContext);
                 });
 
-                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.NOTIFICATION_NOT_DELIVERED_EVENT_QUEUE, options =>
+                rabbitMqBusFactoryConfigurator.ReceiveEndpoint(RabbitQueueName.TEXT_MESSAGE_NOT_DELIVERED_EVENT_QUEUE, options =>
                 {
-                    options.ConfigureConsumer<NotificationNotDeliveredEventConsumer>(busRegistrationContext);
+                    options.ConfigureConsumer<TextMessageNotDeliveredEventConsumer>(busRegistrationContext);
                 });
             });
         });

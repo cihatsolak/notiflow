@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.IdentityServer.Service;
 
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     public static IServiceCollection AddServiceDependencies(this IServiceCollection services, IConfiguration configuration)
     {

@@ -1,5 +1,3 @@
-using Puzzle.Lib.Host.Infrastructure;
-
 IHost host = Host.CreateDefaultBuilder(args)
     .AddAppConfiguration()
     .AddServiceValidateScope()
