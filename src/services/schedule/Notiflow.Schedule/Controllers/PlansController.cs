@@ -27,16 +27,10 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
-        ScheduledTextMessageEvent @event = new()
-        {
-            CustomerIds = request.CustomerIds,
-            Message = request.Message
-        };
-
         ScheduledTextMessage scheduledTextMessage = new()
         {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
+            Data = request.ToScheduledTextMessageEvent(),
+            PlannedDeliveryDate = request.PlannedDeliveryDate
         };
 
         await _context.ScheduledTextMessages.AddAsync(scheduledTextMessage, cancellationToken);
@@ -57,18 +51,10 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> NotificationDelivery([FromBody] ScheduleNotificationRequest request, CancellationToken cancellationToken)
     {
-        ScheduledNotificationEvent @event = new()
-        {
-            CustomerIds = request.CustomerIds,
-            Message = request.Message,
-            ImageUrl = request.ImageUrl,
-            Title = request.Title
-        };
-
         ScheduledNotification scheduledNotification = new()
         {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
+            Data = request.ToScheduledNotificationEvent(),
+            PlannedDeliveryDate = request.PlannedDeliveryDate
         };
 
         await _context.ScheduledNotifications.AddAsync(scheduledNotification, cancellationToken);
@@ -89,20 +75,10 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> EmailDelivery([FromBody] ScheduleEmailRequest request, CancellationToken cancellationToken)
     {
-        ScheduledEmailEvent @event = new()
-        {
-            Body = request.Body,
-            Subject = request.Subject,
-            CustomerIds = request.CustomerIds,
-            CcAddresses = request.CcAddresses,
-            BccAddresses = request.BccAddresses,
-            IsBodyHtml = request.IsBodyHtml
-        };
-
         ScheduledEmail scheduledEmail = new()
         {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
+            Data = request.ToScheduledEmailEvent(),
+            PlannedDeliveryDate = request.PlannedDeliveryDate
         };
 
         await _context.ScheduledEmails.AddAsync(scheduledEmail, cancellationToken);

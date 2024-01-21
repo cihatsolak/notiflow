@@ -8,6 +8,19 @@ public sealed record ScheduleNotificationRequest
     public required string ImageUrl { get; init; }
     public required string Date { get; init; }
     public required string Time { get; init; }
+
+    internal string ToScheduledNotificationEvent()
+    {
+        return new
+        {
+            CustomerIds,
+            Message,
+            ImageUrl,
+            Title
+        }.ToJson();
+    }
+
+    internal DateTime PlannedDeliveryDate => DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
 }
 
 public sealed class ScheduleNotificationRequestValidator : AbstractValidator<ScheduleNotificationRequest>

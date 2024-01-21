@@ -10,6 +10,21 @@ public sealed record ScheduleEmailRequest
     public required bool IsBodyHtml { get; init; }
     public required string Date { get; init; }
     public required string Time { get; init; }
+
+    internal string ToScheduledEmailEvent()
+    {
+        return new
+        {
+            Body,
+            Subject,
+            CustomerIds,
+            CcAddresses,
+            BccAddresses,
+            IsBodyHtml
+        }.ToJson();
+    }
+
+    internal DateTime PlannedDeliveryDate => DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
 }
 
 public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>

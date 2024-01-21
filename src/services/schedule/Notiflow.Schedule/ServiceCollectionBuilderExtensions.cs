@@ -1,8 +1,8 @@
 ﻿namespace Notiflow.Schedule;
 
-internal static class ServiceCollectionContainerBuilderExtensions
+internal static class ServiceCollectionBuilderExtensions
 {
-    internal static WebApplicationBuilder AddDependencies(this WebApplicationBuilder  builder)
+    internal static WebApplicationBuilder AddWebDependencies(this WebApplicationBuilder  builder)
     {
         SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduledDbContext)).Get<SqlSetting>();
         HangfireSetting hangfireSetting = builder.Configuration.GetRequiredSection(nameof(HangfireSetting)).Get<HangfireSetting>();
@@ -56,6 +56,17 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
+
+        return builder;
+    }
+
+    internal static WebApplicationBuilder AddConfigureHealthChecks(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks()
+                        .AddMsSqlDatabaseCheck(builder.Configuration[$"{nameof(ScheduledDbContext)}:{nameof(SqlSetting.ConnectionString)}"])
+                        .AddRedisCheck(builder.Configuration[$"{nameof(RedisServerSetting)}:{nameof(RedisServerSetting.ConnectionString)}"])
+                        .AddSystemCheck()
+                        .AddHangfireCheck();
 
         return builder;
     }

@@ -1,6 +1,6 @@
 ﻿namespace Notiflow.Schedule;
 
-internal static class MassTransitContainerBuilderExtensions
+internal static class MassTransitBuilderExtensions
 {
     internal static IServiceCollection AddMassTransit(this IServiceCollection services)
     {

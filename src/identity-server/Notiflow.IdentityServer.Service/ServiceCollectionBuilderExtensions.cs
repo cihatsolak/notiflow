@@ -38,7 +38,6 @@ public static class ServiceCollectionBuilderExtensions
         services
            .AddWebApiLocalize()
            .AddHttpContextAccessor()
-           .AddClaimService()
            .AddServerSideValidation()
            .AddApiBehaviorOptions();
 

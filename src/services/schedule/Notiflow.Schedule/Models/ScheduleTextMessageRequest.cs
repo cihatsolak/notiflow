@@ -4,8 +4,15 @@ public sealed record ScheduleTextMessageRequest
 {
     public required List<int> CustomerIds { get; init; }
     public required string Message { get; init; }
-    public string Date { get; set; }
-    public string Time { get; set; }
+    public string Date { get; init; }
+    public string Time { get; init; }
+
+    internal string ToScheduledTextMessageEvent()
+    {
+        return new { CustomerIds, Message }.ToJson();
+    }
+
+    internal DateTime PlannedDeliveryDate => DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
 }
 
 public sealed class ScheduleTextMessageRequestValidator : AbstractValidator<ScheduleTextMessageRequest>
