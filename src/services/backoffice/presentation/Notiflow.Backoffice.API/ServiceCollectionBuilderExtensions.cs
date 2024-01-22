@@ -1,28 +1,26 @@
 ﻿namespace Notiflow.Backoffice.API;
 
-internal static class ServiceCollectionContainerBuilderExtensions
+internal static class ServiceCollectionBuilderExtensions
 {
-    internal static IServiceCollection AddWebDependencies(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddWebDependencies(this WebApplicationBuilder builder)
     {
-        IHostEnvironment hostEnvironment = services.BuildServiceProvider().GetRequiredService<IHostEnvironment>();
-
-        JwtTokenSetting jwtTokenSetting = configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
-        SwaggerSetting swaggerSetting = configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
-        ApiVersionSetting apiVersionSetting = configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
+        JwtTokenSetting jwtTokenSetting = builder.Configuration.GetRequiredSection(nameof(JwtTokenSetting)).Get<JwtTokenSetting>();
+        SwaggerSetting swaggerSetting = builder.Configuration.GetRequiredSection(nameof(SwaggerSetting)).Get<SwaggerSetting>();
+        ApiVersionSetting apiVersionSetting = builder.Configuration.GetRequiredSection(nameof(ApiVersionSetting)).Get<ApiVersionSetting>();
 
         var authorizationPolicy = new AuthorizationPolicyBuilder()
                                     .RequireAuthenticatedUser()
                                     .RequireClaim(ClaimTypes.NameIdentifier)
                                     .Build();
 
-        services.AddControllers(options =>
+        builder.Services.AddControllers(options =>
         {
             options.ReturnHttpNotAcceptable = true;
             options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
             options.Filters.Add<TenantTokenAuthenticationFilter>();
         });
 
-        services.AddJwtAuthentication(options =>
+        builder.Services.AddJwtAuthentication(options =>
         {
             options.Audiences = jwtTokenSetting.Audiences;
             options.Issuer = jwtTokenSetting.Issuer;
@@ -31,7 +29,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.SecurityKey = jwtTokenSetting.SecurityKey;
         });
 
-        services.AddAuthorization(options =>
+        builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy(PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION, policy =>
             {
@@ -52,7 +50,7 @@ internal static class ServiceCollectionContainerBuilderExtensions
             });
         });
 
-        services.AddSwagger(options =>
+        builder.Services.AddSwagger(options =>
         {
             options.Title = swaggerSetting.Title;
             options.Description = swaggerSetting.Description;
@@ -61,25 +59,44 @@ internal static class ServiceCollectionContainerBuilderExtensions
             options.ContactEmail = swaggerSetting.ContactEmail;
         });
 
-        services.AddApiVersion(options =>
+        builder.Services.AddApiVersion(options =>
         {
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        services
+        builder.Services
             .AddLowercaseRoute()
             .AddResponseCompress()
             .AddCustomHttpLogging();
 
-        services.AddSignalConfiguration(configuration);
-        services.AddBackofficeHealthChecks();
-
-        if (!hostEnvironment.IsProduction())
+        builder.Services.AddSignalConfiguration(builder.Configuration);
+       
+        if (!builder.Environment.IsProduction())
         {
-            services.AddHttpSecurityPrecautions();
+            builder.Services.AddHttpSecurityPrecautions();
         }
 
-        return services;
+        return builder.Services;
+    }
+
+    internal static IServiceCollection AddBackofficeHealthChecks(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks()
+                .AddNpgSqlDatabaseCheck(builder.Configuration[$"{nameof(NotiflowDbContext)}:{nameof(SqlSetting.ConnectionString)}"])
+                .AddRedisCheck(builder.Configuration[$"{nameof(RedisServerSetting)}:{nameof(RedisServerSetting.ConnectionString)}"])
+                .AddSystemCheck()
+                .AddRabbitMqCheck("amqp://guest:guest@localhost:5672")
+                .AddServicesCheck(new List<HealthChecksUrlGroupSetting>
+                {
+                    new HealthChecksUrlGroupSetting()
+                    {
+                        Name = "linkedin",
+                        ServiceUri = new Uri("https://www.linkedin.com/"),
+                        Tags = ["linkedin"]
+                    }
+                });
+
+        return builder.Services;
     }
 }

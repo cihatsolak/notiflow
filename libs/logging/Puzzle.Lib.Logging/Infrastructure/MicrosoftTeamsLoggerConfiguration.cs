@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.Infrastructure.Configurations;
+﻿namespace Puzzle.Lib.Logging.Infrastructure;
 
 internal static class MicrosoftTeamsLoggerConfiguration
 {

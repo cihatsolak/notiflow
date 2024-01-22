@@ -29,7 +29,7 @@ public static class HostBuilderExtensions
            .Enrich.WithClientIp()
            .Enrich.WithThreadId()
            .Enrich.WithThreadName()
-           .Enrich.WithApplicationName()
+           .Enrich.WithProperty("ApplicationName", Assembly.GetCallingAssembly().GetName().Name)
            .WriteTo.Debug(LogEventLevel.Verbose)
            .WriteTo.Console()
            .WriteToElasticsearch(seriLogElasticSetting)
@@ -58,7 +58,7 @@ public static class HostBuilderExtensions
            .Enrich.WithClientIp()
            .Enrich.WithThreadId()
            .Enrich.WithThreadName()
-           .Enrich.WithApplicationName()
+           .Enrich.WithProperty("ApplicationName", Assembly.GetCallingAssembly().GetName().Name)
            .WriteTo.Debug(LogEventLevel.Verbose)
            .WriteTo.Console()
            .WriteToElasticsearch(seriLogElasticSetting);

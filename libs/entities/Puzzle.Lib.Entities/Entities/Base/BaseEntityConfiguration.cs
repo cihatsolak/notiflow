@@ -21,6 +21,6 @@ public class BaseEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfigur
 
         builder.ToTable(tableName);
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Id).ValueGeneratedOnAdd(); //veri tabanı otonatik olarak primary key değerini oluştur.r
+        builder.Property(p => p.Id).ValueGeneratedOnAdd(); //veri tabanı otonatik olarak primary key değerini oluştur.
     }
 }

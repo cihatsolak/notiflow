@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Logging.Infrastructure.Configurations;
+﻿namespace Puzzle.Lib.Logging.Infrastructure;
 
 internal static class ElasticsearchLoggerConfiguration
 {
@@ -8,7 +8,7 @@ internal static class ElasticsearchLoggerConfiguration
         {
             AutoRegisterTemplate = true,
             AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-            IndexFormat = $"{EnvironmentName()}-{ApplicationName}-logs-{DateTime.Now:yyyy.MM.dd}",
+            IndexFormat = $"{EnvironmentName}-{ApplicationName}-logs-{DateTime.Now:yyyy.MM.dd}",
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true, inlineFields: true),
             MinimumLogEventLevel = LogEventLevel.Information,
             FailureCallback = logEvent => Console.WriteLine($"Unable to submit event {logEvent.MessageTemplate}")
@@ -22,16 +22,6 @@ internal static class ElasticsearchLoggerConfiguration
         return loggerConfiguration.WriteTo.Elasticsearch(elasticsearchSinkOptions);
     }
 
-    private static string EnvironmentName()
-    {
-        string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        if (string.IsNullOrWhiteSpace(environmentName))
-        {
-            environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-        }
-
-        return environmentName.ToLowerInvariant();
-    }
-
+    private static string EnvironmentName => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLowerInvariant();
     private static string ApplicationName => Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant();
 }

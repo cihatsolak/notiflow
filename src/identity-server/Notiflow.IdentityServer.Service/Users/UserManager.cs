@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service.Users;
+﻿using Notiflow.Common.MessageBroker.Events.Users;
+
+namespace Notiflow.IdentityServer.Service.Users;
 
 internal sealed class UserManager : IUserService
 {
@@ -44,7 +46,16 @@ internal sealed class UserManager : IUserService
         user.TenantId = int.Parse(_claimService.GroupSid);
         user.Avatar = AppFilePaths.PLACEHOLDER_AVATAR_URL;
 
+        UserOutbox userOutbox = new()
+        {
+            IdempotentToken = Guid.NewGuid(),
+            MessageType = typeof(UserRegisteredEvent).Name,
+            Payload = new UserRegisteredEvent(user.Email, "Welcome!").ToJson()
+        };
+
         await _context.Users.AddAsync(user, cancellationToken);
+        await _context.UserOutboxes.AddAsync(userOutbox, cancellationToken);
+        
         await _context.SaveChangesAsync(cancellationToken);
 
         return Result<int>.Success(StatusCodes.Status201Created, _localizer[ResultMessage.USER_ADDED], user.Id);

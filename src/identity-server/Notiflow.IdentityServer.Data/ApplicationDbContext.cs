@@ -39,5 +39,6 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<TenantApplication> TenantApplications { get; set; }
     public DbSet<TenantPermission> TenantPermissions { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<UserOutbox> UserOutboxes { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

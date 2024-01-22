@@ -2,8 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.Configured(builder.Configuration);
 
+builder.AddWebDependencies();
+builder.AddBackofficeHealthChecks();
+
 builder.Services
-    .AddWebDependencies(builder.Configuration)
     .AddApplication(builder.Configuration)
     .AddInfrastructure(builder.Configuration)
     .AddPersistence(builder.Configuration);
