@@ -15,18 +15,15 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
 {
     private readonly INotiflowUnitOfWork _uow;
     private readonly IPublisher _publisher;
-    private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly ILogger<AddCustomerCommandHandler> _logger;
 
     public AddCustomerCommandHandler(
         INotiflowUnitOfWork uow,
         IPublisher publisher,
-        ILocalizerService<ResultMessage> localizer,
         ILogger<AddCustomerCommandHandler> logger)
     {
         _uow = uow;
         _publisher = publisher;
-        _localizer = localizer;
         _logger = logger;
     }
 
@@ -35,7 +32,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         bool isExists = await _uow.CustomerRead.IsExistsByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
         if (isExists)
         {
-            return Result<int>.Failure(StatusCodes.Status400BadRequest, _localizer[ResultMessage.CUSTOMER_EXISTS]);
+            return Result<int>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_EXISTS);
         }
 
         var customer = ObjectMapper.Mapper.Map<Customer>(request);
@@ -47,7 +44,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
 
         _logger.LogInformation("A new customer with {customerId} id has been registered.", customer.Id);
 
-        return Result<int>.Success(StatusCodes.Status201Created, _localizer[ResultMessage.CUSTOMER_ADDED], customer.Id);
+        return Result<int>.Success(StatusCodes.Status201Created, ResultCodes.CUSTOMER_ADDED, customer.Id);
     }
 }
 

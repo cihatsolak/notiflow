@@ -53,10 +53,6 @@ internal sealed class TokenManager : ITokenService
         claims.AddAudiences(_jwtTokenSetting.Audiences);
         claims.AddGroupSid($"{user.TenantId}");
 
-        claims.AddRoles(new List<string>() { "admin", "user", "local" });
-
-        claims.AddBirthDate(DateTime.Now);
-
         return claims;
     }
 }

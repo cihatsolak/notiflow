@@ -2,6 +2,16 @@
 
 public sealed record ScheduledTextMessageEvent
 {
-    public required List<int> CustomerIds { get; init; }
-    public required string Message { get; init; }
+    public ScheduledTextMessageEvent()
+    {
+    }
+
+    public ScheduledTextMessageEvent(List<int> customerIds, string message)
+    {
+        CustomerIds = customerIds;
+        Message = message;
+    }
+
+    public List<int> CustomerIds { get; init; }
+    public string Message { get; init; }
 }

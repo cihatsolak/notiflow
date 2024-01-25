@@ -5,14 +5,10 @@ public sealed record TextMessageDataTableCommand : DtParameters, IRequest<Result
 public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultMessage> _localizer;
 
-    public TextMessageDataTableCommandHandler(
-        INotiflowUnitOfWork uow,
-        ILocalizerService<ResultMessage> localizer)
+    public TextMessageDataTableCommandHandler(INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _localizer = localizer;
     }
 
     public async Task<Result<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
@@ -26,7 +22,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TEXT_MESSAGE_NOT_FOUND]);
+            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, ResultCodes.TEXT_MESSAGE_NOT_FOUND);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
@@ -37,7 +33,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
             Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], textMessageHistoryDataTable);
+        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, textMessageHistoryDataTable);
     }
 }
 

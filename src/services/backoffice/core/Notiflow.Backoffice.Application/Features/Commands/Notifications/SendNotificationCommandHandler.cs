@@ -10,20 +10,17 @@ public sealed record SendNotificationCommand(
 public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
-    private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly IFirebaseService _firebaseService;
     private readonly IHuaweiService _huaweiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public SendNotificationCommandHandler(
         INotiflowUnitOfWork notiflowUnitOfWork,
-        ILocalizerService<ResultMessage> localizer,
         IFirebaseService firebaseService,
         IHuaweiService huaweiService,
         IPublishEndpoint publishEndpoint)
     {
         _notiflowUnitOfWork = notiflowUnitOfWork;
-        _localizer = localizer;
         _firebaseService = firebaseService;
         _huaweiService = huaweiService;
         _publishEndpoint = publishEndpoint;
@@ -34,7 +31,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.DEVICE_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices
@@ -88,7 +85,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         }
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.NOTIFICATION_SENDING_SUCCESSFUL], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status200OK, ResultCodes.NOTIFICATION_SENDING_SUCCESSFUL, Unit.Value);
     }
 
     private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

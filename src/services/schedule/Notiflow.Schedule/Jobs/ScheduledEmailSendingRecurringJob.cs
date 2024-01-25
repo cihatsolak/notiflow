@@ -22,8 +22,6 @@ public sealed class ScheduledEmailSendingRecurringJob
     [JobDisplayName("[EMAIL] Sends scheduled emails.")]
     public async Task ExecuteAsync()
     {
-        _logger.LogInformation("The emails planned to be sent are started to be sent.");
-
         var scheduledEmails = await _context.ScheduledEmails
               .TagWith("lists emails that are scheduled and waiting to be sent.")
               .Where(message => !message.IsSent &&

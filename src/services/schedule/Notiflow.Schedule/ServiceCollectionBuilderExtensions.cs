@@ -2,7 +2,7 @@
 
 internal static class ServiceCollectionBuilderExtensions
 {
-    internal static WebApplicationBuilder AddWebDependencies(this WebApplicationBuilder  builder)
+    internal static WebApplicationBuilder AddWebDependencies(this WebApplicationBuilder builder)
     {
         SqlSetting sqlSetting = builder.Configuration.GetRequiredSection(nameof(ScheduledDbContext)).Get<SqlSetting>();
         HangfireSetting hangfireSetting = builder.Configuration.GetRequiredSection(nameof(HangfireSetting)).Get<HangfireSetting>();
@@ -42,20 +42,23 @@ internal static class ServiceCollectionBuilderExtensions
             options.Password = hangfireSetting.Password;
         });
 
-        builder.Services.AddSwagger(options =>
-        {
-            options.Title = swaggerSetting.Title;
-            options.Description = swaggerSetting.Description;
-            options.Version = swaggerSetting.Version;
-            options.ContactName = swaggerSetting.ContactName;
-            options.ContactEmail = swaggerSetting.ContactEmail;
-        });
-
         builder.Services.AddApiVersion(options =>
         {
             options.MajorVersion = apiVersionSetting.MajorVersion;
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
+
+        if (!builder.Environment.IsProduction())
+        {
+            builder.Services.AddSwagger(options =>
+            {
+                options.Title = swaggerSetting.Title;
+                options.Description = swaggerSetting.Description;
+                options.Version = swaggerSetting.Version;
+                options.ContactName = swaggerSetting.ContactName;
+                options.ContactEmail = swaggerSetting.ContactEmail;
+            });
+        }
 
         return builder;
     }

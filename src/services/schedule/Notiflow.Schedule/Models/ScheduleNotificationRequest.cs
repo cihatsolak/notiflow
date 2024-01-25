@@ -9,18 +9,14 @@ public sealed record ScheduleNotificationRequest
     public required string Date { get; init; }
     public required string Time { get; init; }
 
-    internal string ToScheduledNotificationEvent()
+    internal ScheduledNotification CreateScheduledNotification()
     {
-        return new
+        return new ScheduledNotification
         {
-            CustomerIds,
-            Message,
-            ImageUrl,
-            Title
-        }.ToJson();
+            Data = new ScheduledNotificationEvent(CustomerIds, Title, Message, ImageUrl).ToJson(),
+            PlannedDeliveryDate = DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal)
+        };
     }
-
-    internal DateTime PlannedDeliveryDate => DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
 }
 
 public sealed class ScheduleNotificationRequestValidator : AbstractValidator<ScheduleNotificationRequest>
@@ -38,9 +34,8 @@ public sealed class ScheduleNotificationRequestValidator : AbstractValidator<Sch
            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE]);
 
         RuleFor(p => p.ImageUrl)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
-           .Must(BeAValidUrl).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL]);
+           .Url(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
+           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL]);
 
         RuleFor(p => p.Date)
            .Must(date => DateTime.TryParse(date, CultureInfo.CurrentCulture, out _))
@@ -49,11 +44,5 @@ public sealed class ScheduleNotificationRequestValidator : AbstractValidator<Sch
         RuleFor(p => p.Time)
             .Must(date => TimeSpan.TryParse(date, CultureInfo.CurrentCulture, out _))
             .WithMessage(localizer[ValidationErrorMessage.TIME]);
-    }
-
-    private bool BeAValidUrl(string url)
-    {
-        return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
-            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 }

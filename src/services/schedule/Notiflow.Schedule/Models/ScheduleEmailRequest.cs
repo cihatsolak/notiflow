@@ -11,20 +11,14 @@ public sealed record ScheduleEmailRequest
     public required string Date { get; init; }
     public required string Time { get; init; }
 
-    internal string ToScheduledEmailEvent()
+    internal ScheduledEmail CreateScheduledEmail()
     {
-        return new
+        return new ScheduledEmail
         {
-            Body,
-            Subject,
-            CustomerIds,
-            CcAddresses,
-            BccAddresses,
-            IsBodyHtml
-        }.ToJson();
+            Data = new ScheduledEmailEvent(Body, Subject, CustomerIds, CcAddresses, BccAddresses, IsBodyHtml).ToJson(),
+            PlannedDeliveryDate = DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal)
+        };
     }
-
-    internal DateTime PlannedDeliveryDate => DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
 }
 
 public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>

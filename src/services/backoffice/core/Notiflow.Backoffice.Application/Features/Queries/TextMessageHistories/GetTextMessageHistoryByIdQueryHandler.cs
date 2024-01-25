@@ -5,14 +5,10 @@ public sealed record GetTextMessageHistoryByIdQuery(int Id) : IRequest<Result<Ge
 public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetTextMessageHistoryByIdQuery, Result<GetTextMessageHistoryByIdQueryResult>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultMessage> _localizer;
 
-    public GetTextMessageHistoryByIdQueryHandler(
-        INotiflowUnitOfWork uow,
-        ILocalizerService<ResultMessage> localizer)
+    public GetTextMessageHistoryByIdQueryHandler(INotiflowUnitOfWork uow)
     {
         _uow = uow;
-        _localizer = localizer;
     }
 
     public async Task<Result<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
@@ -20,12 +16,12 @@ public sealed class GetTextMessageHistoryByIdQueryHandler : IRequestHandler<GetT
         var textMessageHistory = await _uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
-            return Result<GetTextMessageHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.TEXT_MESSAGE_NOT_FOUND]);
+            return Result<GetTextMessageHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, ResultCodes.TEXT_MESSAGE_NOT_FOUND);
         }
 
         var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResult>(textMessageHistory);
 
-        return Result<GetTextMessageHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, _localizer[ResultMessage.GENERAL_SUCCESS], textMessageHistoryDto);
+        return Result<GetTextMessageHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, textMessageHistoryDto);
     }
 }
 

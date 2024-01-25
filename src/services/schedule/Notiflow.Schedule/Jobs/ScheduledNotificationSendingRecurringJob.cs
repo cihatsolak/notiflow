@@ -22,8 +22,6 @@ public sealed class ScheduledNotificationSendingRecurringJob
     [JobDisplayName("[NOTIFICATION] Sends scheduled notification.")]
     public async Task ExecuteAsync()
     {
-        _logger.LogInformation("The notification planned to be sent are started to be sent.");
-
         var scheduledNotifications = await _context.ScheduledNotifications
                .TagWith("lists notifications that are scheduled and waiting to be sent.")
                .Where(message => !message.IsSent &&

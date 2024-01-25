@@ -22,6 +22,18 @@ internal static class ElasticsearchLoggerConfiguration
         return loggerConfiguration.WriteTo.Elasticsearch(elasticsearchSinkOptions);
     }
 
-    private static string EnvironmentName => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLowerInvariant();
+    private static string EnvironmentName 
+    {
+        get
+        {
+            string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (string.IsNullOrWhiteSpace(environmentName))
+            {
+                environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+            }
+
+            return environmentName.ToLowerInvariant();
+        }
+    }
     private static string ApplicationName => Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant();
 }

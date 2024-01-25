@@ -5,16 +5,13 @@ public sealed record DeleteDeviceCommand(int Id) : IRequest<Result<Unit>>;
 public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly ILogger<DeleteDeviceCommandHandler> _logger;
 
     public DeleteDeviceCommandHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ResultMessage> localizer,
         ILogger<DeleteDeviceCommandHandler> logger)
     {
         _uow = uow;
-        _localizer = localizer;
         _logger = logger;
     }
 
@@ -23,12 +20,12 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         bool isDeleted = await _uow.DeviceWrite.ExecuteDeleteByIdAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, _localizer[ResultMessage.DEVICE_NOT_DELETED]);
+            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.DEVICE_NOT_DELETED);
         }
 
         _logger.LogInformation("The device with ID {deviceId} has been deleted.", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.DEVICE_DELETED], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_DELETED, Unit.Value);
     }
 }
 

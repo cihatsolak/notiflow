@@ -14,6 +14,7 @@ global using Notiflow.Common.Caching;
 global using Notiflow.Common.Caching.Models;
 global using Notiflow.Common.Extensions;
 global using Notiflow.Common.Localize;
+global using Notiflow.Common.MessageBroker.Events.Users;
 global using Notiflow.IdentityServer.Core.Entities.Tenants;
 global using Notiflow.IdentityServer.Core.Entities.Users;
 global using Notiflow.IdentityServer.Data;

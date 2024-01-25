@@ -5,16 +5,13 @@ public sealed record UpdateDeviceTokenCommand(int Id, string Token) : IRequest<R
 public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDeviceTokenCommand, Result<Unit>>
 {
     private readonly INotiflowUnitOfWork _uow;
-    private readonly ILocalizerService<ResultMessage> _localizer;
     private readonly ILogger<UpdateDeviceTokenCommandHandler> _logger;
 
     public UpdateDeviceTokenCommandHandler(
         INotiflowUnitOfWork uow,
-        ILocalizerService<ResultMessage> localizer,
         ILogger<UpdateDeviceTokenCommandHandler> logger)
     {
         _uow = uow;
-        _localizer = localizer;
         _logger = logger;
     }
 
@@ -23,7 +20,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, _localizer[ResultMessage.DEVICE_NOT_FOUND]);
+            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.DEVICE_NOT_FOUND);
         }
 
         device.Token = request.Token;
@@ -32,7 +29,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
 
         _logger.LogInformation("The token information of the device with {deviceId} ids has been updated.", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, _localizer[ResultMessage.DEVICE_TOKEN_UPDATED], Unit.Value);
+        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_TOKEN_UPDATED, Unit.Value);
     }
 }
 

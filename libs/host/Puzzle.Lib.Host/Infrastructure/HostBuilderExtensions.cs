@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Host.Infrastructure;
+﻿using System.Globalization;
+
+namespace Puzzle.Lib.Host.Infrastructure;
 
 /// <summary>
 /// This class provides a set of extension methods for adding additional functionality to .NET Core applications.
