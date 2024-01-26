@@ -16,17 +16,19 @@ public record Result<TData>
     public bool IsFailure => !IsSuccess;
 
     /// <summary>
+    /// Gets or sets the status statusCode of the response.
+    /// </summary>
+    [JsonIgnore]
+    public int StatusCode { get; set; }
+
+    [JsonIgnore]
+    public int ResultCode { get; set; }
+
+    /// <summary>
     /// Gets or sets the data that the response model holds.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public TData Data { get; init; }
-
-    /// <summary>
-    /// Gets or sets the status statusCode of the response.
-    /// </summary>
-    public int StatusCode { get; set; }
-
-    public int ResultCode { get; set; }
 
     /// <summary>
     /// Gets or sets the status message of the response.
@@ -81,8 +83,8 @@ public record Result<TData>
         return new Result<TData>
         {
             StatusCode = statusCode,
-            IsSuccess = true,
-            ResultCode = resultCode
+            ResultCode = resultCode,
+            IsSuccess = true
         };
     }
 
@@ -115,8 +117,8 @@ public record Result<TData>
         {
             Data = data,
             StatusCode = statusCode,
-            IsSuccess = true,
-            ResultCode = resultCode
+            ResultCode = resultCode,
+            IsSuccess = true
         };
     }
 
@@ -143,9 +145,8 @@ public record Result<TData>
     {
         return new Result<TData>
         {
-            ResultCode = resultCode,
-            //Errors = new List<string>() { message },
-            StatusCode = statusCode
+            StatusCode = statusCode,
+            ResultCode = resultCode            
         };
     }
 

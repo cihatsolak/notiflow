@@ -1,7 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.Customers;
-using Notiflow.Backoffice.Application.Features.Queries.Customers;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class CustomersController : BaseApiController
 {

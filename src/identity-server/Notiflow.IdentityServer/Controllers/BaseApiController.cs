@@ -5,8 +5,8 @@ public class BaseApiController : MainController
 {
     public override IActionResult CreateActionResultInstance<T>(Result<T> result)
     {
-        //var localizerService = HttpContext.RequestServices.GetRequiredService<ILocalizerService<ResultMessage>>();
-        //result.Message = localizerService[1];
+        var localizerService = HttpContext.RequestServices.GetRequiredService<ILocalizerService<ResultCodes>>();
+        result.Message = localizerService[result.ResultCode];
 
         return base.CreateActionResultInstance(result);
     }

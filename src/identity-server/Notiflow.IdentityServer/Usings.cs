@@ -1,6 +1,7 @@
 ﻿global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Authorization;
+global using Notiflow.Common.Localize;
 global using Notiflow.IdentityServer;
 global using Notiflow.IdentityServer.Data;
 global using Notiflow.IdentityServer.Service;

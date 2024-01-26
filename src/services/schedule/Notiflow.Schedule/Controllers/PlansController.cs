@@ -3,7 +3,7 @@
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status500InternalServerError)]
-public sealed class PlansController : MainController
+public sealed class PlansController : BaseApiController
 {
     private readonly ScheduledDbContext _context;
 
@@ -23,6 +23,7 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
+        var asd = request.CreateScheduledTextMessage();
         await _context.ScheduledTextMessages.AddAsync(request.CreateScheduledTextMessage(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 

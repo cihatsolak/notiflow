@@ -12,7 +12,7 @@ public sealed record ScheduleTextMessageRequest
         return new ScheduledTextMessage
         {
             Data = new ScheduledTextMessageEvent(CustomerIds, Message).ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{Date} {Time}", CultureInfo.CurrentCulture)
+            PlannedDeliveryDate = DateTime.Parse($"{Date} {Time}")
         };
     }
 }

@@ -36,7 +36,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
             options.UseSimpleAssemblyNameTypeSerializer();
             options.UseRecommendedSerializerSettings();
-            //options.UseSerilogLogProvider();
+            options.UseSerilogLogProvider();
             options.UseColouredConsoleLogProvider();
             options.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
             

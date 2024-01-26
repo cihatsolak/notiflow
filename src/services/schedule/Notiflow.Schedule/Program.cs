@@ -13,17 +13,6 @@ builder.Services
     .AddServerSideValidation()
     .AddCustomHttpLogging();
 
-
-CultureInfo cultureInfo = new("tr-TR");
-
-Thread.CurrentThread.CurrentCulture = cultureInfo;
-Thread.CurrentThread.CurrentUICulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-CultureInfo.CurrentCulture = cultureInfo;
-CultureInfo.CurrentUICulture = cultureInfo;
-
-
 if (!builder.Environment.IsProduction())
 {
     builder.Services.AddHttpSecurityPrecautions();

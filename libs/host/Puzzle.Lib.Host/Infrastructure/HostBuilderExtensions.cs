@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Puzzle.Lib.Host.Infrastructure;
+﻿namespace Puzzle.Lib.Host.Infrastructure;
 
 /// <summary>
 /// This class provides a set of extension methods for adding additional functionality to .NET Core applications.
@@ -34,7 +32,6 @@ public static class HostBuilderExtensions
         hostBuilder.UseDefaultServiceProvider((hostBuilderContext, serviceProviderOptions) =>
         {
             serviceProviderOptions.ValidateScopes = !hostBuilderContext.HostingEnvironment.IsProduction();
-
         });
 
         return hostBuilder;
