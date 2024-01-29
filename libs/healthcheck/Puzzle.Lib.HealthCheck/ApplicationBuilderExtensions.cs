@@ -53,7 +53,7 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The updated <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseHealthWithUIChecks(this IApplicationBuilder app)
+    public static IApplicationBuilder UseHealthWithUI(this IApplicationBuilder app)
     {
         return app.UseHealth().UseHealthUI();
     }

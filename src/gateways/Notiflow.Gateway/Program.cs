@@ -41,7 +41,7 @@ app.UseSwaggerForOcelotUI(options =>
     uiOptions.DocumentTitle = "Gateway documentation";
 });
 
-app.UseHealthWithUIChecks();
+app.UseHealthWithUI();
 app.UseAuth();
 
 await app.UseOcelot();

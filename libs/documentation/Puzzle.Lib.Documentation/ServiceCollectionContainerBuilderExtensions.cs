@@ -15,6 +15,8 @@ public static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = new();
         configure?.Invoke(swaggerSetting);
 
+        services.Configure(configure);
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
@@ -54,13 +56,6 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         return services;
     }
-
-    /// <summary>
-    /// Configures Swagger security settings and adds them to the service collection.
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
-    /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddSwaggerSecuritySetting(this IServiceCollection services, Action<SwaggerSecuritySetting> configure) => services.Configure(configure);
 
     /// <summary>
     /// Adds operation filters to Swagger

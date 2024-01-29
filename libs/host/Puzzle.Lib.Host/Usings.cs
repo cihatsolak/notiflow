@@ -8,5 +8,6 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
+global using Puzzle.Lib.Host.Infrastructure;
 global using System.Net.Mime;
 global using System.Text.Json;

@@ -1,4 +1,13 @@
-﻿namespace Notiflow.Backoffice.Application.Mappers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Devices;
+using Notiflow.Backoffice.Application.Features.Commands.Emails;
+using Notiflow.Backoffice.Application.Features.Commands.Notifications;
+using Notiflow.Backoffice.Application.Features.Commands.TextMessages;
+using Notiflow.Backoffice.Application.Features.Queries.Customers;
+using Notiflow.Backoffice.Application.Features.Queries.Devices;
+using Notiflow.Backoffice.Application.Features.Queries.Emails;
+using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories;
+
+namespace Notiflow.Backoffice.Application.Mappers;
 
 internal sealed class ApplicationProfile : Profile
 {

@@ -7,6 +7,9 @@
 /// </summary>
 internal static class RedisRetryPolicies
 {
+    /// <summary>
+    /// Represents the maximum number of retry attempts allowed for a specific operation.
+    /// </summary>
     private const int RETRY_COUNT = 2;
 
     /// <summary>
@@ -18,11 +21,6 @@ internal static class RedisRetryPolicies
     /// Gets an asynchronous retry policy for Redis.
     /// </summary>
     internal static AsyncRetryPolicy AsyncRetryPolicy => Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry);
-
-    /// <summary>
-    /// Gets a retry policy for Redis.
-    /// </summary>
-    internal static RetryPolicy RetryPolicy => Policy.Handle<Exception>().WaitAndRetry(RETRY_COUNT, ComputeDuration, OnRedisRetry);
 
     /// <summary>
     /// Logs an error message when a Redis communication error occurs during a retry attempt.

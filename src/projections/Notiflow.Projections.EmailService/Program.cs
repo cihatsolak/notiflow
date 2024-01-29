@@ -1,4 +1,4 @@
-using Puzzle.Lib.Host.Infrastructure;
+using Puzzle.Lib.Host;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .AddAppConfiguration()

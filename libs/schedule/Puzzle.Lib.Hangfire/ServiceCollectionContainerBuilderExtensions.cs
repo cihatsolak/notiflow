@@ -36,11 +36,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
             options.UseSimpleAssemblyNameTypeSerializer();
             options.UseRecommendedSerializerSettings();
-            //config.UseSerilogLogProvider();
+            options.UseSerilogLogProvider();
             options.UseColouredConsoleLogProvider();
             options.UseDefaultCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentCulture);
-            //options.UseActivator(new HangfireActivator(services.BuildServiceProvider()));
-
+            
             options.UseDashboardMetric(DashboardMetrics.ServerCount)
                    .UseDashboardMetric(SqlServerStorage.ActiveConnections)
                    .UseDashboardMetric(SqlServerStorage.TotalConnections)

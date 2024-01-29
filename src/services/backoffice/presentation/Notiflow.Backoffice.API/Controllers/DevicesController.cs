@@ -1,4 +1,7 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Devices;
+using Notiflow.Backoffice.Application.Features.Queries.Devices;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class DevicesController : BaseApiController
 {

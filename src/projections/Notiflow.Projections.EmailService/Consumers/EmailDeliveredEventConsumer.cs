@@ -16,14 +16,14 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
         IDbTransaction transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
-
+       
         try
         {
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
-                recipients = CombineWithComma(context.Message.Recipients),
-                cc = CombineWithComma(context.Message.CcAddresses),
-                bcc = CombineWithComma(context.Message.BccAddresses),
+                recipients = context.Message.Recipients.ToJoinWithSeparator(PunctuationChars.Comma),
+                cc = context.Message.CcAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
+                bcc = context.Message.BccAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
                 subject = context.Message.Subject,
                 body = context.Message.Body,
                 is_sent = true,
@@ -38,7 +38,7 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
                  "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
                  emailHistories,
                  transaction);
-
+           
             transaction.Commit();
 
             _logger.LogInformation("Successful e-mail sending information has been saved in the database.");
@@ -51,6 +51,4 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
             throw;
         }
     }
-
-    private static string CombineWithComma(List<string> list) => string.Join(";", list);
 }

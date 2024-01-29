@@ -26,4 +26,12 @@ public static class CollectionExtensions
     {
         return source ?? Enumerable.Empty<T>();
     }
+
+    /// <summary>
+    /// Joins the elements of an IEnumerable<string> into a single string with a specified separator.
+    /// </summary>
+    /// <param name="source">The IEnumerable<string> to join.</param>
+    /// <param name="separator">The character used to separate the joined elements.</param>
+    /// <returns>A string containing the joined elements separated by the specified separator.</returns>
+    public static string ToJoinWithSeparator(this List<string> source, char separator) => string.Join(separator, source);
 }

@@ -1,9 +1,9 @@
 ﻿global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Authorization;
+global using Notiflow.Common.Localize;
 global using Notiflow.IdentityServer;
 global using Notiflow.IdentityServer.Data;
-global using Notiflow.IdentityServer.Middlewares;
 global using Notiflow.IdentityServer.Service;
 global using Notiflow.IdentityServer.Service.Auth;
 global using Notiflow.IdentityServer.Service.Lifetimes;
@@ -12,7 +12,6 @@ global using Notiflow.IdentityServer.Service.TenantPermissions;
 global using Notiflow.IdentityServer.Service.Users;
 global using Puzzle.Lib.Auth;
 global using Puzzle.Lib.Auth.Infrastructure;
-global using Puzzle.Lib.Auth.Models;
 global using Puzzle.Lib.Cache.Infrastructure;
 global using Puzzle.Lib.Database;
 global using Puzzle.Lib.Database.Infrastructure;

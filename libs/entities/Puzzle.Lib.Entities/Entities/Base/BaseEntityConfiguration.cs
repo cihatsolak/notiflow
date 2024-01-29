@@ -1,11 +1,16 @@
 ﻿namespace Puzzle.Lib.Entities.Entities.Base;
 
-public class BaseEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<TPrimaryKey> 
+public class BaseEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<TPrimaryKey>
                                                                                                where TPrimaryKey : notnull
 {
     private readonly bool _useLowerTableName;
 
-    public BaseEntityConfiguration(bool useLowerTableName = false)
+    public BaseEntityConfiguration()
+    {
+        _useLowerTableName = false;
+    }
+
+    public BaseEntityConfiguration(bool useLowerTableName)
     {
         _useLowerTableName = useLowerTableName;
     }
@@ -16,6 +21,6 @@ public class BaseEntityConfiguration<TEntity, TPrimaryKey> : IEntityTypeConfigur
 
         builder.ToTable(tableName);
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Id).ValueGeneratedOnAdd();
+        builder.Property(p => p.Id).ValueGeneratedOnAdd(); //veri tabanı otonatik olarak primary key değerini oluştur.
     }
 }

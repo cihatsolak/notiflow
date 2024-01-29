@@ -6,6 +6,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     private readonly IServer _server;
     private readonly ILogger<StackExchangeRedisManager> _logger;
     private readonly RedisServerSetting _redisServerSetting;
+    private readonly CultureInfo _englishCultureInfo;
 
     public StackExchangeRedisManager(
         IConnectionMultiplexer connectionMultiplexer,
@@ -16,6 +17,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         _server = connectionMultiplexer.GetServer(redisServerSetting.Value.ConnectionString);
         _logger = logger;
         _redisServerSetting = redisServerSetting.Value;
+        _englishCultureInfo = new CultureInfo("en-US");
     }
 
     public async Task<bool> ExistsAsync(string cacheKey)
@@ -24,7 +26,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            return await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica);
+            return await _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
         });
     }
 
@@ -34,7 +36,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            long result = await _database.StringIncrementAsync(cacheKey, increment, CommandFlags.DemandMaster);
+            long result = await _database.StringIncrementAsync(KeyLower(cacheKey), increment, CommandFlags.DemandMaster);
             if (0 >= result)
             {
                 _logger.LogWarning("The key value {cacheKey} could not be incremented by {increment}.", cacheKey, increment);
@@ -50,7 +52,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            long result = await _database.StringDecrementAsync(cacheKey, decrement, CommandFlags.DemandMaster);
+            long result = await _database.StringDecrementAsync(KeyLower(cacheKey), decrement, CommandFlags.DemandMaster);
             if (0 >= result)
             {
                 _logger.LogWarning("The {cacheKey} key value has been reduced by {increment}.", cacheKey, decrement);
@@ -67,7 +69,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            return await _database.HashExistsAsync(cacheKey, hashField, CommandFlags.PreferReplica);
+            return await _database.HashExistsAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
         });
     }
 
@@ -77,7 +79,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var hashEntries = await _database.HashGetAllAsync(cacheKey, CommandFlags.PreferReplica);
+            var hashEntries = await _database.HashGetAllAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (hashEntries.Length == 0)
             {
                 _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
@@ -95,7 +97,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var hashEntry = await _database.HashGetAsync(cacheKey, hashField, CommandFlags.PreferReplica);
+            var hashEntry = await _database.HashGetAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
             if (!hashEntry.HasValue)
             {
                 _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
@@ -112,7 +114,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.HashSetAsync(cacheKey, hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.HashSetAsync(KeyLower(cacheKey), hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("The data for the {cacheKey} key value could not be transferred to the redis.", cacheKey);
@@ -129,7 +131,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.HashDeleteAsync(cacheKey, hashField, CommandFlags.DemandMaster);
+            bool succeeded = await _database.HashDeleteAsync(KeyLower(cacheKey), hashField, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Unable to delete data for key value {cacheKey}.", cacheKey);
@@ -146,7 +148,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            double result = await _database.SortedSetIncrementAsync(cacheKey, memberKey, increment, CommandFlags.DemandMaster);
+            double result = await _database.SortedSetIncrementAsync(KeyLower(cacheKey), memberKey, increment, CommandFlags.DemandMaster);
             if (result == 0)
             {
                 _logger.LogWarning("Could not update member {@memberKey} in the ordered list of key value {cacheKey}.", cacheKey, memberKey);
@@ -162,7 +164,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Descending, CommandFlags.PreferReplica);
+            var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Descending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
@@ -179,7 +181,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var redisValues = await _database.SortedSetRangeByRankAsync(cacheKey, start, stop, Order.Ascending, CommandFlags.PreferReplica);
+            var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Ascending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
@@ -197,7 +199,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.SortedSetRemoveAsync(cacheKey, memberKey, CommandFlags.DemandMaster);
+            bool succeeded = await _database.SortedSetRemoveAsync(KeyLower(cacheKey), memberKey, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not delete member {@memberKey} in the ordered list of key value {cacheKey}.", cacheKey, memberKey);
@@ -213,7 +215,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            return await _database.SetContainsAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.PreferReplica);
+            return await _database.SetContainsAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.PreferReplica);
         });
     }
 
@@ -223,7 +225,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var redisValues = await _database.SetMembersAsync(cacheKey, CommandFlags.PreferReplica);
+            var redisValues = await _database.SetMembersAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
             {
                 _logger.LogWarning("The list of {cacheKey} key could not be found.", cacheKey);
@@ -239,7 +241,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.SetAddAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
+            bool succeeded = await _database.SetAddAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
@@ -255,7 +257,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.SetRemoveAsync(cacheKey, JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
+            bool succeeded = await _database.SetRemoveAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Unable to delete element in unique list belonging to {cacheKey} key.", cacheKey);
@@ -271,7 +273,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            var redisValue = await _database.StringGetAsync(cacheKey, CommandFlags.PreferReplica);
+            var redisValue = await _database.StringGetAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (!redisValue.HasValue)
                 return default;
 
@@ -285,7 +287,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
@@ -301,7 +303,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDuration.GetHashCode()), When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDuration.GetHashCode()), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
@@ -317,7 +319,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.StringSetAsync(cacheKey, JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
+            bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
@@ -333,7 +335,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(cacheKey, CommandFlags.PreferReplica);
+            TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (currentExpiration is null)
             {
                 _logger.LogWarning("The key {cacheKey} could not be found.", cacheKey);
@@ -342,7 +344,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
             TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes(cacheDuration.GetHashCode()));
 
-            bool succeeded = await _database.KeyExpireAsync(cacheKey, newExpiration, CommandFlags.DemandMaster);
+            bool succeeded = await _database.KeyExpireAsync(KeyLower(cacheKey), newExpiration, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not extend {cacheKey} key {@minute} minutes.", cacheKey, cacheDuration.GetHashCode());
@@ -358,7 +360,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            if (await _database.KeyExistsAsync(cacheKey, CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(cacheKey, CommandFlags.DemandMaster))
+            if (await _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(KeyLower(cacheKey), CommandFlags.DemandMaster))
             {
                 _logger.LogWarning("Failed to delete key {cacheKey} in Redis.", cacheKey);
                 return default;
@@ -437,4 +439,6 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentNullException.ThrowIfNull(value);
     }
+
+    private string KeyLower(string cacheKey) => cacheKey.ToLower(_englishCultureInfo);
 }

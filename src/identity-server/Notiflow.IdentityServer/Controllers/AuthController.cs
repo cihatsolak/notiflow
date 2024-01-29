@@ -11,7 +11,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <returns>The response containing the access token result.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
-    [HttpPost("create-access-token")]
+    [HttpPost("access-token")]
     [ProducesResponseType(typeof(Result<TokenResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <returns>The response containing the access token result.</returns>
     /// <response code="200">operation successful</response>
     /// <response code="400">invalid request</response>
-    [HttpPost("create-refresh-token")]
+    [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(Result<TokenResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)

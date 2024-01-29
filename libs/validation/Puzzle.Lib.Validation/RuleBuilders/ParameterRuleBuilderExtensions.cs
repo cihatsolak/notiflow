@@ -79,4 +79,20 @@ public static class ParameterRuleBuilderExtensions
     {
         return ruleBuilder.IsInEnum().WithMessage(errorMessage);
     }
+
+    /// <summary>
+    /// Configures a validation rule for a URL string using FluentValidation.
+    /// </summary>
+    /// <typeparam name="TElement">The type of the element being validated.</typeparam>
+    /// <param name="ruleBuilder">The rule builder to which the validation rules are added.</param>
+    /// <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+    /// <returns>The rule builder options for further configuration.</returns>
+    public static IRuleBuilderOptions<TElement, string> Url<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage)
+    {
+        return ruleBuilder
+                .NotEmpty().WithMessage(errorMessage)
+                .NotNull().WithMessage(errorMessage)
+                .Must(url => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)).WithMessage(errorMessage);
+    }
+
 }

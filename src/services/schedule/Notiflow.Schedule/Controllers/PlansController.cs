@@ -3,17 +3,13 @@
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status500InternalServerError)]
-public sealed class PlansController : MainController
+public sealed class PlansController : BaseApiController
 {
     private readonly ScheduledDbContext _context;
-    private readonly ILocalizerService<ResultMessage> _localizer;
 
-    public PlansController(
-        ScheduledDbContext context,
-        ILocalizerService<ResultMessage> localizer)
+    public PlansController(ScheduledDbContext context)
     {
         _context = context;
-        _localizer = localizer;
     }
 
     /// <summary>
@@ -27,22 +23,11 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
-        ScheduledTextMessageEvent @event = new()
-        {
-            CustomerIds = request.CustomerIds,
-            Message = request.Message
-        };
-
-        ScheduledTextMessage scheduledTextMessage = new()
-        {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
-        };
-
-        await _context.ScheduledTextMessages.AddAsync(scheduledTextMessage, cancellationToken);
+        var asd = request.CreateScheduledTextMessage();
+        await _context.ScheduledTextMessages.AddAsync(request.CreateScheduledTextMessage(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.TEXT_MESSAGE_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.TEXT_MESSAGE_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 
@@ -57,24 +42,10 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> NotificationDelivery([FromBody] ScheduleNotificationRequest request, CancellationToken cancellationToken)
     {
-        ScheduledNotificationEvent @event = new()
-        {
-            CustomerIds = request.CustomerIds,
-            Message = request.Message,
-            ImageUrl = request.ImageUrl,
-            Title = request.Title
-        };
-
-        ScheduledNotification scheduledNotification = new()
-        {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
-        };
-
-        await _context.ScheduledNotifications.AddAsync(scheduledNotification, cancellationToken);
+        await _context.ScheduledNotifications.AddAsync(request.CreateScheduledNotification(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.NOTIFICATION_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.NOTIFICATION_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 
@@ -89,26 +60,10 @@ public sealed class PlansController : MainController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> EmailDelivery([FromBody] ScheduleEmailRequest request, CancellationToken cancellationToken)
     {
-        ScheduledEmailEvent @event = new()
-        {
-            Body = request.Body,
-            Subject = request.Subject,
-            CustomerIds = request.CustomerIds,
-            CcAddresses = request.CcAddresses,
-            BccAddresses = request.BccAddresses,
-            IsBodyHtml = request.IsBodyHtml
-        };
-
-        ScheduledEmail scheduledEmail = new()
-        {
-            Data = @event.ToJson(),
-            PlannedDeliveryDate = DateTime.Parse($"{request.Date} {request.Time}", CultureInfo.CurrentCulture)
-        };
-
-        await _context.ScheduledEmails.AddAsync(scheduledEmail, cancellationToken);
+        await _context.ScheduledEmails.AddAsync(request.CreateScheduledEmail(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, _localizer[ResultMessage.EMAIL_SENDING_ACCEPTED]);
+        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.EMAIL_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 }

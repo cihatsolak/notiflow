@@ -16,15 +16,19 @@ public record Result<TData>
     public bool IsFailure => !IsSuccess;
 
     /// <summary>
+    /// Gets or sets the status statusCode of the response.
+    /// </summary>
+    [JsonIgnore]
+    public int StatusCode { get; set; }
+
+    [JsonIgnore]
+    public int ResultCode { get; set; }
+
+    /// <summary>
     /// Gets or sets the data that the response model holds.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public TData Data { get; init; }
-
-    /// <summary>
-    /// Gets or sets the status statusCode of the response.
-    /// </summary>
-    public int StatusCode { get; set; }
 
     /// <summary>
     /// Gets or sets the status message of the response.
@@ -74,13 +78,13 @@ public record Result<TData>
     /// <param name="statusCode">The status statusCode of the response.</param>
     /// <param name="message">The status message of the response.</param>
     /// <returns>A success response with the specified status statusCode and data.</returns>
-    public static Result<TData> Success(int statusCode, string message)
+    public static Result<TData> Success(int statusCode, int resultCode)
     {
         return new Result<TData>
         {
             StatusCode = statusCode,
-            IsSuccess = true,
-            Message = message
+            ResultCode = resultCode,
+            IsSuccess = true
         };
     }
 
@@ -107,14 +111,14 @@ public record Result<TData>
     /// <param name="message">The status message of the response.</param>
     /// <param name="data">The data that the response model holds.</param>
     /// <returns>A success response with the specified status statusCode, status message and data.</returns>
-    public static Result<TData> Success(int statusCode, string message, TData data)
+    public static Result<TData> Success(int statusCode, int resultCode, TData data)
     {
         return new Result<TData>
         {
             Data = data,
             StatusCode = statusCode,
-            IsSuccess = true,
-            Message = message
+            ResultCode = resultCode,
+            IsSuccess = true
         };
     }
 
@@ -137,13 +141,12 @@ public record Result<TData>
     /// <param name="statusCode">The HTTP status statusCode for the response.</param>
     /// <param name="message">The error message for the response.</param>
     /// <returns>A response model indicating failure with the specified status statusCode and error message.</returns>
-    public static Result<TData> Failure(int statusCode, string message)
+    public static Result<TData> Failure(int statusCode, int resultCode)
     {
         return new Result<TData>
         {
-            Message = message,
-            Errors = new List<string>() { message },
-            StatusCode = statusCode
+            StatusCode = statusCode,
+            ResultCode = resultCode            
         };
     }
 

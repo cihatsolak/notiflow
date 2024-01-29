@@ -1,17 +1,10 @@
 ﻿namespace Notiflow.Backoffice.Application.Consumers;
 
-public sealed class ScheduledTextMessageEventConsumer : IConsumer<ScheduledTextMessageEvent>
+public sealed class ScheduledTextMessageEventConsumer(ISender sender) : IConsumer<ScheduledTextMessageEvent>
 {
-    private readonly IMediator _mediator;
-
-    public ScheduledTextMessageEventConsumer(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     public async Task Consume(ConsumeContext<ScheduledTextMessageEvent> context)
     {
-        var response = await _mediator.Send(new SendTextMessageCommand(context.Message.CustomerIds, context.Message.Message));
+        var response = await sender.Send(new SendTextMessageCommand(context.Message.CustomerIds, context.Message.Message), context.CancellationToken);
 
         await context.RespondAsync(new ScheduledResponse
         {

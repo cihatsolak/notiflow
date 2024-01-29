@@ -21,10 +21,10 @@ internal sealed class TokenManager : ITokenService
             issuer: _jwtTokenSetting.Issuer,
             expires: accessTokenExpiration,
             notBefore: DateTime.Now,
-            claims: SetUserClaims(user, _jwtTokenSetting.Audiences),
+            claims: SetUserClaims(user),
             signingCredentials: signingCredentials
         );
-        
+
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
         string accessToken = jwtSecurityTokenHandler.WriteToken(jwtSecurityToken);
 
@@ -40,7 +40,7 @@ internal sealed class TokenManager : ITokenService
         return tokenResponse;
     }
 
-    private static List<Claim> SetUserClaims(User user, IEnumerable<string> audiences)
+    private List<Claim> SetUserClaims(User user)
     {
         List<Claim> claims = [];
         claims.AddJti();
@@ -50,7 +50,7 @@ internal sealed class TokenManager : ITokenService
         claims.AddName(user.Name);
         claims.AddSurname(user.Surname);
         claims.AddEmail(user.Email);
-        claims.AddAudiences(audiences);
+        claims.AddAudiences(_jwtTokenSetting.Audiences);
         claims.AddGroupSid($"{user.TenantId}");
 
         return claims;

@@ -1,37 +1,31 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host
-    .AddAppConfiguration()
-    .AddServiceValidateScope()
-    .AddShutdownTimeOut();
+builder.HostConfigured();
 
-SeriLogElasticSetting seriLogElasticSetting = builder.Configuration.GetRequiredSection(nameof(SeriLogElasticSetting)).Get<SeriLogElasticSetting>();
-
-builder.Host.AddSeriLogWithElasticSearch(options =>
-{
-    options.Address = seriLogElasticSetting.Address;
-    options.Username = seriLogElasticSetting.Username;
-    options.Password = seriLogElasticSetting.Password;
-    options.IsRequiredAuthentication = seriLogElasticSetting.IsRequiredAuthentication;
-});
+builder.AddWebDependencies();
 
 builder.Services
-   .AddWebDependencies(builder.Configuration)
    .AddServiceDependencies(builder.Configuration)
    .AddDataDependencies(builder.Configuration);
 
-builder.Services.AddConfigureHealthChecks(builder.Configuration);
+builder.AddConfigureHealthChecks();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
+bool isProduction = app.Environment.IsProduction();
+if (isProduction)
+{
+    app.UseHttpSecurityPrecautions();
+}
+else
+{
+    app.UseSwaggerRedocly()
+       .UseMigrations();
+}
 
-app
-   .UseApiExceptionHandler()
+app.UseApiExceptionHandler()
    .UseAuth()
-   .UseHttpSecurityPrecautions(builder.Environment)
-   .UseSwaggerWithRedoclyDoc(builder.Environment)
-   .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()

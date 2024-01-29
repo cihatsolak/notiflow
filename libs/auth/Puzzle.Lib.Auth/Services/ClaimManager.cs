@@ -2,6 +2,8 @@
 
 public sealed class ClaimManager : IClaimService
 {
+    private const string ACCESS_EXCEPTION_MESSAGE = "The user does not have access permission.";
+
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ClaimManager(IHttpContextAccessor httpContextAccessor)
@@ -9,49 +11,55 @@ public sealed class ClaimManager : IClaimService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string Email => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Email))?.Value;
-    public string Username => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.UniqueName))?.Value;
-    public string Name => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.Name))?.Value;
-    public string FamilyName => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.FamilyName))?.Value;
-    public int NameIdentifier => GetNameIdentifier();
-    public string Role => _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
-    public IEnumerable<string> Roles => _httpContextAccessor.HttpContext.User.Claims.Where(p => p.Type.Equals(ClaimTypes.Role)).Select(p => p.Value);
-    public string Jti => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Jti))?.Value;
-    public string Audience => _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Aud))?.Value;
-    public IEnumerable<string> Audiences => _httpContextAccessor.HttpContext.User.Claims.Where(p => p.Type.Equals(JwtRegisteredClaimNames.Aud)).Select(p => p.Value);
-    public string GivenName => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GivenName))?.Value;
+    public string Email => GetClaimValue<string>(ClaimTypes.Email);
+    public string Username => GetClaimValue<string>(ClaimTypes.Upn);
+    public string Name => GetClaimValue<string>(ClaimTypes.Name);
+    public string Surname => GetClaimValue<string>(ClaimTypes.Surname);
+    public int NameIdentifier => GetClaimValue<int>(ClaimTypes.NameIdentifier);
+    public string Role => GetClaimValue<string>(ClaimTypes.Role);
+    public IEnumerable<string> Roles => GetClaimValues(ClaimTypes.Role);
+    public string Jti => GetClaimValue<string>(JwtRegisteredClaimNames.Jti);
+    public string Audience => GetClaimValue<string>(JwtRegisteredClaimNames.Aud);
+    public IEnumerable<string> Audiences => GetClaimValues(JwtRegisteredClaimNames.Aud);
+    public string GivenName => GetClaimValue<string>(ClaimTypes.GivenName);
     public DateTime Iat => GetIat();
-    public DateTime BirthDate => GetBirthDate();
-    public string GroupSid => _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.GroupSid))?.Value;
+    public DateTime BirthDate => GetClaimValue<DateTime>(ClaimTypes.DateOfBirth);
+    public string GroupSid => GetClaimValue<string>(ClaimTypes.GroupSid);
 
-    private int GetNameIdentifier()
-    {
-        string nameIdentifier = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
-        if (string.IsNullOrWhiteSpace(nameIdentifier))
-            throw new JwtClaimException(nameof(nameIdentifier));
-
-        bool succeeded = int.TryParse(nameIdentifier, out int identifier);
-        if (!succeeded || 0 >= identifier)
-            throw new JwtClaimException(nameof(nameIdentifier));
-
-        return identifier;
-    }
+    private bool IsUserAuthenticated => _httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated == true;
 
     private DateTime GetIat()
     {
         string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
-        if (!DateTime.TryParse(issuedAtValue, CultureInfo.CurrentCulture, out DateTime issuedAt))
-            throw new JwtClaimException(nameof(issuedAtValue));
+        if (!long.TryParse(issuedAtValue, CultureInfo.InvariantCulture, out long epochTime))
+        {
+            throw new SecurityTokenException("No issued at value was found in the token. token is invalid.");
+        }
 
-        return issuedAt;
+        return DateTimeOffset.FromUnixTimeSeconds(epochTime).DateTime;
     }
 
-    private DateTime GetBirthDate()
+    private Type GetClaimValue<Type>(string claimType)
     {
-        string birthDateValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Birthdate))?.Value;
-        if (!DateTime.TryParse(birthDateValue, CultureInfo.CurrentCulture, out DateTime birthDate))
-            throw new JwtClaimException(nameof(birthDate));
+        if (!IsUserAuthenticated)
+            throw new UnauthorizedAccessException(ACCESS_EXCEPTION_MESSAGE);
 
-        return birthDate;
+        string claimValue = _httpContextAccessor.HttpContext.User.FindFirstValue(claimType);
+        if (string.IsNullOrWhiteSpace(claimValue))
+            throw new SecurityTokenDecompressionFailedException($"No {claimType} was found in the token. token is invalid.");
+
+        return (Type)Convert.ChangeType(claimValue, typeof(Type), CultureInfo.CurrentCulture);
+    }
+
+    private IEnumerable<string> GetClaimValues(string claimType)
+    {
+        if (!IsUserAuthenticated)
+            throw new UnauthorizedAccessException(ACCESS_EXCEPTION_MESSAGE);
+
+        IEnumerable<Claim> claims = _httpContextAccessor.HttpContext?.User?.Claims?.Where(p => p.Type.Equals(claimType, StringComparison.OrdinalIgnoreCase));
+        if (claims.IsNullOrEmpty())
+            throw new SecurityTokenDecompressionFailedException($"No {claimType} was found in the token. token is invalid.");
+
+        return claims.Select(claim => claim.Value);
     }
 }

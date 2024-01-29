@@ -1,4 +1,7 @@
-﻿namespace Notiflow.Backoffice.API.Controllers;
+﻿using Notiflow.Backoffice.Application.Features.Commands.Emails;
+using Notiflow.Backoffice.Application.Features.Queries.Emails;
+
+namespace Notiflow.Backoffice.API.Controllers;
 
 public sealed class EmailsController : BaseApiController
 {

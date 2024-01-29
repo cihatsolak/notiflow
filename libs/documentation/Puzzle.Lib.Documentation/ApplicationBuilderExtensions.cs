@@ -6,21 +6,23 @@
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
+    /// Represents the URL path for the Swagger JSON file in the application.
+    /// </summary>
+    private const string SWAGGER_JSON_URL = "/swagger/v1/swagger.json";
+
+    /// <summary>
     /// Adds Swagger middleware and Swagger UI to the application pipeline.
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
     {
-        if (hostEnvironment.IsProduction())
-            return app;
-
         app.UseSwagger();
         app.UseSwaggerUI(swaggerUIOptions =>
         {
-            swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetEntryAssembly().GetName().Name);
-            swaggerUIOptions.RoutePrefix = string.Empty;
+            swaggerUIOptions.SwaggerEndpoint(SWAGGER_JSON_URL, Assembly.GetEntryAssembly().GetName().Name);
             swaggerUIOptions.DefaultModelsExpandDepth(-1);
+            swaggerUIOptions.RoutePrefix = string.Empty;
         });
 
         return app;
@@ -31,17 +33,14 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseRedoclyDoc(this IApplicationBuilder app)
     {
-        if (hostEnvironment.IsProduction())
-            return app;
-
         SwaggerSetting swaggerSetting = app.ApplicationServices.GetRequiredService<IOptions<SwaggerSetting>>().Value;
 
         app.UseReDoc(options =>
         {
             options.DocumentTitle = swaggerSetting.Title;
-            options.SpecUrl = "/swagger/v1/swagger.json";
+            options.SpecUrl = SWAGGER_JSON_URL;
         });
 
         return app;
@@ -52,9 +51,9 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
-    public static IApplicationBuilder UseSwaggerWithRedoclyDoc(this IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public static IApplicationBuilder UseSwaggerRedocly(this IApplicationBuilder app)
     {
-        return app.UseSwaggerDoc(hostEnvironment).UseRedoclyDoc(hostEnvironment);
+        return app.UseSwaggerDoc().UseRedoclyDoc();
     }
 
     /// <summary>
@@ -66,5 +65,4 @@ public static class ApplicationBuilderExtensions
     {
         return app.UseMiddleware<SwaggerBasicAuthenticationMiddleware>();
     }
-
 }

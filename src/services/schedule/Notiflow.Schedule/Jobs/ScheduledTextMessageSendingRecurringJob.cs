@@ -22,8 +22,6 @@ public sealed class ScheduledTextMessageSendingRecurringJob
     [JobDisplayName("[TEXT MESSAGE] Sends scheduled text messages.")]
     public async Task ExecuteAsync()
     {
-        _logger.LogInformation("The text messages planned to be sent are started to be sent.");
-
         var scheduledTextMessages = await _context.ScheduledTextMessages
             .TagWith("lists text messages that are scheduled and waiting to be sent.")
             .Where(message => !message.IsSent &&

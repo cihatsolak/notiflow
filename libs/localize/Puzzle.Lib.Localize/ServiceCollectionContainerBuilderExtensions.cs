@@ -13,14 +13,14 @@ public static class ServiceCollectionContainerBuilderExtensions
         {
             var supportedCultures = new[]
             {
-                new CultureInfo(ENGLISH_CULTURE),
-                new CultureInfo(TURKISH_CULTURE)
+                new CultureInfo(TURKISH_CULTURE),
+                new CultureInfo(ENGLISH_CULTURE)
             };
 
-            options.DefaultRequestCulture = new(TURKISH_CULTURE);
+            options.DefaultRequestCulture = new(TURKISH_CULTURE, TURKISH_CULTURE);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
-
+            
             options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
@@ -61,7 +61,7 @@ public static class ServiceCollectionContainerBuilderExtensions
                 new(FRANCE_CULTURE),
             };
 
-            options.DefaultRequestCulture = new RequestCulture(TURKISH_CULTURE);
+            options.DefaultRequestCulture = new RequestCulture(TURKISH_CULTURE, TURKISH_CULTURE);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
 

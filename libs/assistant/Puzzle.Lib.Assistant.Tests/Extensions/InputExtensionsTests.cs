@@ -10,7 +10,7 @@ namespace Puzzle.Lib.Assistant.Tests.Extensions
         public void ToCleanPhoneNumber_ShouldReturnCleanedPhoneNumber(string input, string expectedOutput)
         {
             // Arrange & Act
-            var result = input.ToCleanPhoneNumber();
+            var result = input.ToMobilePhoneNumber();
 
             // Assert
             Assert.Equal(expectedOutput, result);
@@ -23,7 +23,7 @@ namespace Puzzle.Lib.Assistant.Tests.Extensions
             string input = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => input.ToCleanPhoneNumber());
+            var exception = Assert.Throws<ArgumentNullException>(() => input.ToMobilePhoneNumber());
             Assert.Equal("Value cannot be null. (Parameter 'phoneNumber')", exception.Message);
         }
     }

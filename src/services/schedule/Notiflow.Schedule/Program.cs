@@ -1,24 +1,8 @@
-using Puzzle.Lib.Host.Infrastructure;
-using Puzzle.Lib.Response;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host
-    .AddAppConfiguration()
-    .AddServiceValidateScope()
-    .AddShutdownTimeOut();
+builder.HostConfigured();
 
-SeriLogElasticSetting seriLogElasticSetting = builder.Configuration.GetRequiredSection(nameof(SeriLogElasticSetting)).Get<SeriLogElasticSetting>();
-
-builder.Host.AddSeriLogWithElasticSearch(options =>
-{
-    options.Address = seriLogElasticSetting.Address;
-    options.Username = seriLogElasticSetting.Username;
-    options.Password = seriLogElasticSetting.Password;
-    options.IsRequiredAuthentication = seriLogElasticSetting.IsRequiredAuthentication;
-});
-
-builder.AddDependencies();
+builder.AddWebDependencies();
 builder.AddConfigureHealthChecks();
 
 builder.Services
@@ -27,28 +11,46 @@ builder.Services
     .AddWebApiLocalize()
     .AddResponseCompression()
     .AddServerSideValidation()
-    .AddHttpSecurityPrecautions(builder.Environment)
     .AddCustomHttpLogging();
+
+if (!builder.Environment.IsProduction())
+{
+    builder.Services.AddHttpSecurityPrecautions();
+}
 
 var app = builder.Build();
 
-app
-   .UseApiExceptionHandler()
-   .UseHttpSecurityPrecautions(builder.Environment)
+if (app.Environment.IsProduction())
+{
+    app.UseHttpSecurityPrecautions();
+}
+else
+{
+    app.UseSwaggerRedocly()
+       .UseMigrations();
+}
+
+app.UseApiExceptionHandler()
    .UseAuth()
-   .UseSwaggerWithRedoclyDoc(builder.Environment)
-   .UseMigrations(builder.Environment)
    .UseResponseCompression()
    .UseSerilogLogging()
    .UseCustomHttpLogging()
    .UseHealth()
    .UseHangfire();
 
+app.UseDiscoveryEndpoint();
 app.UseLocalizationWithEndpoint();
+
 app.MapControllers();
 
-RecurringJob.AddOrUpdate<ScheduledTextMessageSendingRecurringJob>("475fe763-e667-467f-b373-bcdfc2e1deab", recurring => recurring.ExecuteAsync(), "*/5 * * * *");
-RecurringJob.AddOrUpdate<ScheduledNotificationSendingRecurringJob>("5a27bb09-62d6-4928-bff8-58bac25e69f6", recurring => recurring.ExecuteAsync(), "*/5 * * * *");
-RecurringJob.AddOrUpdate<ScheduledEmailSendingRecurringJob>("4eaf3580-abbe-4728-8b3a-7606332d959b", recurring => recurring.ExecuteAsync(), "*/5 * * * *");
+RecurringJobOptions recurringJobOptions = new()
+{
+    TimeZone = TimeZoneInfo.Local,
+    MisfireHandling = MisfireHandlingMode.Relaxed
+};
+
+RecurringJob.AddOrUpdate<ScheduledTextMessageSendingRecurringJob>("475fe763-e667-467f-b373-bcdfc2e1deab", recurring => recurring.ExecuteAsync(), "*/5 * * * *", recurringJobOptions);
+RecurringJob.AddOrUpdate<ScheduledNotificationSendingRecurringJob>("5a27bb09-62d6-4928-bff8-58bac25e69f6", recurring => recurring.ExecuteAsync(), "*/5 * * * *", recurringJobOptions);
+RecurringJob.AddOrUpdate<ScheduledEmailSendingRecurringJob>("4eaf3580-abbe-4728-8b3a-7606332d959b", recurring => recurring.ExecuteAsync(), "*/5 * * * *", recurringJobOptions);
 
 await app.StartProjectAsync();

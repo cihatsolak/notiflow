@@ -2,10 +2,24 @@
 
 public sealed record ScheduledEmailEvent
 {
-    public required string Body { get; init; }
-    public required string Subject { get; init; }
-    public required List<int> CustomerIds { get; init; }
-    public required List<string> CcAddresses { get; init; }
-    public required List<string> BccAddresses { get; init; }
-    public required bool IsBodyHtml { get; init; }
+    public ScheduledEmailEvent()
+    {
+    }
+
+    public ScheduledEmailEvent(string body, string subject, List<int> customerIds, List<string> ccAddresses, List<string> bccAddresses, bool isBodyHtml)
+    {
+        Body = body;
+        Subject = subject;
+        CustomerIds = customerIds;
+        CcAddresses = ccAddresses;
+        BccAddresses = bccAddresses;
+        IsBodyHtml = isBodyHtml;
+    }
+
+    public string Body { get; init; }
+    public string Subject { get; init; }
+    public List<int> CustomerIds { get; init; }
+    public List<string> CcAddresses { get; init; }
+    public List<string> BccAddresses { get; init; }
+    public bool IsBodyHtml { get; init; }
 }

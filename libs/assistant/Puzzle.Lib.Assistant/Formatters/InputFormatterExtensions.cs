@@ -38,13 +38,13 @@ public static class InputFormatterExtensions
     /// <summary>
     /// Formats the phone number in mobile phone format.
     /// </summary>
-    /// <param name="mobilePhone">The phone number to format.</param>
+    /// <param name="mobilePhoneNumber">The phone number to format.</param>
     /// <returns>The phone number formatted in GSM format. {0:0 ### ### ## ##}</returns>
-    public static string ToMobilePhoneFormat(this string mobilePhone)
+    public static string ToMobilePhoneNumberFormat(this string mobilePhoneNumber)
     {
-        if (string.IsNullOrWhiteSpace(mobilePhone))
-            return mobilePhone;
+        if (string.IsNullOrWhiteSpace(mobilePhoneNumber))
+            return mobilePhoneNumber;
 
-        return string.Format(CultureInfo.InvariantCulture, "{0:0 ### ### ## ##}", long.Parse(mobilePhone));
+        return string.Format(CultureInfo.InvariantCulture, "{0:0 ### ### ## ##}", long.Parse(mobilePhoneNumber));
     }
 }

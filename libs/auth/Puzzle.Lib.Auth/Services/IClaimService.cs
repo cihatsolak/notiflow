@@ -23,7 +23,7 @@ public interface IClaimService
     /// <summary>
     /// Gets the family name claim value of the user.
     /// </summary>
-    string FamilyName { get; }
+    string Surname { get; }
 
     /// <summary>
     /// Gets the name identifier claim value of the user.
