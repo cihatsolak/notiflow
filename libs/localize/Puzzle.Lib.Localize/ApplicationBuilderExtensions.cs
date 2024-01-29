@@ -42,7 +42,7 @@ public static class ApplicationBuilderExtensions
         .Produces(StatusCodes.Status401Unauthorized, typeof(SupportedCulturesResponse), MediaTypeNames.Application.Json)
         .Produces(StatusCodes.Status404NotFound, typeof(SupportedCulturesResponse), MediaTypeNames.Application.Json)
         .Produces(StatusCodes.Status500InternalServerError, typeof(SupportedCulturesResponse), MediaTypeNames.Application.Json)
-        .WithTags("Languages");
+        .WithTags("General");
 
         return app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
     }

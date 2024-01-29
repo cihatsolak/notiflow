@@ -34,7 +34,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Device information updated. Device ID: {id}", request.Id);
+        _logger.LogInformation("Device information updated. Device ID: {deviceId}", request.Id);
 
         return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_UPDATED, Unit.Value);
     }

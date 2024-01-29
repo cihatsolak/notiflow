@@ -4,7 +4,7 @@ public sealed class ScheduledTextMessageEventConsumer(ISender sender) : IConsume
 {
     public async Task Consume(ConsumeContext<ScheduledTextMessageEvent> context)
     {
-        var response = await sender.Send(new SendTextMessageCommand(context.Message.CustomerIds, context.Message.Message));
+        var response = await sender.Send(new SendTextMessageCommand(context.Message.CustomerIds, context.Message.Message), context.CancellationToken);
 
         await context.RespondAsync(new ScheduledResponse
         {

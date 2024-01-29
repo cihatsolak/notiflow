@@ -25,7 +25,7 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
 
         if (string.Equals(customer.Email, request.Email, StringComparison.OrdinalIgnoreCase))
         {
-            _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {id}", request.Id);
+            _logger.LogWarning("The e-mail address to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
             return Result<Unit>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_EMAIL_ADDRESS_SAME);
         }
 
@@ -33,7 +33,7 @@ public sealed class UpdateCustomerEmailCommandHandler : IRequestHandler<UpdateCu
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("The customer's email address has been updated. ID: {id}", request.Id);
+        _logger.LogInformation("The customer's email address has been updated. ID: {customerId}", request.Id);
 
         return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.CUSTOMER_EMAIL_UPDATED, Unit.Value);
     }

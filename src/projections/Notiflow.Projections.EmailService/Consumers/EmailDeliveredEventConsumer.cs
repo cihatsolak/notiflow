@@ -16,7 +16,7 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
         IDbTransaction transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
-
+       
         try
         {
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
@@ -38,7 +38,7 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
                  "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
                  emailHistories,
                  transaction);
-
+           
             transaction.Commit();
 
             _logger.LogInformation("Successful e-mail sending information has been saved in the database.");

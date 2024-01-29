@@ -1,4 +1,10 @@
-﻿namespace Puzzle.Lib.Host;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+namespace Puzzle.Lib.Host;
 
 /// <summary>
 /// Provides extension methods for configuring exception handling middleware in an application pipeline.
@@ -94,5 +100,34 @@ public static class ApplicationBuilderExtensions
         });
 
         return webApplication;
+    }
+
+    public static IApplicationBuilder UseDiscoveryEndpoint(this WebApplication app)
+    {
+        app.MapGet("api/discovery", () =>
+        {
+            FileInfo fileInfo = new(Assembly.GetEntryAssembly().Location);
+
+            DiscoveryResponse discoveryResponse =
+                    new(fileInfo.LastWriteTime,
+                        fileInfo.LastWriteTimeUtc,
+                        Environment.MachineName,
+                        Environment.OSVersion.VersionString,
+                        RuntimeInformation.FrameworkDescription);
+
+            return discoveryResponse;
+        })
+        .WithOpenApi(operation => new(operation)
+        {
+            Summary = "Displays discovery information and details about the application.",
+            Description = "Displays discovery information and details about the application."
+        })
+        .Produces(StatusCodes.Status200OK, typeof(DiscoveryResponse), MediaTypeNames.Application.Json)
+        .Produces(StatusCodes.Status401Unauthorized, typeof(UnauthorizedObjectResult), MediaTypeNames.Application.Json)
+        .Produces(StatusCodes.Status404NotFound, typeof(NotFoundObjectResult), MediaTypeNames.Application.Json)
+        .Produces(StatusCodes.Status500InternalServerError, typeof(ProblemDetails), MediaTypeNames.Application.Json)
+        .WithTags("General");
+
+        return app;
     }
 }

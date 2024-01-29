@@ -38,7 +38,9 @@ app.UseApiExceptionHandler()
    .UseHealth()
    .UseHangfire();
 
+app.UseDiscoveryEndpoint();
 app.UseLocalizationWithEndpoint();
+
 app.MapControllers();
 
 RecurringJobOptions recurringJobOptions = new()

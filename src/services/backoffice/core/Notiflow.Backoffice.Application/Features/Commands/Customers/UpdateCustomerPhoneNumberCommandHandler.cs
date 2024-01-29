@@ -25,7 +25,7 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
 
         if (string.Equals(customer.PhoneNumber, request.PhoneNumber))
         {
-            _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {id}", request.Id);
+            _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
             return Result<Unit>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
@@ -33,7 +33,7 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("The customer's phone number has been updated. ID: {id}", request.Id);
+        _logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
 
         return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED, Unit.Value);
     }

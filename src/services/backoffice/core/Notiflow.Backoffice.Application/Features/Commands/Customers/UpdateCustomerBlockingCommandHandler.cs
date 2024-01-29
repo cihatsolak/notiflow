@@ -25,7 +25,7 @@ public sealed class UpdateCustomerBlockingCommandHandler : IRequestHandler<Updat
 
         if (customer.IsBlocked == request.IsBlocked)
         {
-            _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {id}", request.Id);
+            _logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {customerId}", request.Id);
             return Result<Unit>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 

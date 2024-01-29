@@ -9,7 +9,7 @@ public sealed class ScheduledEmailEventConsumer(ISender sender) : IConsumer<Sche
                                                                  context.Message.CustomerIds,
                                                                  context.Message.CcAddresses,
                                                                  context.Message.BccAddresses,
-                                                                 context.Message.IsBodyHtml));
+                                                                 context.Message.IsBodyHtml), context.CancellationToken);
 
         await context.RespondAsync(new ScheduledResponse
         {

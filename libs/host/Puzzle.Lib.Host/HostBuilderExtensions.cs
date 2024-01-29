@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Host.Infrastructure;
+﻿namespace Puzzle.Lib.Host;
 
 /// <summary>
 /// This class provides a set of extension methods for adding additional functionality to .NET Core applications.
