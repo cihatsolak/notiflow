@@ -2,5 +2,5 @@
 
 public interface IEmailService
 {
-    Task<bool> SendAsync(EmailRequest request);
+    Task<bool> SendAsync(EmailRequest request, CancellationToken cancellationToken);
 }

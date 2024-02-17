@@ -13,7 +13,7 @@ internal sealed class EmailManager : IEmailService
         _logger = logger;
     }
 
-    public async Task<bool> SendAsync(EmailRequest request)
+    public async Task<bool> SendAsync(EmailRequest request, CancellationToken cancellationToken)
     {
         var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
@@ -52,7 +52,7 @@ internal sealed class EmailManager : IEmailService
         
         try
         {
-            await smtpClient.SendMailAsync(mailMessage);
+            await smtpClient.SendMailAsync(mailMessage, cancellationToken);
             return true;
         }
         catch (Exception exception)

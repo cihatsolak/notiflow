@@ -32,20 +32,20 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         var emailAddresses = await _uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
         }
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to be sent does not match the number of registered mails. Customer IDs: {customerIds}", request.CustomerIds);
 
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
+            return Result<Unit>.Status500InternalServerError(ResultCodes.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
         emailRequest.Recipients = emailAddresses;
 
-        bool succeeded = await _emailService.SendAsync(emailRequest);
+        bool succeeded = await _emailService.SendAsync(emailRequest, cancellationToken);
         if (!succeeded)
         {
             return await ReportFailedStatusAsync(request, emailAddresses, cancellationToken);
@@ -61,7 +61,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
 
-        return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.EMAIL_SENDING_FAILED);
+        return Result<Unit>.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);
     }
 
     private async Task<Result<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
@@ -71,6 +71,6 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
 
         await _publishEndpoint.Publish(emailDeliveredEvent, cancellationToken);
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, ResultCodes.EMAIL_SENDING_SUCCESSFUL, Unit.Value);
+        return Result<Unit>.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
     }
 }

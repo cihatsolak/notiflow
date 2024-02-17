@@ -27,7 +27,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.DEVICE_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, device);
@@ -36,7 +36,7 @@ public sealed class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCom
 
         _logger.LogInformation("Device information updated. Device ID: {deviceId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_UPDATED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.DEVICE_UPDATED);
     }
 }
 

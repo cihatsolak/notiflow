@@ -20,13 +20,13 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
         if (string.Equals(customer.PhoneNumber, request.PhoneNumber))
         {
             _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
-            return Result<Unit>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
+            return Result<Unit>.Status400BadRequest(ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
         customer.PhoneNumber = request.PhoneNumber;
@@ -35,7 +35,7 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<Up
 
         _logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
     }
 }
 

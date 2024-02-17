@@ -53,7 +53,9 @@ public static class ApplicationBuilderExtensions
     /// <returns>The <see cref="IApplicationBuilder"/> instance.</returns>
     public static IApplicationBuilder UseSwaggerRedocly(this IApplicationBuilder app)
     {
-        return app.UseSwaggerDoc().UseRedoclyDoc();
+        app.UseSwaggerDoc().UseRedoclyDoc();
+
+        return app.UseSwaggerBasicAuth();
     }
 
     /// <summary>

@@ -2,18 +2,11 @@
 
 public sealed record TextMessageDataTableCommand : DtParameters, IRequest<Result<DtResult<TextMessageDataTableCommandResult>>>;
 
-public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
+public sealed class TextMessageDataTableCommandHandler(INotiflowUnitOfWork uow) : IRequestHandler<TextMessageDataTableCommand, Result<DtResult<TextMessageDataTableCommandResult>>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-
-    public TextMessageDataTableCommandHandler(INotiflowUnitOfWork uow)
-    {
-        _uow = uow;
-    }
-
     public async Task<Result<DtResult<TextMessageDataTableCommandResult>>> Handle(TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
-        (int recordsTotal, List<TextMessageHistory> textMessageHistories) = await _uow.TextMessageHistoryRead.GetPageAsync(request.SortKey,
+        (int recordsTotal, List<TextMessageHistory> textMessageHistories) = await uow.TextMessageHistoryRead.GetPageAsync(request.SortKey,
                                                                                                                            request.SearchKey,
                                                                                                                            request.PageIndex,
                                                                                                                            request.PageSize,
@@ -22,7 +15,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
 
         if (textMessageHistories.IsNullOrNotAny())
         {
-            return Result<DtResult<TextMessageDataTableCommandResult>>.Failure(StatusCodes.Status404NotFound, ResultCodes.TEXT_MESSAGE_NOT_FOUND);
+            return Result<DtResult<TextMessageDataTableCommandResult>>.Status404NotFound(ResultCodes.TEXT_MESSAGE_NOT_FOUND);
         }
 
         DtResult<TextMessageDataTableCommandResult> textMessageHistoryDataTable = new()
@@ -33,7 +26,7 @@ public sealed class TextMessageDataTableCommandHandler : IRequestHandler<TextMes
             Data = ObjectMapper.Mapper.Map<List<TextMessageDataTableCommandResult>>(textMessageHistories)
         };
 
-        return Result<DtResult<TextMessageDataTableCommandResult>>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, textMessageHistoryDataTable);
+        return Result<DtResult<TextMessageDataTableCommandResult>>.Status200OK(ResultCodes.GENERAL_SUCCESS, textMessageHistoryDataTable);
     }
 }
 

@@ -20,7 +20,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
         var device = await _uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.DEVICE_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
         device.Token = request.Token;
@@ -29,7 +29,7 @@ public sealed class UpdateDeviceTokenCommandHandler : IRequestHandler<UpdateDevi
 
         _logger.LogInformation("The token information of the device with {deviceId} ids has been updated.", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_TOKEN_UPDATED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.DEVICE_TOKEN_UPDATED);
     }
 }
 

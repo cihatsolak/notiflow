@@ -30,7 +30,7 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, customer);
@@ -40,7 +40,7 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
 
         _logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.CUSTOMER_UPDATED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_UPDATED);
     }
 }
 

@@ -1,17 +1,10 @@
 ﻿namespace Notiflow.IdentityServer.Service.Tenants;
 
-internal class TenantManager : ITenantService
+internal class TenantManager(ApplicationDbContext context) : ITenantService
 {
-    private readonly ApplicationDbContext _context;
-
-    public TenantManager(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<Result<List<Tenant>>> GetTenantsAsync(CancellationToken cancellationToken)
     {
-        var tenants = await  _context.Tenants
+        var tenants = await context.Tenants
                                 .TagWith("Lists existing tenants unfiltered.")
                                 .IgnoreQueryFilters()
                                 .AsNoTracking()
@@ -21,9 +14,9 @@ internal class TenantManager : ITenantService
 
         if (tenants.IsNullOrNotAny())
         {
-            return Result<List<Tenant>>.Failure(StatusCodes.Status404NotFound, ResultCodes.TENANT_NOT_FOUND);
+            return Result<List<Tenant>>.Status404NotFound(ResultCodes.TENANT_NOT_FOUND);
         }
 
-        return Result<List<Tenant>>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, tenants);
+        return Result<List<Tenant>>.Status200OK(ResultCodes.GENERAL_SUCCESS, tenants);
     }
 }
