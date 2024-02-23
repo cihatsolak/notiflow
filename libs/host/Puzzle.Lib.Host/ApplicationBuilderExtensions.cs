@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Reflection;
-using System.Runtime.InteropServices;
-
-namespace Puzzle.Lib.Host;
+﻿namespace Puzzle.Lib.Host;
 
 /// <summary>
 /// Provides extension methods for configuring exception handling middleware in an application pipeline.
