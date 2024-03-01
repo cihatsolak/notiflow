@@ -7,7 +7,6 @@ global using Microsoft.IdentityModel.Tokens;
 global using Puzzle.Lib.Auth.Infrastructure;
 global using Puzzle.Lib.Auth.Services;
 global using System.Data;
-global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Net.Mime;

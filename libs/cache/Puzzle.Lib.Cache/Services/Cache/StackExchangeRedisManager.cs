@@ -297,13 +297,13 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration)
+    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, int cacheDurationInMinutes)
     {
         CheckArguments(cacheKey, value);
 
         return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
         {
-            bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDuration.GetHashCode()), When.Always, CommandFlags.DemandMaster);
+            bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDurationInMinutes), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
             {
                 _logger.LogWarning("Could not transfer data {cacheKey} to redis.", cacheKey);
@@ -329,7 +329,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> ExtendCacheDurationAsync(string cacheKey, CacheDuration cacheDuration)
+    public async Task<bool> ExtendCacheDurationAsync(string cacheKey, int cacheDurationInMinutes)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
@@ -342,12 +342,12 @@ internal sealed class StackExchangeRedisManager : IRedisService
                 return default;
             }
 
-            TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes(cacheDuration.GetHashCode()));
+            TimeSpan newExpiration = (TimeSpan)(currentExpiration + TimeSpan.FromMinutes(cacheDurationInMinutes));
 
             bool succeeded = await _database.KeyExpireAsync(KeyLower(cacheKey), newExpiration, CommandFlags.DemandMaster);
             if (!succeeded)
             {
-                _logger.LogWarning("Could not extend {cacheKey} key {@minute} minutes.", cacheKey, cacheDuration.GetHashCode());
+                _logger.LogWarning("Could not extend {cacheKey} key {@minute} minutes.", cacheKey, cacheDurationInMinutes);
             }
 
             return succeeded;

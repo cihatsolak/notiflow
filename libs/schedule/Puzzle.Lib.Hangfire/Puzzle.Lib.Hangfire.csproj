@@ -9,8 +9,8 @@
 	<ItemGroup>
 		<PackageReference Include="Hangfire.Dashboard.Basic.Authentication" Version="7.0.1" />
 		<PackageReference Include="Hangfire.Heartbeat" Version="0.6.0" />
-		<PackageReference Include="Hangfire.SqlServer" Version="1.8.7" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
+		<PackageReference Include="Hangfire.SqlServer" Version="1.8.11" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
 	</ItemGroup>
 
 </Project>

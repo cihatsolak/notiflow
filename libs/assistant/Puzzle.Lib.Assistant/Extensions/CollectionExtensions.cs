@@ -33,5 +33,5 @@ public static class CollectionExtensions
     /// <param name="source">The IEnumerable<string> to join.</param>
     /// <param name="separator">The character used to separate the joined elements.</param>
     /// <returns>A string containing the joined elements separated by the specified separator.</returns>
-    public static string ToJoinWithSeparator(this List<string> source, char separator) => string.Join(separator, source);
+    public static string ToJoinSeparator(this List<string> source, char separator) => string.Join(separator, source);
 }
