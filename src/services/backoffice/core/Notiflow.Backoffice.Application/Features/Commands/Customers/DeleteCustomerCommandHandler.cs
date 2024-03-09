@@ -20,12 +20,12 @@ public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustome
         bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteByIdAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMER_NOT_DELETED);
+            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_DELETED);
         }
 
         _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.CUSTOMER_DELETED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_DELETED);
     }
 }
 

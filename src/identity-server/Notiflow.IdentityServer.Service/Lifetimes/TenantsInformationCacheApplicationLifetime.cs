@@ -28,11 +28,11 @@ public static class TenantsInformationCacheApplicationLifetime
 
         try
         {
-            var response = await tenantService.GetTenantsAsync(CancellationToken.None);
-            if (response.IsFailure)
+            var result = await tenantService.GetTenantsAsync(CancellationToken.None);
+            if (result.IsFailed)
                 return;
 
-            var transactionResults = await AddCacheAsync(response.Data);
+            var transactionResults = await AddCacheAsync(result.Data);
             if (Array.TrueForAll(transactionResults, transaction => transaction))
             {
                 Logger.LogInformation("Tenant information has been added to the cache.");

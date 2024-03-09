@@ -22,9 +22,9 @@ internal class EmailNotDeliveredEventConsumer : IConsumer<EmailNotDeliveredEvent
 
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
             {
-                recipients = context.Message.Recipients.ToJoinWithSeparator(PunctuationChars.Comma),
-                cc = context.Message.CcAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
-                bcc = context.Message.BccAddresses.ToJoinWithSeparator(PunctuationChars.Comma),
+                recipients = context.Message.Recipients.ToJoinSeparator(PunctuationChars.Comma),
+                cc = context.Message.CcAddresses.ToJoinSeparator(PunctuationChars.Comma),
+                bcc = context.Message.BccAddresses.ToJoinSeparator(PunctuationChars.Comma),
                 subject = context.Message.Subject,
                 body = context.Message.Body,
                 is_sent = false,

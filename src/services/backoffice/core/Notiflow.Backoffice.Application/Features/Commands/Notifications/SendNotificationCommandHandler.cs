@@ -31,7 +31,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
         List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.DEVICE_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices
@@ -85,7 +85,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         }
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, ResultCodes.NOTIFICATION_SENDING_SUCCESSFUL, Unit.Value);
+        return Result<Unit>.Status200OK(ResultCodes.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

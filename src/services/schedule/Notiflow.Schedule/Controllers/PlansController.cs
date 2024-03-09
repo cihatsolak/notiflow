@@ -23,11 +23,10 @@ public sealed class PlansController : BaseApiController
     [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TextMessageDelivery([FromBody] ScheduleTextMessageRequest request, CancellationToken cancellationToken)
     {
-        var asd = request.CreateScheduledTextMessage();
         await _context.ScheduledTextMessages.AddAsync(request.CreateScheduledTextMessage(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.TEXT_MESSAGE_SENDING_ACCEPTED);
+        var response = Result<EmptyResponse>.Status202Accepted(ResultCodes.TEXT_MESSAGE_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 
@@ -45,7 +44,7 @@ public sealed class PlansController : BaseApiController
         await _context.ScheduledNotifications.AddAsync(request.CreateScheduledNotification(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.NOTIFICATION_SENDING_ACCEPTED);
+        var response = Result<EmptyResponse>.Status202Accepted(ResultCodes.NOTIFICATION_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 
@@ -63,7 +62,7 @@ public sealed class PlansController : BaseApiController
         await _context.ScheduledEmails.AddAsync(request.CreateScheduledEmail(), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var response = Result<EmptyResponse>.Success(StatusCodes.Status202Accepted, ResultCodes.EMAIL_SENDING_ACCEPTED);
+        var response = Result<EmptyResponse>.Status202Accepted(ResultCodes.EMAIL_SENDING_ACCEPTED);
         return CreateActionResultInstance(response);
     }
 }

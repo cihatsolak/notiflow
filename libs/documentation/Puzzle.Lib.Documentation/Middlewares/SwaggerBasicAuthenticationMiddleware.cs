@@ -13,34 +13,33 @@ public sealed class SwaggerBasicAuthenticationMiddleware
         _swaggerSecuritySetting = swaggerSecuritySetting.Value;
     }
 
-    public async Task InvokeeAsync(HttpContext context)
+    public Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Path.StartsWithSegments("/swagger"))
+        if (!context.Request.Path.StartsWithSegments("/swagger"))
         {
-            string authenticationHader = context.Request.Headers[HeaderNames.Authorization];
+            return _next.Invoke(context);
+        }
 
-            if (authenticationHader is not null && authenticationHader.StartsWith("Basic "))
+        string authenticationHader = context.Request.Headers[HeaderNames.Authorization];
+
+        if (authenticationHader is not null && authenticationHader.StartsWith("Basic "))
+        {
+            string encodedUsernamePassword = authenticationHader.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries)[1]?.Trim();
+            string decodedUsernamePassword = Encoding.UTF8.GetString(Convert.FromBase64String(encodedUsernamePassword));
+
+            string username = decodedUsernamePassword.Split(':', 2)[0];
+            string password = decodedUsernamePassword.Split(':', 2)[1];
+
+            if (IsAuthorized(username, password))
             {
-                string encodedUsernamePassword = authenticationHader.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries)[1]?.Trim();
-                string decodedUsernamePassword = Encoding.UTF8.GetString(Convert.FromBase64String(encodedUsernamePassword));
-
-                string username = decodedUsernamePassword.Split(':', 2)[0];
-                string password = decodedUsernamePassword.Split(':', 2)[1];
-
-                if (IsAuthorized(username, password))
-                {
-                    await _next.Invoke(context);
-                    return;
-                }
+                return _next.Invoke(context);
             }
+        }
 
-            context.Response.Headers.WWWAuthenticate = "Basic";
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        }
-        else
-        {
-            await _next.Invoke(context);
-        }
+        context.Response.Headers.WWWAuthenticate = "Basic";
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+        return _next.Invoke(context);
     }
 
     private bool IsAuthorized(string username, string password)

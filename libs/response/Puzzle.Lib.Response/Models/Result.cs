@@ -13,7 +13,7 @@ public record Result<TData>
     public bool IsSuccess { get; init; }
 
     [JsonIgnore]
-    public bool IsFailure => !IsSuccess;
+    public bool IsFailed => !IsSuccess;
 
     /// <summary>
     /// Gets or sets the status statusCode of the response.
@@ -42,6 +42,126 @@ public record Result<TData>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public IEnumerable<string> Errors { get; init; }
 
+    /// <summary>
+    /// Creates a Result with a 200 OK status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 200 OK status code and the specified result code.</returns>
+    public static Result<TData> Status200OK(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status200OK,
+            ResultCode = resultCode,
+            IsSuccess = true
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 200 OK status code, a custom result code, and associated data.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <param name="data">The data associated with the result.</param>
+    /// <returns>A Result with a 200 OK status code, the specified result code, and associated data.</returns>
+    public static Result<TData> Status200OK(int resultCode, TData data)
+    {
+        return new Result<TData>
+        {
+            Data = data,
+            StatusCode = StatusCodes.Status200OK,
+            ResultCode = resultCode,
+            IsSuccess = true
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 201 Created status code, a custom result code, and associated data.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <param name="data">The data associated with the result.</param>
+    /// <returns>A Result with a 201 Created status code, the specified result code, and associated data.</returns>
+    public static Result<TData> Status201Created(int resultCode, TData data)
+    {
+        return new Result<TData>
+        {
+            Data = data,
+            StatusCode = StatusCodes.Status201Created,
+            ResultCode = resultCode,
+            IsSuccess = true
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 202 Accepted status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 202 Accepted status code and the specified result code.</returns>
+    public static Result<TData> Status202Accepted(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status202Accepted,
+            ResultCode = resultCode,
+            IsSuccess = true
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 204 No Content status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 204 No Content status code and the specified result code.</returns>
+    public static Result<TData> Status204NoContent(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status204NoContent,
+            ResultCode = resultCode,
+            IsSuccess = true
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 400 Bad Request status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 400 Bad Request status code and the specified result code.</returns>
+    public static Result<TData> Status400BadRequest(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status400BadRequest,
+            ResultCode = resultCode
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 404 Not Found status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 404 Not Found status code and the specified result code.</returns>
+    public static Result<TData> Status404NotFound(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status404NotFound,
+            ResultCode = resultCode
+        };
+    }
+
+    /// <summary>
+    /// Creates a Result with a 500 Internal Server Error status code and a custom result code.
+    /// </summary>
+    /// <param name="resultCode">The custom result code.</param>
+    /// <returns>A Result with a 500 Internal Server Error status code and the specified result code.</returns>
+    public static Result<TData> Status500InternalServerError(int resultCode)
+    {
+        return new Result<TData>
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+            ResultCode = resultCode
+        };
+    }
 
     /// <summary>
     /// Creates a success response with the specified status statusCode.

@@ -52,7 +52,7 @@ public static class JsonExtensions
                             || (text.StartsWith(PunctuationChars.LeftSquareBracket) && text.EndsWith(PunctuationChars.RightSquareBracket));
 
         if (!isJsonObject)
-            return default;
+            return isJsonObject;
 
         try
         {

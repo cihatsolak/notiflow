@@ -20,12 +20,12 @@ public sealed class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCom
         bool isDeleted = await _uow.DeviceWrite.ExecuteDeleteByIdAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.DEVICE_NOT_DELETED);
+            return Result<Unit>.Status500InternalServerError(ResultCodes.DEVICE_NOT_DELETED);
         }
 
         _logger.LogInformation("The device with ID {deviceId} has been deleted.", request.Id);
 
-        return Result<Unit>.Success(StatusCodes.Status204NoContent, ResultCodes.DEVICE_DELETED, Unit.Value);
+        return Result<Unit>.Status204NoContent(ResultCodes.DEVICE_DELETED);
     }
 }
 

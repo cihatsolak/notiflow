@@ -181,13 +181,13 @@ public interface IRedisService
     /// <typeparam name="TValue">The type of the value to be cached.</typeparam>
     /// <param name="cacheKey">The key of the cache entry.</param>
     /// <param name="value">The value to be cached.</param>
-    /// <param name="cacheDuration">The duration of the cache entry.</param>
+    /// <param name="cacheDurationInMinutes">The duration of the cache entry.</param>
     /// <returns>A task that represents the asynchronous operation.
     /// The task result contains a boolean value indicating whether the operation succeeded.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="cacheKey"/> or <paramref name="value"/> is null.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="cacheKey"/> is an empty string.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the cache service is not available.</exception>
-    Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, CacheDuration cacheDuration);
+    Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, int cacheDurationInMinutes);
 
     /// <summary>
     /// Updates an existing value in the cache with the provided key. If the key does not exist, this method returns false.
@@ -207,11 +207,11 @@ public interface IRedisService
     /// Extends the expiration time of a cache key by the specified extend time.
     /// </summary>
     /// <param name="cacheKey">The cache key to extend the expiration time for.</param>
-    /// <param name="cacheDuration">The amount of time to extend the expiration time by.</param>
+    /// <param name="cacheDurationInMinutes">The amount of time to extend the expiration time by.</param>
     /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation, returning a <see cref="bool"/> indicating whether the operation was successful.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="cacheKey"/> parameter is null or empty.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="cacheDuration"/> parameter is negative.</exception>
-    Task<bool> ExtendCacheDurationAsync(string cacheKey, CacheDuration cacheDuration);
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="cacheDurationInMinutes"/> parameter is negative.</exception>
+    Task<bool> ExtendCacheDurationAsync(string cacheKey, int cacheDurationInMinutes);
 
     /// <summary>
     /// Removes the cache entry with the specified key.

@@ -32,7 +32,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
         bool isExists = await _uow.CustomerRead.IsExistsByPhoneNumberOrEmailAsync(request.PhoneNumber, request.Email, cancellationToken);
         if (isExists)
         {
-            return Result<int>.Failure(StatusCodes.Status400BadRequest, ResultCodes.CUSTOMER_EXISTS);
+            return Result<int>.Status400BadRequest(ResultCodes.CUSTOMER_EXISTS);
         }
 
         var customer = ObjectMapper.Mapper.Map<Customer>(request);
@@ -44,7 +44,7 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
 
         _logger.LogInformation("A new customer with {customerId} id has been registered.", customer.Id);
 
-        return Result<int>.Success(StatusCodes.Status201Created, ResultCodes.CUSTOMER_ADDED, customer.Id);
+        return Result<int>.Status201Created(ResultCodes.CUSTOMER_ADDED, customer.Id);
     }
 }
 

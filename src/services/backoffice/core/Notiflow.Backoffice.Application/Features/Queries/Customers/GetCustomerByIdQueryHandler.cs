@@ -16,11 +16,11 @@ public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByI
         var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<GetCustomerByIdQueryResult>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result<GetCustomerByIdQueryResult>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
         var customerDto = ObjectMapper.Mapper.Map<GetCustomerByIdQueryResult>(customer);
-        return Result<GetCustomerByIdQueryResult>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, customerDto);
+        return Result<GetCustomerByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, customerDto);
     }
 }
 

@@ -26,13 +26,13 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         List<string> phoneNumbers = await _uow.CustomerRead.GetPhoneNumbersByIdsAsync(request.CustomerIds, cancellationToken);
         if (phoneNumbers.IsNullOrNotAny())
         {
-            return Result<Unit>.Failure(StatusCodes.Status404NotFound, ResultCodes.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND);
+            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMERS_PHONE_NUMBERS_NOT_FOUND);
         }
 
         if (phoneNumbers.Count != request.CustomerIds.Count)
         {
             _logger.LogWarning("The number of customers to send messages to and the number of registered phone numbers do not match. Customer IDs: {CustomerIds}.", request.CustomerIds);
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL);
+            return Result<Unit>.Status500InternalServerError(ResultCodes.THE_NUMBER_PHONE_NUMBERS_NOT_EQUAL);
         }
 
         bool succeeded = await _textMessageService.SendTextMessageAsync(phoneNumbers, request.Message, cancellationToken);
@@ -40,12 +40,12 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
         {
             await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
 
-            return Result<Unit>.Failure(StatusCodes.Status500InternalServerError, ResultCodes.TEXT_MESSAGE_SENDING_FAILED);
+            return Result<Unit>.Status500InternalServerError(ResultCodes.TEXT_MESSAGE_SENDING_FAILED);
         }
 
         await _publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
 
-        return Result<Unit>.Success(StatusCodes.Status200OK, ResultCodes.TEXT_MESSAGES_SENDING_SUCCESSFUL, Unit.Value);
+        return Result<Unit>.Status200OK(ResultCodes.TEXT_MESSAGES_SENDING_SUCCESSFUL);
     }
 }
 

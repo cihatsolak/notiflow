@@ -16,11 +16,11 @@ public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<Get
         var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
-            return Result<GetNotificationHistoryByIdQueryResult>.Failure(StatusCodes.Status404NotFound, ResultCodes.NOTIFICATION_NOT_FOUND);
+            return Result<GetNotificationHistoryByIdQueryResult>.Status404NotFound(ResultCodes.NOTIFICATION_NOT_FOUND);
         }
 
         var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResult>(notificationHistory);
-        return Result<GetNotificationHistoryByIdQueryResult>.Success(StatusCodes.Status200OK, ResultCodes.GENERAL_SUCCESS, notificationDto);
+        return Result<GetNotificationHistoryByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, notificationDto);
     }
 }
 

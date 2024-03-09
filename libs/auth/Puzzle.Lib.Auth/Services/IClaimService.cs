@@ -28,7 +28,6 @@ public interface IClaimService
     /// <summary>
     /// Gets the name identifier claim value of the user.
     /// </summary>
-    /// <exception cref="JwtClaimException">If there is no name identifier value in claims or less than one, it is thrown.</exception>
     int NameIdentifier { get; }
 
     /// <summary>

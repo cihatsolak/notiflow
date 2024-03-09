@@ -41,14 +41,7 @@ public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where 
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedResult<TEntity>
-        {
-            Items = entities,
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            TotalRecords = totalRecords,
-            TotalPages = totalPages
-        };
+        return new PagedResult<TEntity>(entities, pageIndex, pageSize, totalRecords, totalPages);
     }
 
     public virtual async Task<PagedResult<TEntity>> GetPageAsync(
@@ -84,14 +77,7 @@ public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where 
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedResult<TEntity>
-        {
-            Items = entities,
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            TotalRecords = totalRecords,
-            TotalPages = totalPages
-        };
+        return new PagedResult<TEntity>(entities, pageIndex, pageSize, totalRecords, totalPages);
     }
 
     public virtual async Task<PagedResult<TEntity>> GetPageAsync(
@@ -131,14 +117,7 @@ public class Ef6EntityRepository<TEntity> : IEf6EntityRepository<TEntity> where 
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedResult<TEntity>
-        {
-            Items = entities,
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            TotalRecords = totalRecords,
-            TotalPages = totalPages
-        };
+        return new PagedResult<TEntity>(entities, pageIndex, pageSize, totalRecords, totalPages);
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(

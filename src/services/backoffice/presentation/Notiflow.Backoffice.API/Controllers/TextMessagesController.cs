@@ -1,7 +1,4 @@
-﻿using Notiflow.Backoffice.Application.Features.Commands.TextMessages;
-using Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories;
-
-namespace Notiflow.Backoffice.API.Controllers;
+﻿namespace Notiflow.Backoffice.API.Controllers;
 
 [Route("api/text-messages")]
 public sealed class TextMessagesController : BaseApiController
