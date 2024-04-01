@@ -1,20 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Devices;
 
-public sealed record GetDeviceByIdQuery(int Id) : IRequest<Result<GetDeviceByIdQueryResult>>;
+public sealed record GetDeviceByIdQuery(int Id) : IRequest<Result<DeviceResponse>>;
 
-public sealed class GetDeviceByIdQueryHandler(INotiflowUnitOfWork uow) : IRequestHandler<GetDeviceByIdQuery, Result<GetDeviceByIdQueryResult>>
+public sealed class GetDeviceByIdQueryHandler(INotiflowUnitOfWork uow) 
+    : IRequestHandler<GetDeviceByIdQuery, Result<DeviceResponse>>
 {
-    public async Task<Result<GetDeviceByIdQueryResult>> Handle(GetDeviceByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<DeviceResponse>> Handle(GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
         var device = await uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<GetDeviceByIdQueryResult>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
+            return Result<DeviceResponse>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
-        var deviceDto = ObjectMapper.Mapper.Map<GetDeviceByIdQueryResult>(device);
-
-        return Result<GetDeviceByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, deviceDto);
+        return Result<DeviceResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS, ObjectMapper.Mapper.Map<DeviceResponse>(device));
     }
 }
 
@@ -26,7 +25,7 @@ public sealed class GetDeviceByIdQueryValidator : AbstractValidator<GetDeviceByI
     }
 }
 
-public sealed record GetDeviceByIdQueryResult
+public sealed record DeviceResponse
 {
     public int CustomerId { get; set; }
     public OSVersion OSVersion { get; init; }

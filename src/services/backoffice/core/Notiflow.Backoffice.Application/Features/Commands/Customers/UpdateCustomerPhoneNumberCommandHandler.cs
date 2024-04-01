@@ -1,41 +1,32 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers;
 
-public sealed record UpdateCustomerPhoneNumberCommand(int Id, string PhoneNumber) : IRequest<Result<Unit>>;
+public sealed record UpdateCustomerPhoneNumberCommand(int Id, string PhoneNumber) : IRequest<Result<EmptyResponse>>;
 
-public sealed class UpdateCustomerPhoneNumberCommandHandler : IRequestHandler<UpdateCustomerPhoneNumberCommand, Result<Unit>>
+public sealed class UpdateCustomerPhoneNumberCommandHandler(
+    INotiflowUnitOfWork uow,
+    ILogger<UpdateCustomerPhoneNumberCommandHandler> logger) : IRequestHandler<UpdateCustomerPhoneNumberCommand, Result<EmptyResponse>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<UpdateCustomerPhoneNumberCommandHandler> _logger;
-
-    public UpdateCustomerPhoneNumberCommandHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<UpdateCustomerPhoneNumberCommandHandler> logger)
+    public async Task<Result<EmptyResponse>> Handle(UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
     {
-        _uow = uow;
-        _logger = logger;
-    }
-
-    public async Task<Result<Unit>> Handle(UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
-    {
-        var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
+        var customer = await uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result<EmptyResponse>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
-        if (string.Equals(customer.PhoneNumber, request.PhoneNumber))
+        if (string.Equals(customer.PhoneNumber, request.PhoneNumber, StringComparison.OrdinalIgnoreCase))
         {
-            _logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
-            return Result<Unit>.Status400BadRequest(ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
+            logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
+            return Result<EmptyResponse>.Status400BadRequest(ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
         customer.PhoneNumber = request.PhoneNumber;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        await uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
+        logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
+        return Result<EmptyResponse>.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
     }
 }
 

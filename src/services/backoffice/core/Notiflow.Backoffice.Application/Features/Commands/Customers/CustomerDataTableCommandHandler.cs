@@ -2,18 +2,11 @@
 
 public sealed record CustomerDataTableCommand : DtParameters, IRequest<Result<DtResult<CustomerDataTableCommandResult>>>;
 
-public sealed class CustomerDataTableCommandHandler : IRequestHandler<CustomerDataTableCommand, Result<DtResult<CustomerDataTableCommandResult>>>
+public sealed class CustomerDataTableCommandHandler(INotiflowUnitOfWork uow) : IRequestHandler<CustomerDataTableCommand, Result<DtResult<CustomerDataTableCommandResult>>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-
-    public CustomerDataTableCommandHandler(INotiflowUnitOfWork uow)
-    {
-        _uow = uow;
-    }
-
     public async Task<Result<DtResult<CustomerDataTableCommandResult>>> Handle(CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
-        (int recordsTotal, List<Customer> customers) = await _uow.CustomerRead.GetPageAsync(request.SortKey,
+        (int recordsTotal, List<Customer> customers) = await uow.CustomerRead.GetPageAsync(request.SortKey,
                                                                                             request.SearchKey,
                                                                                             request.PageIndex,
                                                                                             request.PageSize,

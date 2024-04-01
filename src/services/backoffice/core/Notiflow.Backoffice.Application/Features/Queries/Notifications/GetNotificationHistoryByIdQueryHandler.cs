@@ -1,26 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Notifications.GetById;
 
-public sealed record GetNotificationHistoryByIdQuery(int Id) : IRequest<Result<GetNotificationHistoryByIdQueryResult>>;
+public sealed record GetNotificationHistoryByIdQuery(int Id) : IRequest<Result<NotificationHistoryResponse>>;
 
-public sealed class GetNotificationHistoryByIdQueryHandler : IRequestHandler<GetNotificationHistoryByIdQuery, Result<GetNotificationHistoryByIdQueryResult>>
+public sealed class GetNotificationHistoryByIdQueryHandler(INotiflowUnitOfWork uow) 
+    : IRequestHandler<GetNotificationHistoryByIdQuery, Result<NotificationHistoryResponse>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-
-    public GetNotificationHistoryByIdQueryHandler(INotiflowUnitOfWork uow)
+    public async Task<Result<NotificationHistoryResponse>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
     {
-        _uow = uow;
-    }
-
-    public async Task<Result<GetNotificationHistoryByIdQueryResult>> Handle(GetNotificationHistoryByIdQuery request, CancellationToken cancellationToken)
-    {
-        var notificationHistory = await _uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
+        var notificationHistory = await uow.NotificationHistoryRead.GetByIdAsync(request.Id, cancellationToken);
         if (notificationHistory is null)
         {
-            return Result<GetNotificationHistoryByIdQueryResult>.Status404NotFound(ResultCodes.NOTIFICATION_NOT_FOUND);
+            return Result<NotificationHistoryResponse>.Status404NotFound(ResultCodes.NOTIFICATION_NOT_FOUND);
         }
 
-        var notificationDto = ObjectMapper.Mapper.Map<GetNotificationHistoryByIdQueryResult>(notificationHistory);
-        return Result<GetNotificationHistoryByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, notificationDto);
+        return Result<NotificationHistoryResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS, ObjectMapper.Mapper.Map<NotificationHistoryResponse>(notificationHistory));
     }
 }
 
@@ -31,7 +24,8 @@ public sealed class GetNotificationHistoryByIdQueryValidator : AbstractValidator
         RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
     }
 }
-public sealed record GetNotificationHistoryByIdQueryResult
+
+public sealed record NotificationHistoryResponse
 {
     public int Id { get; init; }
     public string Title { get; init; }

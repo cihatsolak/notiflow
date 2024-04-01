@@ -1,31 +1,23 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers;
 
-public sealed record DeleteCustomerCommand(int Id) : IRequest<Result<Unit>>;
+public sealed record DeleteCustomerCommand(int Id) : IRequest<Result<EmptyResponse>>;
 
-public sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<Unit>>
+public sealed class DeleteCustomerCommandHandler(
+    INotiflowUnitOfWork uow,
+    ILogger<DeleteCustomerCommandHandler> logger) : IRequestHandler<DeleteCustomerCommand, Result<EmptyResponse>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<DeleteCustomerCommandHandler> _logger;
-
-    public DeleteCustomerCommandHandler(
-        INotiflowUnitOfWork uow,
-        ILogger<DeleteCustomerCommandHandler> logger)
+    
+    public async Task<Result<EmptyResponse>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
-        _uow = uow;
-        _logger = logger;
-    }
-
-    public async Task<Result<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
-    {
-        bool isDeleted = await _uow.CustomerWrite.ExecuteDeleteByIdAsync(request.Id, cancellationToken);
+        bool isDeleted = await uow.CustomerWrite.ExecuteDeleteByIdAsync(request.Id, cancellationToken);
         if (!isDeleted)
         {
-            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_DELETED);
+            return Result<EmptyResponse>.Status404NotFound(ResultCodes.CUSTOMER_NOT_DELETED);
         }
 
-        _logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
+        logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
-        return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_DELETED);
+        return Result<EmptyResponse>.Status204NoContent(ResultCodes.CUSTOMER_DELETED);
     }
 }
 

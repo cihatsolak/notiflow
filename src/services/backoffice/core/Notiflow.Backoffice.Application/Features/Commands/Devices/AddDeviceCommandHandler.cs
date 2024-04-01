@@ -8,32 +8,23 @@ public sealed record AddDeviceCommand(
     CloudMessagePlatform CloudMessagePlatform
     ) : IRequest<Result<int>>;
 
-public sealed class AddDeviceCommandHandler : IRequestHandler<AddDeviceCommand, Result<int>>
+public sealed class AddDeviceCommandHandler(
+    INotiflowUnitOfWork notiflowUnitOfWork,
+    ILogger<AddDeviceCommandHandler> logger) : IRequestHandler<AddDeviceCommand, Result<int>>
 {
-    private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
-    private readonly ILogger<AddDeviceCommandHandler> _logger;
-
-    public AddDeviceCommandHandler(
-        INotiflowUnitOfWork notiflowUnitOfWork,
-        ILogger<AddDeviceCommandHandler> logger)
-    {
-        _notiflowUnitOfWork = notiflowUnitOfWork;
-        _logger = logger;
-    }
-
     public async Task<Result<int>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {
-        var device = await _notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
+        var device = await notiflowUnitOfWork.DeviceRead.GetByCustomerIdAsync(request.CustomerId, cancellationToken);
         if (device is not null)
         {
             return Result<int>.Status404NotFound(ResultCodes.DEVICE_EXISTS);
         }
 
         device = ObjectMapper.Mapper.Map<Device>(request);
-        await _notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
-        await _notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
+        await notiflowUnitOfWork.DeviceWrite.InsertAsync(device, cancellationToken);
+        await notiflowUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("A new device with ID {deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
+        logger.LogInformation("A new device with ID {deviceId} has been added for the customer with ID number {customerId}.", device.Id, device.CustomerId);
 
         return Result<int>.Status201Created(ResultCodes.DEVICE_ASSOCIATED_CUSTOMER_ADDED, device.Id);
     }

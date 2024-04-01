@@ -1,20 +1,20 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.TextMessageHistories;
 
-public sealed record GetTextMessageHistoryByIdQuery(int Id) : IRequest<Result<GetTextMessageHistoryByIdQueryResult>>;
+public sealed record GetTextMessageHistoryByIdQuery(int Id) : IRequest<Result<TextMessageHistoryResponse>>;
 
-public sealed class GetTextMessageHistoryByIdQueryHandler(INotiflowUnitOfWork uow) : IRequestHandler<GetTextMessageHistoryByIdQuery, Result<GetTextMessageHistoryByIdQueryResult>>
+public sealed class GetTextMessageHistoryByIdQueryHandler(INotiflowUnitOfWork uow) : IRequestHandler<GetTextMessageHistoryByIdQuery, Result<TextMessageHistoryResponse>>
 {
-    public async Task<Result<GetTextMessageHistoryByIdQueryResult>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<TextMessageHistoryResponse>> Handle(GetTextMessageHistoryByIdQuery request, CancellationToken cancellationToken)
     {
         var textMessageHistory = await uow.TextMessageHistoryRead.GetAsync(textMessageHistory => textMessageHistory.Id == request.Id, cancellationToken: cancellationToken);
         if (textMessageHistory is null)
         {
-            return Result<GetTextMessageHistoryByIdQueryResult>.Status404NotFound(ResultCodes.TEXT_MESSAGE_NOT_FOUND);
+            return Result<TextMessageHistoryResponse>.Status404NotFound(ResultCodes.TEXT_MESSAGE_NOT_FOUND);
         }
 
-        var textMessageHistoryDto = ObjectMapper.Mapper.Map<GetTextMessageHistoryByIdQueryResult>(textMessageHistory);
+        var textMessageHistoryDto = ObjectMapper.Mapper.Map<TextMessageHistoryResponse>(textMessageHistory);
 
-        return Result<GetTextMessageHistoryByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, textMessageHistoryDto);
+        return Result<TextMessageHistoryResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS, textMessageHistoryDto);
     }
 }
 
@@ -26,7 +26,7 @@ public sealed class GetTextMessageHistoryByIdQueryValidator : AbstractValidator<
     }
 }
 
-public sealed record GetTextMessageHistoryByIdQueryResult
+public sealed record TextMessageHistoryResponse
 {
     public int Id { get; init; }
     public string Message { get; init; }
