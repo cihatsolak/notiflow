@@ -4,6 +4,7 @@ public interface INotiflowUnitOfWork
 {
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task UndoChangesAsync(CancellationToken cancellationToken);
 
     ICustomerReadRepository CustomerRead { get; }
     ICustomerWriteRepository CustomerWrite { get; }
