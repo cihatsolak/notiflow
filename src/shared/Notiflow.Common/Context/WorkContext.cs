@@ -17,7 +17,7 @@ public class WorkContext(IHttpContextAccessor context) : IWorkContext
 
             }
 
-            if (context?.HttpContext?.Request.Headers.ContainsKey() ?? false)
+            if (context?.HttpContext?.Request.Headers.ContainsKey("x-tenant-token") ?? false)
                 return Convert.ToInt32(context.HttpContext.Request.Headers["X-TenantId"]);
 
             return 0;

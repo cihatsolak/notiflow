@@ -33,7 +33,7 @@ public static class TenantCacheKeyFactory
 
         if (tenantToken == Guid.Empty)
         {
-            throw new ArgumentException(nameof(tenantToken));
+            throw new ArgumentException(null, nameof(tenantToken)); //TODOs
         }
 
         return string.Concat(key, ".", tenantToken.ToString().ToLowerInvariant());
@@ -45,7 +45,7 @@ public static class TenantCacheKeyFactory
 
         if (Math.Sign(tenantId) != 1)
         {
-            throw new ArgumentException(nameof(tenantId));
+            throw new ArgumentException(null, nameof(tenantId)); //TODOs
         }
 
         return string.Concat(key, ".", tenantId);

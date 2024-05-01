@@ -11,6 +11,7 @@ internal static class MassTransitContainerBuilderExtensions
         services.AddMassTransit(serviceCollectionBusConfigurator =>
         {
             serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
+            //serviceCollectionBusConfigurator.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("backoffice", false)); //TODOs
 
             serviceCollectionBusConfigurator.AddConsumer<ScheduledTextMessageEventConsumer>();
             serviceCollectionBusConfigurator.AddConsumer<ScheduledNotificationEventConsumer>();
@@ -39,8 +40,9 @@ internal static class MassTransitContainerBuilderExtensions
 
                 //1 dk içerisinde 1000 request yapabilecek şekilde sınırlandırılmıştır.
                 rabbitMqBusFactoryConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
-
+                
                 ConfigureQueues(busRegistrationContext, rabbitMqBusFactoryConfigurator);
+                //rabbitMqBusFactoryConfigurator.ConfigureEndpoints(busRegistrationContext); //TODOs
             });
         });
         return services;
