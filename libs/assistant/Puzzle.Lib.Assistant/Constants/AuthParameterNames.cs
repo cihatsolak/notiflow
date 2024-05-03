@@ -1,7 +1,7 @@
 ﻿namespace Puzzle.Lib.Assistant.Constants;
 
 /// <summary>
-/// A record that contains parameter names used in authentication.
+/// A class that contains parameter names used in authentication.
 /// </summary>
 public static class AuthParameterNames
 {

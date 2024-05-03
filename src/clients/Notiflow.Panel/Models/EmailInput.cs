@@ -38,10 +38,10 @@ public sealed class EmailInputValidator : AbstractValidator<EmailInput>
         RuleForEach(p => p.BccAddresses)
             .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
 
-        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_BODY]);
+        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
 
         RuleFor(p => p.Subject)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
+            .Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
             .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
     }
 }

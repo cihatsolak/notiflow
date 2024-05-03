@@ -26,12 +26,11 @@ public sealed class UpdateDeviceTokenCommandHandler(
 
 public sealed class UpdateDeviceTokenCommandValidator : AbstractValidator<UpdateDeviceTokenCommand>
 {
+    private const int DEVICE_TOKEN_MAX_LENGTH = 100;
+
     public UpdateDeviceTokenCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
-
-        RuleFor(p => p.Token)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.DEVICE_TOKEN])
-            .MaximumLength(180).WithMessage(localizer[ValidationErrorMessage.DEVICE_TOKEN]);
+        RuleFor(p => p.Token).Ensure(localizer[ValidationErrorMessage.DEVICE_TOKEN], DEVICE_TOKEN_MAX_LENGTH);
     }
 }

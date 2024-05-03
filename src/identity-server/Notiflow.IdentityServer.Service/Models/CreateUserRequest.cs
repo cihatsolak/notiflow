@@ -4,26 +4,24 @@ public sealed record CreateUserRequest(string Name, string Surname, string Email
 
 public sealed class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 {
+    private const int PASSWORD_MAX_LENGTH = 100;
+
     public CreateUserRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Name)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USER_NAME])
+            .Ensure(localizer[ValidationErrorMessage.USER_NAME])
             .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_NAME]);
 
         RuleFor(p => p.Surname)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USER_SURNAME])
+            .Ensure(localizer[ValidationErrorMessage.USER_SURNAME])
             .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_SURNAME]);
 
-        RuleFor(p => p.Email)
-            .Email(localizer[ValidationErrorMessage.EMAIL])
-            .Length(5, 150).WithMessage(localizer[ValidationErrorMessage.EMAIL]);
+        RuleFor(p => p.Email).Email(localizer[ValidationErrorMessage.EMAIL]);
 
         RuleFor(p => p.Username)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USERNAME])
+            .Ensure(localizer[ValidationErrorMessage.USERNAME])
             .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
 
-        RuleFor(p => p.Password)
-           .StrongPassword(localizer[ValidationErrorMessage.PASSWORD])
-           .MaximumLength(200).WithMessage(localizer[ValidationErrorMessage.PASSWORD]);
+        RuleFor(p => p.Password).StrongPassword(localizer[ValidationErrorMessage.PASSWORD], PASSWORD_MAX_LENGTH);
     }
 }

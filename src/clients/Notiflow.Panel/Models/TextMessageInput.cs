@@ -18,7 +18,7 @@ public sealed class TextMessageInputValidator : AbstractValidator<TextMessageInp
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.TEXT_MESSAGE])
+           .Ensure(localizer[ValidationErrorMessage.TEXT_MESSAGE])
            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
     }
 }

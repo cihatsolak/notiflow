@@ -26,15 +26,15 @@ public sealed class NotificationInputValidator : AbstractValidator<NotificationI
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Title)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
+            .Ensure(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
             .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_TITLE]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
+           .Ensure(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE]);
 
         RuleFor(p => p.ImageUrl)
-         .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
+         .Ensure(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
          .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
          .Must(BeAValidUrl).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL]);
     }

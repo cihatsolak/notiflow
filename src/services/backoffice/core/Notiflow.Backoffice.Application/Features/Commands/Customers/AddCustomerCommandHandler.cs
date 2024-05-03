@@ -50,24 +50,17 @@ public sealed class AddCustomerCommandHandler : IRequestHandler<AddCustomerComma
 
 public sealed class AddCustomerCommandValidator : AbstractValidator<AddCustomerCommand>
 {
+    private const int CUSTOMER_NAME_MAX_LENGTH = 50;
+    private const int CUSTOMER_SURNAME_MAX_LENGTH = 75;
+
     public AddCustomerCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Name)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.CUSTOMER_NAME])
-            .MaximumLength(50).WithMessage(localizer[ValidationErrorMessage.CUSTOMER_NAME]);
-
-        RuleFor(p => p.Surname)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.CUSTOMER_SURNAME])
-            .MaximumLength(75).WithMessage(localizer[ValidationErrorMessage.CUSTOMER_SURNAME]);
-
+        RuleFor(p => p.Name).Ensure(localizer[ValidationErrorMessage.CUSTOMER_NAME], CUSTOMER_NAME_MAX_LENGTH);
+        RuleFor(p => p.Surname).Ensure(localizer[ValidationErrorMessage.CUSTOMER_SURNAME], CUSTOMER_SURNAME_MAX_LENGTH);
         RuleFor(p => p.PhoneNumber).MobilePhone(localizer[ValidationErrorMessage.PHONE_NUMBER]);
-
         RuleFor(p => p.Email).Email(localizer[ValidationErrorMessage.EMAIL]);
-
         RuleFor(p => p.BirthDate).BirthDate(localizer[ValidationErrorMessage.BIRTH_DATE]);
-
         RuleFor(p => p.Gender).Enum(localizer[ValidationErrorMessage.GENDER]);
-
         RuleFor(p => p.MarriageStatus).Enum(localizer[ValidationErrorMessage.MARRIAGE_STATUS]);
     }
 }

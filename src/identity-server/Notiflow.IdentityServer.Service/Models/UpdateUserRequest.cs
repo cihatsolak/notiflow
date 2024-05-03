@@ -7,11 +7,11 @@ public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserReq
     public UpdateUserRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Name)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USER_NAME])
+           .Ensure(localizer[ValidationErrorMessage.USER_NAME])
            .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_NAME]);
 
         RuleFor(p => p.Surname)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USER_SURNAME])
+            .Ensure(localizer[ValidationErrorMessage.USER_SURNAME])
             .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_SURNAME]);
 
         RuleFor(p => p.Email)
@@ -19,7 +19,7 @@ public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserReq
             .Length(5, 150).WithMessage(localizer[ValidationErrorMessage.EMAIL]);
 
         RuleFor(p => p.Username)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.USERNAME])
+            .Ensure(localizer[ValidationErrorMessage.USERNAME])
             .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
 
         RuleFor(p => p.Avatar)

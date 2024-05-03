@@ -12,11 +12,27 @@ public static class ParameterRuleBuilderExtensions
     ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
     ///<typeparam name="TElement">The type of the class being validated.</typeparam>
     ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-    public static IRuleBuilderOptions<TElement, string> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage)
+    public static IRuleBuilderOptions<TElement, string> Ensure<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage)
     {
         return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
                 .NotNull().WithMessage(errorMessage);
+    }
+
+    ///<summary>
+    /// Ensures that the validated string value is not null or empty, and adds a custom error message if it is.
+    ///</summary>
+    ///<param name="ruleBuilder">The FluentValidation IRuleBuilder instance being extended.</param>
+    ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
+    ///<param name="maximumLength"></param>
+    ///<typeparam name="TElement">The type of the class being validated.</typeparam>
+    ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
+    public static IRuleBuilderOptions<TElement, string> Ensure<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage, int maximumLength)
+    {
+        return ruleBuilder
+                .NotEmpty().WithMessage(errorMessage)
+                .NotNull().WithMessage(errorMessage)
+                .MaximumLength(maximumLength).WithMessage(errorMessage);
     }
 
     ///<summary>
@@ -26,7 +42,7 @@ public static class ParameterRuleBuilderExtensions
     ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
     ///<typeparam name="TElement">The type of the class being validated.</typeparam>
     ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-    public static IRuleBuilderOptions<TElement, byte[]> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, byte[]> ruleBuilder, string errorMessage) where TElement : class
+    public static IRuleBuilderOptions<TElement, byte[]> Ensure<TElement>(this IRuleBuilder<TElement, byte[]> ruleBuilder, string errorMessage) where TElement : class
     {
         return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -40,7 +56,7 @@ public static class ParameterRuleBuilderExtensions
     ///<param name="errorMessage">The custom error message to add if the value is null or empty.</param>
     ///<typeparam name="TClass">The type of the class being validated.</typeparam>
     ///<returns>The updated FluentValidation IRuleBuilderOptions instance.</returns>
-    public static IRuleBuilderOptions<TElement, List<string>> NotNullAndNotEmpty<TElement>(this IRuleBuilder<TElement, List<string>> ruleBuilder, string errorMessage) where TElement : class
+    public static IRuleBuilderOptions<TElement, List<string>> Ensure<TElement>(this IRuleBuilder<TElement, List<string>> ruleBuilder, string errorMessage) where TElement : class
     {
         return ruleBuilder
                 .NotEmpty().WithMessage(errorMessage)
@@ -93,6 +109,15 @@ public static class ParameterRuleBuilderExtensions
                 .NotEmpty().WithMessage(errorMessage)
                 .NotNull().WithMessage(errorMessage)
                 .Must(url => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)).WithMessage(errorMessage);
+    }
+
+    public static IRuleBuilderOptions<TElement, string> Url<TElement>(this IRuleBuilder<TElement, string> ruleBuilder, string errorMessage, int maximumLength)
+    {
+        return ruleBuilder
+                .NotEmpty().WithMessage(errorMessage)
+                .NotNull().WithMessage(errorMessage)
+                .Must(url => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)).WithMessage(errorMessage)
+                .MaximumLength(maximumLength).WithMessage(errorMessage);
     }
 
 }

@@ -51,12 +51,11 @@ public sealed class SendTextMessageCommandHandler : IRequestHandler<SendTextMess
 
 public sealed class SendTextMessageCommandValidator : AbstractValidator<SendTextMessageCommand>
 {
+    private const int TEXT_MESSAGE_MAX_LENGTH = 300;
+
     public SendTextMessageCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
-
-        RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.TEXT_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
+        RuleFor(p => p.Message).Ensure(localizer[ValidationErrorMessage.TEXT_MESSAGE], TEXT_MESSAGE_MAX_LENGTH);
     }
 }

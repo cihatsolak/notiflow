@@ -33,20 +33,15 @@ public sealed class UpdateDeviceCommandHandler(
 
 public sealed class UpdateDeviceCommandValidator : AbstractValidator<UpdateDeviceCommand>
 {
+    private const int DEVICE_CODE_MAX_LENGTH = 100;
+    private const int DEVICE_TOKEN_MAX_LENGTH = 100;
+
     public UpdateDeviceCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
-
         RuleFor(p => p.OSVersion).Enum(localizer[ValidationErrorMessage.OS_VERSION]);
-
-        RuleFor(p => p.Code)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.DEVICE_CODE])
-            .MaximumLength(100).WithMessage(localizer[ValidationErrorMessage.DEVICE_CODE]);
-
-        RuleFor(p => p.Token)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.DEVICE_TOKEN])
-            .MaximumLength(180).WithMessage(localizer[ValidationErrorMessage.DEVICE_TOKEN]);
-
+        RuleFor(p => p.Code).Ensure(localizer[ValidationErrorMessage.DEVICE_CODE], DEVICE_CODE_MAX_LENGTH);
+        RuleFor(p => p.Token).Ensure(localizer[ValidationErrorMessage.DEVICE_TOKEN], DEVICE_TOKEN_MAX_LENGTH);
         RuleFor(p => p.CloudMessagePlatform).Enum(localizer[ValidationErrorMessage.CLOUD_MESSAGE_PLATFORM]);
     }
 }
