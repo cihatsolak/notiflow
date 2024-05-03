@@ -6,38 +6,38 @@ internal static class MassTransitBuilderExtensions
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        RabbitMqClusterSetting rabbitMqClusterSetting = configuration.GetRequiredSection(nameof(RabbitMqClusterSetting)).Get<RabbitMqClusterSetting>();
+        RabbitMqClusterSetting clusterSetting = configuration.GetRequiredSection(nameof(RabbitMqClusterSetting)).Get<RabbitMqClusterSetting>();
 
-        services.AddMassTransit(serviceCollectionBusConfigurator =>
+        services.AddMassTransit(busConfigurator =>
         {
-            serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
+            busConfigurator.SetKebabCaseEndpointNameFormatter();
 
-            serviceCollectionBusConfigurator.AddRequestClient<ScheduledTextMessageEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND}"), RequestTimeout.Default);
-            serviceCollectionBusConfigurator.AddRequestClient<ScheduledNotificationEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND}"), RequestTimeout.Default);
-            serviceCollectionBusConfigurator.AddRequestClient<ScheduledEmailEvent>(new Uri($"{rabbitMqClusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_EMAIL_SEND}"), RequestTimeout.Default);
+            busConfigurator.AddRequestClient<ScheduledTextMessageEvent>(new Uri($"{clusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_TEXT_MESSAGE_SEND}"), RequestTimeout.Default);
+            busConfigurator.AddRequestClient<ScheduledNotificationEvent>(new Uri($"{clusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_NOTIFICATIN_SEND}"), RequestTimeout.Default);
+            busConfigurator.AddRequestClient<ScheduledEmailEvent>(new Uri($"{clusterSetting.HostAddress}/{RabbitQueueName.SCHEDULED_EMAIL_SEND}"), RequestTimeout.Default);
 
-            serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+            busConfigurator.UsingRabbitMq((registrationContext, rabbitMqConfigurator) =>
             {
-                rabbitMqBusFactoryConfigurator.Host(new Uri(rabbitMqClusterSetting.HostAddress), "/", hostConfigurator =>
+                rabbitMqConfigurator.Host(new Uri(clusterSetting.HostAddress), "/", hostConfigurator =>
                 {
-                    hostConfigurator.Username(rabbitMqClusterSetting.Username);
-                    hostConfigurator.Password(rabbitMqClusterSetting.Password);
+                    hostConfigurator.Username(clusterSetting.Username);
+                    hostConfigurator.Password(clusterSetting.Password);
                     
-                    hostConfigurator.UseCluster(rabbitMQClusterConfigurator =>
+                    hostConfigurator.UseCluster(clusterConfigurator =>
                     {
-                        rabbitMqClusterSetting.NodeAddresses.ForEach(nodeAddress =>
+                        clusterSetting.NodeAddresses.ForEach(nodeAddress =>
                         {
-                            rabbitMQClusterConfigurator.Node(nodeAddress);
+                            clusterConfigurator.Node(nodeAddress);
                         });
                     });
 
-                    rabbitMqBusFactoryConfigurator.UseMessageRetry(retryCfg =>
+                    rabbitMqConfigurator.UseMessageRetry(retryCfg =>
                     {
                         retryCfg.Interval(3, TimeSpan.FromSeconds(10));
                     });
 
                     //1 dk içerisinde 1000 request yapabilecek şekilde sınırlandırılmıştır.
-                    rabbitMqBusFactoryConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
+                    rabbitMqConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
                 });
             });
         });
