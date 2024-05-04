@@ -95,7 +95,7 @@ public static class ApplicationBuilderExtensions
 
         return webApplication;
     }
-
+     
     public static IApplicationBuilder UseDiscoveryEndpoint(this WebApplication app)
     {
         app.MapGet("api/discovery", () =>
@@ -120,7 +120,8 @@ public static class ApplicationBuilderExtensions
         .Produces(StatusCodes.Status401Unauthorized, typeof(UnauthorizedObjectResult), MediaTypeNames.Application.Json)
         .Produces(StatusCodes.Status404NotFound, typeof(NotFoundObjectResult), MediaTypeNames.Application.Json)
         .Produces(StatusCodes.Status500InternalServerError, typeof(ProblemDetails), MediaTypeNames.Application.Json)
-        .WithTags("General");
+        .WithTags("General")
+        .ShortCircuit(); //TODOs
 
         return app;
     }
