@@ -33,5 +33,31 @@ public static class CollectionExtensions
     /// <param name="source">The IEnumerable<string> to join.</param>
     /// <param name="separator">The character used to separate the joined elements.</param>
     /// <returns>A string containing the joined elements separated by the specified separator.</returns>
-    public static string ToJoinSeparator(this List<string> source, char separator) => string.Join(separator, source);
+    public static string JoinWithSeparator(this List<string> source, char separator)
+    {
+        if (source.IsNullOrNotAny())
+        {
+            return string.Empty;
+        }
+
+        return string.Join(separator, source);
+    }
+
+    /// <summary>
+    /// Splits the input string into an array of substrings based on the specified separator. 
+    /// Empty entries are removed, and each entry is trimmed of any leading or trailing whitespace.
+    /// </summary>
+    /// <param name="input">The input string to be split.</param>
+    /// <param name="separator">The character used as a separator for splitting the input string.</param>
+    /// <returns>An array of strings that are the result of splitting the input string by the specified separator. 
+    /// If the input string is null, whitespace, or empty, an empty array is returned.</returns>
+    public static string[] SplitBySeparator(string input, char separator)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return [];
+        }
+
+        return input.Split(separator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    }
 }
