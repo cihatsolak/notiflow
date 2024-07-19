@@ -63,14 +63,18 @@ public interface IClaimService
     /// <summary>
     /// Gets the issued-at (IAT) claim value of the user.
     /// </summary>
-    /// <exception cref="JwtClaimException">If there is no issued at value in the claims, it is thrown</exception>
     DateTime Iat { get; }
 
     /// <summary>
     /// Gets the birth date claim value of the user.
     /// </summary>
-    /// <exception cref="JwtClaimException">If there is no birtdate value in the claims, it is thrown</exception>
     DateTime BirthDate { get; }
 
+    /// <summary>
+    /// Gets the security identifier (SID) of the group to which the user belongs.
+    /// </summary>
+    /// <value>
+    /// A string representing the SID of the user's group.
+    /// </value>
     string GroupSid { get; }
 }

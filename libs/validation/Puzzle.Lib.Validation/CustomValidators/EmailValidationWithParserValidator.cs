@@ -8,7 +8,7 @@
 /// </remarks>
 internal class EmailValidationWithParserValidator : AbstractValidator<string>
 {
-    readonly char[] parsers = new char[] { ',', '.', ';', ':', '-', '/' };
+    readonly char[] parsers = [',', '.', ';', ':', '-', '/'];
 
     internal EmailValidationWithParserValidator(char parser, string errorMessage)
     {

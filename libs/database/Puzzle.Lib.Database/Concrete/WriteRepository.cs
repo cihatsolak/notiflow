@@ -1,11 +1,7 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
-public class WriteRepository<TEntity> : Repository<TEntity>, IWriteRepository<TEntity> where TEntity : class, new()
+public class WriteRepository<TEntity>(DbContext dbContext) : Repository<TEntity>(dbContext), IWriteRepository<TEntity> where TEntity : class, new()
 {
-    public WriteRepository(DbContext dbContext) : base(dbContext)
-    {
-    }
-
     public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken)
     {
         CheckArguments(entity);
