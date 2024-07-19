@@ -1,21 +1,12 @@
 ﻿namespace Notiflow.Projections.EmailService.Consumers;
 
-public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
+public sealed class EmailDeliveredEventConsumer(
+    IDbConnection connection,
+    ILogger<EmailDeliveredEvent> logger) : IConsumer<EmailDeliveredEvent>
 {
-    private readonly IDbConnection _connection;
-    private readonly ILogger<EmailDeliveredEvent> _logger;
-
-    public EmailDeliveredEventConsumer(
-        IDbConnection connection,
-        ILogger<EmailDeliveredEvent> logger)
-    {
-        _connection = connection;
-        _logger = logger;
-    }
-
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
-        IDbTransaction transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
+        IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
        
         try
         {
@@ -33,7 +24,7 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
                 customer_id = customerId
             });
 
-            await _connection
+            await connection
                 .ExecuteAsync(
                  "insert into emailhistory (recipients, cc, bcc, subject, body, is_sent, is_body_html, error_message, sent_date, customer_id) values (@recipients, @cc, @bcc, @subject, @body, @is_sent, @is_body_html, @error_message, @sent_date, @customer_id)",
                  emailHistories,
@@ -41,11 +32,11 @@ public sealed class EmailDeliveredEventConsumer : IConsumer<EmailDeliveredEvent>
            
             transaction.Commit();
 
-            _logger.LogInformation("Successful e-mail sending information has been saved in the database.");
+            logger.LogInformation("Successful e-mail sending information has been saved in the database.");
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Failed to save successful e-mail sending information to database.");
+            logger.LogError(exception, "Failed to save successful e-mail sending information to database.");
 
             transaction.Rollback();
             throw;

@@ -1,21 +1,12 @@
 ﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
-internal sealed class EmailManager : IEmailService
+internal sealed class EmailManager(
+    IRedisService redisService,
+    ILogger<EmailManager> logger) : IEmailService
 {
-    private readonly IRedisService _redisService;
-    private readonly ILogger<EmailManager> _logger;
-
-    public EmailManager(
-        IRedisService redisService,
-        ILogger<EmailManager> logger)
-    {
-        _redisService = redisService;
-        _logger = logger;
-    }
-
     public async Task<bool> SendAsync(EmailRequest request, CancellationToken cancellationToken)
     {
-        var tenantApplication = await _redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
+        var tenantApplication = await redisService.HashGetAsync<TenantApplicationCacheModel>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_APPS_CONFIG)
             ?? throw new TenantException("The tenant's application information could not be found.");
 
         using SmtpClient smtpClient = new();
@@ -49,7 +40,6 @@ internal sealed class EmailManager : IEmailService
             mailMessage.Bcc.Add(emailAddress);
         }
 
-        
         try
         {
             await smtpClient.SendMailAsync(mailMessage, cancellationToken);
@@ -57,7 +47,7 @@ internal sealed class EmailManager : IEmailService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Email sending failed.");
+            logger.LogError(exception, "Email sending failed.");
         }
 
         return default;
