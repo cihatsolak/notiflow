@@ -24,7 +24,7 @@ public sealed class ScheduleTextMessageRequestValidator : AbstractValidator<Sche
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.TEXT_MESSAGE])
+           .Ensure(localizer[ValidationErrorMessage.TEXT_MESSAGE])
            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
 
         RuleFor(p => p.Date)

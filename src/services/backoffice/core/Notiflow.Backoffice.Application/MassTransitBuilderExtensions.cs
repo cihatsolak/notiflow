@@ -1,46 +1,48 @@
 ﻿namespace Notiflow.Backoffice.Application;
 
-internal static class MassTransitContainerBuilderExtensions
+internal static class MassTransitBuilderExtensions
 {
     internal static IServiceCollection AddMassTransit(this IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        RabbitMqClusterSetting rabbitMqClusterSetting = configuration.GetRequiredSection(nameof(RabbitMqClusterSetting)).Get<RabbitMqClusterSetting>();
+        RabbitMqClusterSetting clusterSetting = configuration.GetRequiredSection(nameof(RabbitMqClusterSetting)).Get<RabbitMqClusterSetting>();
 
-        services.AddMassTransit(serviceCollectionBusConfigurator =>
+        services.AddMassTransit(busConfigurator =>
         {
-            serviceCollectionBusConfigurator.SetKebabCaseEndpointNameFormatter();
+            busConfigurator.SetKebabCaseEndpointNameFormatter();
+            //serviceCollectionBusConfigurator.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("backoffice", false)); //TODOs
 
-            serviceCollectionBusConfigurator.AddConsumer<ScheduledTextMessageEventConsumer>();
-            serviceCollectionBusConfigurator.AddConsumer<ScheduledNotificationEventConsumer>();
-            serviceCollectionBusConfigurator.AddConsumer<ScheduledEmailEventConsumer>();
+            busConfigurator.AddConsumer<ScheduledTextMessageEventConsumer>();
+            busConfigurator.AddConsumer<ScheduledNotificationEventConsumer>();
+            busConfigurator.AddConsumer<ScheduledEmailEventConsumer>();
 
-            serviceCollectionBusConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+            busConfigurator.UsingRabbitMq((registrationContext, rabbitMqConfigurator) =>
             {
-                rabbitMqBusFactoryConfigurator.Host(new Uri(rabbitMqClusterSetting.HostAddress), "/", hostConfigurator =>
+                rabbitMqConfigurator.Host(new Uri(clusterSetting.HostAddress), "/", hostConfigurator =>
                 {
-                    hostConfigurator.Username(rabbitMqClusterSetting.Username);
-                    hostConfigurator.Password(rabbitMqClusterSetting.Password);
+                    hostConfigurator.Username(clusterSetting.Username);
+                    hostConfigurator.Password(clusterSetting.Password);
 
-                    hostConfigurator.UseCluster(rabbitMQClusterConfigurator =>
+                    hostConfigurator.UseCluster(clusterConfigurator =>
                     {
-                        rabbitMqClusterSetting.NodeAddresses.ForEach(nodeAddress =>
+                        clusterSetting.NodeAddresses.ForEach(nodeAddress =>
                         {
-                            rabbitMQClusterConfigurator.Node(nodeAddress);
+                            clusterConfigurator.Node(nodeAddress);
                         });
                     });
                 });
 
-                rabbitMqBusFactoryConfigurator.UseMessageRetry(retryCfg =>
+                rabbitMqConfigurator.UseMessageRetry(retryCfg =>
                 {
                     retryCfg.Interval(3, TimeSpan.FromSeconds(10));
                 });
 
                 //1 dk içerisinde 1000 request yapabilecek şekilde sınırlandırılmıştır.
-                rabbitMqBusFactoryConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
-
-                ConfigureQueues(busRegistrationContext, rabbitMqBusFactoryConfigurator);
+                rabbitMqConfigurator.UseRateLimit(1000, TimeSpan.FromMinutes(1));
+                
+                ConfigureQueues(registrationContext, rabbitMqConfigurator);
+                //rabbitMqBusFactoryConfigurator.ConfigureEndpoints(busRegistrationContext); //TODOs
             });
         });
         return services;

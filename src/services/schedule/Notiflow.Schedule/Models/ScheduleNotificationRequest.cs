@@ -26,11 +26,11 @@ public sealed class ScheduleNotificationRequestValidator : AbstractValidator<Sch
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
 
         RuleFor(p => p.Title)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
+            .Ensure(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
             .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_TITLE]);
 
         RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
+           .Ensure(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE]);
 
         RuleFor(p => p.ImageUrl)

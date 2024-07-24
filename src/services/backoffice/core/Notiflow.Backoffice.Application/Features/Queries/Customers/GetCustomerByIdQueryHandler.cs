@@ -1,26 +1,19 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Queries.Customers;
 
-public sealed record GetCustomerByIdQuery(int Id) : IRequest<Result<GetCustomerByIdQueryResult>>;
+public sealed record GetCustomerByIdQuery(int Id) : IRequest<Result<CustomerResponse>>;
 
-public sealed class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, Result<GetCustomerByIdQueryResult>>
+public sealed class GetCustomerByIdQueryHandler(INotiflowUnitOfWork notiflowUnitOfWork) 
+    : IRequestHandler<GetCustomerByIdQuery, Result<CustomerResponse>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-
-    public GetCustomerByIdQueryHandler(INotiflowUnitOfWork notiflowUnitOfWork)
+    public async Task<Result<CustomerResponse>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
-        _uow = notiflowUnitOfWork;
-    }
-
-    public async Task<Result<GetCustomerByIdQueryResult>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
-    {
-        var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
+        var customer = await notiflowUnitOfWork.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<GetCustomerByIdQueryResult>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result<CustomerResponse>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
-        var customerDto = ObjectMapper.Mapper.Map<GetCustomerByIdQueryResult>(customer);
-        return Result<GetCustomerByIdQueryResult>.Status200OK(ResultCodes.GENERAL_SUCCESS, customerDto);
+        return Result<CustomerResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS, ObjectMapper.Mapper.Map<CustomerResponse>(customer));
     }
 }
 
@@ -31,7 +24,8 @@ public sealed class GetCustomerByIdQueryValidator : AbstractValidator<GetCustome
         RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
     }
 }
-public sealed record GetCustomerByIdQueryResult
+
+public sealed record CustomerResponse
 {
     public string Name { get; init; }
     public string Surname { get; init; }

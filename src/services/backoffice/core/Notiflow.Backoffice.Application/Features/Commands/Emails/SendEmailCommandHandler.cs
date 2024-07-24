@@ -48,13 +48,13 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         bool succeeded = await _emailService.SendAsync(emailRequest, cancellationToken);
         if (!succeeded)
         {
-            return await ReportFailedStatusAsync(request, emailAddresses, cancellationToken);
+            return await ReportFailedAsync(request, emailAddresses, cancellationToken);
         }
 
-        return await ReportSuccessfulStatusAsync(request, emailAddresses, cancellationToken);
+        return await ReportStatusAsync(request, emailAddresses, cancellationToken);
     }
 
-    private async Task<Result<Unit>> ReportFailedStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
+    private async Task<Result<Unit>> ReportFailedAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
     {
         var emailNotDeliveredEvent = ObjectMapper.Mapper.Map<EmailNotDeliveredEvent>(request);
         emailNotDeliveredEvent.Recipients = emailAddresses;
@@ -64,7 +64,7 @@ public sealed class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, 
         return Result<Unit>.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);
     }
 
-    private async Task<Result<Unit>> ReportSuccessfulStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
+    private async Task<Result<Unit>> ReportStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
     {
         var emailDeliveredEvent = ObjectMapper.Mapper.Map<EmailDeliveredEvent>(request);
         emailDeliveredEvent.Recipients = emailAddresses;

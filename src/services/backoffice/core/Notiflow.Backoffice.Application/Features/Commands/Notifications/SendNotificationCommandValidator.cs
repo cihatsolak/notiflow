@@ -2,20 +2,15 @@
 
 public sealed class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {
+    private const int NOTIFICATION_TITLE_MAX_LENGTH = 300;
+    private const int NOTIFICATION_MESSAGE_MAX_LENGTH = 300;
+    private const int NOTIFICATION_IMAGE_URL_MAX_LENGTH = 300;
+
     public SendNotificationCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
-
-        RuleFor(p => p.Title)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_TITLE])
-            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_TITLE]);
-
-        RuleFor(p => p.Message)
-           .NotNullAndNotEmpty(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE]);
-
-        RuleFor(p => p.ImageUrl)
-         .Url(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL])
-         .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL]);
+        RuleFor(p => p.Title).Ensure(localizer[ValidationErrorMessage.NOTIFICATION_TITLE], NOTIFICATION_TITLE_MAX_LENGTH);
+        RuleFor(p => p.Message).Ensure(localizer[ValidationErrorMessage.NOTIFICATION_MESSAGE], NOTIFICATION_MESSAGE_MAX_LENGTH);
+        RuleFor(p => p.ImageUrl).Url(localizer[ValidationErrorMessage.NOTIFICATION_IMAGE_URL], NOTIFICATION_IMAGE_URL_MAX_LENGTH);
     }
 }

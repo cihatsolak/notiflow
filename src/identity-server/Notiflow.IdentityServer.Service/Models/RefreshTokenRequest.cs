@@ -7,7 +7,7 @@ public sealed class RefreshTokenRequestValidator : AbstractValidator<RefreshToke
     public RefreshTokenRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
         RuleFor(p => p.Token)
-            .NotNullAndNotEmpty(localizer[ValidationErrorMessage.REFRESH_TOKEN])
+            .Ensure(localizer[ValidationErrorMessage.REFRESH_TOKEN])
             .Length(45, 55).WithMessage(localizer[ValidationErrorMessage.REFRESH_TOKEN]);
     }
 }

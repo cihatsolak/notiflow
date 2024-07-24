@@ -11,7 +11,7 @@ internal static class ElasticsearchLoggerConfiguration
             IndexFormat = $"{EnvironmentName}-{ApplicationName}-logs-{DateTime.Now:yyyy.MM.dd}",
             CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true, inlineFields: true),
             MinimumLogEventLevel = LogEventLevel.Information,
-            FailureCallback = logEvent => Console.WriteLine($"Unable to submit event {logEvent.MessageTemplate}")
+            FailureCallback = (logEvent, exception) => Console.WriteLine($"Unable to submit event {logEvent.MessageTemplate} {exception.Message}")
         };
 
         if (seriLogElasticSetting.IsRequiredAuthentication)

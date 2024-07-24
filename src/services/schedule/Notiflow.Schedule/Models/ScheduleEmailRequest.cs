@@ -25,10 +25,10 @@ public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEm
 {
     public ScheduleEmailRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        RuleFor(p => p.Body).NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_BODY]);
+        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
 
         RuleFor(p => p.Subject)
-          .NotNullAndNotEmpty(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
+          .Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
 
         RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);

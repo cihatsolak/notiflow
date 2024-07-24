@@ -45,6 +45,25 @@ internal sealed class NotiflowUnitOfWork : INotiflowUnitOfWork
         return _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task UndoChangesAsync(CancellationToken cancellationToken)
+    {
+        foreach (var entry in _context.ChangeTracker.Entries()
+            .Where(e => e.State != EntityState.Unchanged))
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.State = EntityState.Detached;
+                    break;
+
+                case EntityState.Modified:
+                case EntityState.Deleted:
+                    await entry.ReloadAsync(cancellationToken);
+                    break;
+            }
+        }
+    }
+
     public ICustomerReadRepository CustomerRead => _serviceProvider.GetRequiredService<ICustomerReadRepository>();
 
     public ICustomerWriteRepository CustomerWrite => _serviceProvider.GetRequiredService<ICustomerWriteRepository>();
