@@ -24,7 +24,7 @@ public static class CollectionExtensions
     /// <returns>The original enumerable if it's not null, otherwise an empty enumerable.</returns>
     public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
     {
-        return source ?? Enumerable.Empty<T>();
+        return source ?? [];
     }
 
     /// <summary>

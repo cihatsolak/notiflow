@@ -1,6 +1,8 @@
 ﻿namespace Notiflow.Panel.Infrastructure.Handlers;
 
-internal sealed class ApplicationBearerTokenHandler(IHttpContextAccessor httpContextAccessor, IAuthService authService) : DelegatingHandler
+internal sealed class ApplicationBearerTokenHandler(
+    IHttpContextAccessor httpContextAccessor, 
+    IAuthService authService) : DelegatingHandler
 {
     private const string BEARER_SCHEMA = "Bearer";
     private static readonly int[] AUTH_PROBLEM_CODES = [StatusCodes.Status401Unauthorized, StatusCodes.Status403Forbidden];

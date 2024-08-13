@@ -7,7 +7,7 @@ public sealed class AuthenticationController(
 {
 
     [HttpGet]
-    public IActionResult SignIn(string returnUrl, CancellationToken cancellationToken)
+    public IActionResult SignIn(string returnUrl)
     {
         if (User.Identity.IsAuthenticated)
         {
