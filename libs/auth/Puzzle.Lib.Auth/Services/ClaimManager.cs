@@ -1,16 +1,9 @@
 ﻿namespace Puzzle.Lib.Auth.Services;
 
-public sealed class ClaimManager : IClaimService
+public sealed class ClaimManager(IHttpContextAccessor httpContextAccessor) : IClaimService
 {
     private const string ACCESS_EXCEPTION_MESSAGE = "The user does not have access permission.";
-
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public ClaimManager(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
+   
     public string Email => GetClaimValue<string>(ClaimTypes.Email);
     public string Username => GetClaimValue<string>(ClaimTypes.Upn);
     public string Name => GetClaimValue<string>(ClaimTypes.Name);
@@ -26,11 +19,14 @@ public sealed class ClaimManager : IClaimService
     public DateTime BirthDate => GetClaimValue<DateTime>(ClaimTypes.DateOfBirth);
     public string GroupSid => GetClaimValue<string>(ClaimTypes.GroupSid);
 
-    private bool IsUserAuthenticated => _httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated == true;
+    private bool IsUserAuthenticated => httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated == true;
 
     private DateTime GetIat()
     {
-        string issuedAtValue = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(p => p.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
+        if (!IsUserAuthenticated)
+            throw new UnauthorizedAccessException(ACCESS_EXCEPTION_MESSAGE);
+
+        string issuedAtValue = httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type.Equals(JwtRegisteredClaimNames.Iat))?.Value;
         if (!long.TryParse(issuedAtValue, CultureInfo.InvariantCulture, out long epochTime))
         {
             throw new SecurityTokenException("No issued at value was found in the token. token is invalid.");
@@ -44,7 +40,7 @@ public sealed class ClaimManager : IClaimService
         if (!IsUserAuthenticated)
             throw new UnauthorizedAccessException(ACCESS_EXCEPTION_MESSAGE);
 
-        string claimValue = _httpContextAccessor.HttpContext.User.FindFirstValue(claimType);
+        string claimValue = httpContextAccessor.HttpContext.User.FindFirstValue(claimType);
         if (string.IsNullOrWhiteSpace(claimValue))
             throw new SecurityTokenDecompressionFailedException($"No {claimType} was found in the token. token is invalid.");
 
@@ -56,7 +52,7 @@ public sealed class ClaimManager : IClaimService
         if (!IsUserAuthenticated)
             throw new UnauthorizedAccessException(ACCESS_EXCEPTION_MESSAGE);
 
-        IEnumerable<Claim> claims = _httpContextAccessor.HttpContext?.User?.Claims?.Where(p => p.Type.Equals(claimType, StringComparison.OrdinalIgnoreCase));
+        IEnumerable<Claim> claims = httpContextAccessor.HttpContext?.User?.Claims?.Where(claim => claim.Type.Equals(claimType, StringComparison.OrdinalIgnoreCase));
         if (claims.IsNullOrEmpty())
             throw new SecurityTokenDecompressionFailedException($"No {claimType} was found in the token. token is invalid.");
 

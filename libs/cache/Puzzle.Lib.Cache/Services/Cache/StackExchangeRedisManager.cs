@@ -83,7 +83,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             if (hashEntries.Length == 0)
             {
                 _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
-                return Enumerable.Empty<KeyValuePair<string, string>>();
+                return [];
             }
 
             return hashEntries.Select(hashEntry => new KeyValuePair<string, string>(hashEntry.Name, hashEntry.Value));
@@ -168,7 +168,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                return Enumerable.Empty<TData>();
+                return [];
             }
 
             return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));
@@ -185,7 +185,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             if (redisValues.Length == 0)
             {
                 _logger.LogWarning("No data found in the ordered list of key value {cacheKey}. | start: {@start}, stop: {@stop}", cacheKey, start, stop);
-                return Enumerable.Empty<TData>();
+                return [];
             }
 
             return redisValues.Select(redisValue => (TData)Convert.ChangeType(redisValue, typeof(TData)));

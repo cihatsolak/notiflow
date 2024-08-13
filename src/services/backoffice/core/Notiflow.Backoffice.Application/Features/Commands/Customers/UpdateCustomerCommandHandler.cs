@@ -12,22 +12,13 @@ public sealed record UpdateCustomerCommand(
     )
     : IRequest<Result<Unit>>;
 
-public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result<Unit>>
-{
-    private readonly INotiflowUnitOfWork _uow;
-    private readonly ILogger<UpdateCustomerCommandHandler> _logger;
-
-    public UpdateCustomerCommandHandler(
+public sealed class UpdateCustomerCommandHandler(
         INotiflowUnitOfWork uow,
-        ILogger<UpdateCustomerCommandHandler> logger)
-    {
-        _uow = uow;;
-        _logger = logger;
-    }
-
+        ILogger<UpdateCustomerCommandHandler> logger) : IRequestHandler<UpdateCustomerCommand, Result<Unit>>
+{
     public async Task<Result<Unit>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
+        var customer = await uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
             return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
@@ -35,10 +26,10 @@ public sealed class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustome
 
         ObjectMapper.Mapper.Map(request, customer);
 
-        _uow.CustomerWrite.Update(customer);
-        await _uow.SaveChangesAsync(cancellationToken);
+        uow.CustomerWrite.Update(customer);
+        await uow.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
+        logger.LogInformation("Customer updated. ID: {customerId}", request.Id);
 
         return Result<Unit>.Status204NoContent(ResultCodes.CUSTOMER_UPDATED);
     }

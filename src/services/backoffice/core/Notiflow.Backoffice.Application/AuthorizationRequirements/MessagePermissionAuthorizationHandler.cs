@@ -2,15 +2,9 @@
 
 public sealed record MessagePermissionRequirement : IAuthorizationRequirement;
 
-public sealed class MessagePermissionAuthorizationHandler : AuthorizationHandler<MessagePermissionRequirement>
+public sealed class MessagePermissionAuthorizationHandler(
+    IRedisService redisService) : AuthorizationHandler<MessagePermissionRequirement>
 {
-    private readonly IRedisService _redisService;
-
-    public MessagePermissionAuthorizationHandler(IRedisService redisService)
-    {
-        _redisService = redisService;
-    }
-
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MessagePermissionRequirement requirement)
     {
         if (context?.User?.Identity is null)
@@ -19,7 +13,7 @@ public sealed class MessagePermissionAuthorizationHandler : AuthorizationHandler
             return;
         }
 
-        bool isMessagePermission = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_MESSAGE_PERMISSION);
+        bool isMessagePermission = await redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_MESSAGE_PERMISSION);
         if (!isMessagePermission)
         {
             context.Fail();

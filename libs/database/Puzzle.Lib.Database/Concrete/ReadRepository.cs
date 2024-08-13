@@ -1,11 +1,7 @@
 ﻿namespace Puzzle.Lib.Database.Concrete;
 
-public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEntity> where TEntity : class, new()
+public class ReadRepository<TEntity>(DbContext dbContext) : Repository<TEntity>(dbContext), IReadRepository<TEntity> where TEntity : class, new()
 {
-    public ReadRepository(DbContext dbContext) : base(dbContext)
-    {
-    }
-
     public virtual async Task<PagedResult<TEntity>> GetPageAsync(
        int pageIndex,
        int pageSize,
@@ -191,7 +187,7 @@ public class ReadRepository<TEntity> : Repository<TEntity>, IReadRepository<TEnt
 
     public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken)
     {
-        return await _entities.FindAsync(new object[] { id }, cancellationToken);
+        return await _entities.FindAsync([id], cancellationToken);
     }
 
     private IQueryable<TEntity> SelectEntities(bool stopTracking) => stopTracking ? TableNoTracking : Table;

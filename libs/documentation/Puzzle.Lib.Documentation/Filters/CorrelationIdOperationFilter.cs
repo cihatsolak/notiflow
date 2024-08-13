@@ -4,7 +4,7 @@ internal sealed class CorrelationIdOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        operation.Parameters ??= new List<OpenApiParameter>();
+        operation.Parameters ??= [];
 
         operation.Parameters.Add(new OpenApiParameter
         {

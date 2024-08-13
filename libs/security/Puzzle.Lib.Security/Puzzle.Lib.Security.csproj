@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="CryptoHelper" Version="4.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.4" />
-    <PackageReference Include="Wangkanai.Detection" Version="8.13.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.7" />
+    <PackageReference Include="Wangkanai.Detection" Version="8.14.0" />
   </ItemGroup>
 
 </Project>

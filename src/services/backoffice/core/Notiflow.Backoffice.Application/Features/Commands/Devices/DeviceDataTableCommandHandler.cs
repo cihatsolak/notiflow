@@ -2,18 +2,11 @@
 
 public sealed record DeviceDataTableCommand : DtParameters, IRequest<Result<DtResult<DeviceDataTableResult>>>;
 
-public sealed class DeviceDataTableCommandHandler : IRequestHandler<DeviceDataTableCommand, Result<DtResult<DeviceDataTableResult>>>
+public sealed class DeviceDataTableCommandHandler(INotiflowUnitOfWork uow) : IRequestHandler<DeviceDataTableCommand, Result<DtResult<DeviceDataTableResult>>>
 {
-    private readonly INotiflowUnitOfWork _uow;
-
-    public DeviceDataTableCommandHandler(INotiflowUnitOfWork uow)
-    {
-        _uow = uow;
-    }
-
     public async Task<Result<DtResult<DeviceDataTableResult>>> Handle(DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
-        (int recordsTotal, List<Device> devices) = await _uow.DeviceRead.GetPageAsync(request.SortKey,
+        (int recordsTotal, List<Device> devices) = await uow.DeviceRead.GetPageAsync(request.SortKey,
                                                                                      request.SearchKey,
                                                                                      request.PageIndex,
                                                                                      request.PageSize,

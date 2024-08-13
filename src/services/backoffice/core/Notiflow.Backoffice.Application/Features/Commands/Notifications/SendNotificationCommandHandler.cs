@@ -7,28 +7,15 @@ public sealed record SendNotificationCommand(
     string ImageUrl
     ) : IRequest<Result<Unit>>;
 
-public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand, Result<Unit>>
+public sealed class SendNotificationCommandHandler(
+    INotiflowUnitOfWork notiflowUnitOfWork,
+    IFirebaseService firebaseService,
+    IHuaweiService huaweiService,
+    IPublishEndpoint publishEndpoint) : IRequestHandler<SendNotificationCommand, Result<Unit>>
 {
-    private readonly INotiflowUnitOfWork _notiflowUnitOfWork;
-    private readonly IFirebaseService _firebaseService;
-    private readonly IHuaweiService _huaweiService;
-    private readonly IPublishEndpoint _publishEndpoint;
-
-    public SendNotificationCommandHandler(
-        INotiflowUnitOfWork notiflowUnitOfWork,
-        IFirebaseService firebaseService,
-        IHuaweiService huaweiService,
-        IPublishEndpoint publishEndpoint)
-    {
-        _notiflowUnitOfWork = notiflowUnitOfWork;
-        _firebaseService = firebaseService;
-        _huaweiService = huaweiService;
-        _publishEndpoint = publishEndpoint;
-    }
-
     public async Task<Result<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
     {
-        List<Device> devices = await _notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
+        List<Device> devices = await notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
             return Result<Unit>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
@@ -49,14 +36,14 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
                 notificationNotDeliveredEvent.SenderIdentity = firebaseNotificationResult.SecretIdentity;
                 notificationNotDeliveredEvent.ErrorMessage = firebaseNotificationResult.ErrorMessage;
 
-                await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
+                await publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
             }
             else
             {
                 var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
                 notificationDeliveredEvent.SenderIdentity = firebaseNotificationResult.SecretIdentity;
 
-                await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
+                await publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
             }
         }
 
@@ -74,14 +61,14 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
                 notificationNotDeliveredEvent.SenderIdentity = huaweiNotificationResult.SecretIdentity;
                 notificationNotDeliveredEvent.ErrorMessage = huaweiNotificationResult.ErrorMessage;
 
-                await _publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
+                await publishEndpoint.Publish(notificationNotDeliveredEvent, cancellationToken);
             }
             else
             {
                 var notificationDeliveredEvent = ObjectMapper.Mapper.Map<NotificationDeliveredEvent>(request);
                 notificationDeliveredEvent.SenderIdentity = huaweiNotificationResult.SecretIdentity;
 
-                await _publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
+                await publishEndpoint.Publish(notificationDeliveredEvent, cancellationToken);
             }
         }
 
@@ -109,7 +96,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         };
 
-        var notificationResult = await _firebaseService.SendNotificationsAsync(firebaseMultipleNotificationRequest, cancellationToken);
+        var notificationResult = await firebaseService.SendNotificationsAsync(firebaseMultipleNotificationRequest, cancellationToken);
         notificationResult.SecretIdentity = secretIdentity;
 
         return notificationResult;
@@ -136,7 +123,7 @@ public sealed class SendNotificationCommandHandler : IRequestHandler<SendNotific
             }
         };
 
-        var notificationResult = await _huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
+        var notificationResult = await huaweiService.SendNotificationAsync(huaweiNotificationRequest, cancellationToken);
         notificationResult.SecretIdentity = secretIdentity;
 
         return notificationResult;

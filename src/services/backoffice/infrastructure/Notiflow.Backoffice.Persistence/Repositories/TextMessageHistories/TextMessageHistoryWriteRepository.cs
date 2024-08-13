@@ -1,8 +1,5 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Repositories.TextMessageHistories;
 
-public sealed class TextMessageHistoryWriteRepository : WriteRepository<TextMessageHistory>, ITextMessageHistoryWriteRepository
+public sealed class TextMessageHistoryWriteRepository(NotiflowDbContext notiflowDbContext) : WriteRepository<TextMessageHistory>(notiflowDbContext), ITextMessageHistoryWriteRepository
 {
-    public TextMessageHistoryWriteRepository(NotiflowDbContext notiflowDbContext) : base(notiflowDbContext)
-    {
-    }
 }
