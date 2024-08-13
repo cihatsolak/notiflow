@@ -1,14 +1,7 @@
 ﻿namespace Puzzle.Lib.Security.Middlewares;
 
-public sealed class SecurityHeadersMiddleware
+public sealed class SecurityHeadersMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public SecurityHeadersMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context)
     {
         context.Response.Headers.Append("X-Xss-Protection", "1; mode=block");
@@ -18,7 +11,7 @@ public sealed class SecurityHeadersMiddleware
         context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
         context.Response.Headers.Append("X-Frame-Options", "DENY");
 
-        await _next.Invoke(context);
+        await next.Invoke(context);
 
         if (!context.Response.HasStarted)
         {

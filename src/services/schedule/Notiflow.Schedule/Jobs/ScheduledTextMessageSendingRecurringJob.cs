@@ -1,28 +1,17 @@
 ﻿namespace Notiflow.Schedule.Jobs;
 
 [AutomaticRetry(Attempts = Attempts.TryThreeTimes)]
-public sealed class ScheduledTextMessageSendingRecurringJob
+public sealed class ScheduledTextMessageSendingRecurringJob(
+    ScheduledDbContext context,
+    IRequestClient<ScheduledTextMessageEvent> client,
+    ILogger<ScheduledTextMessageSendingRecurringJob> logger)
 {
     private const int MAXIMUM_FAILED_ATTEMPTS = 3;
-
-    private readonly ScheduledDbContext _context;
-    private readonly IRequestClient<ScheduledTextMessageEvent> _client;
-    private readonly ILogger<ScheduledTextMessageSendingRecurringJob> _logger;
-
-    public ScheduledTextMessageSendingRecurringJob(
-        ScheduledDbContext context,
-        IRequestClient<ScheduledTextMessageEvent> client,
-        ILogger<ScheduledTextMessageSendingRecurringJob> logger)
-    {
-        _context = context;
-        _client = client;
-        _logger = logger;
-    }
 
     [JobDisplayName("[TEXT MESSAGE] Sends scheduled text messages.")]
     public async Task ExecuteAsync()
     {
-        var scheduledTextMessages = await _context.ScheduledTextMessages
+        var scheduledTextMessages = await context.ScheduledTextMessages
             .TagWith("lists text messages that are scheduled and waiting to be sent.")
             .Where(message => !message.IsSent &&
                                message.FailedAttempts <= MAXIMUM_FAILED_ATTEMPTS &&
@@ -37,7 +26,7 @@ public sealed class ScheduledTextMessageSendingRecurringJob
         {
             DateTime now = DateTime.Now;
 
-            var response = await _client.GetResponse<ScheduledResponse>(scheduledTextMessage.Data.AsModel<ScheduledTextMessageEvent>());
+            var response = await client.GetResponse<ScheduledResponse>(scheduledTextMessage.Data.AsModel<ScheduledTextMessageEvent>());
             if (!response.Message.Succeeded)
             {
                 scheduledTextMessage.FailedAttempts += 1;
@@ -52,8 +41,8 @@ public sealed class ScheduledTextMessageSendingRecurringJob
             }
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
-        _logger.LogInformation("The sending process of the text messages planned to be sent has been completed.");
+        logger.LogInformation("The sending process of the text messages planned to be sent has been completed.");
     }
 }

@@ -7,5 +7,4 @@ global using Notiflow.Backoffice.SignalR.Hubs;
 global using Puzzle.Lib.Cache.Infrastructure;
 global using Puzzle.Lib.Cache.Services.Cache;
 global using StackExchange.Redis;
-global using System.Net;
 global using System.Security.Claims;

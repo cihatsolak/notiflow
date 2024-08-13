@@ -1,18 +1,9 @@
 ﻿namespace Notiflow.Projections.TextMessageService.Consumers;
 
-public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDeliveredEvent>
+public sealed class TextMessageDeliveredEventConsumer(
+    IDbConnection connection,
+    ILogger<TextMessageDeliveredEventConsumer> logger) : IConsumer<TextMessageDeliveredEvent>
 {
-    private readonly IDbConnection _connection;
-    private readonly ILogger<TextMessageDeliveredEventConsumer> _logger;
-
-    public TextMessageDeliveredEventConsumer(
-        IDbConnection connection, 
-        ILogger<TextMessageDeliveredEventConsumer> logger)
-    {
-        _connection = connection;
-        _logger = logger;
-    }
-
     public async Task Consume(ConsumeContext<TextMessageDeliveredEvent> context)
     {
         try
@@ -25,15 +16,15 @@ public sealed class TextMessageDeliveredEventConsumer : IConsumer<TextMessageDel
                 customer_id = customerId
             });
 
-            await _connection
+            await connection
                     .ExecuteAsync("insert into textmessagehistory (message, is_sent, sent_date, customer_id) values (@message, @is_sent, @sent_date, @customer_id)",
                      textMessageHistories);
 
-            _logger.LogInformation("The sent messages has been saved in the database.");
+            logger.LogInformation("The sent messages has been saved in the database.");
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "The sent messages could not be saved to the database.");
+            logger.LogError(exception, "The sent messages could not be saved to the database.");
             throw;
         }
     }

@@ -6,6 +6,6 @@ internal sealed class QrCodeManager : IQrCodeService
     {
         using QRCodeGenerator qRCodeGenerator = new();
         QRCodeData data = qRCodeGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-        return new PngByteQRCode(data).GetGraphic(10, new byte[] { 84, 99, 71 }, new byte[] { 240, 240, 240 });
+        return new PngByteQRCode(data).GetGraphic(10, [84, 99, 71], [240, 240, 240]);
     }
 }

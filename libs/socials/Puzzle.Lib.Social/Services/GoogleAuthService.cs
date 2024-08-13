@@ -15,7 +15,7 @@ internal sealed class GoogleAuthService : IGoogleAuthService
 
         Payload payload = await ValidateAsync(idToken, new ValidationSettings
         {
-            Audience = new[] { _googleAuthConfig.ClientId },
+            Audience = [_googleAuthConfig.ClientId],
             IssuedAtClockTolerance = TimeSpan.FromSeconds(1)
         }).ConfigureAwait(false);
 

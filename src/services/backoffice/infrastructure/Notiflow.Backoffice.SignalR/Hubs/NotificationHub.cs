@@ -5,22 +5,13 @@ public interface INotificationHub
     Task ReceiveExample(string message);
 }
 
-public sealed class NotificationHub : Hub<INotificationHub>
+public sealed class NotificationHub(
+    IRedisService redisService,
+    ILogger<NotificationHub> logger) : Hub<INotificationHub>
 {
-    private readonly IRedisService _redisService;
-    private readonly ILogger<NotificationHub> _logger;
-
-    public NotificationHub(
-        IRedisService redisService,
-        ILogger<NotificationHub> logger)
-    {
-        _redisService = redisService;
-        _logger = logger;
-    }
-
     public override async Task OnConnectedAsync()
     {
-        await _redisService.HashSetAsync(HubExtensions.HUB_USERS, Context.User.Id(), Context.ConnectionId);
+        await redisService.HashSetAsync(HubExtensions.HUB_USERS, Context.User.Id(), Context.ConnectionId);
         await base.OnConnectedAsync();
     }
 
@@ -28,11 +19,11 @@ public sealed class NotificationHub : Hub<INotificationHub>
     {
         if (exception is null)
         {
-            await _redisService.HashDeleteAsync(HubExtensions.HUB_USERS, Context.User.Id());
+            await redisService.HashDeleteAsync(HubExtensions.HUB_USERS, Context.User.Id());
         }
         else
         {
-            _logger.LogError(exception, "An error occurred while closing the hub connection.");
+            logger.LogError(exception, "An error occurred while closing the hub connection.");
         }
 
         await base.OnDisconnectedAsync(exception);

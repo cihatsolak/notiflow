@@ -1,11 +1,7 @@
 ﻿namespace Notiflow.Schedule.Infrastructure.Data;
 
-public class ScheduledDbContext : DbContext
+public class ScheduledDbContext(DbContextOptions<ScheduledDbContext> options) : DbContext(options)
 {
-    public ScheduledDbContext(DbContextOptions<ScheduledDbContext> options) : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

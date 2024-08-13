@@ -1,6 +1,4 @@
-﻿using Puzzle.Lib.Http.Infrastructure.Extensions;
-
-namespace Notiflow.Backoffice.Infrastructure.Services;
+﻿namespace Notiflow.Backoffice.Infrastructure.Services;
 
 internal sealed class FirebaseManager : IFirebaseService
 {

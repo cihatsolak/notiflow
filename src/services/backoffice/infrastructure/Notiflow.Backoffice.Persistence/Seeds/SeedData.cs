@@ -2,10 +2,10 @@
 
 internal static class SeedData
 {
-    private static readonly int[] ExistingTenantIds = new int[]
-    {
+    private static readonly int[] ExistingTenantIds =
+    [
         1,2,3,4,5,6,7
-    };
+    ];
 
     internal static List<Customer> GenerateCustomers()
     {

@@ -1,28 +1,17 @@
 ﻿namespace Notiflow.Schedule.Jobs;
 
 [AutomaticRetry(Attempts = Attempts.TryTwice)]
-public sealed class ScheduledNotificationSendingRecurringJob
+public sealed class ScheduledNotificationSendingRecurringJob(
+    ScheduledDbContext context,
+    IRequestClient<ScheduledNotificationEvent> client,
+    ILogger<ScheduledNotificationSendingRecurringJob> logger)
 {
     private const int MAXIMUM_FAILED_ATTEMPTS = 2;
-
-    private readonly ScheduledDbContext _context;
-    private readonly IRequestClient<ScheduledNotificationEvent> _client;
-    private readonly ILogger<ScheduledNotificationSendingRecurringJob> _logger;
-
-    public ScheduledNotificationSendingRecurringJob(
-        ScheduledDbContext context, 
-        IRequestClient<ScheduledNotificationEvent> client, 
-        ILogger<ScheduledNotificationSendingRecurringJob> logger)
-    {
-        _context = context;
-        _client = client;
-        _logger = logger;
-    }
 
     [JobDisplayName("[NOTIFICATION] Sends scheduled notification.")]
     public async Task ExecuteAsync()
     {
-        var scheduledNotifications = await _context.ScheduledNotifications
+        var scheduledNotifications = await context.ScheduledNotifications
                .TagWith("lists notifications that are scheduled and waiting to be sent.")
                .Where(message => !message.IsSent &&
                                   message.FailedAttempts <= MAXIMUM_FAILED_ATTEMPTS &&
@@ -37,7 +26,7 @@ public sealed class ScheduledNotificationSendingRecurringJob
         {
             DateTime now = DateTime.Now;
 
-            var response = await _client.GetResponse<ScheduledResponse>(scheduledNotification.Data.AsModel<ScheduledNotificationEvent>());
+            var response = await client.GetResponse<ScheduledResponse>(scheduledNotification.Data.AsModel<ScheduledNotificationEvent>());
             if (!response.Message.Succeeded)
             {
                 scheduledNotification.FailedAttempts += 1;
@@ -52,8 +41,8 @@ public sealed class ScheduledNotificationSendingRecurringJob
             }
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
-        _logger.LogInformation("The sending process of the notifications planned to be sent has been completed.");
+        logger.LogInformation("The sending process of the notifications planned to be sent has been completed.");
     }
 }

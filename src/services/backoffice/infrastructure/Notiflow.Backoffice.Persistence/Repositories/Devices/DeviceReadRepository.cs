@@ -1,11 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Repositories.Devices;
 
-public sealed class DeviceReadRepository : ReadRepository<Device>, IDeviceReadRepository
+public sealed class DeviceReadRepository(NotiflowDbContext notiflowDbContext) : ReadRepository<Device>(notiflowDbContext), IDeviceReadRepository
 {
-    public DeviceReadRepository(NotiflowDbContext notiflowDbContext) : base(notiflowDbContext)
-    {
-    }
-
     public async Task<(int recordsTotal, List<Device> devices)> GetPageAsync(string sortKey, string searchKey, int pageIndex, int pageSize, CancellationToken cancellationToken)
     {
         var deviceTable = TableNoTrackingWithIdentityResolution.IgnoreQueryFilters();

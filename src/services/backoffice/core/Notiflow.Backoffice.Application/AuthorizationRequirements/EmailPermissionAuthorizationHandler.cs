@@ -2,15 +2,9 @@
 
 public sealed record EmailPermissionRequirement : IAuthorizationRequirement;
 
-public sealed class EmailPermissionAuthorizationHandler : AuthorizationHandler<EmailPermissionRequirement>
+public sealed class EmailPermissionAuthorizationHandler(
+    IRedisService redisService) : AuthorizationHandler<EmailPermissionRequirement>
 {
-    private readonly IRedisService _redisService;
-
-    public EmailPermissionAuthorizationHandler(IRedisService redisService)
-    {
-        _redisService = redisService;
-    }
-
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmailPermissionRequirement requirement)
     {
         if (context?.User?.Identity is null)
@@ -19,7 +13,7 @@ public sealed class EmailPermissionAuthorizationHandler : AuthorizationHandler<E
             return;
         }
 
-        bool isEmailPermission = await _redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_EMAIL_PERMISSION);
+        bool isEmailPermission = await redisService.HashGetAsync<bool>(TenantCacheKeyFactory.Generate(CacheKeys.TENANT_INFO), CacheKeys.TENANT_EMAIL_PERMISSION);
         if (!isEmailPermission)
         {
             context.Fail();
