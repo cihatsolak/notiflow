@@ -2,6 +2,11 @@
 
 public sealed record CreateUserRequest(string Name, string Surname, string Email, string Username, string Password);
 
+public sealed class CreateUserRequestExample : IExamplesProvider<CreateUserRequest>
+{
+    public CreateUserRequest GetExamples() => new("John", "Doe", "john.doe@example.com", "StarryTraveler92", "X7v!j2a$L9");
+}
+
 public sealed class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 {
     private const int PASSWORD_MAX_LENGTH = 100;

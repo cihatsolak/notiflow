@@ -40,6 +40,7 @@ global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Validation;
 global using Puzzle.Lib.Validation.RuleBuilders;
+global using Swashbuckle.AspNetCore.Filters;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Reflection;
 global using System.Security.Claims;
