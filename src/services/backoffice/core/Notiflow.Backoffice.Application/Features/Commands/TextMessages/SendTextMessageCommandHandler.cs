@@ -23,16 +23,27 @@ public sealed class SendTextMessageCommandHandler(
         }
 
         bool succeeded = await textMessageService.SendTextMessageAsync(phoneNumbers, request.Message, cancellationToken);
-        if (!succeeded)
+        if (succeeded)
         {
-            await publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request), cancellationToken);
+            var textMessageDeliveredEvent = ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request);
 
-            return Result<Unit>.Status500InternalServerError(ResultCodes.TEXT_MESSAGE_SENDING_FAILED);
+            await publishEndpoint.Publish(textMessageDeliveredEvent, pipeline =>
+            {
+                pipeline.SetAwaitAck(true);
+                pipeline.Durable = true;
+            }, cancellationToken);
+
+            return Result<Unit>.Status200OK(ResultCodes.TEXT_MESSAGES_SENDING_SUCCESSFUL);
         }
 
-        await publishEndpoint.Publish(ObjectMapper.Mapper.Map<TextMessageDeliveredEvent>(request), cancellationToken);
+        var textMessageNotDeliveredEvent = ObjectMapper.Mapper.Map<TextMessageNotDeliveredEvent>(request);
+        await publishEndpoint.Publish(textMessageNotDeliveredEvent, pipeline =>
+        {
+            pipeline.SetAwaitAck(true);
+            pipeline.Durable = true;
+        }, cancellationToken);
 
-        return Result<Unit>.Status200OK(ResultCodes.TEXT_MESSAGES_SENDING_SUCCESSFUL);
+        return Result<Unit>.Status500InternalServerError(ResultCodes.TEXT_MESSAGE_SENDING_FAILED);
     }
 }
 

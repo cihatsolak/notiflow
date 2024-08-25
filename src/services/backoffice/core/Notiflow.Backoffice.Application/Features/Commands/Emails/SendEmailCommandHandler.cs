@@ -33,31 +33,51 @@ public sealed class SendEmailCommandHandler(
         emailRequest.Recipients = emailAddresses;
 
         bool succeeded = await emailService.SendAsync(emailRequest, cancellationToken);
-        if (!succeeded)
+        if (succeeded)
         {
-            return await ReportFailedAsync(request, emailAddresses, cancellationToken);
+            var emailDeliveredEvent = ObjectMapper.Mapper.Map<EmailDeliveredEvent>(request);
+            emailDeliveredEvent.Recipients = emailAddresses;
+
+            await publishEndpoint.Publish(emailDeliveredEvent, pipeline =>
+            {
+                pipeline.SetAwaitAck(false);
+                pipeline.Durable = true;
+            }, cancellationToken);
+
+            return Result<Unit>.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
         }
 
-        return await ReportStatusAsync(request, emailAddresses, cancellationToken);
-    }
-
-    private async Task<Result<Unit>> ReportFailedAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
-    {
         var emailNotDeliveredEvent = ObjectMapper.Mapper.Map<EmailNotDeliveredEvent>(request);
         emailNotDeliveredEvent.Recipients = emailAddresses;
 
-        await publishEndpoint.Publish(emailNotDeliveredEvent, cancellationToken);
+        await publishEndpoint.Publish(emailNotDeliveredEvent, pipeline =>
+        {
+            pipeline.SetAwaitAck(false);
+            pipeline.Durable = true;
+        }, cancellationToken);
 
         return Result<Unit>.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);
     }
+}
 
-    private async Task<Result<Unit>> ReportStatusAsync(SendEmailCommand request, List<string> emailAddresses, CancellationToken cancellationToken)
+public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailCommand>
+{
+    private const int EMAIL_SUBJECT_MAX_LENGTH = 300;
+
+    public SendEmailCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
     {
-        var emailDeliveredEvent = ObjectMapper.Mapper.Map<EmailDeliveredEvent>(request);
-        emailDeliveredEvent.Recipients = emailAddresses;
+        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
+        RuleFor(p => p.Subject).Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT], EMAIL_SUBJECT_MAX_LENGTH);
 
-        await publishEndpoint.Publish(emailDeliveredEvent, cancellationToken);
+        When(p => !p.CcAddresses.IsNullOrNotAny(), () =>
+        {
+            RuleForEach(p => p.CcAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+        });
 
-        return Result<Unit>.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
+        When(p => !p.BccAddresses.IsNullOrNotAny(), () =>
+        {
+            RuleForEach(p => p.BccAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+        });
     }
 }
