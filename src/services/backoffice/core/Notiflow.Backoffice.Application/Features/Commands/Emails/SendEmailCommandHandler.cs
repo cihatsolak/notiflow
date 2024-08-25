@@ -1,4 +1,6 @@
-﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails;
+﻿using static MassTransit.Logging.OperationName;
+
+namespace Notiflow.Backoffice.Application.Features.Commands.Emails;
 
 public sealed record SendEmailCommand(
     string Body,
@@ -40,8 +42,8 @@ public sealed class SendEmailCommandHandler(
 
             await publishEndpoint.Publish(emailDeliveredEvent, pipeline =>
             {
-                pipeline.SetAwaitAck(false);
-                pipeline.Durable = true;
+                pipeline.SetAwaitAck(true); // mesajın başarılı bir şekilde işlendiğine dair bir onay (acknowledgement) bekleyeceğinizi belirtir.
+                pipeline.Durable = true; // mesajın kalıcı (persistent) olarak yayınlanıp yayınlanmayacağını belirler.
             }, cancellationToken);
 
             return Result<Unit>.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
@@ -52,8 +54,9 @@ public sealed class SendEmailCommandHandler(
 
         await publishEndpoint.Publish(emailNotDeliveredEvent, pipeline =>
         {
-            pipeline.SetAwaitAck(false);
-            pipeline.Durable = true;
+            pipeline.SetAwaitAck(true); // mesajın başarılı bir şekilde işlendiğine dair bir onay (acknowledgement) bekleyeceğinizi belirtir.
+                                       // Consumer tarafında başarılı işleme durumunda herhangi bir şey yapmanız gerekmez, ancak hata durumunda bir Exception fırlatmanız gerekmektedir.
+            pipeline.Durable = true; // mesajın kalıcı (persistent) olarak yayınlanıp yayınlanmayacağını belirler.
         }, cancellationToken);
 
         return Result<Unit>.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);

@@ -7,7 +7,7 @@ public sealed class EmailDeliveredEventConsumer(
     public async Task Consume(ConsumeContext<EmailDeliveredEvent> context)
     {
         IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
-       
+     
         try
         {
             var emailHistories = context.Message.CustomerIds.Select(customerId => new
