@@ -3,46 +3,70 @@
 [AutomaticRetry(Attempts = Attempts.TryTwice)]
 public sealed class ScheduledEmailSendingRecurringJob(
     ScheduledDbContext context,
-    IRequestClient<ScheduledEmailEvent> client,
+    IRequestClient<ScheduledEmailEvent> scheduledEmailClient,
     ILogger<ScheduledEmailSendingRecurringJob> logger)
 {
     private const int MAXIMUM_FAILED_ATTEMPTS = 2;
+    private const int FIVE_MINUTES = 5;
 
     [JobDisplayName("[EMAIL] Sends scheduled emails.")]
     public async Task ExecuteAsync()
     {
-        var scheduledEmails = await context.ScheduledEmails
-              .TagWith("lists emails that are scheduled and waiting to be sent.")
-              .Where(message => !message.IsSent &&
-                                 message.FailedAttempts <= MAXIMUM_FAILED_ATTEMPTS &&
-                                 message.PlannedDeliveryDate >= DateTime.Now.AddMinutes(-15) &&
-                                 message.PlannedDeliveryDate <= DateTime.Now.AddMinutes(1))
-              .ToListAsync();
+        CancellationTokenSource cancellationTokenSource = new();
+        cancellationTokenSource.CancelAfter(TimeSpan.FromMinutes(FIVE_MINUTES));
 
-        if (scheduledEmails.IsNullOrNotAny())
-            return;
-
-        foreach (var scheduledEmail in scheduledEmails)
+        try
         {
-            DateTime now = DateTime.Now;
+            var scheduledEmails = await context.ScheduledEmails
+                .TagWith("Lists emails that are scheduled and waiting to be sent.")
+                .Where(message => !message.IsSent &&
+                                   message.FailedAttempts <= MAXIMUM_FAILED_ATTEMPTS &&
+                                   message.PlannedDeliveryDate >= DateTime.UtcNow.AddMinutes(-15) &&
+                                   message.PlannedDeliveryDate <= DateTime.UtcNow.AddMinutes(1))
+                .ToListAsync(cancellationTokenSource.Token);
 
-            var response = await client.GetResponse<ScheduledResponse>(scheduledEmail.Data.AsModel<ScheduledEmailEvent>());
-            if (!response.Message.Succeeded)
+            if (scheduledEmails.IsNullOrNotAny())
+                return;
+
+            foreach (var scheduledEmail in scheduledEmails)
             {
-                scheduledEmail.FailedAttempts += 1;
-                scheduledEmail.ErrorMessage = response.Message.ErrorMessage;
-                scheduledEmail.LastAttemptDate = now;
+                DateTime now = DateTime.UtcNow;
+
+                var response = await scheduledEmailClient.GetResponse<ScheduledResponse>(
+                    scheduledEmail.Data.AsModel<ScheduledEmailEvent>(),
+                    cancellationTokenSource.Token
+                );
+
+                if (response.Message.Succeeded)
+                {
+                    scheduledEmail.IsSent = true;
+                    scheduledEmail.SuccessDeliveryDate = now;
+                    scheduledEmail.LastAttemptDate = now;
+                }
+                else
+                {
+                    scheduledEmail.FailedAttempts += 1;
+                    scheduledEmail.ErrorMessage = response.Message.ErrorMessage;
+                    scheduledEmail.LastAttemptDate = now;
+                }
             }
-            else
-            {
-                scheduledEmail.IsSent = true;
-                scheduledEmail.SuccessDeliveryDate = DateTime.Now;
-                scheduledEmail.LastAttemptDate = now;
-            }
+
+            await context.SaveChangesAsync(cancellationTokenSource.Token);
+            logger.LogInformation("The sending process of the emails planned to be sent has been completed.");
         }
-
-        await context.SaveChangesAsync();
-
-        logger.LogInformation("The sending process of the emails planned to be sent has been completed.");
+        catch (OperationCanceledException ex)
+        {
+            logger.LogWarning(ex, "The operation was canceled due to timeout.");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while sending scheduled emails.");
+            throw;
+        }
+        finally
+        {
+            cancellationTokenSource.Dispose();
+        }
     }
 }
