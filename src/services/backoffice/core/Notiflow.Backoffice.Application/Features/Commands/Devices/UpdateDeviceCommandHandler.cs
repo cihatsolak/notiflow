@@ -7,18 +7,18 @@ public sealed record UpdateDeviceCommand(
     string Token,
     CloudMessagePlatform CloudMessagePlatform
     )
-    : IRequest<Result<EmptyResponse>>;
+    : IRequest<Result>;
 
 public sealed class UpdateDeviceCommandHandler(
     INotiflowUnitOfWork uow,
-    ILogger<UpdateDeviceCommandHandler> logger) : IRequestHandler<UpdateDeviceCommand, Result<EmptyResponse>>
+    ILogger<UpdateDeviceCommandHandler> logger) : IRequestHandler<UpdateDeviceCommand, Result>
 {
-    public async Task<Result<EmptyResponse>> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
         var device = await uow.DeviceRead.GetByIdAsync(request.Id, cancellationToken);
         if (device is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
         ObjectMapper.Mapper.Map(request, device);
@@ -27,7 +27,7 @@ public sealed class UpdateDeviceCommandHandler(
 
         logger.LogInformation("Device information updated. Device ID: {deviceId}", request.Id);
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.DEVICE_UPDATED);
+        return Result.Status204NoContent(ResultCodes.DEVICE_UPDATED);
     }
 }
 

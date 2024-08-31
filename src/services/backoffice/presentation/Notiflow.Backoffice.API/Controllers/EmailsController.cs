@@ -13,7 +13,7 @@ public sealed class EmailsController : BaseApiController
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<EmailHistoryResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new GetEmailHistoryByIdQuery(id), cancellationToken);

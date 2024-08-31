@@ -9,6 +9,14 @@
 [Consumes(MediaTypeNames.Application.Json)]
 public class MainController : ControllerBase
 {
+    public virtual IActionResult CreateActionResultInstance(Result result)
+    {
+        return new ObjectResult(result)
+        {
+            StatusCode = result.StatusCode,
+        };
+    }
+
     public virtual IActionResult CreateActionResultInstance<T>(Result<T> result)
     {
         return new ObjectResult(result)

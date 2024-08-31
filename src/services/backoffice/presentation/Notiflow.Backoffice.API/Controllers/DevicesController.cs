@@ -13,7 +13,7 @@ public sealed class DevicesController : BaseApiController
     /// <response code="404">Devices not found</response>
     [HttpPost("datatable")]
     [ProducesResponseType(typeof(Result<DtResult<DeviceDataTableResult>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] DeviceDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -31,7 +31,7 @@ public sealed class DevicesController : BaseApiController
     /// <response code="404">Device information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<DeviceResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new GetDeviceByIdQuery(id), cancellationToken);

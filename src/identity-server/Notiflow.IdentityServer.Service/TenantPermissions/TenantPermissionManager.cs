@@ -20,14 +20,14 @@ internal sealed class TenantPermissionManager(
         return Result<TenantPermissionResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS, tenantPermission);
     }
 
-    public async Task<Result<EmptyResponse>> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
+    public async Task<Result> UpdateAsync(TenantPermissionRequest request, CancellationToken cancellationToken)
     {
         var tenantPermission = await context.TenantPermissions
             .TagWith("Get tenant's permission.")
             .SingleAsync(cancellationToken);
         if (tenantPermission is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.TENANT_PERMISSION_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.TENANT_PERMISSION_NOT_FOUND);
         }
 
         List<Task<bool>> permissionCachingTasks = [];
@@ -56,6 +56,6 @@ internal sealed class TenantPermissionManager(
 
         logger.LogInformation("Permission information for {tenantId} tenant with ID has been updated.", tenantPermission.TenantId);
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.TENANT_PERMISSION_NOT_FOUND);
+        return Result.Status204NoContent(ResultCodes.TENANT_PERMISSION_NOT_FOUND);
     }
 }

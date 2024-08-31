@@ -16,30 +16,31 @@ public sealed class UpdateUserRequestExample : IExamplesProvider<UpdateUserReque
             ContentType = "image/png"
         };
 
-        return new UpdateUserRequest("John", "Doe", "john.doe@example.com", "StarryTraveler92", avatar); 
-}
+        return new UpdateUserRequest("John", "Doe", "john.doe@example.com", "StarryTraveler92", avatar);
+    }
 
-public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
-{
-    public UpdateUserRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
     {
-        RuleFor(p => p.Name)
-           .Ensure(localizer[ValidationErrorMessage.USER_NAME])
-           .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_NAME]);
+        public UpdateUserRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+        {
+            RuleFor(p => p.Name)
+               .Ensure(localizer[ValidationErrorMessage.USER_NAME])
+               .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_NAME]);
 
-        RuleFor(p => p.Surname)
-            .Ensure(localizer[ValidationErrorMessage.USER_SURNAME])
-            .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_SURNAME]);
+            RuleFor(p => p.Surname)
+                .Ensure(localizer[ValidationErrorMessage.USER_SURNAME])
+                .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_SURNAME]);
 
-        RuleFor(p => p.Email)
-            .Email(localizer[ValidationErrorMessage.EMAIL])
-            .Length(5, 150).WithMessage(localizer[ValidationErrorMessage.EMAIL]);
+            RuleFor(p => p.Email)
+                .Email(localizer[ValidationErrorMessage.EMAIL])
+                .Length(5, 150).WithMessage(localizer[ValidationErrorMessage.EMAIL]);
 
-        RuleFor(p => p.Username)
-            .Ensure(localizer[ValidationErrorMessage.USERNAME])
-            .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
+            RuleFor(p => p.Username)
+                .Ensure(localizer[ValidationErrorMessage.USERNAME])
+                .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
 
-        RuleFor(p => p.Avatar)
-            .FormFile(localizer[ValidationErrorMessage.FILE], ContentTypes.ImageJpeg, ContentTypes.ImagePng);
+            RuleFor(p => p.Avatar)
+                .FormFile(localizer[ValidationErrorMessage.FILE], ContentTypes.ImageJpeg, ContentTypes.ImagePng);
+        }
     }
 }

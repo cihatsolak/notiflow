@@ -1,23 +1,23 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers;
 
-public sealed record UpdateCustomerPhoneNumberCommand(int Id, string PhoneNumber) : IRequest<Result<EmptyResponse>>;
+public sealed record UpdateCustomerPhoneNumberCommand(int Id, string PhoneNumber) : IRequest<Result>;
 
 public sealed class UpdateCustomerPhoneNumberCommandHandler(
     INotiflowUnitOfWork uow,
-    ILogger<UpdateCustomerPhoneNumberCommandHandler> logger) : IRequestHandler<UpdateCustomerPhoneNumberCommand, Result<EmptyResponse>>
+    ILogger<UpdateCustomerPhoneNumberCommandHandler> logger) : IRequestHandler<UpdateCustomerPhoneNumberCommand, Result>
 {
-    public async Task<Result<EmptyResponse>> Handle(UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         var customer = await uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
         if (string.Equals(customer.PhoneNumber, request.PhoneNumber, StringComparison.OrdinalIgnoreCase))
         {
             logger.LogWarning("The phone number to be changed is the same as in the current one. Customer ID: {customerId}", request.Id);
-            return Result<EmptyResponse>.Status400BadRequest(ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
+            return Result.Status400BadRequest(ResultCodes.CUSTOMER_PHONE_NUMBER_SAME);
         }
 
         customer.PhoneNumber = request.PhoneNumber;
@@ -26,7 +26,7 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler(
 
         logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
+        return Result.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
     }
 }
 
