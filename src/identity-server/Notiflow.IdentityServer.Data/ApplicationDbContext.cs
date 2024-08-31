@@ -1,16 +1,11 @@
 ﻿namespace Notiflow.IdentityServer.Data;
 
-public sealed class ApplicationDbContext : DbContext
+public sealed class ApplicationDbContext(
+    DbContextOptions<ApplicationDbContext> options, 
+    IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
     private const string TENANT_TOKEN_HEADER = "x-tenant-token";
-    private readonly Guid _tenantToken;
-
-    public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options, 
-        IHttpContextAccessor httpContextAccessor) : base(options)
-    {
-        _tenantToken = GetTenantToken(httpContextAccessor);
-    }
+    private Guid TenantToken => GetTenantToken(httpContextAccessor);
 
     private static Guid GetTenantToken(IHttpContextAccessor httpContextAccessor)
     {
@@ -29,10 +24,10 @@ public sealed class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
                       
-        modelBuilder.Entity<User>().HasQueryFilter(user => user.Tenant.Token == _tenantToken);
-        modelBuilder.Entity<RefreshToken>().HasQueryFilter(refreshToken => refreshToken.User.Tenant.Token == _tenantToken);
-        modelBuilder.Entity<TenantPermission>().HasQueryFilter(tenantPermission => tenantPermission.Tenant.Token == _tenantToken);
-        modelBuilder.Entity<TenantApplication>().HasQueryFilter(tenantApplication => tenantApplication.Tenant.Token == _tenantToken);
+        modelBuilder.Entity<User>().HasQueryFilter(user => user.Tenant.Token == TenantToken);
+        modelBuilder.Entity<RefreshToken>().HasQueryFilter(refreshToken => refreshToken.User.Tenant.Token == TenantToken);
+        modelBuilder.Entity<TenantPermission>().HasQueryFilter(tenantPermission => tenantPermission.Tenant.Token == TenantToken);
+        modelBuilder.Entity<TenantApplication>().HasQueryFilter(tenantApplication => tenantApplication.Tenant.Token == TenantToken);
     }
 
     public DbSet<Tenant> Tenants { get; set; }

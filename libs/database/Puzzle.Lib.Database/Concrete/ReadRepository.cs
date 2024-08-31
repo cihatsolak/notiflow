@@ -154,15 +154,15 @@ public class ReadRepository<TEntity>(DbContext dbContext) : Repository<TEntity>(
         return await query.ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<TEntity> GetAsync(
+    public virtual Task<TEntity> GetAsync(
         Expression<Func<TEntity, bool>> filter,
         bool stopTracking = true,
         CancellationToken cancellationToken = default)
     {
-        return await SelectEntities(stopTracking).FirstOrDefaultAsync(filter, cancellationToken);
+        return SelectEntities(stopTracking).FirstOrDefaultAsync(filter, cancellationToken);
     }
 
-    public virtual async Task<TEntity> GetAsync(
+    public virtual Task<TEntity> GetAsync(
         Expression<Func<TEntity, bool>> filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
         bool stopTracking = true,
@@ -173,16 +173,16 @@ public class ReadRepository<TEntity>(DbContext dbContext) : Repository<TEntity>(
         if (orderBy is not null)
             query = orderBy(query);
 
-        return await query.FirstOrDefaultAsync(filter, cancellationToken);
+        return query.FirstOrDefaultAsync(filter, cancellationToken);
     }
 
-    public virtual async Task<TEntity> GetAsync(
+    public virtual Task<TEntity> GetAsync(
         Expression<Func<TEntity, bool>> filter,
         bool stopTracking = true,
         CancellationToken cancellationToken = default,
         params string[] includes)
     {
-        return await SelectRelationEntities(stopTracking).Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
+        return SelectRelationEntities(stopTracking).Includes(includes).FirstOrDefaultAsync(filter, cancellationToken);
     }
 
     public virtual async Task<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken)

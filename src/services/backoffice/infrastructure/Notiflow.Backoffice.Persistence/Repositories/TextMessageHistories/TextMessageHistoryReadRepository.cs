@@ -1,6 +1,7 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Repositories.TextMessageHistories;
 
-public sealed class TextMessageHistoryReadRepository(NotiflowDbContext notiflowDbContext) : ReadRepository<TextMessageHistory>(notiflowDbContext), ITextMessageHistoryReadRepository
+public sealed class TextMessageHistoryReadRepository(NotiflowDbContext notiflowDbContext) 
+    : ReadRepository<TextMessageHistory>(notiflowDbContext), ITextMessageHistoryReadRepository
 {
     public async Task<(int recordsTotal, List<TextMessageHistory> textMessageHistories)> GetPageAsync(string sortKey, string searchKey, int pageIndex, int pageSize, CancellationToken cancellationToken)
     {

@@ -11,6 +11,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.IsSplitQuery = sqlSetting.IsSplitQuery;
             options.ConnectionString = sqlSetting.ConnectionString;
             options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
+            options.Interceptors = [new HistoricalDbContextInterceptor()];
         });
 
         services
@@ -26,7 +27,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddScoped<IEmailHistoryWriteRepository, EmailHistoryWriteRepository>();
 
         services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
-        
+
         services.SeedAsync(CancellationToken.None).Wait();
 
         return services;

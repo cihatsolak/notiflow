@@ -9,19 +9,38 @@
 [Consumes(MediaTypeNames.Application.Json)]
 public class MainController : ControllerBase
 {
+    [NonAction]
     public virtual IActionResult CreateActionResultInstance(Result result)
     {
-        return new ObjectResult(result)
+        //return new ObjectResult(result)
+        //{
+        //    StatusCode = result.StatusCode,
+        //};
+
+        return result.StatusCode switch
         {
-            StatusCode = result.StatusCode,
+            StatusCodes.Status201Created => Created("api/products/1", null),
+            _ => new ObjectResult(result) { StatusCode = result.StatusCode }
         };
     }
 
+    [NonAction]
     public virtual IActionResult CreateActionResultInstance<T>(Result<T> result)
     {
-        return new ObjectResult(result)
+        //if (result.StatusCode == StatusCodes.Status201Created)
+        //{
+        //    return CreatedAtAction("", result.Data); //Todo
+        //}
+
+        //return new ObjectResult(result)
+        //{
+        //    StatusCode = result.StatusCode,
+        //};
+
+        return result.StatusCode switch
         {
-            StatusCode = result.StatusCode,
+            StatusCodes.Status201Created => Created("api/products/1", result.Data),
+            _ => new ObjectResult(result) { StatusCode = result.StatusCode }
         };
     }
 }

@@ -1,8 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Repositories.EmailHistories;
 
-public sealed class EmailHistoryReadRepository : ReadRepository<EmailHistory>, IEmailHistoryReadRepository
+public sealed class EmailHistoryReadRepository(NotiflowDbContext notiflowDbContext) 
+    : ReadRepository<EmailHistory>(notiflowDbContext), IEmailHistoryReadRepository
 {
-    public EmailHistoryReadRepository(NotiflowDbContext notiflowDbContext) : base(notiflowDbContext)
-    {
-    }
 }
