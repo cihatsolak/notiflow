@@ -58,7 +58,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             {
                 IEnumerable<string> errorMessage = context.ModelState.Values.Where(p => p.Errors.Any()).SelectMany(p => p.Errors).Select(p => p.ErrorMessage);
 
-                logger.LogWarning("-- Validation Error. Error: {@errorMessage} --", errorMessage);
+                logger.LogWarning("-- Validation Error. Error: {@errorMessage} --", string.Join(",", errorMessage));
 
                 return new BadRequestObjectResult(new
                 {

@@ -27,7 +27,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             Password = redisServerSetting.Password,
             DefaultDatabase = redisServerSetting.DefaultDatabase,
             AllowAdmin = redisServerSetting.AllowAdmin,
-            ChannelPrefix = new RedisChannel($"{Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant()}:", RedisChannel.PatternMode.Auto)
+            ChannelPrefix = new RedisChannel($"{Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant()}:", RedisChannel.PatternMode.Auto)            
         });
 
         services.TryAddSingleton<IConnectionMultiplexer>(provider =>

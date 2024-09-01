@@ -21,10 +21,10 @@ internal sealed class FacebookAuthService : IFacebookAuthService
     {
         ArgumentException.ThrowIfNullOrEmpty(accessToken);
 
-        var facebookTokenValidationUri = string.Format(_facebookAuthConfig.TokenValidationUrl, accessToken, _facebookAuthConfig.AppId, _facebookAuthConfig.AppSecret);
+        string facebookTokenValidationUri = string.Format(_facebookAuthConfig.TokenValidationUrl, accessToken, _facebookAuthConfig.AppId, _facebookAuthConfig.AppSecret);
         var httpResponseMessage = await _httpClient.GetAsync(facebookTokenValidationUri, cancellationToken).ConfigureAwait(false);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogInformation("Failed to verify facebook access token. Access token: {accessToken}", accessToken);
             return default;
@@ -41,7 +41,7 @@ internal sealed class FacebookAuthService : IFacebookAuthService
         string facebookUserInfoUri = string.Format(_facebookAuthConfig.UserInfoUrl, accessToken);
         var httpResponseMessage = await _httpClient.GetAsync(facebookUserInfoUri, cancellationToken).ConfigureAwait(false);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (!httpResponseMessage.IsSuccessStatusCode)
         {
             _logger.LogInformation("Facebook user information could not be accessed. Access token: {accessToken}", accessToken);
             return default;
