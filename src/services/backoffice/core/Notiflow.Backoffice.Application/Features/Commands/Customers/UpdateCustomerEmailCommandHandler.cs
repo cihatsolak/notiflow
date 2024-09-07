@@ -26,15 +26,15 @@ public sealed class UpdateCustomerEmailCommandHandler(
 
         logger.LogInformation("The customer's email address has been updated. ID: {customerId}", request.Id);
 
-        return Result.Status204NoContent(ResultCodes.CUSTOMER_EMAIL_UPDATED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class ChangePhoneNumberRequestValidator : AbstractValidator<UpdateCustomerEmailCommand>
 {
-    public ChangePhoneNumberRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public ChangePhoneNumberRequestValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
-        RuleFor(p => p.Email).Email(localizer[ValidationErrorMessage.EMAIL]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
+        RuleFor(p => p.Email).Email(FluentVld.Errors.EMAIL);
     }
 }

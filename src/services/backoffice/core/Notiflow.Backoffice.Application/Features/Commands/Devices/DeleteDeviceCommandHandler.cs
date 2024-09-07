@@ -16,14 +16,14 @@ public sealed class DeleteDeviceCommandHandler(
 
         logger.LogInformation("The device with ID {deviceId} has been deleted.", request.Id);
 
-        return Result.Status204NoContent(ResultCodes.DEVICE_DELETED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class DeleteDeviceCommandValidator : AbstractValidator<DeleteDeviceCommand>
 {
-    public DeleteDeviceCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public DeleteDeviceCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }

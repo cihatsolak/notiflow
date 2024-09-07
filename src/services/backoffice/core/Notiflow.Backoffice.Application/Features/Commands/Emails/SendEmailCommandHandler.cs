@@ -1,6 +1,4 @@
-﻿using static MassTransit.Logging.OperationName;
-
-namespace Notiflow.Backoffice.Application.Features.Commands.Emails;
+﻿namespace Notiflow.Backoffice.Application.Features.Commands.Emails;
 
 public sealed record SendEmailCommand(
     string Body,
@@ -8,27 +6,27 @@ public sealed record SendEmailCommand(
     List<int> CustomerIds,
     List<string> CcAddresses,
     List<string> BccAddresses,
-    bool IsBodyHtml) : IRequest<Result<Unit>>;
+    bool IsBodyHtml) : IRequest<Result>;
 
 public sealed class SendEmailCommandHandler(
     INotiflowUnitOfWork uow,
     IEmailService emailService,
     IPublishEndpoint publishEndpoint,
-    ILogger<SendEmailCommandHandler> logger) : IRequestHandler<SendEmailCommand, Result<Unit>>
+    ILogger<SendEmailCommandHandler> logger) : IRequestHandler<SendEmailCommand, Result>
 {
-    public async Task<Result<Unit>> Handle(SendEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {
         var emailAddresses = await uow.CustomerRead.GetEmailAddressesByIdsAsync(request.CustomerIds, cancellationToken);
         if (emailAddresses.IsNullOrNotAny())
         {
-            return Result<Unit>.Status404NotFound(ResultCodes.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.CUSTOMERS_EMAIL_ADDRESSES_NOT_FOUND);
         }
 
         if (emailAddresses.Count != request.CustomerIds.Count)
         {
             logger.LogWarning("The number of customers to be sent does not match the number of registered mails. Customer IDs: {customerIds}", request.CustomerIds);
 
-            return Result<Unit>.Status500InternalServerError(ResultCodes.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
+            return Result.Status500InternalServerError(ResultCodes.THE_NUMBER_EMAIL_ADDRESSES_NOT_EQUAL);
         }
 
         var emailRequest = ObjectMapper.Mapper.Map<EmailRequest>(request);
@@ -46,7 +44,7 @@ public sealed class SendEmailCommandHandler(
                 pipeline.Durable = true; // mesajın kalıcı (persistent) olarak yayınlanıp yayınlanmayacağını belirler.
             }, cancellationToken);
 
-            return Result<Unit>.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
+            return Result.Status200OK(ResultCodes.EMAIL_SENDING_SUCCESSFUL);
         }
 
         var emailNotDeliveredEvent = ObjectMapper.Mapper.Map<EmailNotDeliveredEvent>(request);
@@ -59,7 +57,7 @@ public sealed class SendEmailCommandHandler(
             pipeline.Durable = true; // mesajın kalıcı (persistent) olarak yayınlanıp yayınlanmayacağını belirler.
         }, cancellationToken);
 
-        return Result<Unit>.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);
+        return Result.Status500InternalServerError(ResultCodes.EMAIL_SENDING_FAILED);
     }
 }
 
@@ -67,20 +65,20 @@ public sealed class SendEmailCommandValidator : AbstractValidator<SendEmailComma
 {
     private const int EMAIL_SUBJECT_MAX_LENGTH = 300;
 
-    public SendEmailCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public SendEmailCommandValidator()
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
-        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
-        RuleFor(p => p.Subject).Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT], EMAIL_SUBJECT_MAX_LENGTH);
+        RuleForEach(p => p.CustomerIds).Id(FluentVld.Errors.CUSTOMER_ID);
+        RuleFor(p => p.Body).Ensure(FluentVld.Errors.EMAIL_BODY);
+        RuleFor(p => p.Subject).Ensure(FluentVld.Errors.EMAIL_SUBJECT, EMAIL_SUBJECT_MAX_LENGTH);
 
         When(p => !p.CcAddresses.IsNullOrNotAny(), () =>
         {
-            RuleForEach(p => p.CcAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+            RuleForEach(p => p.CcAddresses).Email(FluentVld.Errors.EMAIL);
         });
 
         When(p => !p.BccAddresses.IsNullOrNotAny(), () =>
         {
-            RuleForEach(p => p.BccAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+            RuleForEach(p => p.BccAddresses).Email(FluentVld.Errors.EMAIL);
         });
     }
 }

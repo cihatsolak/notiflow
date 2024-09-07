@@ -39,17 +39,14 @@ public sealed class AddCustomerCommandHandler(
 
 public sealed class AddCustomerCommandValidator : AbstractValidator<AddCustomerCommand>
 {
-    private const int CUSTOMER_NAME_MAX_LENGTH = 50;
-    private const int CUSTOMER_SURNAME_MAX_LENGTH = 75;
-
-    public AddCustomerCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public AddCustomerCommandValidator()
     {
-        RuleFor(p => p.Name).Ensure(localizer[ValidationErrorMessage.CUSTOMER_NAME], CUSTOMER_NAME_MAX_LENGTH);
-        RuleFor(p => p.Surname).Ensure(localizer[ValidationErrorMessage.CUSTOMER_SURNAME], CUSTOMER_SURNAME_MAX_LENGTH);
-        RuleFor(p => p.PhoneNumber).MobilePhone(localizer[ValidationErrorMessage.PHONE_NUMBER]);
-        RuleFor(p => p.Email).Email(localizer[ValidationErrorMessage.EMAIL]);
-        RuleFor(p => p.BirthDate).BirthDate(localizer[ValidationErrorMessage.BIRTH_DATE]);
-        RuleFor(p => p.Gender).Enum(localizer[ValidationErrorMessage.GENDER]);
-        RuleFor(p => p.MarriageStatus).Enum(localizer[ValidationErrorMessage.MARRIAGE_STATUS]);
+        RuleFor(p => p.Name).Ensure(FluentVld.Errors.CUSTOMER_NAME, FluentVld.Rules.CUSTOMER_NAME_MAX_50_LENGTH);
+        RuleFor(p => p.Surname).Ensure(FluentVld.Errors.CUSTOMER_SURNAME, FluentVld.Rules.CUSTOMER_SURNAME_MAX_75_LENGTH);
+        RuleFor(p => p.PhoneNumber).Ensure(FluentVld.Errors.PHONE_NUMBER);
+        RuleFor(p => p.Email).Email(FluentVld.Errors.EMAIL);
+        RuleFor(p => p.BirthDate).BirthDate(FluentVld.Errors.BIRTH_DATE);
+        RuleFor(p => p.Gender).Enum(FluentVld.Errors.GENDER);
+        RuleFor(p => p.MarriageStatus).Enum(FluentVld.Errors.MARRIAGE_STATUS);
     }
 }

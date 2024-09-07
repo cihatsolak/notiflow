@@ -22,23 +22,23 @@ public sealed record DeviceInput
 
 public sealed class DeviceInputValidator : AbstractValidator<DeviceInput>
 {
-    public DeviceInputValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public DeviceInputValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.CUSTOMER_ID);
 
-        RuleFor(p => p.CustomerId).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleFor(p => p.CustomerId).Id(FluentVld.Errors.CUSTOMER_ID);
 
-        RuleFor(p => p.OSVersion).Enum(localizer[ValidationErrorMessage.OS_VERSION]);
+        RuleFor(p => p.OSVersion).Enum(FluentVld.Errors.OS_VERSION);
 
         RuleFor(p => p.Code)
-            .Ensure(localizer[ValidationErrorMessage.DEVICE_CODE])
-            .MaximumLength(100).WithMessage(localizer[ValidationErrorMessage.DEVICE_CODE]);
+            .Ensure(FluentVld.Errors.DEVICE_CODE)
+            .MaximumLength(100).WithMessage(FluentVld.Errors.DEVICE_CODE);
 
         RuleFor(p => p.Token)
-            .Ensure(localizer[ValidationErrorMessage.DEVICE_TOKEN])
-            .MaximumLength(180).WithMessage(localizer[ValidationErrorMessage.DEVICE_CODE]);
+            .Ensure(FluentVld.Errors.DEVICE_TOKEN)
+            .MaximumLength(180).WithMessage(FluentVld.Errors.DEVICE_CODE);
 
-        RuleFor(p => p.CloudMessagePlatform).Enum(localizer[ValidationErrorMessage.CLOUD_MESSAGE_PLATFORM]);
+        RuleFor(p => p.CloudMessagePlatform).Enum(FluentVld.Errors.CLOUD_MESSAGE_PLATFORM);
     }
 }
 

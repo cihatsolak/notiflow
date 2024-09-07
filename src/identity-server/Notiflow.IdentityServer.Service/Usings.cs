@@ -36,7 +36,6 @@ global using Puzzle.Lib.Cache.Services.Cache;
 global using Puzzle.Lib.File;
 global using Puzzle.Lib.File.Infrastructure;
 global using Puzzle.Lib.File.Services;
-global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Response.Models;
 global using Puzzle.Lib.Validation;
 global using Puzzle.Lib.Validation.RuleBuilders;

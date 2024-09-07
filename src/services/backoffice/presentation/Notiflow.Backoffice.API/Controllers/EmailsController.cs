@@ -31,8 +31,8 @@ public sealed class EmailsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = PolicyName.EMAIL_PERMISSION_RESTRICTION)]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

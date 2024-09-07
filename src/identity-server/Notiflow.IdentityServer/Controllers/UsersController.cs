@@ -89,9 +89,9 @@ public sealed class UsersController(IUserService userService) : BaseApiControlle
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProfilePhoto(int id, [FromForm] IFormFile profilePhoto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateProfilePhoto([FromForm] UpdateUserProfilePhotoRequest request, CancellationToken cancellationToken)
     {
-        var response = await userService.UpdateProfilePhotoByIdAsync(id, profilePhoto, cancellationToken);
+        var response = await userService.UpdateProfilePhotoByIdAsync(request.Id, request.ProfilePhoto, cancellationToken);
         return CreateActionResultInstance(response);
     }
 }

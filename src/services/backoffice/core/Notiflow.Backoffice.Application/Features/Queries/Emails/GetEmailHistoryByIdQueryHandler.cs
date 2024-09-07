@@ -18,9 +18,9 @@ public sealed class GetEmailHistoryByIdQueryHandler(INotiflowUnitOfWork uow) : I
 
 public sealed class GetEmailHistoryByIdQueryValidator : AbstractValidator<GetEmailHistoryByIdQuery>
 {
-    public GetEmailHistoryByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public GetEmailHistoryByIdQueryValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }
 

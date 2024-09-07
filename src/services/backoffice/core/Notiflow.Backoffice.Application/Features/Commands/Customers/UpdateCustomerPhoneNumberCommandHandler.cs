@@ -26,15 +26,15 @@ public sealed class UpdateCustomerPhoneNumberCommandHandler(
 
         logger.LogInformation("The customer's phone number has been updated. ID: {customerId}", request.Id);
 
-        return Result.Status204NoContent(ResultCodes.CUSTOMER_PHONE_NUMBER_UPDATED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class UpdateCustomerPhoneNumberCommandValidator : AbstractValidator<UpdateCustomerPhoneNumberCommand>
 {
-    public UpdateCustomerPhoneNumberCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public UpdateCustomerPhoneNumberCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
-        RuleFor(p => p.PhoneNumber).MobilePhone(localizer[ValidationErrorMessage.PHONE_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
+        RuleFor(p => p.PhoneNumber).MobilePhone(FluentVld.Errors.PHONE_NUMBER);
     }
 }

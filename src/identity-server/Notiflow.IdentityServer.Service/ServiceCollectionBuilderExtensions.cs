@@ -36,7 +36,6 @@ public static class ServiceCollectionBuilderExtensions
         services.TryAddScoped<IUserService, UserManager>();
 
         services
-           .AddWebApiLocalize()
            .AddHttpContextAccessor()
            .AddServerSideValidation()
            .AddApiBehaviorOptions();

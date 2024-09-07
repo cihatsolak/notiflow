@@ -19,9 +19,9 @@ public sealed class GetCustomerByIdQueryHandler(INotiflowUnitOfWork notiflowUnit
 
 public sealed class GetCustomerByIdQueryValidator : AbstractValidator<GetCustomerByIdQuery>
 {
-    public GetCustomerByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public GetCustomerByIdQueryValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }
 

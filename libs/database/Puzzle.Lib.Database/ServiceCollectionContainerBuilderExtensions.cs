@@ -42,7 +42,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
             contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
-            contextOptions.AddInterceptors(sqlSetting.Interceptors);
+            contextOptions.AddInterceptors(sqlSetting.Interceptors ?? []);
         });
 
         if (!hostEnvironment.IsProduction())
@@ -89,7 +89,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
             contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
-            contextOptions.AddInterceptors(sqlSetting.Interceptors);
+            contextOptions.AddInterceptors(sqlSetting.Interceptors ?? []);
         });
 
         if (!hostEnvironment.IsProduction())

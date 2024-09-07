@@ -20,9 +20,9 @@ public sealed class GetTextMessageHistoryByIdQueryHandler(INotiflowUnitOfWork uo
 
 public sealed class GetTextMessageHistoryByIdQueryValidator : AbstractValidator<GetTextMessageHistoryByIdQuery>
 {
-    public GetTextMessageHistoryByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public GetTextMessageHistoryByIdQueryValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }
 

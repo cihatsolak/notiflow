@@ -56,6 +56,6 @@ internal sealed class TenantPermissionManager(
 
         logger.LogInformation("Permission information for {tenantId} tenant with ID has been updated.", tenantPermission.TenantId);
 
-        return Result.Status204NoContent(ResultCodes.TENANT_PERMISSION_NOT_FOUND);
+        return Result.Status204NoContent();
     }
 }

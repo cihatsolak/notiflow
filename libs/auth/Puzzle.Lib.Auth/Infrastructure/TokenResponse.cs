@@ -6,6 +6,11 @@
 public sealed record TokenResponse
 {
     /// <summary>
+    /// Gets or sets the token type.
+    /// </summary>
+    public static string TokenType => "Bearer";
+
+    /// <summary>
     /// Gets or sets the access token.
     /// </summary>
     [JsonRequired]

@@ -9,14 +9,12 @@ public sealed class CreateAccessTokenRequestExample : IExamplesProvider<CreateAc
 
 public sealed class CreateAccessTokenRequestValidator : AbstractValidator<CreateAccessTokenRequest>
 {
-     private const int PASSWORD_MAX_LENGTH = 100;
-
-    public CreateAccessTokenRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public CreateAccessTokenRequestValidator()
     {
         RuleFor(p => p.Username)
-            .Ensure(localizer[ValidationErrorMessage.USERNAME])
-            .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
+            .Ensure(FluentVld.Errors.USERNAME)
+            .Length(5, 100).WithMessage(FluentVld.Errors.USERNAME);
 
-        RuleFor(p => p.Password).StrongPassword(localizer[ValidationErrorMessage.PASSWORD], PASSWORD_MAX_LENGTH);
+        RuleFor(p => p.Password).StrongPassword(FluentVld.Errors.PASSWORD, FluentVld.Rules.PASSWORD_MAX_100_LENGTH);
     }
 }

@@ -13,12 +13,12 @@ public sealed record TextMessageInput
 
 public sealed class TextMessageInputValidator : AbstractValidator<TextMessageInput>
 {
-    public TextMessageInputValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public TextMessageInputValidator()
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(FluentVld.Errors.CUSTOMER_ID);
 
         RuleFor(p => p.Message)
-           .Ensure(localizer[ValidationErrorMessage.TEXT_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
+           .Ensure(FluentVld.Errors.TEXT_MESSAGE)
+           .MaximumLength(300).WithMessage(FluentVld.Errors.TEXT_MESSAGE);
     }
 }

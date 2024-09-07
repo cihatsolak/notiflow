@@ -20,17 +20,15 @@ public sealed class UpdateDeviceTokenCommandHandler(
 
         logger.LogInformation("The token information of the device with {deviceId} ids has been updated.", request.Id);
 
-        return Result.Status204NoContent(ResultCodes.DEVICE_TOKEN_UPDATED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class UpdateDeviceTokenCommandValidator : AbstractValidator<UpdateDeviceTokenCommand>
 {
-    private const int DEVICE_TOKEN_MAX_LENGTH = 100;
-
-    public UpdateDeviceTokenCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public UpdateDeviceTokenCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
-        RuleFor(p => p.Token).Ensure(localizer[ValidationErrorMessage.DEVICE_TOKEN], DEVICE_TOKEN_MAX_LENGTH);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
+        RuleFor(p => p.Token).Ensure(FluentVld.Errors.DEVICE_TOKEN, FluentVld.Rules.DEVICE_TOKEN_MAX_100_LENGTH);
     }
 }

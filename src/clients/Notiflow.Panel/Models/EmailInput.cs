@@ -28,20 +28,20 @@ public sealed record EmailInput
 
 public sealed class EmailInputValidator : AbstractValidator<EmailInput>
 {
-    public EmailInputValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public EmailInputValidator()
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(FluentVld.Errors.CUSTOMER_ID);
 
         RuleForEach(p => p.CcAddresses)
-            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(FluentVld.Errors.EMAIL).When(p => !p.CcAddresses.IsNullOrNotAny());
 
         RuleForEach(p => p.BccAddresses)
-            .Email(localizer[ValidationErrorMessage.EMAIL]).When(p => !p.CcAddresses.IsNullOrNotAny());
+            .Email(FluentVld.Errors.EMAIL).When(p => !p.CcAddresses.IsNullOrNotAny());
 
-        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
+        RuleFor(p => p.Body).Ensure(FluentVld.Errors.EMAIL_BODY);
 
         RuleFor(p => p.Subject)
-            .Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
-            .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
+            .Ensure(FluentVld.Errors.EMAIL_SUBJECT)
+            .MaximumLength(300).WithMessage(FluentVld.Errors.EMAIL_SUBJECT);
     }
 }

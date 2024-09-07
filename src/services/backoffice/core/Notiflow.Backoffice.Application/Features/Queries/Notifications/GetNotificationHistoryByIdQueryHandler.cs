@@ -19,9 +19,9 @@ public sealed class GetNotificationHistoryByIdQueryHandler(INotiflowUnitOfWork u
 
 public sealed class GetNotificationHistoryByIdQueryValidator : AbstractValidator<GetNotificationHistoryByIdQuery>
 {
-    public GetNotificationHistoryByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public GetNotificationHistoryByIdQueryValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }
 

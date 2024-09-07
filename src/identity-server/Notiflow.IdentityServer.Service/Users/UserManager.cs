@@ -58,7 +58,7 @@ internal sealed class UserManager(
         if (request.Avatar is null || 0 >= request.Avatar.Length)
         {
             await context.SaveChangesAsync(cancellationToken);
-            return Result.Status204NoContent(ResultCodes.USER_UPTATED);
+            return Result.Status204NoContent();
         }
 
         var fileResult = await fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
@@ -69,7 +69,7 @@ internal sealed class UserManager(
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return Result.Status204NoContent(ResultCodes.USER_UPTATED);
+        return Result.Status204NoContent();
     }
 
     public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken)
@@ -83,7 +83,7 @@ internal sealed class UserManager(
             return Result.Status404NotFound(ResultCodes.USER_NOT_DELETED);
         }
 
-        return Result.Status204NoContent(ResultCodes.USER_DELETED);
+        return Result.Status204NoContent();
     }
 
     public async Task<Result<string>> UpdateProfilePhotoByIdAsync(int id, IFormFile profilePhoto, CancellationToken cancellationToken)

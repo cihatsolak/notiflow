@@ -17,14 +17,14 @@ public sealed class DeleteCustomerCommandHandler(
 
         logger.LogInformation("Customer deleted. ID: {customerId}", request.Id);
 
-        return Result.Status204NoContent(ResultCodes.CUSTOMER_DELETED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
 {
-    public DeleteCustomerCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public DeleteCustomerCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }

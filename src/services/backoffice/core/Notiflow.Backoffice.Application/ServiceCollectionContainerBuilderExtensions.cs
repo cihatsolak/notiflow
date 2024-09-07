@@ -32,7 +32,6 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services
             .AddMassTransit()
-            .AddWebApiLocalize()
             .AddHttpContextAccessor()
             .AddServerSideValidation()
             .AddAutoMapper(Assembly.GetExecutingAssembly());

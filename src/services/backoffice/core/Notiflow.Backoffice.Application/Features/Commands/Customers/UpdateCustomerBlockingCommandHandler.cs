@@ -29,14 +29,14 @@ public sealed class UpdateCustomerBlockingCommandHandler(
             request.Id,
             request.IsBlocked ? "blocked" : "unblocked");
 
-        return Result.Status204NoContent(ResultCodes.CUSTOMER_BLOCK_STATUS_UPDATED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class UpdateCustomerBlockingCommandValidator : AbstractValidator<UpdateCustomerBlockingCommand>
 {
-    public UpdateCustomerBlockingCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public UpdateCustomerBlockingCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }

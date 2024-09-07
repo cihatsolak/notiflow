@@ -19,20 +19,20 @@ public sealed record ScheduleTextMessageRequest
 
 public sealed class ScheduleTextMessageRequestValidator : AbstractValidator<ScheduleTextMessageRequest>
 {
-    public ScheduleTextMessageRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public ScheduleTextMessageRequestValidator()
     {
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(FluentVld.Errors.CUSTOMER_ID);
 
         RuleFor(p => p.Message)
-           .Ensure(localizer[ValidationErrorMessage.TEXT_MESSAGE])
-           .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.TEXT_MESSAGE]);
+           .Ensure(FluentVld.Errors.TEXT_MESSAGE)
+           .MaximumLength(300).WithMessage(FluentVld.Errors.TEXT_MESSAGE);
 
         RuleFor(p => p.Date)
              .Must(date => DateTime.TryParse(date, CultureInfo.CurrentCulture, out _))
-             .WithMessage(localizer[ValidationErrorMessage.DATE]);
+             .WithMessage(FluentVld.Errors.DATE);
 
         RuleFor(p => p.Time)
             .Must(date => TimeSpan.TryParse(date, CultureInfo.CurrentCulture, out _))
-            .WithMessage(localizer[ValidationErrorMessage.TIME]);
+            .WithMessage(FluentVld.Errors.TIME);
     }
 }

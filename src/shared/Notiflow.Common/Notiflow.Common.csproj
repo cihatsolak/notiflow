@@ -11,10 +11,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Localize\ValidationErrorMessage.en-US.resx">
+		<EmbeddedResource Update="Localize\Errors.en-US.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Localize\ValidationErrorMessage.tr-TR.resx">
+		<EmbeddedResource Update="Localize\Errors.tr-TR.resx">
 			<SubType>Designer</SubType>
 			<Generator>ResXFileCodeGenerator</Generator>
 		</EmbeddedResource>

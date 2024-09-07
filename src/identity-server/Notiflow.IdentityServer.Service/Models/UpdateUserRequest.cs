@@ -18,29 +18,29 @@ public sealed class UpdateUserRequestExample : IExamplesProvider<UpdateUserReque
 
         return new UpdateUserRequest("John", "Doe", "john.doe@example.com", "StarryTraveler92", avatar);
     }
+}
 
-    public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
+public sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
+{
+    public UpdateUserRequestValidator()
     {
-        public UpdateUserRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
-        {
-            RuleFor(p => p.Name)
-               .Ensure(localizer[ValidationErrorMessage.USER_NAME])
-               .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_NAME]);
+        RuleFor(p => p.Name)
+           .Ensure(FluentVld.Errors.USER_NAME)
+           .Length(2, 100).WithMessage(FluentVld.Errors.USER_NAME);
 
-            RuleFor(p => p.Surname)
-                .Ensure(localizer[ValidationErrorMessage.USER_SURNAME])
-                .Length(2, 100).WithMessage(localizer[ValidationErrorMessage.USER_SURNAME]);
+        RuleFor(p => p.Surname)
+            .Ensure(FluentVld.Errors.USER_SURNAME)
+            .Length(2, 100).WithMessage(FluentVld.Errors.USER_SURNAME);
 
-            RuleFor(p => p.Email)
-                .Email(localizer[ValidationErrorMessage.EMAIL])
-                .Length(5, 150).WithMessage(localizer[ValidationErrorMessage.EMAIL]);
+        RuleFor(p => p.Email)
+            .Email(FluentVld.Errors.EMAIL)
+            .Length(5, 150).WithMessage(FluentVld.Errors.EMAIL);
 
-            RuleFor(p => p.Username)
-                .Ensure(localizer[ValidationErrorMessage.USERNAME])
-                .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
+        RuleFor(p => p.Username)
+            .Ensure(FluentVld.Errors.USERNAME)
+            .Length(5, 100).WithMessage(FluentVld.Errors.USERNAME);
 
-            RuleFor(p => p.Avatar)
-                .FormFile(localizer[ValidationErrorMessage.FILE], ContentTypes.ImageJpeg, ContentTypes.ImagePng);
-        }
+        RuleFor(p => p.Avatar)
+            .FormFile(FluentVld.Errors.FILE, ContentTypes.ImageJpeg, ContentTypes.ImagePng);
     }
 }

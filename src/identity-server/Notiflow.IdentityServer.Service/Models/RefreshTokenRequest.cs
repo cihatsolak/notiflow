@@ -9,10 +9,10 @@ public sealed class RefreshTokenRequestExample : IExamplesProvider<RefreshTokenR
 
 public sealed class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
 {
-    public RefreshTokenRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public RefreshTokenRequestValidator()
     {
         RuleFor(p => p.Token)
-            .Ensure(localizer[ValidationErrorMessage.REFRESH_TOKEN])
-            .Length(45, 55).WithMessage(localizer[ValidationErrorMessage.REFRESH_TOKEN]);
+            .Ensure(FluentVld.Errors.REFRESH_TOKEN)
+            .Length(45, 55).WithMessage(FluentVld.Errors.REFRESH_TOKEN);
     }
 }

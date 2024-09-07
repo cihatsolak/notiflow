@@ -8,7 +8,6 @@ builder.AddConfigureHealthChecks();
 builder.Services
     .AddMassTransit()
     .AddLowercaseRoute()
-    .AddWebApiLocalize()
     .AddResponseCompression()
     .AddServerSideValidation()
     .AddCustomHttpLogging();
@@ -39,7 +38,6 @@ app.UseApiExceptionHandler()
    .UseHangfire();
 
 app.UseDiscoveryEndpoint();
-app.UseLocalizationWithEndpoint();
 
 app.MapControllers();
 
