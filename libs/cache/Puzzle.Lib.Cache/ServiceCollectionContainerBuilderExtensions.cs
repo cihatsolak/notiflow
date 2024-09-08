@@ -32,7 +32,7 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.TryAddSingleton<IConnectionMultiplexer>(provider =>
         {
-            RedisRetryPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+            RedisPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
 
             return connectionMultiplexer;
         });

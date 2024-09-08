@@ -24,7 +24,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(() =>
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
         {
             return _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
         });
@@ -34,7 +34,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             long result = await _database.StringIncrementAsync(KeyLower(cacheKey), increment, CommandFlags.DemandMaster);
             if (0 >= result)
@@ -50,7 +50,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             long result = await _database.StringDecrementAsync(KeyLower(cacheKey), decrement, CommandFlags.DemandMaster);
             if (0 >= result)
@@ -67,7 +67,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(() =>
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
         {
             return _database.HashExistsAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
         });
@@ -77,7 +77,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var hashEntries = await _database.HashGetAllAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (hashEntries.Length == 0)
@@ -95,7 +95,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var hashEntry = await _database.HashGetAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
             if (!hashEntry.HasValue)
@@ -112,7 +112,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, hashField, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.HashSetAsync(KeyLower(cacheKey), hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -129,7 +129,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.HashDeleteAsync(KeyLower(cacheKey), hashField, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -146,7 +146,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(memberKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             double result = await _database.SortedSetIncrementAsync(KeyLower(cacheKey), memberKey, increment, CommandFlags.DemandMaster);
             if (result == 0)
@@ -162,7 +162,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Descending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -179,7 +179,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Ascending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -197,7 +197,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(memberKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SortedSetRemoveAsync(KeyLower(cacheKey), memberKey, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -213,7 +213,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             return await _database.SetContainsAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.PreferReplica);
         });
@@ -223,7 +223,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SetMembersAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -239,7 +239,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SetAddAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
@@ -255,7 +255,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SetRemoveAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
@@ -271,7 +271,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValue = await _database.StringGetAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (!redisValue.HasValue)
@@ -285,7 +285,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -301,7 +301,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDurationInMinutes), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -317,7 +317,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -333,7 +333,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (currentExpiration is null)
@@ -358,7 +358,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             if (await _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(KeyLower(cacheKey), CommandFlags.DemandMaster))
             {
@@ -374,7 +374,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
     {
         ArgumentException.ThrowIfNullOrEmpty(searchKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             searchKey = searchKeyType switch
             {
@@ -413,7 +413,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task ClearDatabaseAsync()
     {
-        await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             await _server.FlushDatabaseAsync(_redisServerSetting.DefaultDatabase, CommandFlags.DemandMaster);
         });
@@ -421,7 +421,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
 
     public async Task ClearDatabaseAsync(int databaseNumber)
     {
-        await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        await RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             await _server.FlushDatabaseAsync(databaseNumber, CommandFlags.DemandMaster);
         });
