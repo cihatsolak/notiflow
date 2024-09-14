@@ -16,7 +16,6 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
-        IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
 
         SqlSetting sqlSetting = new();
         configure?.Invoke(sqlSetting);
@@ -24,7 +23,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(hostEnvironment.IsProduction());
+            contextOptions.ConfigureCustomLogs(sqlSetting.IsProductionEnvironment);
             contextOptions.UseSnakeCaseNamingConvention();
 
             contextOptions.UseNpgsql(sqlSetting.ConnectionString, sqlOptions =>
@@ -45,7 +44,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.AddInterceptors(sqlSetting.Interceptors ?? []);
         });
 
-        if (!hostEnvironment.IsProduction())
+        if (!sqlSetting.IsProductionEnvironment)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
@@ -64,7 +63,6 @@ public static class ServiceCollectionContainerBuilderExtensions
     public static IServiceCollection AddMicrosoftSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
-        IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
 
         SqlSetting sqlSetting = new();
         configure?.Invoke(sqlSetting);
@@ -72,7 +70,7 @@ public static class ServiceCollectionContainerBuilderExtensions
         services.AddDbContext<TDbContext>(contextOptions =>
         {
             contextOptions.ConfigureCustomWarnings();
-            contextOptions.ConfigureCustomLogs(hostEnvironment.IsProduction());
+            contextOptions.ConfigureCustomLogs(sqlSetting.IsProductionEnvironment);
 
             contextOptions.UseSqlServer(sqlSetting.ConnectionString, sqlOptions =>
             {
@@ -92,7 +90,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.AddInterceptors(sqlSetting.Interceptors ?? []);
         });
 
-        if (!hostEnvironment.IsProduction())
+        if (!sqlSetting.IsProductionEnvironment)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
         }

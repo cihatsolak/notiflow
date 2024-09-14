@@ -32,6 +32,7 @@ internal static class ServiceCollectionBuilderExtensions
             options.ConnectionString = sqlSetting.ConnectionString;
             options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
             options.IsSplitQuery = sqlSetting.IsSplitQuery;
+            options.IsProductionEnvironment = builder.Environment.IsProduction();
         });
 
         builder.Services.AddHangfireMsSql(options =>
@@ -48,17 +49,15 @@ internal static class ServiceCollectionBuilderExtensions
             options.MinorVersion = apiVersionSetting.MinorVersion;
         });
 
-        if (!builder.Environment.IsProduction())
+        builder.Services.AddSwagger(options =>
         {
-            builder.Services.AddSwagger(options =>
-            {
-                options.Title = swaggerSetting.Title;
-                options.Description = swaggerSetting.Description;
-                options.Version = swaggerSetting.Version;
-                options.ContactName = swaggerSetting.ContactName;
-                options.ContactEmail = swaggerSetting.ContactEmail;
-            });
-        }
+            options.Title = swaggerSetting.Title;
+            options.Description = swaggerSetting.Description;
+            options.Version = swaggerSetting.Version;
+            options.ContactName = swaggerSetting.ContactName;
+            options.ContactEmail = swaggerSetting.ContactEmail;
+            options.IsProductionEnvironment = builder.Environment.IsProduction();
+        });
 
         return builder;
     }

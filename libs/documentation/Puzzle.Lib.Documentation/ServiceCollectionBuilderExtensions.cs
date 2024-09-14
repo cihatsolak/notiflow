@@ -15,6 +15,8 @@ public static class ServiceCollectionBuilderExtensions
         SwaggerSetting swaggerSetting = new();
         configure?.Invoke(swaggerSetting);
 
+        if (swaggerSetting.IsProductionEnvironment) return services;
+
         services.Configure(configure);
 
         services.AddEndpointsApiExplorer();

@@ -8,7 +8,7 @@ public sealed class RedisPublisherManager(ISubscriber subscriber) : IRedisPublis
 
         RedisChannel redisChannel = new(channelName, RedisChannel.PatternMode.Literal);
 
-        return RedisPolicies.AsyncRetryPolicy.ExecuteAsync(() =>
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
         {
             return subscriber.PublishAsync(redisChannel, JsonSerializer.Serialize(@event), CommandFlags.FireAndForget);
         });

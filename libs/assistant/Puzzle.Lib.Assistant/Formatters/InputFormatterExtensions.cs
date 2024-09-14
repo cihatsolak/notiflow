@@ -45,6 +45,9 @@ public static class InputFormatterExtensions
         if (string.IsNullOrWhiteSpace(mobilePhoneNumber))
             return mobilePhoneNumber;
 
-        return string.Format(CultureInfo.InvariantCulture, "{0:0 ### ### ## ##}", long.Parse(mobilePhoneNumber));
+        if (!long.TryParse(mobilePhoneNumber, out long parsedMobilePhoneNumber))
+            return mobilePhoneNumber;
+
+        return string.Format(CultureInfo.InvariantCulture, "{0:0 ### ### ## ##}", parsedMobilePhoneNumber);
     }
 }
