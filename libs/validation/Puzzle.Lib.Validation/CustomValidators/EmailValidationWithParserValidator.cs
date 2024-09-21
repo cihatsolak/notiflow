@@ -8,7 +8,8 @@
 /// </remarks>
 internal class EmailValidationWithParserValidator : AbstractValidator<string>
 {
-    readonly char[] parsers = [',', '.', ';', ':', '-', '/'];
+    private static readonly string[] TLDS = ["com", "net", "org", "edu", "gov", "us", "uk", "ca", "au", "fr"];
+    private readonly char[] parsers = [',', '.', ';', ':', '-', '/'];
 
     internal EmailValidationWithParserValidator(char parser, string errorMessage)
     {
@@ -41,6 +42,22 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
     {
         string[] splittedEmails = emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email.IsMatch(email) && EmailValidateExtension.ValidateTld(email));
+        return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email.IsMatch(email) && ValidateTld(email));
+    }
+
+    /// <summary>
+    /// Validates the top-level domain (TLD) of an email address.
+    /// </summary>
+    /// <remarks>
+    /// This method checks whether the TLD of an email address is valid by comparing it with a list of known TLDs.
+    /// </remarks>
+    /// <param name="email">The email address to validate.</param>
+    /// <returns>A boolean value indicating whether the TLD of the email address is valid.</returns>
+    private static bool ValidateTld(string email)
+    {
+        string[] emailParts = email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        int lastPartIndex = emailParts.Length - 1;
+
+        return Array.Exists(TLDS, tld => tld == emailParts[lastPartIndex]);
     }
 }

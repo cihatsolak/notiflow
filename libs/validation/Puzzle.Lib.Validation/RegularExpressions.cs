@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Validation.Infrastructure;
+﻿namespace Puzzle.Lib.Validation;
 
 public static class RegularExpressions
 {
