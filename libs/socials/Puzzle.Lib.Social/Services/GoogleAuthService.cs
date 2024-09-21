@@ -11,7 +11,7 @@ internal sealed class GoogleAuthService : IGoogleAuthService
 
     public async Task<GoogleUserResponse> GetUserInformationAsync(string idToken)
     {
-        ArgumentException.ThrowIfNullOrEmpty(idToken);
+        ArgumentException.ThrowIfNullOrWhiteSpace(idToken);
 
         Payload payload = await ValidateAsync(idToken, new ValidationSettings
         {

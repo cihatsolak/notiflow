@@ -14,10 +14,10 @@ public static class CookieExtensions
     /// <returns>The deserialized value of the cookie, or the default value for the type if the cookie is not found or its value is empty.</returns>
     public static TData GetCookie<TData>(this HttpContext httpContext, string key)
     {
+        ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentException.ThrowIfNullOrEmpty(key);
 
-        string cookieValue = httpContext.Request.Cookies[key];
-        if (string.IsNullOrWhiteSpace(cookieValue))
+        if (httpContext.Request.Cookies.TryGetValue(key, out string cookieValue))
             return default;
 
         return JsonSerializer.Deserialize<TData>(cookieValue);
@@ -33,6 +33,7 @@ public static class CookieExtensions
     /// <param name="expireDate">The expiration date for the cookie.</param>
     public static void SetCookie<TData>(this HttpContext httpContext, string key, TData value, DateTime expireDate)
     {
+        ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentException.ThrowIfNullOrEmpty(key);
         ArgumentNullException.ThrowIfNull(value);
 
@@ -54,10 +55,12 @@ public static class CookieExtensions
     /// <param name="cookieOptions">Additional options for the cookie, including the expiration date.</param>
     public static void SetCookie<TData>(this HttpContext httpContext, string key, TData value, CookieOptions cookieOptions)
     {
+        ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentException.ThrowIfNullOrEmpty(key);
         ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(cookieOptions);
 
-        if (DateTime.Now >= cookieOptions?.Expires)
+        if (DateTime.Now >= cookieOptions.Expires)
         {
             throw new ArgumentException("The expiration date cannot be less than today.");
         }
@@ -72,6 +75,7 @@ public static class CookieExtensions
     /// <param name="key">The key of the cookie to remove.</param>
     public static void RemoveCookie(this HttpContext httpContext, string key)
     {
+        ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentException.ThrowIfNullOrEmpty(key);
 
         httpContext.Response.Cookies.Delete(key);

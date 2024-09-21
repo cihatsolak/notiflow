@@ -19,7 +19,11 @@ builder.Services.AddControllersWithViews(options =>
 })
 .AddRazorRuntimeCompilation();
 
-builder.Services.AddClientSideValidation();
+builder.Services.AddClientSideValidation(opt =>
+{
+    opt.CultureInfo = CultureInfo.CurrentCulture;
+    opt.CascadeMode = CascadeMode.Stop;
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
 

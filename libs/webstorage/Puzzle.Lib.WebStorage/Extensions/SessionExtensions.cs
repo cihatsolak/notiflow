@@ -16,8 +16,7 @@ public static class SessionExtensions
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
 
-        bool isExists = httpContext.Session.TryGetValue(key, out byte[] value);
-        if (!isExists)
+        if (!httpContext.Session.TryGetValue(key, out byte[] value))
             return default;
 
         return JsonSerializer.Deserialize<TData>(Encoding.UTF8.GetString(value));

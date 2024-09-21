@@ -17,12 +17,23 @@ internal static class RedisPolicies
     /// </summary>
     internal static ILogger Logger { get; set; }
 
-    /// <summary>
-    /// 
+    // <summary>
+    /// Executes the specified action with retry and fallback policies.
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <typeparam name="TResult">The type of the result returned by the action.</typeparam>
+    /// <param name="action">The action to execute.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    internal static Task ExecuteWithRetryAsync(Func<Task> action)
+    {
+        return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry).ExecuteAsync(action);
+    }
+
+    /// <summary>
+    /// Executes the specified action with retry and fallback policies.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the result returned by the action.</typeparam>
+    /// <param name="action">The action to execute.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     internal static Task<TResult> ExecuteWithRetryAsync<TResult>(Func<Task<TResult>> action)
     {
         return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry).ExecuteAsync(action);

@@ -1,4 +1,6 @@
-﻿namespace Puzzle.Lib.Validation.RuleBuilders;
+﻿using Puzzle.Lib.Validation.Infrastructure;
+
+namespace Puzzle.Lib.Validation.RuleBuilders;
 
 /// <summary>
 /// Contains extension methods for building validation rules for personal information such as TC number, landline and mobile phone.

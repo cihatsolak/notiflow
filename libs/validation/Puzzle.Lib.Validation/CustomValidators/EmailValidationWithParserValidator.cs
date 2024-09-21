@@ -6,7 +6,7 @@
 /// <remarks>
 /// This class uses regular expressions to validate the format of the email address and also checks the top-level domain (TLD) using an extension method.
 /// </remarks>
-internal class EmailValidationWithParserValidator : AbstractValidator<string>
+internal sealed class EmailValidationWithParserValidator : AbstractValidator<string>
 {
     private static readonly string[] TLDS = ["com", "net", "org", "edu", "gov", "us", "uk", "ca", "au", "fr"];
     private readonly char[] parsers = [',', '.', ';', ':', '-', '/'];
@@ -41,6 +41,8 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
     private static bool ValidateEmails(string emails, char parser)
     {
         string[] splittedEmails = emails.Split(parser, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (splittedEmails.Length == 0)
+            return false;
 
         return Array.TrueForAll(splittedEmails, email => RegularExpressions.Email.IsMatch(email) && ValidateTld(email));
     }
@@ -56,6 +58,9 @@ internal class EmailValidationWithParserValidator : AbstractValidator<string>
     private static bool ValidateTld(string email)
     {
         string[] emailParts = email.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (emailParts.Length == 0)
+            return false;
+
         int lastPartIndex = emailParts.Length - 1;
 
         return Array.Exists(TLDS, tld => tld == emailParts[lastPartIndex]);

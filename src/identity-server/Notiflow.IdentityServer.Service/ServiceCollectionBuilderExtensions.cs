@@ -38,7 +38,7 @@ public static class ServiceCollectionBuilderExtensions
         services
            .AddHttpContextAccessor()
            .AddServerSideValidation()
-           .AddApiBehaviorOptions();
+           .AddApiBehavior();
 
         AddObservers(services);
 

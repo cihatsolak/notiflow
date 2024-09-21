@@ -3,7 +3,7 @@
 /// <summary>
 /// Extensions for IServiceCollection to add social authentication services.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds social authentication services to the IServiceCollection with the provided configuration.

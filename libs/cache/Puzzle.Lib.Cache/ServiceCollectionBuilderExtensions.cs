@@ -3,7 +3,7 @@
 /// <summary>
 /// Contains extension methods to register Redis related services to the <see cref="IServiceCollection"/>.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds Redis related services to the <see cref="IServiceCollection"/>.
