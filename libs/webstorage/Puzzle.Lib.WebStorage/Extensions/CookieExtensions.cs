@@ -15,7 +15,7 @@ public static class CookieExtensions
     public static TData GetCookie<TData>(this HttpContext httpContext, string key)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
         if (httpContext.Request.Cookies.TryGetValue(key, out string cookieValue))
             return default;
@@ -34,7 +34,7 @@ public static class CookieExtensions
     public static void SetCookie<TData>(this HttpContext httpContext, string key, TData value, DateTime expireDate)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(value);
 
         if (DateTime.Now >= expireDate)
@@ -56,7 +56,7 @@ public static class CookieExtensions
     public static void SetCookie<TData>(this HttpContext httpContext, string key, TData value, CookieOptions cookieOptions)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(cookieOptions);
 
@@ -76,9 +76,8 @@ public static class CookieExtensions
     public static void RemoveCookie(this HttpContext httpContext, string key)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
         httpContext.Response.Cookies.Delete(key);
     }
-
 }

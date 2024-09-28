@@ -1,4 +1,4 @@
-﻿namespace Puzzle.Lib.Assistant.Extensions;
+﻿namespace Puzzle.Lib.WebStorage.Extensions;
 
 /// <summary>
 /// Defines methods to interact with the session data.
@@ -14,7 +14,8 @@ public static class SessionExtensions
     /// <returns>The retrieved data, or the default value for the type if the key is not found.</returns>
     public static TData GetSession<TData>(this HttpContext httpContext, string key)
     {
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentNullException.ThrowIfNull(httpContext);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
         if (!httpContext.Session.TryGetValue(key, out byte[] value))
             return default;
@@ -31,7 +32,8 @@ public static class SessionExtensions
     /// <param name="data">The data to store in the session.</param>
     public static void SetSession<TData>(this HttpContext httpContext, string key, TData data)
     {
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentNullException.ThrowIfNull(httpContext);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(data);
 
         httpContext.Session.Set(key, Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)));
@@ -44,7 +46,8 @@ public static class SessionExtensions
     /// <param name="key">The key used to identify the data in the session.</param>
     public static void RemoveSession(this HttpContext httpContext, string key)
     {
-        ArgumentException.ThrowIfNullOrEmpty(key);
+        ArgumentNullException.ThrowIfNull(httpContext);
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
         httpContext.Session.Remove(key);
     }

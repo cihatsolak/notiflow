@@ -15,8 +15,6 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// <exception cref="ArgumentNullException">Thrown when the service provider is null.</exception>
     public static IServiceCollection AddPostgreSql<TDbContext>(this IServiceCollection services, Action<SqlSetting> configure) where TDbContext : DbContext
     {
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-
         SqlSetting sqlSetting = new();
         configure?.Invoke(sqlSetting);
 
@@ -40,7 +38,6 @@ public static class ServiceCollectionContainerBuilderExtensions
             contextOptions.UseLazyLoadingProxies(false);
             contextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
-            contextOptions.AddInterceptors(new SlowQueryInterceptor(serviceProvider));
             contextOptions.AddInterceptors(sqlSetting.Interceptors ?? []);
         });
 

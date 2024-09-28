@@ -1,9 +1,9 @@
-﻿namespace Puzzle.Lib.Cookie;
+﻿namespace Puzzle.Lib.WebStorage;
 
 /// <summary>
 /// Provides extension methods for configuring cookie authentication and cookie policy for an IServiceCollection.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds cookie authentication to the IServiceCollection using the specified configuration settings.
@@ -40,7 +40,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection instance to configure the cookie policy options for.</param>
     /// <returns>The IServiceCollection instance with the cookie policy options configured.</returns>
-    public static IServiceCollection ConfigureSecureCookiePolicy(this IServiceCollection services)
+    public static IServiceCollection ConfigureAlwaysSecureCookiePolicy(this IServiceCollection services)
     {
         services.Configure<CookiePolicyOptions>(options =>
         {

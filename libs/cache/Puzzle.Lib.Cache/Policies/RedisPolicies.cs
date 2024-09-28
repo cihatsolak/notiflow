@@ -10,7 +10,7 @@ internal static class RedisPolicies
     /// <summary>
     /// Represents the maximum number of retry attempts allowed for a specific operation.
     /// </summary>
-    private const int RETRY_COUNT = 2;
+    internal static int RetryCount { get; set; }
 
     /// <summary>
     /// Gets or sets the logger used for recording log information related to Redis retry policies.
@@ -25,7 +25,7 @@ internal static class RedisPolicies
     /// <returns>A task representing the asynchronous operation.</returns>
     internal static Task ExecuteWithRetryAsync(Func<Task> action)
     {
-        return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry).ExecuteAsync(action);
+        return Policy.Handle<Exception>().WaitAndRetryAsync(RetryCount, ComputeDuration, OnRedisRetry).ExecuteAsync(action);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ internal static class RedisPolicies
     /// <returns>A task representing the asynchronous operation.</returns>
     internal static Task<TResult> ExecuteWithRetryAsync<TResult>(Func<Task<TResult>> action)
     {
-        return Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry).ExecuteAsync(action);
+        return Policy.Handle<Exception>().WaitAndRetryAsync(RetryCount, ComputeDuration, OnRedisRetry).ExecuteAsync(action);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ internal static class RedisPolicies
     internal static Task<TResult> ExecuteWithFallbackPolicy<TResult>(Func<Task<TResult>> action)
     {
         var fallbackPolicy = Policy<TResult>.Handle<Exception>().FallbackAsync(fallbackValue: default, OnFallbackAsync);
-        var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(RETRY_COUNT, ComputeDuration, OnRedisRetry);
+        var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(RetryCount, ComputeDuration, OnRedisRetry);
 
         return retryPolicy.WrapAsync(fallbackPolicy).ExecuteAsync(action);
     }

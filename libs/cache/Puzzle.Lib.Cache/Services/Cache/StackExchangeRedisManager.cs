@@ -79,7 +79,7 @@ internal sealed class StackExchangeRedisManager : IRedisService
             if (hashEntries.Length == 0)
             {
                 _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
-                return [];
+                return Enumerable.Empty<KeyValuePair<string, string>>();
             }
 
             return hashEntries.Select(hashEntry => new KeyValuePair<string, string>(hashEntry.Name, hashEntry.Value));
