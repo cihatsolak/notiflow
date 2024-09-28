@@ -19,9 +19,9 @@ public sealed class GetDeviceByIdQueryHandler(INotiflowUnitOfWork uow)
 
 public sealed class GetDeviceByIdQueryValidator : AbstractValidator<GetDeviceByIdQuery>
 {
-    public GetDeviceByIdQueryValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public GetDeviceByIdQueryValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }
 

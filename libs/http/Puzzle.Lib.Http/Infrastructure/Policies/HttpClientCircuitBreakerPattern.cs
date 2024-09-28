@@ -40,17 +40,17 @@ public static class HttpClientCircuitBreakerPattern
                 OnHalfOpen);
     }
 
-    public static void OnBreak(DelegateResult<HttpResponseMessage> outcome, TimeSpan timeSpan)
+    private static void OnBreak(DelegateResult<HttpResponseMessage> outcome, TimeSpan timeSpan)
     {
         Logger.LogError(outcome?.Exception, "Http call terminated, requests will not flow.");
     }
 
-    public static void OnReset()
+    private static void OnReset()
     {
         Logger.LogInformation("Http call enabled, requests flow normally.");
     }
 
-    public static void OnHalfOpen()
+    private static void OnHalfOpen()
     {
         Logger.LogWarning("Http call in test mode, one request will be allowed.");
     }

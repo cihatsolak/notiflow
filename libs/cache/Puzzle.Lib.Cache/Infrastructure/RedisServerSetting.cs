@@ -45,4 +45,9 @@ public sealed record RedisServerSetting
     /// Gets or sets a value indicating whether the Redis server allows administrative operations.
     /// </summary>
     public bool AllowAdmin { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of times to retry the operation in case of failure.
+    /// </summary>
+    public int RetryCount { get; set; }
 }

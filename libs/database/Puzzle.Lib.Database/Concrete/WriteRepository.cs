@@ -9,11 +9,11 @@ public class WriteRepository<TEntity>(DbContext dbContext) : Repository<TEntity>
         await _entities.AddAsync(entity, cancellationToken);
     }
 
-    public virtual async Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    public virtual Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         CheckArguments(entities);
 
-        await _entities.AddRangeAsync(entities, cancellationToken);
+        return _entities.AddRangeAsync(entities, cancellationToken);
     }
 
     public virtual void Update(TEntity entity)
@@ -30,19 +30,19 @@ public class WriteRepository<TEntity>(DbContext dbContext) : Repository<TEntity>
         _entities.UpdateRange(entities);
     }
 
-    public virtual async Task<int> ExecuteUpdateAsync(
+    public virtual Task<int> ExecuteUpdateAsync(
        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
        CancellationToken cancellationToken)
     {
-        return await _entities.ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
+        return _entities.ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
     }
 
-    public virtual async Task<int> ExecuteUpdateAsync(
+    public virtual Task<int> ExecuteUpdateAsync(
         Expression<Func<TEntity, bool>> predicate,
         Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
         CancellationToken cancellationToken)
     {
-        return await _entities.Where(predicate).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
+        return _entities.Where(predicate).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
     }
 
     public virtual void Delete(TEntity entity)

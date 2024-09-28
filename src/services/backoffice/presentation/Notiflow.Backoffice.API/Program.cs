@@ -32,8 +32,6 @@ app
    .UseCustomHttpLogging()
    .UseHealth();
 
-app.UseLocalizationWithEndpoint();
-
 app.MapControllers();
 app.MapHubs();
 

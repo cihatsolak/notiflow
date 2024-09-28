@@ -3,7 +3,7 @@
 /// <summary>
 /// Contains extension methods to register Redis related services to the <see cref="IServiceCollection"/>.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds Redis related services to the <see cref="IServiceCollection"/>.
@@ -17,22 +17,46 @@ public static class ServiceCollectionContainerBuilderExtensions
 
         services.Configure(configure);
 
+        string entryAssembly = Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant();
+
         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
         {
+            // Redis sunucusunun bağlantı noktası.
             EndPoints = { redisServerSetting.ConnectionString },
+
+            // Bağlantı kurulamadığında bağlantının hemen kesilip kesilmeyeceğini belirler.
             AbortOnConnectFail = redisServerSetting.AbortOnConnectFail,
+
+            // Asenkron işlemler için zaman aşımı süresi.
             AsyncTimeout = (int)TimeSpan.FromSeconds(redisServerSetting.AsyncTimeOutSecond).TotalMilliseconds,
+
+            // Sunucuya bağlantı için bekleme süresi.
             ConnectTimeout = (int)TimeSpan.FromSeconds(redisServerSetting.ConnectTimeOutSecond).TotalMilliseconds,
+
+            // Redis sunucusuna erişim için kullanıcı adı.
             User = redisServerSetting.Username,
+
+            // Redis sunucusuna erişim için şifre bilgisi.
             Password = redisServerSetting.Password,
+
+            // Bağlantı açıldığında varsayılan olarak hangi veritabanına bağlanılacağını belirler.
             DefaultDatabase = redisServerSetting.DefaultDatabase,
+
+            // Redis sunucusunda yönetimsel komutları kullanma izni.
             AllowAdmin = redisServerSetting.AllowAdmin,
-            ChannelPrefix = new RedisChannel($"{Assembly.GetEntryAssembly().GetName().Name.ToLowerInvariant()}:", RedisChannel.PatternMode.Auto)
+
+            // Redis ile yayınla/abone ol işlemleri sırasında kullanılan kanal adlarının ön ekidir.
+            ChannelPrefix = new RedisChannel($"entryAssembly}:", RedisChannel.PatternMode.Auto),
+
+            // Uygulamanızın Redis sunucusundaki bağlantıları tanımlamak için bir isim belirler.
+            ClientName = entryAssembly
         });
+
 
         services.TryAddSingleton<IConnectionMultiplexer>(provider =>
         {
-            RedisRetryPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+            RedisPolicies.Logger = provider.GetRequiredService<ILogger<StackExchangeRedisManager>>();
+            RedisPolicies.RetryCount = redisServerSetting.RetryCount;
 
             return connectionMultiplexer;
         });

@@ -13,7 +13,7 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="404">Notification not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(Result<NotificationHistoryResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new GetNotificationHistoryByIdQuery(id), cancellationToken);
@@ -31,8 +31,8 @@ public sealed class NotificationsController : BaseApiController
     /// <response code="400">request is illegal</response>
     [Authorize(Policy = PolicyName.NOTIFICATION_PERMISSION_RESTRICTION)]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Send([FromBody] SendNotificationCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

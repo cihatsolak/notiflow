@@ -23,32 +23,32 @@ public sealed record ScheduleEmailRequest
 
 public sealed class ScheduleEmailRequestValidator : AbstractValidator<ScheduleEmailRequest>
 {
-    public ScheduleEmailRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public ScheduleEmailRequestValidator()
     {
-        RuleFor(p => p.Body).Ensure(localizer[ValidationErrorMessage.EMAIL_BODY]);
+        RuleFor(p => p.Body).Ensure(FluentVld.Errors.EMAIL_BODY);
 
         RuleFor(p => p.Subject)
-          .Ensure(localizer[ValidationErrorMessage.EMAIL_SUBJECT])
-          .MaximumLength(300).WithMessage(localizer[ValidationErrorMessage.EMAIL_SUBJECT]);
+          .Ensure(FluentVld.Errors.EMAIL_SUBJECT)
+          .MaximumLength(300).WithMessage(FluentVld.Errors.EMAIL_SUBJECT);
 
-        RuleForEach(p => p.CustomerIds).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
+        RuleForEach(p => p.CustomerIds).Id(FluentVld.Errors.CUSTOMER_ID);
 
         When(p => !p.CcAddresses.IsNullOrNotAny(), () =>
         {
-            RuleForEach(p => p.CcAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+            RuleForEach(p => p.CcAddresses).Email(FluentVld.Errors.EMAIL);
         });
 
         When(p => !p.BccAddresses.IsNullOrNotAny(), () =>
         {
-            RuleForEach(p => p.BccAddresses).Email(localizer[ValidationErrorMessage.EMAIL]);
+            RuleForEach(p => p.BccAddresses).Email(FluentVld.Errors.EMAIL);
         });
 
         RuleFor(p => p.Date)
             .Must(date => DateTime.TryParse(date, CultureInfo.CurrentCulture, out _))
-            .WithMessage(localizer[ValidationErrorMessage.DATE]);
+            .WithMessage(FluentVld.Errors.DATE);
 
         RuleFor(p => p.Time)
             .Must(date => TimeSpan.TryParse(date, CultureInfo.CurrentCulture, out _))
-            .WithMessage(localizer[ValidationErrorMessage.TIME]);
+            .WithMessage(FluentVld.Errors.TIME);
     }
 }

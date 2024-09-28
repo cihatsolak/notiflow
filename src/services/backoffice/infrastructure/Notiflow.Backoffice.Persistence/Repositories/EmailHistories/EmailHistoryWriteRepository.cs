@@ -1,8 +1,6 @@
 ﻿namespace Notiflow.Backoffice.Persistence.Repositories.EmailHistories;
 
-public sealed class EmailHistoryWriteRepository : WriteRepository<EmailHistory>, IEmailHistoryWriteRepository
+public sealed class EmailHistoryWriteRepository(NotiflowDbContext notiflowDbContext) 
+    : WriteRepository<EmailHistory>(notiflowDbContext), IEmailHistoryWriteRepository
 {
-    public EmailHistoryWriteRepository(NotiflowDbContext notiflowDbContext) : base(notiflowDbContext)
-    {
-    }
 }

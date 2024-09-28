@@ -14,7 +14,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
     [ProducesResponseType(typeof(Result<DtResult<TextMessageDataTableCommandResult>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] TextMessageDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -32,7 +32,7 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="404">Text message history not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(Result<TextMessageHistoryResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new GetTextMessageHistoryByIdQuery(id), cancellationToken);
@@ -50,8 +50,8 @@ public sealed class TextMessagesController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [Authorize(Policy = PolicyName.TEXT_MESSAGE_PERMISSON_RESTRICTION)]
     [HttpPost("send")]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Send([FromBody] SendTextMessageCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

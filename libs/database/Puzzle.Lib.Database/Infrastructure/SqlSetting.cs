@@ -20,4 +20,13 @@ public sealed record SqlSetting
     /// Gets or sets the command timeout duration in seconds for SQL queries.
     /// </summary>
     public int CommandTimeoutSecond { get; set; }
+
+    /// <summary>
+    /// Gets or sets the array of interceptors for SQL queries.
+    /// </summary>
+    public IInterceptor[] Interceptors { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether the application is running in a production environment.
+    /// </summary>
+    public bool IsProductionEnvironment { get; set; }
 }

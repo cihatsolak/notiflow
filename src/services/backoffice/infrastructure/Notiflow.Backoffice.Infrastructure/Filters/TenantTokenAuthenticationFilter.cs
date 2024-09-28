@@ -2,7 +2,6 @@
 
 public sealed class TenantTokenAuthenticationFilter(
     IRedisService redisService,
-    ILocalizerService<ResultCodes> localizer,
     ILogger<TenantTokenAuthenticationFilter> logger) : IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -12,7 +11,7 @@ public sealed class TenantTokenAuthenticationFilter(
         {
             context.Result = new UnauthorizedObjectResult(new
             {
-                message = localizer[ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED]
+                message = ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED
             });
             return;
         }
@@ -22,7 +21,7 @@ public sealed class TenantTokenAuthenticationFilter(
         {
             context.Result = new UnauthorizedObjectResult(new
             {
-                message = localizer[ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED]
+                message = ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED
             });
             return;
         }
@@ -33,7 +32,7 @@ public sealed class TenantTokenAuthenticationFilter(
             logger.LogInformation("A request was made with a valid tenant token: {tenantToken}.", tenantToken);
             context.Result = new UnauthorizedObjectResult(new
             {
-                message = localizer[ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED]
+                message = ResultCodes.TENANT_COULD_NOT_BE_IDENTIFIED
             });
         }
     }

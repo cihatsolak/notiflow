@@ -11,39 +11,10 @@ internal sealed class NotiflowUnitOfWork : INotiflowUnitOfWork
         _context = serviceProvider.GetRequiredService<NotiflowDbContext>();
     }
 
-    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
-       => await _context.Database.BeginTransactionAsync(cancellationToken);
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+       => _context.Database.BeginTransactionAsync(cancellationToken);
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        var baseHistoricalEntities = _context.ChangeTracker.Entries<IBaseHistoricalEntity>();
-
-        foreach (var baseHistoricalEntity in baseHistoricalEntities)
-        {
-            switch (baseHistoricalEntity.State)
-            {
-                case EntityState.Added:
-                    baseHistoricalEntity.Property(p => p.UpdatedDate).IsModified = false;
-                    baseHistoricalEntity.Entity.CreatedDate = DateTime.Now;
-                    break;
-
-                case EntityState.Modified:
-                    baseHistoricalEntity.Property(p => p.CreatedDate).IsModified = false;
-                    baseHistoricalEntity.Entity.UpdatedDate = DateTime.Now;
-                    break;
-            }
-        }
-
-        var baseSoftDeleteEntities = _context.ChangeTracker.Entries<IBaseSoftDeleteEntity>();
-
-        foreach (var baseSoftDeleteEntity in baseSoftDeleteEntities)
-        {
-            baseSoftDeleteEntity.State = EntityState.Modified;
-            baseSoftDeleteEntity.Property(p => p.IsDeleted).CurrentValue = true;
-        }
-
-        return _context.SaveChangesAsync(cancellationToken);
-    }
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken) => _context.SaveChangesAsync(cancellationToken);
 
     public async Task UndoChangesAsync(CancellationToken cancellationToken)
     {

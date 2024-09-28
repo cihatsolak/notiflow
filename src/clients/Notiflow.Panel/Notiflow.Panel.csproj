@@ -24,7 +24,6 @@
     <ProjectReference Include="..\..\..\libs\assistant\Puzzle.Lib.Assistant\Puzzle.Lib.Assistant.csproj" />
     <ProjectReference Include="..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
     <ProjectReference Include="..\..\..\libs\http\Puzzle.Lib.Http\Puzzle.Lib.Http.csproj" />
-    <ProjectReference Include="..\..\..\libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj" />
     <ProjectReference Include="..\..\..\libs\validation\Puzzle.Lib.Validation\Puzzle.Lib.Validation.csproj" />
     <ProjectReference Include="..\..\shared\Notiflow.Common\Notiflow.Common.csproj" />
   </ItemGroup>

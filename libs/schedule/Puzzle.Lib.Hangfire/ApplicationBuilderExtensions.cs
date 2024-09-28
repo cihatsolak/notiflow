@@ -20,11 +20,11 @@ public static class ApplicationBuilderExtensions
         {
             DashboardTitle = Assembly.GetCallingAssembly().GetName().Name,
             AppPath = HANGFIRE_MAIN_PATH,
-            Authorization = new[] { new HangfireCustomBasicAuthenticationFilter
+            Authorization = [ new HangfireCustomBasicAuthenticationFilter
             {
                 User = hangfireSetting.Username,
                 Pass = hangfireSetting.Password
-            } },
+            } ],
             IgnoreAntiforgeryToken = true
         });
 

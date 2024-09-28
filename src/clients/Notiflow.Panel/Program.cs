@@ -19,14 +19,11 @@ builder.Services.AddControllersWithViews(options =>
 })
 .AddRazorRuntimeCompilation();
 
-builder.Services.AddWebUILocalize(opt =>
+builder.Services.AddClientSideValidation(opt =>
 {
-    opt.ResourcesPath = "Resources";
-    opt.SharedDataAnnotationBaseName = nameof(SharedDataAnnotationResource);
-    opt.SharedDataAnnotationLocation = Assembly.GetExecutingAssembly().GetName().Name;
+    opt.CultureInfo = CultureInfo.CurrentCulture;
+    opt.CascadeMode = CascadeMode.Stop;
 });
-
-builder.Services.AddClientSideValidation();
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IAuthService, AuthManager>();
 
@@ -47,8 +44,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseLocalization();
 
 app.UseCookiePolicy(new CookiePolicyOptions
 {

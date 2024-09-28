@@ -25,7 +25,6 @@
 		<ProjectReference Include="..\..\..\..\libs\entities\Puzzle.Lib.Entities\Puzzle.Lib.Entities.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\healthcheck\Puzzle.Lib.HealthCheck\Puzzle.Lib.HealthCheck.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\host\Puzzle.Lib.Host\Puzzle.Lib.Host.csproj" />
-		<ProjectReference Include="..\..\..\..\libs\localize\Puzzle.Lib.Localize\Puzzle.Lib.Localize.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\logging\Puzzle.Lib.Logging\Puzzle.Lib.Logging.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\response\Puzzle.Lib.Response\Puzzle.Lib.Response.csproj" />
 		<ProjectReference Include="..\..\..\..\libs\schedule\Puzzle.Lib.Hangfire\Puzzle.Lib.Hangfire.csproj" />

@@ -1,17 +1,8 @@
 ﻿namespace Puzzle.Lib.Http.Middlewares;
 
-public sealed class CorrelationIdMiddleware
+public sealed class CorrelationIdMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccesor)
 {
     private const string X_CORRELATION_ID = "x-correlation-id";
-
-    private readonly RequestDelegate _next;
-    private readonly IHttpContextAccessor _httpContextAccesor;
-
-    public CorrelationIdMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccesor)
-    {
-        _next = next;
-        _httpContextAccesor = httpContextAccesor;
-    }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
@@ -27,9 +18,9 @@ public sealed class CorrelationIdMiddleware
             correlationId = Guid.NewGuid().ToString();
         }
 
-        _httpContextAccesor.HttpContext.Request.Headers.TryAdd(X_CORRELATION_ID, correlationId);
+        httpContextAccesor.HttpContext.Request.Headers.TryAdd(X_CORRELATION_ID, correlationId);
 
-        await _next(httpContext);
+        await next(httpContext);
 
         if (!httpContext.Response.Headers.ContainsKey(X_CORRELATION_ID))
         {

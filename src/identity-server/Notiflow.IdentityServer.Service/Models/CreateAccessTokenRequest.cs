@@ -2,16 +2,19 @@
 
 public sealed record CreateAccessTokenRequest(string Username, string Password);
 
+public sealed class CreateAccessTokenRequestExample : IExamplesProvider<CreateAccessTokenRequest>
+{
+    public CreateAccessTokenRequest GetExamples() => new("StarryTraveler92", "X7v!j2a$L9");
+}
+
 public sealed class CreateAccessTokenRequestValidator : AbstractValidator<CreateAccessTokenRequest>
 {
-     private const int PASSWORD_MAX_LENGTH = 100;
-
-    public CreateAccessTokenRequestValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public CreateAccessTokenRequestValidator()
     {
         RuleFor(p => p.Username)
-            .Ensure(localizer[ValidationErrorMessage.USERNAME])
-            .Length(5, 100).WithMessage(localizer[ValidationErrorMessage.USERNAME]);
+            .Ensure(FluentVld.Errors.USERNAME)
+            .Length(5, 100).WithMessage(FluentVld.Errors.USERNAME);
 
-        RuleFor(p => p.Password).StrongPassword(localizer[ValidationErrorMessage.PASSWORD], PASSWORD_MAX_LENGTH);
+        RuleFor(p => p.Password).StrongPassword(FluentVld.Errors.PASSWORD, FluentVld.Rules.PASSWORD_MAX_100_LENGTH);
     }
 }

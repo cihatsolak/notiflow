@@ -25,3 +25,14 @@ Exception Filters, bazý durumlarda oluþan tüm exceptionlar için iþlem yapmak ist
 Redelivery, sistemde oluþan hatalar her zaman kýsa süreli problemlerden meydana gelmez. Uzak sunucu, SQL serverin çökmesi gibi durumlarda retry süremizi daha uzun vermek isteyebiliriz. Bu gibi durumlarda message scheduler kullanmamýz gerekir. Scheduler yapýsýyla daha uzun aralýklý süreler ile retry mekanizmasý kurabiliriz.
 Outbox, uzun süren hata durumlarýnda message scheduler’a alternatif olarak InMemoryOutbox kullanýlabilir. Bu yapýda mesaj consume edilene kadar Outbox (Giden Kutusu) mesajý kendi bünyesinde barýndýrýr ve uzun süren aralýklar ile retry imkaný saðlar.
 Faults, belirli bir mesaj için oluþturulan consumer’larda fýrlatýlan exceptionlarý yönetmek amacýyla ilgili consumer’a özel fault-consumer oluþturulabilir. Bu fault-consumer da exception’ý yakalayýp gerekli iþlemleri gerçekleþtirebiliriz.
+
+
+---
+
+ await publishEndpoint.Publish(emailNotDeliveredEvent, pipeline =>
+{
+    pipeline.SetAwaitAck(true); // Mesajýn baþarýlý bir þekilde iþlendiðine dair bir onay (acknowledgement) bekleyeceðinizi belirtir.
+                                   Consumer tarafýnda baþarýlý iþleme durumunda herhangi bir þey yapmanýz gerekmez, ancak hata durumunda bir Exception fýrlatmanýz gerekmektedir.
+
+    pipeline.Durable = true; // Mesajýn kalýcý (persistent) olarak yayýnlanýp yayýnlanmayacaðýný belirler.
+}, cancellationToken);

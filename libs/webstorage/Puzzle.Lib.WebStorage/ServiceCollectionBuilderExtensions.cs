@@ -1,20 +1,19 @@
-﻿namespace Puzzle.Lib.Cookie;
+﻿namespace Puzzle.Lib.WebStorage;
 
 /// <summary>
 /// Provides extension methods for configuring cookie authentication and cookie policy for an IServiceCollection.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds cookie authentication to the IServiceCollection using the specified configuration settings.
     /// </summary>
     /// <param name="builder">The IServiceCollection instance to add the authentication services to.</param>
     /// <returns>The IServiceCollection instance with the authentication services added.</returns>
-    public static IServiceCollection AddCookieAuthentication(this WebApplicationBuilder builder)
+    public static IServiceCollection AddCookieAuthentication(this WebApplicationBuilder builder, Action<CookieAuthenticationSetting> configure)
     {
-        IConfigurationSection configurationSection = builder.Configuration.GetRequiredSection(nameof(CookieAuthenticationSetting));
-        builder.Services.Configure<CookieAuthenticationSetting>(configurationSection);
-        CookieAuthenticationSetting cookieAuthenticationSetting = configurationSection.Get<CookieAuthenticationSetting>();
+        CookieAuthenticationSetting cookieAuthenticationSetting = new();
+        configure.Invoke(cookieAuthenticationSetting);
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configure =>
@@ -41,7 +40,7 @@ public static class ServiceCollectionContainerBuilderExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection instance to configure the cookie policy options for.</param>
     /// <returns>The IServiceCollection instance with the cookie policy options configured.</returns>
-    public static IServiceCollection ConfigureSecureCookiePolicy(this IServiceCollection services)
+    public static IServiceCollection ConfigureAlwaysSecureCookiePolicy(this IServiceCollection services)
     {
         services.Configure<CookiePolicyOptions>(options =>
         {

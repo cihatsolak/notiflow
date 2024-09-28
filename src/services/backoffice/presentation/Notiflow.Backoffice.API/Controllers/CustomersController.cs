@@ -13,7 +13,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="404">Customers not found</response>
     [HttpPost("datatable")]
     [ProducesResponseType(typeof(Result<DtResult<CustomerDataTableCommandResult>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DataTable([FromBody] CustomerDataTableCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -31,7 +31,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="404">Customer information not found</response>
     [HttpGet("{id:int:min(1):max(2147483647)}/detail")]
     [ProducesResponseType(typeof(Result<CustomerResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new GetCustomerByIdQuery(id), cancellationToken);
@@ -67,7 +67,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [HttpPut("update")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -85,7 +85,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [HttpDelete("{id:int:min(1):max(2147483647)}")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(new DeleteCustomerCommand(id), cancellationToken);
@@ -103,7 +103,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [HttpPatch("update-blocking")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBlocking([FromBody] UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -121,7 +121,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [HttpPatch("update-email")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateEmail([FromBody] UpdateCustomerEmailCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);
@@ -139,7 +139,7 @@ public sealed class CustomersController : BaseApiController
     /// <response code="401">Unauthorized action</response>
     [HttpPatch("update-phone-number")]
     [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdatePhoneNumber([FromBody] UpdateCustomerPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         var response = await Sender.Send(request, cancellationToken);

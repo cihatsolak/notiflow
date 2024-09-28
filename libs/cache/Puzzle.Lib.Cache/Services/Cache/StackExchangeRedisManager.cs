@@ -20,21 +20,19 @@ internal sealed class StackExchangeRedisManager : IRedisService
         _englishCultureInfo = new CultureInfo("en-US");
     }
 
-    public async Task<bool> ExistsAsync(string cacheKey)
+    public Task<bool> ExistsAsync(string cacheKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-        {
-            return await _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
-        });
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
+            _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica));
     }
 
-    public async Task<long> IncrementAsync(string cacheKey, int increment)
+    public Task<long> IncrementAsync(string cacheKey, int increment)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             long result = await _database.StringIncrementAsync(KeyLower(cacheKey), increment, CommandFlags.DemandMaster);
             if (0 >= result)
@@ -46,11 +44,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<long> DecrementAsync(string cacheKey, int decrement)
+    public Task<long> DecrementAsync(string cacheKey, int decrement)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             long result = await _database.StringDecrementAsync(KeyLower(cacheKey), decrement, CommandFlags.DemandMaster);
             if (0 >= result)
@@ -62,40 +60,38 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> HashExistsAsync(string cacheKey, string hashField)
+    public Task<bool> HashExistsAsync(string cacheKey, string hashField)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-        {
-            return await _database.HashExistsAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
-        });
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
+                    _database.HashExistsAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica));
     }
 
-    public async Task<IEnumerable<KeyValuePair<string, string>>> HashGetAllAsync(string cacheKey)
+    public Task<IEnumerable<KeyValuePair<string, string>>> HashGetAllAsync(string cacheKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var hashEntries = await _database.HashGetAllAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (hashEntries.Length == 0)
             {
                 _logger.LogWarning("Data for key {cacheKey} not found.", cacheKey);
-                return [];
+                return Enumerable.Empty<KeyValuePair<string, string>>();
             }
 
             return hashEntries.Select(hashEntry => new KeyValuePair<string, string>(hashEntry.Name, hashEntry.Value));
         });
     }
 
-    public async Task<TData> HashGetAsync<TData>(string cacheKey, string hashField)
+    public Task<TData> HashGetAsync<TData>(string cacheKey, string hashField)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var hashEntry = await _database.HashGetAsync(KeyLower(cacheKey), hashField, CommandFlags.PreferReplica);
             if (!hashEntry.HasValue)
@@ -108,11 +104,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> HashSetAsync<TValue>(string cacheKey, string hashField, TValue value)
+    public Task<bool> HashSetAsync<TValue>(string cacheKey, string hashField, TValue value)
     {
         CheckArguments(cacheKey, hashField, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.HashSetAsync(KeyLower(cacheKey), hashField, JsonSerializer.Serialize(value), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -124,12 +120,12 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> HashDeleteAsync(string cacheKey, string hashField)
+    public Task<bool> HashDeleteAsync(string cacheKey, string hashField)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(hashField);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.HashDeleteAsync(KeyLower(cacheKey), hashField, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -141,12 +137,12 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<int> SortedSetIncrementAsync(string cacheKey, string memberKey, int increment)
+    public Task<int> SortedSetIncrementAsync(string cacheKey, string memberKey, int increment)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(memberKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             double result = await _database.SortedSetIncrementAsync(KeyLower(cacheKey), memberKey, increment, CommandFlags.DemandMaster);
             if (result == 0)
@@ -158,11 +154,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
+    public Task<IEnumerable<TData>> GetSortedListInDescendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Descending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -175,11 +171,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
+    public Task<IEnumerable<TData>> GetSortedListInAscendingOrderOfScoreAsync<TData>(string cacheKey, int start = 0, int stop = -1) where TData : struct
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SortedSetRangeByRankAsync(KeyLower(cacheKey), start, stop, Order.Ascending, CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -192,12 +188,12 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey)
+    public Task<bool> SortedSetDeleteAsync(string cacheKey, string memberKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
         ArgumentException.ThrowIfNullOrEmpty(memberKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SortedSetRemoveAsync(KeyLower(cacheKey), memberKey, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -209,21 +205,19 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SetExistsAsync<TValue>(string cacheKey, TValue value)
+    public Task<bool> SetExistsAsync<TValue>(string cacheKey, TValue value)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-        {
-            return await _database.SetContainsAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.PreferReplica);
-        });
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
+                _database.SetContainsAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.PreferReplica));
     }
 
-    public async Task<IEnumerable<TData>> SetMembersAsync<TData>(string cacheKey)
+    public Task<IEnumerable<TData>> SetMembersAsync<TData>(string cacheKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValues = await _database.SetMembersAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (redisValues.Length == 0)
@@ -235,11 +229,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SetAddAsync<TValue>(string cacheKey, TValue value)
+    public Task<bool> SetAddAsync<TValue>(string cacheKey, TValue value)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SetAddAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
@@ -251,11 +245,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> SetRemoveAsync<TValue>(string cacheKey, TValue value)
+    public Task<bool> SetRemoveAsync<TValue>(string cacheKey, TValue value)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.SetRemoveAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), CommandFlags.DemandMaster);
             if (!succeeded)
@@ -267,11 +261,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<TResponse> StringGetAsync<TResponse>(string cacheKey) where TResponse : class, new()
+    public Task<TResponse> StringGetAsync<TResponse>(string cacheKey) where TResponse : class, new()
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             var redisValue = await _database.StringGetAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (!redisValue.HasValue)
@@ -281,11 +275,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value)
+    public Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -297,11 +291,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, int cacheDurationInMinutes)
+    public Task<bool> StringSetAsync<TValue>(string cacheKey, TValue value, int cacheDurationInMinutes)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), TimeSpan.FromMinutes(cacheDurationInMinutes), When.Always, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -313,11 +307,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> ChangeStringAsync<TValue>(string cacheKey, TValue value)
+    public Task<bool> ChangeStringAsync<TValue>(string cacheKey, TValue value)
     {
         CheckArguments(cacheKey, value);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             bool succeeded = await _database.StringSetAsync(KeyLower(cacheKey), JsonSerializer.Serialize(value), null, true, When.Exists, CommandFlags.DemandMaster);
             if (!succeeded)
@@ -329,11 +323,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> ExtendCacheDurationAsync(string cacheKey, int cacheDurationInMinutes)
+    public Task<bool> ExtendCacheDurationAsync(string cacheKey, int cacheDurationInMinutes)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             TimeSpan? currentExpiration = await _database.KeyTimeToLiveAsync(KeyLower(cacheKey), CommandFlags.PreferReplica);
             if (currentExpiration is null)
@@ -354,11 +348,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> RemoveAsync(string cacheKey)
+    public Task<bool> RemoveAsync(string cacheKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(cacheKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             if (await _database.KeyExistsAsync(KeyLower(cacheKey), CommandFlags.PreferReplica) && !await _database.KeyDeleteAsync(KeyLower(cacheKey), CommandFlags.DemandMaster))
             {
@@ -370,11 +364,11 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task<bool> RemoveKeysBySearchKeyAsync(string searchKey, SearchKeyType searchKeyType)
+    public Task<bool> RemoveKeysBySearchKeyAsync(string searchKey, SearchKeyType searchKeyType)
     {
         ArgumentException.ThrowIfNullOrEmpty(searchKey);
 
-        return await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
+        return RedisPolicies.ExecuteWithRetryAsync(async () =>
         {
             searchKey = searchKeyType switch
             {
@@ -411,20 +405,16 @@ internal sealed class StackExchangeRedisManager : IRedisService
         });
     }
 
-    public async Task ClearDatabaseAsync()
+    public Task ClearDatabaseAsync()
     {
-        await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-        {
-            await _server.FlushDatabaseAsync(_redisServerSetting.DefaultDatabase, CommandFlags.DemandMaster);
-        });
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
+            _server.FlushDatabaseAsync(_redisServerSetting.DefaultDatabase, CommandFlags.DemandMaster));
     }
 
-    public async Task ClearDatabaseAsync(int databaseNumber)
+    public Task ClearDatabaseAsync(int databaseNumber)
     {
-        await RedisRetryPolicies.AsyncRetryPolicy.ExecuteAsync(async () =>
-        {
-            await _server.FlushDatabaseAsync(databaseNumber, CommandFlags.DemandMaster);
-        });
+        return RedisPolicies.ExecuteWithRetryAsync(() =>
+        _server.FlushDatabaseAsync(databaseNumber, CommandFlags.DemandMaster));
     }
 
     private static void CheckArguments<TValue>(string cacheKey, string hashField, TValue value)

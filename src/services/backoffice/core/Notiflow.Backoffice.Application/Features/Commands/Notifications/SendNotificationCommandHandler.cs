@@ -5,20 +5,20 @@ public sealed record SendNotificationCommand(
     string Title,
     string Message,
     string ImageUrl
-    ) : IRequest<Result<Unit>>;
+    ) : IRequest<Result>;
 
 public sealed class SendNotificationCommandHandler(
     INotiflowUnitOfWork notiflowUnitOfWork,
     IFirebaseService firebaseService,
     IHuaweiService huaweiService,
-    IPublishEndpoint publishEndpoint) : IRequestHandler<SendNotificationCommand, Result<Unit>>
+    IPublishEndpoint publishEndpoint) : IRequestHandler<SendNotificationCommand, Result>
 {
-    public async Task<Result<Unit>> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
     {
         List<Device> devices = await notiflowUnitOfWork.DeviceRead.GetCloudMessagePlatformByCustomerIdsAsync(request.CustomerIds, cancellationToken);
         if (devices.IsNullOrNotAny())
         {
-            return Result<Unit>.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.DEVICE_NOT_FOUND);
         }
 
         var firesabeDeviceTokens = devices
@@ -72,7 +72,7 @@ public sealed class SendNotificationCommandHandler(
             }
         }
 
-        return Result<Unit>.Status200OK(ResultCodes.NOTIFICATION_SENDING_SUCCESSFUL);
+        return Result.Status200OK(ResultCodes.NOTIFICATION_SENDING_SUCCESSFUL);
     }
 
     private async Task<NotificationResult> SendFirebaseNotifyAsync(SendNotificationCommand request, List<string> deviceTokens, CancellationToken cancellationToken)

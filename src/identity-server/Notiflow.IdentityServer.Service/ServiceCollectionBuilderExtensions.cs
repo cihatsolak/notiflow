@@ -1,4 +1,6 @@
-﻿namespace Notiflow.IdentityServer.Service;
+﻿using System.Globalization;
+
+namespace Notiflow.IdentityServer.Service;
 
 public static class ServiceCollectionBuilderExtensions
 {
@@ -36,10 +38,19 @@ public static class ServiceCollectionBuilderExtensions
         services.TryAddScoped<IUserService, UserManager>();
 
         services
-           .AddWebApiLocalize()
            .AddHttpContextAccessor()
-           .AddServerSideValidation()
-           .AddApiBehaviorOptions();
+           .AddServerSideValidation(configure =>
+           {
+               configure.CascadeMode = CascadeMode.Stop;
+               configure.CultureInfo = CultureInfo.CurrentCulture;
+           })
+           .AddApiBehaviorWithValidationLogging(opt =>
+           {
+               opt.SuppressInferBindingSourcesForParameters = false;
+               opt.SuppressInferBindingSourcesForParameters = false;
+               opt.ErrorMessage = "Hata!";
+               opt.IsProductionEnvironment = true; //TODO:
+           });
 
         AddObservers(services);
 

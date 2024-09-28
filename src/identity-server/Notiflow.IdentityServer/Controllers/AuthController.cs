@@ -13,7 +13,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <response code="400">invalid request</response>
     [HttpPost("access-token")]
     [ProducesResponseType(typeof(Result<TokenResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAccessToken([FromBody] CreateAccessTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await authService.CreateAccessTokenAsync(request, cancellationToken);
@@ -30,7 +30,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <response code="400">invalid request</response>
     [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(Result<TokenResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTokenByRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await authService.CreateAccessTokenAsync(request, cancellationToken);
@@ -47,8 +47,8 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     /// <response code="400">invalid request</response>
     /// <response code="401">unauthorized user</response>
     [HttpDelete("revoke-refresh-token/{refreshToken:minlength(35)}")]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
     {
         var response = await authService.RevokeRefreshTokenAsync(refreshToken, cancellationToken);
@@ -66,7 +66,7 @@ public sealed class AuthController(IAuthService authService) : BaseApiController
     [Authorize]
     [HttpGet("user")]
     [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<EmptyResponse>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAuthenticatedUser(CancellationToken cancellationToken)
     {
         var response = await authService.GetAuthenticatedUserAsync(cancellationToken);

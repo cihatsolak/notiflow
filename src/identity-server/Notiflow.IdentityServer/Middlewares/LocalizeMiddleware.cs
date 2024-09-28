@@ -1,6 +1,8 @@
 ﻿using Microsoft.IO;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Notiflow.IdentityServer.Middlewares
 {
@@ -10,6 +12,14 @@ namespace Notiflow.IdentityServer.Middlewares
         private readonly RequestDelegate _next;
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
 
+        //public LocalizeMiddleware(RequestDelegate next, ILocalizerService<ResultCodes> localizerService)
+        //{
+        //    _next = next;
+        //    _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
+        //    _localizerService = 
+        //    _localizerService = localizerService;
+        //}
+
         public LocalizeMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -17,11 +27,6 @@ namespace Notiflow.IdentityServer.Middlewares
         }
 
         public async Task InvokeAsync(HttpContext context)
-        {
-            await AddResponseBodyContentToActivityTags(context);
-        }
-
-        private async Task AddResponseBodyContentToActivityTags(HttpContext context)
         {
             var originalResponse = context.Response.Body;
 
@@ -35,20 +40,15 @@ namespace Notiflow.IdentityServer.Middlewares
             var responseBodyStreamReader = new StreamReader(responseBodyMemoryStream);
             var responseBodyContent = await responseBodyStreamReader.ReadToEndAsync();
 
-            // Dönüş modelini parse et
-            var responseObject = JsonSerializer.Deserialize<Result<object>>(responseBodyContent);
+            JsonNode jsonNode = JsonNode.Parse(responseBodyContent);
 
-            // Message özelliğini güncelle
-            if (responseObject != null)
-            {
-                responseObject.Message = "Yeni Mesaj"; // Yeni mesajı buraya ekleyin
-            }
+            // 'message' alanını güncelleyin
+            //jsonNode["message"] = localizerService[jsonNode["message"]];
+            string updatedJsonString = jsonNode.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
 
-            // Güncellenmiş dönüş modelini JSON olarak geri yaz
-            var updatedResponseBody = JsonSerializer.Serialize(responseObject);
 
             responseBodyMemoryStream.Position = 0;
-            await responseBodyMemoryStream.WriteAsync(Encoding.UTF8.GetBytes(updatedResponseBody).AsMemory(0, Encoding.UTF8.GetBytes(updatedResponseBody).Length));
+            await responseBodyMemoryStream.WriteAsync(Encoding.UTF8.GetBytes(updatedJsonString).AsMemory(0, Encoding.UTF8.GetBytes(updatedJsonString).Length));
 
             // Orjinal yanıt akışına kopyala
             responseBodyMemoryStream.Position = 0; // Position'ı sıfırla

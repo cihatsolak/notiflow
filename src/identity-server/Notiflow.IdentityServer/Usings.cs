@@ -20,8 +20,6 @@ global using Puzzle.Lib.Documentation.Settings;
 global using Puzzle.Lib.HealthCheck;
 global using Puzzle.Lib.HealthCheck.Infrastructure;
 global using Puzzle.Lib.Host;
-global using Puzzle.Lib.Host.Infrastructure;
-global using Puzzle.Lib.Localize;
 global using Puzzle.Lib.Logging;
 global using Puzzle.Lib.Logging.Infrastructure;
 global using Puzzle.Lib.Response;

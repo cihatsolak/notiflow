@@ -1,7 +1,15 @@
 ﻿namespace Puzzle.Lib.Security.Middlewares;
 
+/// <summary>
+/// Middleware for adding security headers to the HTTP response.
+/// </summary>
 public sealed class SecurityHeadersMiddleware(RequestDelegate next)
 {
+    /// <summary>
+    /// Invokes the middleware to add security headers to the HTTP response.
+    /// </summary>
+    /// <param name="context">The current HTTP context.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task InvokeAsync(HttpContext context)
     {
         context.Response.Headers.Append("X-Xss-Protection", "1; mode=block");

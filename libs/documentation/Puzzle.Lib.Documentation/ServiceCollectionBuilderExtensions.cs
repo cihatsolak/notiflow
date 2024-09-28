@@ -3,7 +3,7 @@
 /// <summary>
 /// Extension methods for configuring Swagger in an IServiceCollection.
 /// </summary>
-public static class ServiceCollectionContainerBuilderExtensions
+public static class ServiceCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds Swagger to the service collection.
@@ -15,11 +15,14 @@ public static class ServiceCollectionContainerBuilderExtensions
         SwaggerSetting swaggerSetting = new();
         configure?.Invoke(swaggerSetting);
 
+        if (swaggerSetting.IsProductionEnvironment) return services;
+
         services.Configure(configure);
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
+            options.ExampleFilters();
             options.DescribeAllParametersInCamelCase();
 #pragma warning disable S1075 // URIs should not be hardcoded
             options.SwaggerDoc(swaggerSetting.Version, new OpenApiInfo
@@ -53,6 +56,8 @@ public static class ServiceCollectionContainerBuilderExtensions
             AddJwtSecurityScheme(options);
             AddBasicSecurityScheme(options);
         });
+
+        services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
 
         return services;
     }

@@ -35,12 +35,12 @@ public sealed class AddDeviceCommandValidator : AbstractValidator<AddDeviceComma
     private const int DEVICE_CODE_MAX_LENGTH = 100;
     private const int DEVICE_TOKEN_MAX_LENGTH = 100;
 
-    public AddDeviceCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public AddDeviceCommandValidator()
     {
-        RuleFor(p => p.CustomerId).Id(localizer[ValidationErrorMessage.CUSTOMER_ID]);
-        RuleFor(p => p.OSVersion).Enum(localizer[ValidationErrorMessage.OS_VERSION]);
-        RuleFor(p => p.Code).Ensure(localizer[ValidationErrorMessage.DEVICE_CODE], DEVICE_CODE_MAX_LENGTH);
-        RuleFor(p => p.Token).Ensure(localizer[ValidationErrorMessage.DEVICE_TOKEN], DEVICE_TOKEN_MAX_LENGTH);
-        RuleFor(p => p.CloudMessagePlatform).Enum(localizer[ValidationErrorMessage.CLOUD_MESSAGE_PLATFORM]);
+        RuleFor(p => p.CustomerId).Id(FluentVld.Errors.CUSTOMER_ID);
+        RuleFor(p => p.OSVersion).Enum(FluentVld.Errors.OS_VERSION);
+        RuleFor(p => p.Code).Ensure(FluentVld.Errors.DEVICE_CODE, DEVICE_CODE_MAX_LENGTH);
+        RuleFor(p => p.Token).Ensure(FluentVld.Errors.DEVICE_TOKEN, DEVICE_TOKEN_MAX_LENGTH);
+        RuleFor(p => p.CloudMessagePlatform).Enum(FluentVld.Errors.CLOUD_MESSAGE_PLATFORM);
     }
 }

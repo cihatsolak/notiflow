@@ -1,3 +1,5 @@
+using Notiflow.IdentityServer.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.HostConfigured();
@@ -31,8 +33,9 @@ app.UseApiExceptionHandler()
    .UseCustomHttpLogging()
    .UseHealth();
 
-app.UseLocalizationWithEndpoint();
 app.UseApplicationLifetimes();
+
+app.UseCihatMiddleware();
 
 app.MapControllers();
 

@@ -1,23 +1,23 @@
 ﻿namespace Notiflow.Backoffice.Application.Features.Commands.Customers;
 
-public sealed record UpdateCustomerBlockingCommand(int Id, bool IsBlocked) : IRequest<Result<EmptyResponse>>;
+public sealed record UpdateCustomerBlockingCommand(int Id, bool IsBlocked) : IRequest<Result>;
 
 public sealed class UpdateCustomerBlockingCommandHandler(
     INotiflowUnitOfWork uow,
-    ILogger<UpdateCustomerBlockingCommandHandler> logger) : IRequestHandler<UpdateCustomerBlockingCommand, Result<EmptyResponse>>
+    ILogger<UpdateCustomerBlockingCommandHandler> logger) : IRequestHandler<UpdateCustomerBlockingCommand, Result>
 {
-    public async Task<Result<EmptyResponse>> Handle(UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCustomerBlockingCommand request, CancellationToken cancellationToken)
     {
         var customer = await uow.CustomerRead.GetByIdAsync(request.Id, cancellationToken);
         if (customer is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.CUSTOMER_NOT_FOUND);
         }
 
         if (customer.IsBlocked == request.IsBlocked)
         {
             logger.LogWarning("The current disability situation is no different from the situation to be changed. Customer ID: {customerId}", request.Id);
-            return Result<EmptyResponse>.Status400BadRequest(ResultCodes.CUSTOMER_BLOCKING_STATUS_EXISTS);
+            return Result.Status400BadRequest(ResultCodes.CUSTOMER_BLOCKING_STATUS_EXISTS);
         }
 
         customer.IsBlocked = request.IsBlocked;
@@ -29,14 +29,14 @@ public sealed class UpdateCustomerBlockingCommandHandler(
             request.Id,
             request.IsBlocked ? "blocked" : "unblocked");
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.CUSTOMER_BLOCK_STATUS_UPDATED);
+        return Result.Status204NoContent();
     }
 }
 
 public sealed class UpdateCustomerBlockingCommandValidator : AbstractValidator<UpdateCustomerBlockingCommand>
 {
-    public UpdateCustomerBlockingCommandValidator(ILocalizerService<ValidationErrorMessage> localizer)
+    public UpdateCustomerBlockingCommandValidator()
     {
-        RuleFor(p => p.Id).Id(localizer[ValidationErrorMessage.ID_NUMBER]);
+        RuleFor(p => p.Id).Id(FluentVld.Errors.ID_NUMBER);
     }
 }

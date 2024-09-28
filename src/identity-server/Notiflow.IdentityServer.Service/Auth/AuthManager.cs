@@ -76,7 +76,7 @@ internal class AuthManager(
         return Result<TokenResponse>.Status200OK(ResultCodes.ACCESS_TOKEN_GENERATED, token);
     }
 
-    public async Task<Result<EmptyResponse>> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken)
+    public async Task<Result> RevokeRefreshTokenAsync(string token, CancellationToken cancellationToken)
     {
         var refreshToken = await context.RefreshTokens
             .TagWith("Get refresh token by refresh token.")
@@ -84,16 +84,16 @@ internal class AuthManager(
             .SingleOrDefaultAsync(p => p.Token == token && p.User.Id == claimService.NameIdentifier, cancellationToken);
         if (refreshToken is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.REFRESH_TOKEN_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.REFRESH_TOKEN_NOT_FOUND);
         }
 
         int numberOfRowsDeleted = await context.RefreshTokens.Where(p => p.Token == refreshToken.Token).ExecuteDeleteAsync(cancellationToken);
         if (0 >= numberOfRowsDeleted)
         {
-            return Result<EmptyResponse>.Status500InternalServerError(ResultCodes.REFRESH_TOKEN_COULD_NOT_BE_DELETED);
+            return Result.Status500InternalServerError(ResultCodes.REFRESH_TOKEN_COULD_NOT_BE_DELETED);
         }
 
-        return Result<EmptyResponse>.Status200OK(ResultCodes.GENERAL_SUCCESS);
+        return Result.Status200OK(ResultCodes.GENERAL_SUCCESS);
     }
 
     public async Task<Result<UserResponse>> GetAuthenticatedUserAsync(CancellationToken cancellationToken)

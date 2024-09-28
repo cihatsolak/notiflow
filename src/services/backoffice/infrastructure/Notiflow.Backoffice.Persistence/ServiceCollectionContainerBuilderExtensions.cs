@@ -4,6 +4,9 @@ public static class ServiceCollectionContainerBuilderExtensions
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        ILogger logger= serviceProvider.GetRequiredService<ILogger<QueryViolationDbCommandInterceptor>>();
+
         SqlSetting sqlSetting = configuration.GetRequiredSection(nameof(NotiflowDbContext)).Get<SqlSetting>();
 
         services.AddPostgreSql<NotiflowDbContext>(options =>
@@ -11,6 +14,10 @@ public static class ServiceCollectionContainerBuilderExtensions
             options.IsSplitQuery = sqlSetting.IsSplitQuery;
             options.ConnectionString = sqlSetting.ConnectionString;
             options.CommandTimeoutSecond = sqlSetting.CommandTimeoutSecond;
+            options.Interceptors = [
+                new HistoricalDbContextInterceptor(),
+                new QueryViolationDbCommandInterceptor(logger)
+            ];
         });
 
         services
@@ -26,7 +33,7 @@ public static class ServiceCollectionContainerBuilderExtensions
             .AddScoped<IEmailHistoryWriteRepository, EmailHistoryWriteRepository>();
 
         services.AddScoped<INotiflowUnitOfWork, NotiflowUnitOfWork>();
-        
+
         services.SeedAsync(CancellationToken.None).Wait();
 
         return services;

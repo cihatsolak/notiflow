@@ -45,12 +45,12 @@ internal sealed class UserManager(
         return Result<int>.Status201Created(ResultCodes.USER_ADDED, user.Id);
     }
 
-    public async Task<Result<EmptyResponse>> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)
+    public async Task<Result> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var user = await context.Users.FindAsync([id], cancellationToken);
         if (user is null)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.USER_NOT_FOUND);
+            return Result.Status404NotFound(ResultCodes.USER_NOT_FOUND);
         }
 
         request.Adapt(user);
@@ -58,7 +58,7 @@ internal sealed class UserManager(
         if (request.Avatar is null || 0 >= request.Avatar.Length)
         {
             await context.SaveChangesAsync(cancellationToken);
-            return Result<EmptyResponse>.Status204NoContent(ResultCodes.USER_UPTATED);
+            return Result.Status204NoContent();
         }
 
         var fileResult = await fileService.AddAfterRenameIfAvailableAsync(request.Avatar, AppFilePaths.PROFILE_PHOTOS, cancellationToken);
@@ -69,10 +69,10 @@ internal sealed class UserManager(
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.USER_UPTATED);
+        return Result.Status204NoContent();
     }
 
-    public async Task<Result<EmptyResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         int numberOfRowsDeleted = await context.Users
             .TagWith("Deletes the user based on user ID.")
@@ -80,10 +80,10 @@ internal sealed class UserManager(
             .ExecuteDeleteAsync(cancellationToken);
         if (0 >= numberOfRowsDeleted)
         {
-            return Result<EmptyResponse>.Status404NotFound(ResultCodes.USER_NOT_DELETED);
+            return Result.Status404NotFound(ResultCodes.USER_NOT_DELETED);
         }
 
-        return Result<EmptyResponse>.Status204NoContent(ResultCodes.USER_DELETED);
+        return Result.Status204NoContent();
     }
 
     public async Task<Result<string>> UpdateProfilePhotoByIdAsync(int id, IFormFile profilePhoto, CancellationToken cancellationToken)
