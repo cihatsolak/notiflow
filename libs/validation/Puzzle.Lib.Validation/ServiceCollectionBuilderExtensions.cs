@@ -51,33 +51,32 @@ public static class ServiceCollectionBuilderExtensions
     /// </summary>
     /// <param name="services">The service collection to configure the API behavior options on.</param>
     /// <returns>The updated service collection.</returns>
-    public static IServiceCollection AddApiBehavior(this IServiceCollection services)
+    public static IServiceCollection AddApiBehaviorWithValidationLogging(this IServiceCollection services, Action<ApiBehaviorSetting> configure)
     {
+        ApiBehaviorSetting apiBehaviorSetting = new();
+        configure.Invoke(apiBehaviorSetting);
+
         services.Configure<ApiBehaviorOptions>(options =>
         {
-            options.SuppressInferBindingSourcesForParameters = false;
-            options.SuppressModelStateInvalidFilter = false;
+            options.SuppressInferBindingSourcesForParameters = apiBehaviorSetting.SuppressInferBindingSourcesForParameters;
+            options.SuppressModelStateInvalidFilter = apiBehaviorSetting.SuppressModelStateInvalidFilter;
 
             options.InvalidModelStateResponseFactory = context =>
             {
-                // ModelState üzerinden hata mesajlarını toplama
                 var errorMessages = context.ModelState.Values
-                    .Where(v => v.Errors.Any())
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage);
+                    .Where(validation => validation.Errors.Any())
+                    .SelectMany(validation => validation.Errors)
+                    .Select(error => error.ErrorMessage);
 
-                // Hata mesajını loglama
-                var logger = context.HttpContext.RequestServices
+                ILogger logger = context.HttpContext.RequestServices
                     .GetRequiredService<ILoggerFactory>()
-                    .CreateLogger("Validation");
+                    .CreateLogger(nameof(FluentValidation));
 
-                logger.LogWarning("Validation Error: {Errors}", string.Join(", ", errorMessages));
+                logger.LogWarning("FluentValidation Error: {Errors}", string.Join(",", errorMessages, CultureInfo.InvariantCulture));
 
-                // İlk hata mesajını içeren yanıt döndürme
-                return new BadRequestObjectResult(new
-                {
-                    Message = errorMessages.FirstOrDefault() ?? "Validation error occurred."
-                });
+                return new BadRequestObjectResult(apiBehaviorSetting.IsProductionEnvironment
+                    ? new { Message = apiBehaviorSetting.ErrorMessage, Errors = errorMessages }
+                    : new { Message = apiBehaviorSetting.ErrorMessage });
             };
         });
 

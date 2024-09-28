@@ -1,43 +1,43 @@
 ﻿namespace Puzzle.Lib.Social.Infrastructure;
 
-public class FacebookUserInfoResponse
+public sealed record FacebookUserInfoResponse
 {
     [JsonPropertyName("id")]
-    public string Id { get; set; }
+    public string Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string Name { get; init; }
 
     [JsonPropertyName("first_name")]
-    public string FirstName { get; set; }
+    public string FirstName { get; init; }
 
     [JsonPropertyName("last_name")]
-    public string LastName { get; set; }
+    public string LastName { get; init; }
 
     [JsonPropertyName("email")]
-    public string Email { get; set; }
+    public string Email { get; init; }
 
     [JsonPropertyName("picture")]
-    public FacebookUserPicture Picture { get; set; }
+    public FacebookUserPicture Picture { get; init; }
 }
 
-public class FacebookUserPicture
+public sealed record FacebookUserPicture
 {
     [JsonPropertyName("data")]
-    public FacebookData Data { get; set; }
+    public FacebookData Data { get; init; }
 }
 
-public class FacebookData
+public sealed record FacebookData
 {
     [JsonPropertyName("height")]
-    public long Height { get; set; }
+    public long Height { get; init; }
 
     [JsonPropertyName("is_silhouette")]
-    public bool IsSilhouette { get; set; }
+    public bool IsSilhouette { get; init; }
 
     [JsonPropertyName("url")]
-    public Uri Url { get; set; }
+    public Uri Url { get; init; }
 
     [JsonPropertyName("width")]
-    public long Width { get; set; }
+    public long Width { get; init; }
 }

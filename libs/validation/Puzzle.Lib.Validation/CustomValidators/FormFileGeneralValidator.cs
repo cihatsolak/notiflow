@@ -1,7 +1,17 @@
 ﻿namespace Puzzle.Lib.Validation.CustomValidators;
 
+/// <summary>
+/// Validates the general properties of an IFormFile object.
+/// </summary>
 internal class FormFileGeneralValidator : AbstractValidator<IFormFile>
 {
+    /// <summary>
+    /// Initializes a new instance of the FormFileGeneralValidator class.
+    /// </summary>
+    /// <param name="errorMessage">The error message to display if validation fails.</param>
+    /// <param name="minFileSize">The minimum allowed file size.</param>
+    /// <param name="maxFileSize">The maximum allowed file size.</param>
+    /// <param name="contentTypes">The allowed content types.</param>
     internal FormFileGeneralValidator(string errorMessage, int minFileSize, int maxFileSize, params string[] contentTypes)
     {
         if (contentTypes.Length == 0)
